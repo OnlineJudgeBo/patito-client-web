@@ -1,4 +1,4 @@
-<html>
+	<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title><?php echo $view_title?></title>
@@ -40,10 +40,6 @@
 				if ($brush=='pascal') $brush='delphi';
 				if ($brush=='obj-c') $brush='c';
 				if ($brush=='freebasic') $brush='vb';
-				if ($brush=='python3') $brush='python';
-				if ($brush=='python2') $brush='python';
-				if ($brush=='C++11')   $brush='c++';
-
 				echo "<pre class=\"brush:".$brush.";\">";
 				ob_start();
 				echo "/**************************************************************\n";
@@ -73,3 +69,6 @@
 	</section>
 </body>
 </html>
+
+
+

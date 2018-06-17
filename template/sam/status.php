@@ -23,11 +23,10 @@
         if ($language==-1) echo "<option value='-1' selected>All</option>";
         else echo "<option value='-1'>All</option>";
         $i=0;
-       
         foreach ($language_name as $lang){
           if ($i==$language)
             echo "<option value=$i selected>$language_name[$i]</option>";
-          else if($i <= 1 or $i == 6 or $i == 15 or $i == 3)
+          else
             echo "<option value=$i>$language_name[$i]</option>";
           $i++;
         }

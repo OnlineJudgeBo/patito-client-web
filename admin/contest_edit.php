@@ -134,7 +134,7 @@ Public/Private:<select name=private>
 $lang_count=count($language_ext);
 
 
-$lang=(~((int)$langmask))&((1<<$lang_count)-1);
+  $lang=(~((int)$langmask))&((1<<$lang_count)-1);
 if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
  else $lastlang=0;
  for($i=0;$i<$lang_count;$i++){

@@ -62,44 +62,45 @@
 				
 				<h6 id="annoter">Ctrl para seleccionar varias opciones.</h6>
 			</div>
-			<p align="left">Descripcion:<br>
-
+                                            
+                                                 <p align="left">Descripcion (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br>
+                    <textarea  class="input input-xxlarge"  rows=13 name="description" cols=80></textarea>
 				<?php
-				$description = new FCKeditor('description') ;
+                                                 /*$description = new FCKeditor('description') ;
 				$description->BasePath = '../fckeditor/' ;
 				$description->Height = 250 ;
 				$description->Width=800;
 
 				$description->Value = '<p></p>' ;
-				$description->Create() ;
+				$description->Create() ;*/
 				?>
 			</p>
 
-			<p align=left>Descripcion Entrada:<br><!--<textarea rows=13 name=input cols=80></textarea>-->
-
+			<p align=left>Descripcion Entrada (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br><!--<textarea rows=13 name=input cols=80></textarea>-->
+                    <textarea  class="input input-xxlarge"  rows=13 name="input" cols=80></textarea>
 				<?php
-				$input = new FCKeditor('input') ;
+                    /*$input = new FCKeditor('input') ;
 				$input->BasePath = '../fckeditor/' ;
 				$input->Height = 250 ;
 				$input->Width=800;
 
 				$input->Value = '<p></p>' ;
-				$input->Create() ;
+				$input->Create() ;*/
 				?>
 			</p>
 
 		</p>
-		<p align="left"> Descripcion Salida:<br><!--<textarea rows=13 name=output cols=80></textarea>-->
-
+		<p align="left"> Descripcion Salida (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br><!--<textarea rows=13 name=output cols=80></textarea>-->
+                    <textarea  class="input input-xxlarge"  rows=13 name="output" cols=80></textarea>
 
 			<?php
-			$output = new FCKeditor('output') ;
+                    /*$output = new FCKeditor('output') ;
 			$output->BasePath = '../fckeditor/' ;
 			$output->Height = 250 ;
 			$output->Width=800;
 
 			$output->Value = '<p></p>' ;
-			$output->Create() ;
+			$output->Create() ;*/
 			//$output->'<p> Holaaa</p>' ;
 			
 			?>
@@ -108,15 +109,16 @@
 		<p align="left">Ejemplo Salida:<br><textarea  class="input input-xxlarge"  rows=13 name=sample_output cols=80></textarea></p>
 		<p align="left">Casos Entrada:<br><textarea  class="input input-xxlarge" rows=13 name=test_input cols=80></textarea></p>
 		<p align="left">Casos Salida:<br><textarea  class="input input-xxlarge"  rows=13 name=test_output cols=80></textarea></p>
-		<p align="left">Hint:<br>
+		<p align="left">Hint (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br>
+                                                 <textarea  class="input input-xxlarge"  rows=13 name="hint" cols=80></textarea>
 			<?php
-			$output = new FCKeditor('hint') ;
+                                                 /*$output = new FCKeditor('hint') ;
 			$output->BasePath = '../fckeditor/' ;
 			$output->Height = 250 ;
 			$output->Width=800;
 
 			$output->Value = '<p></p>' ;
-			$output->Create() ;
+			$output->Create() ;*/
 			?>
 		</p>
 		<p>Juez Especial: N<input type=radio name="spj" value='0' checked>Y<input type=radio name=spj value='1'></p>

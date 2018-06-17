@@ -1,11 +1,10 @@
 <?php
-	$cache_time=10;
-	$OJ_CACHE_SHARE=false;
-	require_once('./include/cache_start.php');
-    require_once('./include/db_info.inc.php');
-	require_once('./include/setlang.php');
-	$view_title= "Welcome To Online Judge";
-require_once("./include/const.inc.php");
+$cache_time=10;
+$OJ_CACHE_SHARE=false;
+require_once('./include/cache_start.php');
+require_once('./include/db_info.inc.php');
+require_once('./initPHP.php');
+$view_title= "Welcome To Online Judge";
 
 $id=strval(intval($_GET['id']));
 if (isset($_GET['page']))
@@ -46,16 +45,16 @@ $view_problem[2][1]=$row[0];
 mysql_free_result($result);
 
 //for ($i=4;$i<12;$i++){
-	$i=3;
-	$sql="SELECT result,count(1) FROM solution WHERE problem_id='$id' AND result>=4 group by result order by result";
-	$result=mysql_query($sql);
-	while($row=mysql_fetch_array($result)){
+$i=3;
+$sql="SELECT result,count(1) FROM solution WHERE problem_id='$id' AND result>=4 group by result order by result";
+$result=mysql_query($sql);
+while($row=mysql_fetch_array($result)){
 		
-		$view_problem[$i][0] =$jresult[$row[0]];
-		$view_problem[$i][1] ="<a href=status.php?problem_id=$id&jresult=".$row[0]." >".$row[1]."</a>";
-		$i++;
-	}
-	mysql_free_result($result);
+    $view_problem[$i][0] =$jresult[$row[0]];
+    $view_problem[$i][1] ="<a href=status.php?problem_id=$id&jresult=".$row[0]." >".$row[1]."</a>";
+    $i++;
+}
+mysql_free_result($result);
 	
 //}
 
@@ -136,8 +135,8 @@ for ($i=$start+1;$row=mysql_fetch_object($result);$i++){
 	else $view_solution[$j][4]=  "------";
 	
 	if (!(isset($_SESSION['user_id'])&&!strcasecmp($row->user_id,$_SESSION['user_id']) ||
-		isset($_SESSION['source_browser'])||
-		(isset($OJ_AUTO_SHARE)&&$OJ_AUTO_SHARE&&$AC))){
+          isset($_SESSION['source_browser'])||
+          (isset($OJ_AUTO_SHARE)&&$OJ_AUTO_SHARE&&$AC))){
 		$view_solution[$j][5]= $language_name[$row->language];
 	}else{
 		$view_solution[$j][5]=  "<a target=_blank href=showsource.php?id=".$row->solution_id.">".$language_name[$row->language]."</a>";
@@ -151,7 +150,7 @@ for ($i=$start+1;$row=mysql_fetch_object($result);$i++){
 mysql_free_result($result);
 $view_recommand=Array();
 if(isset($_SESSION['user_id'])&&isset($_GET['id'])){
-  $id=intval($_GET['id']);
+    $id=intval($_GET['id']);
 	$user_id=mysql_real_escape_string($_SESSION['user_id']);
 	$sql="select problem_id,count(1) people from  (
                                 SELECT * FROM solution ORDER BY solution_id DESC LIMIT 10000 )solution

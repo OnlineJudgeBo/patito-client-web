@@ -12,7 +12,7 @@ if (!(isset($_SESSION['administrator'])
     echo "<a href='../loginpage.php'>No esta autentificado!</a>";
 exit(1);
 }
-$keyword=$_GET['keyword'];
+$keyword=""; if(isset($_GET['keyword'])) $keyword=$_GET['keyword'];
 $keyword=mysql_real_escape_string($keyword);
 $sql = "SELECT COUNT(DISTINCT contest_id) as total FROM contest";
 $result=mysql_query($sql);
@@ -20,7 +20,7 @@ $row=mysql_fetch_object($result);
 $total_contest =  $row->total;
 
 $sql="SELECT max(`problem_id`) as upid FROM `problem`";
-$page_cnt=1000;
+$page_cnt=50;
 $result=mysql_query($sql);
 echo mysql_error();
 $row=mysql_fetch_object($result);
@@ -113,8 +113,8 @@ for (;$row=mysql_fetch_object($result);){
     $qry.= " and contest_problem.contest_id != 0 order by contest.end_time desc ";
     $resp=mysql_query($qry);
     $row2=mysql_fetch_object($resp);
-
-    echo "<td>".substr($row2->end_time,0,10)."</td>";
+    //echo $row2;
+    if(isset($row->end_time))echo "<td>".substr($row2->end_time,0,10)."</td>";
      $ta=$row->tags;
     echo "<td>";
     if(strlen($ta)==1)

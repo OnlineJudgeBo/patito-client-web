@@ -1,3 +1,4 @@
+
 <div id="header">
   <div id="logo"></div>
     <div id="menu">
@@ -8,6 +9,7 @@
 	<li><a  href="status.php"><?php echo $MSG_STATUS?> </a></li>
 	<li><a href="ranklist.php"><?php echo $MSG_RANKLIST?></a></li>
 	<li><a href="contest.php"><?php echo checkcontest($MSG_CONTEST)?></a></li>
+	
 	<!--<a class='btn <?php if ($url=="recent-contest.php") echo " $ACTIVE";?>' href="recent-contest.php"><i class="icon-share"></i><?php echo "$MSG_RECENT_CONTEST"?></a>-->
 	<li ><a href="faqs.php"><?php echo "$MSG_FAQ"?></a></li>
       </ul>
@@ -19,3 +21,5 @@
 <div id="broadcast" class="container">
   <marquee id="broadcast" scrollamount="1" behavior="alternate" scrolldelay="1" onMouseOver='this.stop()' onMouseOut='this.start()';><?php echo $view_marquee_msg?></marquee>
 </div>
+<?php echo checkcontest($MSG_CONTEST);
+	echo $MSG_CONTEST;?>

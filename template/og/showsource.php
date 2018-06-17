@@ -1,73 +1,52 @@
-	<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title><?php echo $view_title?></title>
-	<link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE?>/<?php echo isset($OJ_CSS)?$OJ_CSS:"hoj.css" ?>' type='text/css'>
-	<link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/> 
-	<link href='highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/> 
-	<script src='highlight/scripts/shCore.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushJava.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushDelphi.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushRuby.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushBash.js' type='text/javascript'></script>
-	<script src='highlight/scripts/shBrushPython.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushPhp.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushPerl.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushCSharp.js' type='text/javascript'></script> 
-	<script src='highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+<?php $view_title= "Código Fuente"; ?>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<!--Let browser know website is optimized for mobile-->
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+		<link rel="stylesheet" href="./materialize/materialize.min.css">
+		<script src="./materialize/materialize.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script src="./react/react.development.js"></script>
+		<script src="./react/react-dom.development.js"></script>
+		<script src="./react/babel.min.js"></script>
+		<script type="text/babel" src="./react/app.js"></script>
 
-	<script language='javascript'> 
-		SyntaxHighlighter.config.bloggerMode = false;
-		SyntaxHighlighter.config.clipboardSwf = 'highlight/scripts/clipboard.swf';
-		SyntaxHighlighter.all();
-	</script>
-</head>
-<body>
+		
+		<title><?php echo $view_title?></title>
+		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg" />
 
-	<div id="wrapper">
-		<?php require_once("oj-header.php");?>
+		<script type="text/babel">
+		 <?php require_once("./init.php");
+		 crearCodigoFuente();?>
+		 function loadPag(){
+			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
+			 ReactDOM.render(<ShowSource dat={dat} msg={msg} />, document.getElementById("showSource"));
+		 }
+		 loadPag();
+		 
+		</script>
 
-
-		<section id="main">
-			<?php
-
-			if ($ok==true or $_SESSION['user_id']=='starsaminf' or $_SESSION['user_id']=='jteran'){
-				if($view_user_id!=$_SESSION['user_id'])
-					echo "<a href='mail.php?to_user=$view_user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
-				$brush=strtolower($language_name[$slanguage]);
-				if ($brush=='pascal') $brush='delphi';
-				if ($brush=='obj-c') $brush='c';
-				if ($brush=='freebasic') $brush='vb';
-				echo "<pre class=\"brush:".$brush.";\">";
-				ob_start();
-				echo "/**************************************************************\n";
-				echo "\tProblem: $sproblem_id\n\tUser: $suser_id\n";
-				echo "\tLanguage: ".$language_name[$slanguage]."\n\tResult: ".$judge_result[$sresult]."\n";
-				if ($sresult==4){
-					echo "\tTime:".$stime." ms\n";
-					echo "\tMemory:".$smemory." kb\n";
-				}
-				echo "****************************************************************/\n\n";
-				$auth=ob_get_contents();
-				ob_end_clean();
-
-				echo htmlspecialchars(str_replace("\n\r","\n",$view_source))."\n".$auth."</pre>";
-				
-			}else{
-				
-				echo "No puedes ver este codigo!";
-			}
-			?>
-
-		</section>
-	</div>
-
-	<section id="foot">
-		<?php require_once("oj-footer.php");?>
-	</section>
-</body>
+		<link href="prism/prism.css" rel="stylesheet" />
+		<script src="prism/prism.js"></script>
+		
+	</head>
+	<body>
+		
+		<div id="showSource">
+			<div class="preloader-wrapper active">
+				<div class="spinner-layer spinner-red-only">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div><div class="gap-patch">
+						<div class="circle"></div>
+					</div><div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
 
 

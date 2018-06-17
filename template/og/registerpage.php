@@ -9,7 +9,6 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<?php require_once("oj-header.php");?>
 			<section id="main">
 				<div id="registro">
 					<legend><?php echo $MSG_REG_INFO?></legend>

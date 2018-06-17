@@ -53,19 +53,19 @@
 					<?php $ip =  $_SERVER['REMOTE_ADDR'];
 					 $v_ip =explode(".",$ip);
 
- $OJ_VCODE=0;
-						?>
-												<?php if($OJ_VCODE){?>
-																	<div id="csscapt" >	  
-																							<div class="g-recaptcha" data-sitekey="<?php echo $publickey?>"</div>
-																												</div>
-																																	<?php  }?>	
-																																						<input type="submit" name="submit" id="submit" value="Crear">
-																																											<input type="reset"  name="reset" id="reset" value="Reset">
-																																															</form>
-																																																		</div>
-																																																				</section>
-																																																					</div>
+	if(($v_ip[0]=='200' && $v_ip[1]=='7')) $OJ_VCODE=0;
+					?>
+					<?php if($OJ_VCODE){?>
+					<div id="csscapt" >	  
+						<div class="g-recaptcha" data-sitekey="<?php echo $publickey?>"</div>
+					</div>
+					<?php  }?>	
+					<input type="submit" name="submit" id="submit" value="Crear">
+					<input type="reset"  name="reset" id="reset" value="Reset">
+				</form>
+			</div>
+		</section>
+	</div>
 
 	<section id="foot">
 		<?php require_once("oj-footer.php");?>
@@ -73,87 +73,86 @@
 </body>
 </html>
 
-	<script type="text/javascript">
-		function captcha(){
-					var formulario=document.getElementById("formulario");
-							if(document.getElementById("recaptcha_response_field").value==""){
-											alert("Escriba el texto debajo la imagen");
-														return false;
-													}else{
-																	formulario.submit();
-																				return true;
-																			}
-						}
+<script type="text/javascript">
+	function captcha(){
+		var formulario=document.getElementById("formulario");
+		if(document.getElementById("recaptcha_response_field").value==""){
+			alert("Escriba el texto debajo la imagen");
+			return false;
+		}else{
+			formulario.submit();
+			return true;
+		}
+	}
+	
+	$(document).ready(function(){
+		$("#pais").val("0").change();
+		$("#institution-div").empty();
+		$("#obi-option").hide();
+		$("#pais").change(function(){
+			var pais = $("#pais").find("option:selected").val();
 			
-			$(document).ready(function(){
-						$("#pais").val("0").change();
-								$("#institution-div").empty();
-								$("#obi-option").hide();
-										$("#pais").change(function(){
-														var pais = $("#pais").find("option:selected").val();
-																	
-																	var parametros = {
-																						"pais" : pais
-																										};
-																	
-																	if(pais == '26'){
-																						$("#obi-option").show();
+			var parametros = {
+				"pais" : pais
+			};
+			
+			if(pais == '26'){
+				$("#obi-option").show();
 
-																										$("#obi").click(function(){
-																																$("#institution-div").empty();
-																																					$("#institucion_uni").remove();
-																																					$("#institution-div").html("<input id=institution name=institution size=30 type=text required autocomplete=off>*<br>");
-																																										cambio_obi();
-																																									});
-																										$("#uni").click(function(){
-																																$("#institucion_uni").remove();
-																																					$("#institution-div").empty();
-																																					cambio_uni();
-																																									});
-																									}else{
-																														$("#obi-option").hide();
-																																		$("#institution-div").empty();
-																																		cambio_uni();
-																																					}
-																});
-									});
+				$("#obi").click(function(){
+					$("#institution-div").empty();
+					$("#institucion_uni").remove();
+					$("#institution-div").html("<input id=institution name=institution size=30 type=text required autocomplete=off>*<br>");
+					cambio_obi();
+				});
+				$("#uni").click(function(){
+					$("#institucion_uni").remove();
+					$("#institution-div").empty();
+					cambio_uni();
+				});
+			}else{
+				$("#obi-option").hide();
+				$("#institution-div").empty();
+				cambio_uni();
+			}
+		});
+	});
 
-			function cambio_obi(){
+	function cambio_obi(){
 
-						$("#institution").keyup(function(){
-										$.ajax({
-															type : "POST",
-																				url  : "institucion_obi.php",
-																								data : 'key='+$(this).val(),
+		$("#institution").keyup(function(){
+			$.ajax({
+				type : "POST",
+				url  : "institucion_obi.php",
+				data : 'key='+$(this).val(),
 				beforeSend: function(){
-										$("#institution").css("background","#FFF url(LoaderIcon.gif) no-repeat 117px");
-														},
-																			success: function(data){
-																									$("#sug-institution").show();
-																														$("#sug-institution").html(data);
-																														$("#institution").css("background","#FFF");
-																																		}
-																		});
-												});
-							}
-			function cambio_uni(){
-						$.ajax({
-										type : "POST",
-														url  : "institucion_uni.php",
-																	data : 'key='+$("#pais").find("option:selected").val(),
+					$("#institution").css("background","#FFF url(LoaderIcon.gif) no-repeat 117px");
+				},
+				success: function(data){
+					$("#sug-institution").show();
+					$("#sug-institution").html(data);
+					$("#institution").css("background","#FFF");
+				}
+			});
+		});
+	}
+	function cambio_uni(){
+		$.ajax({
+			type : "POST",
+			url  : "institucion_uni.php",
+			data : 'key='+$("#pais").find("option:selected").val(),
 			beforeSend: function(){
-								$("#institution_uni").css("background","#FFF url(LoaderIcon.gif) no-repeat 117px");
-											},
-															success: function(data){
-																				$("#institution-div").html(data);
-																							}
-												});
-							}
+				$("#institution_uni").css("background","#FFF url(LoaderIcon.gif) no-repeat 117px");
+			},
+			success: function(data){
+				$("#institution-div").html(data);
+			}
+		});
+	}
 
-			function selectCountry(val,id) {
-						$("#institution").val(val);
-								$("#sug-institution").hide();
-								$("#institution_id").val(id);
-									}
-		</script>
-
+	function selectCountry(val,id) {
+		$("#institution").val(val);
+		$("#sug-institution").hide();
+		$("#institution_id").val(id);
+	}
+</script>

@@ -11,7 +11,7 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!--******-->
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script>
@@ -55,6 +55,9 @@
 							   <a href="blog_add.php"> Agregar entrada al blog </a>
 							   --!>  
       </section><!--end main-->
+      <div id="blog">
+	<?php echo $view_blog ?>
+      </div>
     </div><!--end wrapper-->
     <section id="foot">
       <?php require_once("oj-footer.php");?>

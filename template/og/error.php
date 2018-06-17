@@ -1,25 +1,47 @@
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title><?php echo $view_title?></title>
-	<link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE?>/<?php echo isset($OJ_CSS)?$OJ_CSS:"hoj.css" ?>' type='text/css'>
-	  <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-
-</head>
-<body>
-
-	<div id="wrapper">
-		<?php require_once("oj-header.php");?>
-		<section id="main">
-			<?php echo $view_errors?>
-
-		</section>
-	</div>
-
-	<section id="foot">
-		<?php require_once("oj-footer.php");?>
-	</section>
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<!--Let browser know website is optimized for mobile-->
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+		<link rel="stylesheet" href="./materialize/materialize.min.css">
+		<script src="./materialize/materialize.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script src="./react/react.development.js"></script>
+		<script src="./react/react-dom.development.js"></script>
+		<script src="./react/babel.min.js"></script>
+		<script type="text/babel" src="./react/app.js"></script>
+		<script type="text/babel">
+		 <?php require_once("./init.php");
+		 ?>
+		 dat.viewErrors="<?php
+$order=array("\r\n", "\n", "\r");
+$ans=str_replace($order, "\\n", $view_errors);
+$ans=str_replace("\"", "\\\"", $ans);
+echo $ans;?>";
+		 function loadPag(){
+			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
+			 ReactDOM.render(<Errorpage dat={dat} msg={msg} />, document.getElementById("error"));
+		 }
+		 loadPag();
+		</script>
+		<title>Ups...</title>
+	    <link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg">
+	</head>
+	<body>
+		<div id="error">
+			<div class="preloader-wrapper active">
+				<div class="spinner-layer spinner-red-only">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div><div class="gap-patch">
+						<div class="circle"></div>
+					</div><div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
 
 

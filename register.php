@@ -1,7 +1,7 @@
 <?php
 require_once("./include/db_info.inc.php");
 require_once("./include/my_func.inc.php");
-#include('./include/recaptcha.php');
+include('./include/recaptcha.php');
 
 $err_str="";
 $err_cnt=0;
@@ -38,7 +38,7 @@ if(empty($obi)){
 
 
 if($OJ_VCODE){
-/*
+
 $resp = verificaCaptcha($_POST['g-recaptcha-response'],$privatekey);
 if (!$resp) {
 	die ("El CAPTCHA no es correcto. Intenta de nuevo :D.");
@@ -50,7 +50,6 @@ if (!$anws) {
 	$err_str=$err_str."Seguro q eres humano ? Revisa el CAPTCHA. \\n";
 	$err_cnt++;
 }
-*/
 }
 if($OJ_LOGIN_MOD!="hustoj"){
 	$err_str=$err_str."No hay registros.\\n";
