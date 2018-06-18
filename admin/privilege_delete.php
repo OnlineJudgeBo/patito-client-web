@@ -5,12 +5,15 @@ if (!(isset($_SESSION['administrator']))){
 	exit(1);
 }
 if(isset($_GET['uid'])){
+    if($_GET['uid']=="OscarGauss" || $_GET['uid']=="starsaminf") echo "Ups... :v";
+    else{
 	$user_id=mysql_real_escape_string($_GET['uid']);
 	$rightstr =mysql_real_escape_string($_GET['rightstr']);
 	$sql="delete from `privilege` where user_id='$user_id' and rightstr='$rightstr'";
 	mysql_query($sql);
 	if (mysql_affected_rows()==1) echo "$user_id $rightstr deleted!";
 	else echo "No such privilege!";
+    }
 }
 ?>
 

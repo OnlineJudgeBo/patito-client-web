@@ -27,7 +27,8 @@ for ($i=1;$i<=$cnt;$i++){
         else echo "<a href='contest_list.php?page=".$i."'>".$i."</a>";
 }
 $sql="select `contest_id`,`title`,`start_time`,`end_time`,`private`,`defunct` FROM `contest` where contest_id>=$pstart and contest_id <=$pend order by `contest_id` desc";
-$keyword=$_GET['keyword'];
+if(isset($_GET['keyword']))$keyword=$_GET['keyword'];
+else $keyword = "";
 $keyword=mysql_real_escape_string($keyword);
 if($keyword) $sql="select `contest_id`,`title`,`start_time`,`end_time`,`private`,`defunct` FROM `contest` where title like '%$keyword%' ";
 $result=mysql_query($sql) or die(mysql_error());

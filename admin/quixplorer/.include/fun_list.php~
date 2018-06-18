@@ -217,8 +217,6 @@ function print_table($dir, $list)
 // MAIN FUNCTION
 function list_dir($dir)
 {
-    echo "holas";
-    echo $GLOBALS["dir"];
 	$dir_up = dirname($dir);
 	if($dir_up==".") $dir_up = "";
 	

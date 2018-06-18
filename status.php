@@ -9,11 +9,7 @@ require_once ('./include/cache_start.php');
 require_once ('./include/db_info.inc.php');
 
 /////////////////////////Template
-if (isset($_GET['cid'])) {
-	require ("template/".$OJ_TEMPLATE."/conteststatus.php");
-} else {
-	require ("template/".$OJ_TEMPLATE."/status.php");
-}
+require ("template/".$OJ_TEMPLATE."/status.php");
 
 /////////////////////////Common foot
 if (file_exists('./include/cache_end.php')) {

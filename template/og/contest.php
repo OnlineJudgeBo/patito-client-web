@@ -1,10 +1,15 @@
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<!--Let browser know website is optimized for mobile-->
 		<!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
 		<link rel="stylesheet" href="./materialize/materialize.min.css">
 		<script src="./materialize/materialize.min.js"></script>
+		<script src="./showdown/showdown.min.js"></script>
+		<script>showdown.setOption("tables", 1);
+		 showdown.setOption("headerLevelStart", 3);
+		 showdown.setOption("simpleLineBreaks", 1);
+		 showdown.setOption("emoji",1);</script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<script src="./react/react.development.js"></script>
 		<script src="./react/react-dom.development.js"></script>

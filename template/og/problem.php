@@ -54,6 +54,10 @@
 		 });
 		</script>
 		<script src="./showdown/showdown.min.js"></script>
+		<script>showdown.setOption("tables", 1);
+		 showdown.setOption("headerLevelStart", 3);
+		 showdown.setOption("simpleLineBreaks", 1);
+		 showdown.setOption("emoji",1);</script>
 		<link rel="next" href="submitpage.php?
 				   <?php
 				   if ($pr_flag){echo "id=$id";

@@ -10,6 +10,7 @@ $judge_result=Array($MSG_Pending,$MSG_Pending_Rejudging,$MSG_Compiling,$MSG_Runn
 $judge_color=Array("gray","gray","orange","orange","green","red","red","red","red","red","red","navy ","navy");
 $language_name = Array("C","C++","Pascal","Java","Ruby","Bash","Python2","PHP","Perl","C#","Obj-C","FreeBasic","Other Language","","","Python3","C++11");
 $language_ext  = Array( "c", "cc", "pas"  ,"java", "rb" , "sh" ,"py"     ,"php","pl"  ,"cs","m"    ,"bas"      ,""              ,"","","py","cc" );
+$sim_arr  = Array(10, 30, 50, 60, 70, 80, 90, 100);
 //$language_name=Array("C","C++","Pascal","Java","Ruby","Bash","Python","PHP","Perl","C#","Obj-C","FreeBasic","Other Language");
 //$language_ext=Array( "c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas" );
 //$language_ext=Array( "c", "cpp", "pas", "java", "rb", "sh", "python", "php","pl", "cs","m","bas" );
@@ -308,15 +309,13 @@ function crearListStatusTabla(){
     global $MSG_Manual, $MSG_AC, $MSG_WA, $jresult, $PID, $judge_result, $judge_color,
         $language_name, $MSG_Explain, $MSG_OK, $top, $bottom, $OJ_SIM, $OJ_MEMCACHE,
         $OJ_SHOW_DIFF, $MSG_RUNID, $MSG_USER, $MSG_PROBLEM, $MSG_RESULT, $MSG_MEMORY,
-        $MSG_TIME, $MSG_LANG, $MSG_CODE_LENGTH, $MSG_SUBMIT_TIME, $OJ_RANK_LOCK_PERCENT;/// TOP Corregir
-    
+        $MSG_TIME, $MSG_LANG, $MSG_CODE_LENGTH, $MSG_SUBMIT_TIME, $OJ_RANK_LOCK_PERCENT, $sim_arr;/// TOP Corregir
     $lock      = false;
     $lock_time = date("Y-m-d H:i:s", time());
     $sql       = "SELECT * FROM `solution` WHERE problem_id>0 ";
     if (isset($_GET['cid'])) {
         $cid        = intval($_GET['cid']);
         $sql        = $sql." AND `contest_id`='$cid' and num>=0 ";
-        //$str2       = $str2."&cid=$cid";
         $sql_lock   = "SELECT `start_time`,`title`,`end_time` FROM `contest` WHERE `contest_id`='$cid'";
         $result     = mysql_query($sql_lock) or die(mysql_error());
         $rows_cnt   = mysql_num_rows($result);
@@ -339,10 +338,9 @@ function crearListStatusTabla(){
         } else {
             $lock = false;
         }
-
-        //require_once("contest-header.php");
     } else {
-        if (isset($_SESSION['administrator']) || isset($_SESSION['source_browser']) || (isset($_SESSION['user_id']) && $_GET['user_id'] == $_SESSION['user_id'])) {
+        if (isset($_SESSION['administrator']) || isset($_SESSION['source_browser']) ||
+            (isset($_SESSION['user_id']) && isset($_GET['user_id']) && $_GET['user_id'] == $_SESSION['user_id'])) {
             if ($_SESSION['user_id'] != "guest") {
                 //	$sql = "SELECT * FROM `solution` WHERE contest_id is null "; //cambio ultimo pedido lic_teran
             }
@@ -352,7 +350,6 @@ function crearListStatusTabla(){
     }
     $start_first = true;
     $order_str   = " ORDER BY `solution_id` DESC ";
-
     // check the top arg
     if (isset($_GET['top'])) {
         $top                  = strval(intval($_GET['top']));
@@ -362,8 +359,8 @@ function crearListStatusTabla(){
     $problem_id=getProblemId();
     if ($problem_id!="") {
         if (isset($_GET['cid'])) {
-            $num=array_search(strval($problem_id), $PID);;
-            $sql=$sql."AND `num`='".$num."' ";
+            $num=array_search(strval($problem_id), $PID);
+            $sql=$sql."AND num='".$num."' ";
         } else {
             $sql.="AND `problem_id`='".$problem_id."' "; //aquise usa $problem_id;
         }
@@ -375,19 +372,19 @@ function crearListStatusTabla(){
     $language=getLanguage();
     if ($language != -1) $sql.="AND `language`='".strval($language)."' ";
 
-    $result=getJresult($jresult);
+    $result=getJresult();
     if ($result != -1 && !$lock) $sql.="AND `result`='".strval($result)."' ";
     if ($OJ_SIM) {
         $old = $sql;
         $sql = "select * from ($sql order by solution_id desc limit 1000) solution left join `sim` on solution.solution_id=sim.s_id WHERE 1 ";
-        if (isset($_GET['showsim']) && intval($_GET['showsim']) > 0) {
+        /*if (isset($_GET['showsim']) && intval($_GET['showsim']) > 0) {
             $showsim = intval($_GET['showsim']);
             $sql     = "select * from ($old ) solution
                      left join `sim` on solution.solution_id=sim.s_id WHERE result=4 and sim>=$showsim limit 1000";
             $sql = "SELECT * FROM ($sql) `solution`
                         left join(select solution_id old_s_id,user_id old_user_id from solution limit 1000) old
                         on old.old_s_id=sim_s_id WHERE  old_user_id!=user_id and sim_s_id!=solution_id ";
-        }
+                        }*/
         //$sql=$sql.$order_str." LIMIT 20";
     }
 
@@ -408,7 +405,6 @@ function crearListStatusTabla(){
     }
 
     $top = $bottom = -1;
-    $cnt = 0;
     if ($start_first) {
         $row_start = 0;
         $row_add   = 1;
@@ -422,7 +418,7 @@ function crearListStatusTabla(){
         echo "TablaS.head.row.push({text:\"Juzgar Manual\"});";
     }
     $last = 0;
-    for ($i = 0; $i < $rows_cnt; $i++) {
+    for ($i=0, $j=0; $j<$rows_cnt; $i++, $j++) {
         if ($OJ_MEMCACHE) {
             $row = $result[$i];
         } else {
@@ -439,8 +435,14 @@ function crearListStatusTabla(){
                 isset($_SESSION['source_browser']) ||
                 isset($_SESSION['administrator']) ||
                 (isset($_SESSION['user_id']) && !strcmp($row['user_id'], $_SESSION['user_id']));
-
-        $cnt = 1-$cnt;
+        
+        if(isset($_GET['showsim']) && $_GET['showsim']!=-1){
+            if($row['sim']<$sim_arr[$_GET['showsim']]){
+                $i--;
+                continue;
+                
+            }
+        }
         echo "TablaS.body.rows.push({props:{},row:[{},{},{},{},{},{},{},{},{}]});\n";        
         echo "TablaS.body.rows[$i].row[0].text=".$row['solution_id'].";";
         if ( (isset($_SESSION['user_id']) && strtolower($row['user_id']) == strtolower($_SESSION['user_id'])) || isset($_SESSION['source_browser']) ) {
@@ -486,8 +488,8 @@ function crearListStatusTabla(){
             if (((intval($row['result']) == 6 && $OJ_SHOW_DIFF) || $row['result'] == 10 || $row['result'] == 13) && ((isset($_SESSION['user_id']) && $row['user_id'] == $_SESSION['user_id']) || isset($_SESSION['source_browser']))) {
                 echo "TablaS.body.rows[$i].row[3].link=\"reinfo.php?sid=".$row['solution_id']."\";";
             } else {
-                if (!$lock || $lock_time > $row['in_date'] || $row['user_id'] == $_SESSION['user_id']) {
-                    if ($OJ_SIM && $row['sim'] > 80 && $row['sim_s_id'] != $row['s_id']) {
+                if (!$lock || $lock_time > $row['in_date'] || $row['user_id'] == $_SESSION['user_id']) {                    
+                    if ($OJ_SIM && $row['sim_s_id']!=$row['s_id'] && ( (isset($_GET['showsim']) && $_GET['showsim']!=-1) || ($row['sim']>80) ) ) {
                         echo "TablaS.body.rows[$i].row[3].text+=\"*[".$row['sim_s_id']."](".$row['sim']."%)\";";
                         if (isset($_SESSION['source_browser'])) {                           
                             echo "TablaS.body.rows[$i].row[3].link=\"comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."\";";
@@ -501,17 +503,18 @@ function crearListStatusTabla(){
         if ($row['result'] != 4 && isset($row['pass_rate']) && $row['pass_rate'] > 0 && $row['pass_rate'] < .98) { //ni idea que sea esto
             //echo "listStatus[$i][3].= "<span class='btn btn-info'>".(100-$row['pass_rate']*100)."%%%</span>";
         }
-        $form="";
         if (isset($_SESSION['http_judge'])) {
             echo "TablaS.body.rows[$i].row.push({});";
             echo "TablaS.body.rows[$i].row[9].text=\"<form method=post action='admin/problem_judge.php'><input type='hidden' name='sid' value='".$row['solution_id']."'>\";";            
-            echo "TablaS.body.rows[$i].row[9].text+=\"<select class='btn input-small' length=4 name=result>\";";
-            echo "TablaS.body.rows[$i].row[9].text+=\"<option value='0'>$MSG_Manual</option>\";";
+            echo "TablaS.body.rows[$i].row[9].text+=\"<select class='btn input-small' length=4 name=result style='width:80px;'>\";";
+            echo "TablaS.body.rows[$i].row[9].text+=\"<option value='0'>RJ</option>\";";
             echo "TablaS.body.rows[$i].row[9].text+=\"<option value='4'>$MSG_AC</option>\";";
             echo "TablaS.body.rows[$i].row[9].text+=\"<option value='6'>$MSG_WA</option>\";";
             echo "TablaS.body.rows[$i].row[9].text+=\"</select>\";";
-            echo "TablaS.body.rows[$i].row[9].text+=\"<input class='btn input-small' title='$MSG_Explain' type='text' name='explain'>\";";
-            echo "TablaS.body.rows[$i].row[9].text+=\"<button class='btn waves-effect'  type='submit' name='manual'>$MSG_OK</button>\";";
+            echo "TablaS.body.rows[$i].row[9].text+=\"<button class='btn waves-effect'  type='submit' name='manual'>OK</button><br/>\";";
+            echo "TablaS.body.rows[$i].row[9].text+=\"<input class='btn input-small' title='$MSG_Explain' type='text' name='explain'"
+                ."style='width:150px; color:black' value='Explicacion...'>\";";
+            
             echo "TablaS.body.rows[$i].row[9].text+=\"</form>\";";
             echo "TablaS.body.rows[$i].row[9].text+=\"<Header dat={dat} msg={msg}/>\";";
         }
@@ -537,12 +540,16 @@ function crearListStatusTabla(){
 }
 
 function getProblemId(){ // check the problem arg
-    $problem_id = "";
+    global $PID;
     if (!isset($_GET['problem_id'])) return "";
-    $problem_id=intval($_GET['problem_id']);
-    if( !(isset($_GET['cid'])) && (strval(intval($_GET['problem_id']))== '0') )
-        $problem_id="";
-    return $problem_id;
+    if(!isset($_GET['cid'])){
+        return $_GET['problem_id'];
+    }
+    $problem_id=$_GET['problem_id'];
+    if(array_search($problem_id, $PID)){
+        return $problem_id;
+    }
+    return "";
 }
 function getUser(){
     return isset($_GET['user'])?$_GET['user']:"";
@@ -568,15 +575,16 @@ function getLanguage(){
     return $lan;
 }
 
-function getJresult($jRes){
+function getJresult(){
+    global $jresult;
     $jres=-1;
     if (isset($_GET['jresult'])) $jres=intval($_GET['jresult']);
-    if($jres<0||$jres>=count($jRes)) $jres=-1;
+    if($jres<0||$jres>=count($jresult)) $jres=-1;
     return $jres;
 }
 function getShowsim(){
     global $OJ_SIM;
-    $ss=0;
+    $ss=-1;
     if($OJ_SIM) if (isset($_GET['showsim'])) $ss=$_GET['showsim'];
     return $ss;
 }
@@ -622,7 +630,7 @@ function getGet(){
     $usid=getUserId();
     if ($usid!="") $ans.="&user_id=".$usid;
     
-    $lan=getLanguage($languageName);
+    $lan=getLanguage();
     if($lan!=-1) $ans=$ans."&language=".$lan;
 
     /// En bolas que signifique el lock
@@ -651,14 +659,13 @@ function getGet(){
         }
     }
     ////END en bolas
-    $jres=getJresult($jresult);
+    $jres=getJresult();
     if ($jres!=-1 && !$lock) {
         $ans.="&jresult=".$jres;
     }
 
     $shs=getShowsim();
-    if ($shs>0) $ans.="&showsim=$shs";
-
+    if ($shs!=-1) $ans.="&showsim=$shs";
     return $ans;
 }
 

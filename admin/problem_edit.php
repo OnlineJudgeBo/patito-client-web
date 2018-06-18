@@ -20,10 +20,6 @@
 				exit(1);
 			}
 			?>
-			<?php
-			include_once("../fckeditor/fckeditor.php") ;
-			include_once("Parsedown.php") ; //XD
-			?>
 			<p align="center"><font color="#333399" size="4">Welcome To Administrator's Page of Judge Online of ACM ICPC, <?php echo $OJ_NAME?>.</font>
 				<td width="100"></td>
 		</center>
@@ -108,68 +104,32 @@
 					 });
 				 }
 				</script>
-				<p align=left>Description:<br><!--<textarea rows=13 name=description cols=80></textarea>-->
-					<textarea rows=13 name="description" cols=120><?php echo htmlspecialchars($row->description)?></textarea>	
-					<?php
-					/*$description = new FCKeditor('description') ;
-					$description->BasePath = '../fckeditor/' ;
-					$description->Height = 600 ;
-					$description->Width=600;
-
-					$description->Value = $row->description ;
-					$description->Create() ;*/					
-					?>
-
+				<p align=left>Description (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br><!--<textarea rows=13 name=description cols=80></textarea>-->
+					<textarea rows=13 name="description" cols=120>
+						<?php echo htmlspecialchars($row->description)?></textarea>	
+					
 					<!-- insertar -->
 				</p>
 
-				<p align=left>Input:<br/><!--<textarea rows=13 name=input cols=80></textarea>-->
+				<p align=left>Input (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br/>
 					<textarea rows=13 name="input" cols=120><?php echo htmlspecialchars($row->input)?></textarea>
-					<?php
-					/*$input = new FCKeditor('input') ;
-					$input->BasePath = '../fckeditor/' ;
-					$input->Height = 600 ;
-					$input->Width=600;
-
-					$input->Value = $row->input ;
-					$input->Create() ;*/
-					?>
 				</p>
 
 			</p>
-			<p align=left>Output:<br/><!--<textarea rows=13 name=output cols=80></textarea>-->
-				<textarea rows=13 name="output" cols=120><?php echo htmlspecialchars($row->output)?></textarea></p>
-				<?php
-				/*$output = new FCKeditor('output') ;
-				$output->BasePath = '../fckeditor/' ;
-				$output->Height = 600 ;
-				$output->Width=600;
-
-				$output->Value = $row->output;
-				$output->Create() ;*/
-				?>
-
-				<p>Sample Input:<br><textarea rows=13 name=sample_input cols=120><?php echo htmlspecialchars($row->sample_input)?></textarea></p>
+			<p align=left>Output (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br/>
+                <textarea rows=13 name="output" cols=120><?php echo htmlspecialchars($row->output)?></textarea></p>
+			<p>Sample Input:<br><textarea rows=13 name=sample_input cols=120><?php echo htmlspecialchars($row->sample_input)?></textarea></p>
 				<p>Sample Output:<br><textarea rows=13 name=sample_output cols=120><?php echo htmlspecialchars($row->sample_output)?></textarea></p>
 				<p>Hint:<br/>
 					<textarea rows=13 name="hint" cols=120><?php echo htmlspecialchars($row->hint)?></textarea></p>
-					<?php
-					/*$output = new FCKeditor('hint') ;
-					$output->BasePath = '../fckeditor/' ;
-					$output->Height = 200 ;
-					$output->Width=600;
-
-					$output->Value = $row->hint;
-					$output->Create() ;*/
-					?>
-					<p>SpecialJudge: 
-					N<input type=radio name=spj value='0' <?php echo $row->spj=="0"?"checked":""?>>
-					Y<input type=radio name=spj value='1' <?php echo $row->spj=="1"?"checked":""?>></p>
-				<p>Source:<br><textarea name=source rows=1 cols=70><?php echo htmlspecialchars($row->source)?></textarea></p>
-				<div align=center>
-					<?php require_once("../include/set_post_key.php");?>
-					<input type=submit value=Submit name=submit>
-				</div>
+				<p>SpecialJudge: 
+						N<input type=radio name=spj value='0' <?php echo $row->spj=="0"?"checked":""?>>
+						Y<input type=radio name=spj value='1' <?php echo $row->spj=="1"?"checked":""?>></p>
+					<p>Source:<br><textarea name=source rows=1 cols=70><?php echo htmlspecialchars($row->source)?></textarea></p>
+					<div align=center>
+						<?php require_once("../include/set_post_key.php");?>
+						<input type=submit value=Submit name=submit>
+					</div>
 			</form>
 			<p>
 				<?php require_once("../oj-footer.php");?>

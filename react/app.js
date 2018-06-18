@@ -330,7 +330,7 @@ class Index extends React.Component {
 				<div className="col s3" id="contest-list">
 				  <Contestlist dat={dat} list={this.props.list} msg={this.props.msg}/>
 				</div>
-				<div className="col s3" id="contest-list">
+				<div className="offset-s9 col s3" id="contest-list">
 				  <h4 style={{textAlign:"center"}}>Actividades</h4>
 				  <iframe src="https://calendar.google.com/calendar/embed?title=Actividades&amp;showTitle=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=500&amp;wkst=1&amp;hl=es&amp;bgcolor=%23ffffff&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%236B3304&amp;src=br1o1n70iqgrrbc875vcehacjg%40group.calendar.google.com&amp;color=%23182C57&amp;src=es-419.bo%23holiday%40group.v.calendar.google.com&amp;color=%238C500B&amp;src=google.com_jqv7qt9iifsaj94cuknckrabd8%40group.calendar.google.com&amp;color=%23125A12&amp;src=p0q3ahkka6tc69jt629k4dk33k%40group.calendar.google.com&amp;color=%23875509&amp;src=appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com&amp;color=%23711616&amp;src=p%23weeknum%40group.v.calendar.google.com&amp;color=%23000000&amp;ctz=America%2FLa_Paz" style={{borderWidth:0}} width="100%" height="500" frameborder="0" scrolling="no"></iframe>
 				</div>
@@ -355,21 +355,38 @@ class Login extends React.Component {
 			  <form action="login.php" method="post">
 				<div className="row">
 				  <div className="col s10 center-align">
-					<input id="password" name="user_id" type="text" className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}/>
-					<label htmlFor="password">{this.props.msg.userId}</label>
-					<input id="password" name="password" type="password" className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}/>
-					<label htmlFor="password">Password</label>
+					<div className="input-field">
+					<input id="password" name="user_id" type="text"
+						   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}/>
+					<label htmlFor="password"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.userId}</label>
+					</div>
+					<div className="input-field">
+					<input id="password" name="password" type="password"
+						   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}/>
+					<label htmlFor="password"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  Password</label>
+					</div>
 				  </div>					
 				  <div className="col s2 center-align">
-					<input name="submit" type="submit" size="10" value="Ingresar" className={"btn waves-effect"+this.props.dat.st4[localStorage.getItem('skin')]} style={{padding:"15 10 15 10", height:"100px"}}/>
+					<input name="submit" type="submit" size="10" value="Ingresar"
+						   className={"btn waves-effect"+
+						   this.props.dat.st4[localStorage.getItem('skin')]}
+						   style={{padding:"15 10 15 10", height:"100px"}}/>
 				  </div>
 				</div>
 				<div className="row">
 				  <div className="col s10 offset-s1 center-align">
-					<a href="lostpassword.php" className={"col s5 btn waves-effect "+ this.props.dat.st4[localStorage.getItem('skin')] }>
+					<a href="lostpassword.php"
+					   className={"col s5 btn waves-effect "+
+					   this.props.dat.st4[localStorage.getItem('skin')] }>
 					  Recuperar contraseña
 					</a>
-					<a href="./registerpage.php" className={"col s5 offset-s2 btn waves-effect"+this.props.dat.st4[localStorage.getItem('skin')]}>
+					<a href="./registerpage.php"
+					   className={"col s5 offset-s2 btn waves-effect"+
+					   this.props.dat.st4[localStorage.getItem('skin')]}>
 					  ¿No tienes usuario?
 					</a>
 					
@@ -390,9 +407,6 @@ class Tabla extends React.Component{
 		this.state={order:0, table:this.props.tabla};
 	}
 	handleClick(e, num){
-		console.log("Click", e, num);
-		console.log(this.state.table.body);
-		console.log("State:",this.state);
 		var aux = this.state.table;
 		if(this.state.order==num) aux.body.rows.sort(function(a, b){
 			if(typeof a.row[num].text == 'string') a = a.row[num].text.toUpperCase();
@@ -414,7 +428,6 @@ class Tabla extends React.Component{
 		});
 		if(this.state.order==num) this.setState({order:-1, table:aux});
 		else this.setState({order:num, table:aux});
-		console.log(this.state.table.body);
 	}
 	render(){
 		return(				 
@@ -514,26 +527,30 @@ class Problemset extends React.Component {
 				<Pagescroll dat={dat}/>			
 				<div className="row">
 				  <form action="problem.php">
-					<div className="col s3 offset-s1">
-					  <input placeholder="1006" id="problemId"
+					<div className="input-field col s3 offset-s1">
+					  <input id="problemId"
 							 type="text"
 							 className={"validate"+
 							 this.props.dat.tx1[localStorage.getItem("skin")]} name="id"/>
-					  <label htmlFor="problemId">ID del problema</label>
+					  <label htmlFor="problemId"
+							 className={this.props.dat.tx1[localStorage.getItem("skin")]+
+							 (1!=1?" Active":"")}>ID del problema</label>
 					</div>
-					<button className={"btn waves-effect col s2"+
+					<button className={"input-field btn waves-effect col s2"+
 							this.props.dat.st4[localStorage.getItem("skin")]}type="submit">Ir
 					  <i className="material-icons right">send</i>
 					</button>
 				  </form>					
 				  <form>
-					<div className="col s3">
-					  <input placeholder="laberinto" id="search" type="text"
+					<div className="input-field col s3">
+					  <input id="search" type="text"
 							 className={"validate"+
 							 this.props.dat.tx1[localStorage.getItem("skin")]} name="search"/>
-					  <label htmlFor="search">Palabra</label>
+					  <label htmlFor="search"
+							 className={this.props.dat.tx1[localStorage.getItem("skin")]+
+							 (1!=1?" Active":"")}>Busca algo</label>
 					</div>
-					<button className={"btn waves-effect col s2"+
+					<button className={"input-field btn waves-effect col s2"+
 							this.props.dat.st4[localStorage.getItem("skin")]}
 							type="submit">Buscar
 					  <i className="material-icons right">search</i>
@@ -570,7 +587,7 @@ class Select extends React.Component{
 				 {"Todos"}
 				 </option>);
 		return (
-			<div>
+			<div className="input-field">
 			  <select className="browser-default"
 					  name={this.props.name}
 					  id={this.props.id}
@@ -582,7 +599,9 @@ class Select extends React.Component{
 					</option>
 				))}
 			</select>
-				<label htmlFor={this.props.id}>{this.props.label}</label>
+				<label htmlFor={this.props.id}
+			className={this.props.dat.tx1[localStorage.getItem("skin")]+" active"}>
+				{this.props.label}</label>
 				</div>
 		);
 	}
@@ -592,17 +611,19 @@ class Status extends React.Component {
 		super(props);
 	}
 	render(){
+		console.log(this.props.dat);
 		var inputCid;
 		if(this.props.dat.getCid!="")inputCid=(<input type="hidden" name='cid' value={dat.getCid}/>);
 		var selectShowSim;
 		if(this.props.dat.admin||this.props.dat.sourceBrowser){
 			selectShowSim=(
-				<div className="input-field col s2">
+				<div className="col s2">
 				  <Select name={"showsim"} id="Selshowsim"
 						  selected={this.props.dat.getShowsim}
-						  options={[10,50, 60, 70, 80, 90, 100]}
-						  label={"Sim"}
+						  options={this.props.dat.simArr}
+						  label={"Similitud"}
 						  form={"simform"}
+						  todos={1} onChange={1} dat={this.props.dat}
 						  />
 				</div>
 			);
@@ -613,6 +634,7 @@ class Status extends React.Component {
 		}else{
 			hrefAnterior+=this.props.dat.getGet+"&top="+(parseInt(this.props.dat.top)+20);
 		}
+		console.log(this.props.dat);
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
 			  <Header dat={dat} msg={msg}/>
@@ -621,23 +643,27 @@ class Status extends React.Component {
 				<Titulo tit={"Estado"} dat={this.props.dat}/>
 				<div className="row">
 				  <form id="simform" action="status.php" method="get">
-					<div className="col s2">
-					  <input placeholder="1006"
-							 id="problemId"
+					<div className="input-field col s2">
+					  <input id="problemId"
 							 type="text"
 							 className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
 							 name="problem_id"
 							 defaultValue={this.props.dat.getProblemId}/>
-					  <label htmlFor="problemId">Id del problema</label>
+					  <label htmlFor="problemId"
+							 className={this.props.dat.tx1[localStorage.getItem("skin")]+
+							 (this.props.dat.getProblemId!=""?" active":"")}>
+						Id del problema</label>
 					</div>
-					<div className="col s2">
-					  <input placeholder="usuario"
-							 id="userId"
+					<div className="input-field col s2">
+					  <input id="userId"
 							 type="text"
 							 className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
 							 name="user_id"
 							 defaultValue={this.props.dat.getUserId}/>
-					  <label htmlFor="userId">{this.props.msg.user}</label>
+					  <label htmlFor="userId"
+							 className={this.props.dat.tx1[localStorage.getItem("skin")]+
+							 (this.props.dat.getUserId!=""?" active":"")}>
+						{this.props.msg.user}</label>
 					</div>
 					{inputCid}
 					<div className="col s2">
@@ -646,6 +672,7 @@ class Status extends React.Component {
 							  options={this.props.dat.languageName}
 							  label={"Lenguaje"}
 							  form={"simform"} todos={1} onChange={1}
+							  dat={this.props.dat}
 							  />
 					</div>					
 					<div className="col s2">
@@ -654,10 +681,11 @@ class Status extends React.Component {
 							  options={this.props.dat.jresult}
 							  label={"Resultado"}
 							  form={"simform"} todos={1} onChange={1}
+							  dat={this.props.dat}
 							  />
 					</div>
 					{selectShowSim}
-					<button className={"btn waves-effect col s2"+
+					<button className={"input-field btn waves-effect col s2"+
 							this.props.dat.st4[localStorage.getItem("skin")]}
 							type="submit">{this.props.msg.search}
 					  <i className="material-icons right">search</i>
@@ -763,23 +791,16 @@ class Submit extends React.Component {
 		this.handleChange = this.handleChange.bind(this);		
 	}
 	handleClick(event) {
-		console.log("entro");
 		do_submit(editor);
-		console.log("entro");		
 	}
 	handleChange(event) {
 		this.cambiarLenguage(document.getElementById("language").value);
-		console.log(document.getElementById("language").value);
 	}
 	componentDidMount(){
-		console.log("ya me render");
 		editor = ace.edit("editor");
 		//editor.setTheme("ace/theme/monokai");
-		editor.session.setMode("ace/mode/javascript");
-		
+		editor.session.setMode("ace/mode/javascript");		
 		//editor.setReadOnly(true);
-		//var valorrr= editor.getValue();
-		//alert(valorrr);
 		document.getElementById("editor").style.position="relative";
 		document.getElementById("editor").style.width='100%';
 		document.getElementById("editor").style.height='500px';
@@ -810,15 +831,15 @@ class Submit extends React.Component {
 				 <input id="cid" type="hidden" value={this.props.dat.getCid} name="cid"/>
 				 </div>);
 		}
-		var lang_count=this.props.dat.languageName.length;//count($language_ext);
+		var lang_count=this.props.dat.languageName.length;
 		var lang=(~(parseInt(this.props.dat.getLangmask)))&((1<<(lang_count))-1);
-		//console.log(lang_count, lang);
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
 			  <Header dat={dat} msg={msg}/>
 			  <div className="container" align="center">				
 				<form id="frmSolution" action="submit.php" method="post">				  
 				  {aux}
+				  <div className="input-field">
 				  <select className="browser-default"
 						  id="language" name="language"
 						  onChange={this.handleChange}>
@@ -832,7 +853,10 @@ class Submit extends React.Component {
 													 </option>);
 																	return(aux)})}
 			</select>
-				<label htmlFor={"language"}>Lenguaje</label>
+				<label htmlFor={"language"}
+			className={this.props.dat.tx1[localStorage.getItem("skin")]+" active"}>
+				Lenguaje</label>
+				</div>
 				<textarea style={{width:"80%", display:"none"}} cols="180" rows="20"
 							id="source" name="source"></textarea>
 				<div id="editor" style={{position:"relative"}}>
@@ -856,6 +880,15 @@ class Problem extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+	copiarAlPortapapeles(e, text) {
+		//text=text.replace(/\r\n/g, "\n");
+		var aux = document.createElement("textarea");
+		aux.innerHTML=text;
+		document.body.appendChild(aux);
+		aux.select();
+		document.execCommand("copy");
+		document.body.removeChild(aux);
+	}
 	render() {
 		var converter = new showdown.Converter();
 		var title;
@@ -867,35 +900,41 @@ class Problem extends React.Component {
 						this.props.dat.probTitle}</h1>);
 		}
 		var spj;
-		console.log(this.props.dat.probSpj);
 		if(this.props.dat.probSpj==1)
 			spj=(<span className="red-text">SPECIAL JUDGE</span>);
-		var submit;
+		var menu =[];
 		if(this.props.dat.getId){
-			submit=(<a href={"submitpage.php?id="+this.props.dat.getId}
-					className={"col s2"+this.props.dat.tx1[localStorage.getItem("skin")]}>
-					{this.props.msg.submit}<i className="material-icons right">send</i></a>);
+			menu.push({text:this.props.msg.submit,
+					   link:"submitpage.php?id="+this.props.dat.getId,
+					   icon:"send"});
 		}else{
-			submit=(<a href={"submitpage.php?cid="+this.props.dat.getCid+
-							 "&pid="+this.props.dat.getPid+"&langmask="+
-							 this.props.dat.langmask}
-					className={"col s2"+this.props.dat.tx1[localStorage.getItem("skin")]}>
-					{this.props.msg.submit}<i className="material-icons right">send</i></a>);
-		}
-		console.log(this.props.dat);
-		var adm, spc;
+			menu.push({text:this.props.msg.submit,
+					   link:"submitpage.php?cid="+this.props.dat.getCid+
+					   "&pid="+this.props.dat.getPid+"&langmask="+
+					   this.props.dat.langmask,
+					   icon:"send"});
+		}			
+		menu.push({text:this.props.msg.status,
+				   link:"status.php?problem_id="+this.props.dat.probPid,
+				   icon:"list"});
+		menu.push({text:"Estadísticas",
+				   link:"problemstatistics.php?id="+this.props.dat.probPid,
+				   icon:"trending_up"});
+		menu.push({text:this.props.msg.bbs,
+				   link:"bbs.php?pid="+this.props.dat.probPid,
+				   icon:"forum"});
+		var spc;
 		if(this.props.dat.admin){
-			adm=(<span><a href={"admin/problem_edit.php?id="+this.props.dat.probPid+"&getkey="+
-								this.props.dat.getKey}
-				 className={"col s2"+this.props.dat.tx1[localStorage.getItem("skin")]}>Editar
-				 <i className="material-icons right">edit</i></a>
-				 <a href={"admin/quixplorer/index.php?action=list&dir="+
-						  this.props.dat.probPid+"&order=name&srt=yes"}
-				 className={"col s2"+this.props.dat.tx1[localStorage.getItem("skin")]}>
-				 Casos de prueba
-				 <i className={"material-icons right"}>attach_file</i></a></span>);
+			menu.push({text:"Editar",
+				   link:"admin/problem_edit.php?id="+this.props.dat.probPid+"&getkey="+
+								this.props.dat.getKey,
+					   icon:"edit"});
+			menu.push({text:"Casos",
+				   link:"admin/quixplorer/index.php?action=list&dir="+
+						  this.props.dat.probPid+"&order=name&srt=yes",
+				   icon:"attach_file"});
 		}else{
-			spc=(<div className="col s3"></div>);
+			spc=(<div className="col s2"></div>);
 		}		
 		var desHtml = converter.makeHtml(this.props.dat.probDes);
 		var inHtml = converter.makeHtml(this.props.dat.probInput);
@@ -911,12 +950,14 @@ class Problem extends React.Component {
 		if(this.props.dat.probSource)
 			source=(<div><h5 className="col s1">Por</h5>
 					<p className="col s11">{this.props.dat.probSource}</p></div>);
+		
 		return (			
-			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-			  <Header dat={dat} msg={msg}/>
-			  <div className="container">
-				<div className={"card"+this.props.dat.st4[localStorage.getItem("skin")]}  align="center">
-				  <div className="card-title">
+				<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
+				<Header dat={dat} msg={msg}/>
+				<div className="container">
+				<div className={"card"+this.props.dat.st4[localStorage.getItem("skin")]}
+			align="center">
+				<div className="card-title">
 					{title}
 				  </div>
 				  <h6>{"Tiempo Límite: "+this.props.dat.probTime+" seg. Memoria Límite:"+
@@ -924,18 +965,17 @@ class Problem extends React.Component {
 				  <h6>{"Enviados: "+this.props.dat.probSubmit+
 					" Aceptados: "+this.props.dat.probAc}</h6>
 				  {spj}
-				  <div className="card-action" style={{position:"initial"}}>
-					<div className="row"> {spc}
-					{submit}
-					<a href={"problemstatus.php?id="+this.props.dat.probPid}
-					   className={"col s2"+this.props.dat.tx1[localStorage.getItem("skin")]}>
-								  {this.props.msg.status}
-					  <i className="material-icons right">list</i></a>
-					<a href={"bbs.php?pid="+this.props.dat.probPid}
-					   className={"col s2"+this.props.dat.tx1[localStorage.getItem("skin")]}>
-						{this.props.msg.bbs}<i className="material-icons right">forum</i></a>
-					{adm}
-					 </div>
+				  <div className="card-action">
+				<div className="row"> {spc}
+			{menu.map(item => (
+				<div className={"col s2"} key={item.icon}>
+					  <a href={item.link}
+						 className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+								  {item.text}
+								  <i className="material-icons right">{item.icon}</i></a>
+					</div>
+			))}
+			</div>
 				  </div>				  
 				</div>
 				<div className="z-depth-2">
@@ -957,16 +997,22 @@ class Problem extends React.Component {
 				  <div className={this.props.dat.st4[localStorage.getItem("skin")]}>
 					<h4 style={{padding:"25 0 25 30"}}>
 					  {this.props.msg.output}</h4></div>
-				  <p dangerouslySetInnerHTML={{__html: outHtml}}
+				<p dangerouslySetInnerHTML={{__html: outHtml}}
 					 style={{padding:"5 30 5 30"}}></p>
 				</div>
 				<div className="row z-depth-2">
+				<div className={"col s6"+this.props.dat.st4[localStorage.getItem("skin")]}>
+				<h4 style={{padding:"25 0 25 30"}}>{this.props.msg.sampleInput}
+				<i className="waves-effect material-icons right" onClick={
+					(e)=>this.copiarAlPortapapeles(e,this.props.dat.probSinput)}>
+				content_copy</i></h4>
+				</div>
 				  <div className={"col s6"+this.props.dat.st4[localStorage.getItem("skin")]}>
-					<h4 style={{padding:"25 0 25 30"}}>
-					  {this.props.msg.sampleInput}</h4></div>
-				  <div className={"col s6"+this.props.dat.st4[localStorage.getItem("skin")]}>
-					<h4 style={{padding:"25 0 25 30"}}>
-					  {this.props.msg.sampleOutput}</h4>
+				<h4 style={{padding:"25 0 25 30"}}>{this.props.msg.sampleOutput}
+				<i className="waves-effect material-icons right" onClick={
+					(e)=>this.copiarAlPortapapeles(e,this.props.dat.probSoutput)}>
+				content_copy</i>
+				</h4>
 				  </div>
 				  <hr/>
 				  <div className={"col s6"}>
@@ -996,8 +1042,6 @@ class Problem extends React.Component {
 
 class Contestset extends React.Component{
 	render(){
-		console.log("tabla:",this.props.tabla);
-		console.log("dat:",this.props.dat);
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
 			  <Header dat={dat} msg={msg}/>
@@ -1013,7 +1057,14 @@ class Contestset extends React.Component{
 }
 
 class Contestproblemset extends React.Component{
+	constructor(props) {
+		super(props);
+	}
 	render(){
+		var converter = new showdown.Converter();
+		//converter.tables(true);
+		console.log(converter);
+		var desHtml = converter.makeHtml(this.props.dat.getCDescription);
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
 			  <Header dat={dat} msg={msg}/>
@@ -1021,7 +1072,7 @@ class Contestproblemset extends React.Component{
 				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
 				<Titulo tit={this.props.msg.contest+" - "+this.props.dat.getCTitle}
 						dat={this.props.dat}/>
-				<h4 dangerouslySetInnerHTML={{__html: this.props.dat.getCDescription}}></h4>
+				<p dangerouslySetInnerHTML={{__html: desHtml}}></p>
 				<div className="fb-like"
 					 data-href={"contest.php?cid="+this.props.dat.getCid}
 					 data-layout="button_count"
@@ -1048,9 +1099,7 @@ class Contestproblemset extends React.Component{
 					</a>
 				</div>
 				<Tabla tabla={this.props.tabla} dat={dat}/>
-				</div>
-		
-				
+				</div>				
 				<Footer dat={dat} msg={msg}/>
 			</div>	
 		);
@@ -1070,6 +1119,7 @@ class Ranklist extends React.Component{
 						   this.props.dat.getScope:"")});
 			
 		}
+		console.log(this.props.dat);
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
 			  <Header dat={dat} msg={msg}/>
@@ -1078,14 +1128,17 @@ class Ranklist extends React.Component{
 				<Titulo tit={this.props.msg.ranklist} dat={this.props.dat}/>
 				<form action="userinfo.php">
 				  <div className="row">
-					<div className="col s2">
+					<div className="input-field col s2">
 					  <input placeholder="usuario"
 							 id="userId"
 							 type="text"
-							 className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							 className={this.props.dat.tx1[localStorage.getItem("skin")]}
 							 name="user"
 							 defaultValue={this.props.dat.getUserId}/>
-					  <label htmlFor="userId">{this.props.msg.user}</label>
+					  <label htmlFor="userId"
+							 className={this.props.dat.tx1[localStorage.getItem("skin")]+
+							 (this.props.dat.getUserId!=""?" active":"")}>
+						{this.props.msg.user}</label>
 					</div>
 					<button className={"btn waves-effect col s2"+
 							this.props.dat.st4[localStorage.getItem("skin")]}

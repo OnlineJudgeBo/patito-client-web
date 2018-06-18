@@ -17,6 +17,7 @@
 		 dat.pageTotal="<?php echo $view_total;?>";
 		 dat.pageSize="<?php echo $page_size;?>";
 		 dat.getScope="<?php echo getScope();?>";
+		 dat.getUserId="<?php echo getUserId();?>";
 		 function loadPag(){
 			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
 			 ReactDOM.render(<Ranklist dat={dat} msg={msg} tabla={TablaR} />,

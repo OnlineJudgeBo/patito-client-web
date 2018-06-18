@@ -9,7 +9,7 @@
 		<script src="./react/react.development.js"></script>
 		<script src="./react/react-dom.development.js"></script>
 		<script src="./react/babel.min.js"></script>
-		<script type="text/babel" src="./react/app.js"></script>
+		<script type="text/babel" src="./react/app.js"></script>		
 		<script type="text/babel">
 		 <?php require_once("./init.php");
 		 crearTablaContestSet();

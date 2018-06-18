@@ -1,5 +1,3 @@
-<?php $view_title = "$MSG_STATUS";?>
-
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -20,22 +18,24 @@
 		 dat.getUserId="<?php echo getUserId();?>";
 		 dat.getCid="<?php echo getCid();?>";
 		 dat.languageName=["<?php echo implode("\",\"",$language_name);?>"];
-		 dat.getLanguage="<?php echo getLanguage($language_name);?>";
+		 dat.getLanguage="<?php echo getLanguage();?>";
 		 dat.jresult=["<?php echo implode("\",\"",$jresult);?>"];
-		 dat.getJresult="<?php echo getJresult($jresult);?>";
+		 dat.simArr=["<?php echo implode("\",\"",$sim_arr);?>"];
+		 dat.getJresult="<?php echo getJresult();?>";
 		 dat.getShowsim="<?php echo getShowsim();?>";
 		 dat.getGet="<?php echo getGet();?>";
 		 dat.getPrevtop="<?php if(isset($_GET['prevtop'])) echo $_GET['prevtop'];?>";
-		 dat.top="<?php echo $top?>";
-		 dat.bottom="<?php echo $bottom?>";
+		 dat.top="<?php if(isset($top)) echo $top?>";
+		 dat.bottom="<?php if(isset($bottom)) echo $bottom?>";
 		 function loadPag(){
 			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
-			 ReactDOM.render(<Status dat={dat} msg={msg} tabla={TablaS}/>, document.getElementById("status"));
+			 ReactDOM.render(<Status dat={dat} msg={msg} tabla={TablaS}/>,
+							 document.getElementById("status"));
 		 }
 		 loadPag();
 		</script>
 		<!-- <meta http-equiv='refresh' content='180'>-->
-		<title><?php echo $view_title?></title>
+		<title>Estado</title>
 		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg" />
 	</head>
 	<body>

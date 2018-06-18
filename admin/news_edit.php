@@ -55,17 +55,9 @@ $user_id=mysql_real_escape_string($user_id);
 <input type=hidden name='news_id' value=<?php echo $news_id?>>
 <p align=left>Title:<input type=text name=title size=71 value='<?php echo $title?>'></p>
 
-<p align=left>Content:<br>
-<?php
-include_once("../fckeditor/fckeditor.php") ;
-$description = new FCKeditor('content') ;
-$description->BasePath = '../fckeditor/' ;
-$description->Height = 450 ;
-$description->Width=800;
-
-$description->Value = $content ;
-$description->Create() ;
-?>
+<p align=left>Content (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br>
+     <textarea  class="input input-xxlarge"  rows=13 name="content" cols=80>
+    <?php echo $content ?></textarea>
 </p>
 <?php require_once("../include/set_post_key.php");?>
 <input type=submit>
