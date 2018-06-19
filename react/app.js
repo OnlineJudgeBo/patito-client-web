@@ -43,23 +43,18 @@ class Footer extends React.Component{
 class Menu extends React.Component {
 	constructor(props){
 		super(props);
-		this.state={items:[]};
-		for(var i=0; i<props.items.length; i++) this.state.items.push(props.items[i]);
+		this.state={items:this.props.items};
 		this.handleClick = this.handleClick.bind(this);
 	}
 	handleClick(e, href, icn){
-		if(icn=="brightness_4")
-			localStorage.setItem("skin", 1-localStorage.getItem("skin"));			
-		else if(icn=="details"){
-			while(this.state.items.length>0) this.state.items.pop();
-			for(var i=0; i<this.props.itemsUser.length; i++)
-				this.state.items.push(this.props.itemsUser[i]);
+		if(icn=="brightness_4"){
+			localStorage.setItem("skin", 1-localStorage.getItem("skin"));
+			loadPag();
+		}else if(icn=="details"){
+			this.setState(prevState => ({items:this.props.itemsUser}));
 		}else{
-			while(this.state.items.length>0) this.state.items.pop();
-			for(var i=0; i<this.props.items.length; i++)
-				this.state.items.push(this.props.items[i]);
-		}
-		loadPag();
+			this.setState(prevState => ({items:this.props.items}));
+		}		
 	}
 	render() {
 		return (
@@ -79,11 +74,14 @@ class Menu extends React.Component {
 class Header extends React.Component{
 	constructor(props){
 		super(props);
+		
 		this.state = {
 			menu:[
-				{href:"problemset.php", text:this.props.msg.problems,
+				{href:"problemset.php"+(this.props.dat.getCid?"?cid="+this.props.dat.getCid:""),
+				 text:(this.props.dat.getCid?"C. ":"")+this.props.msg.problems,
 				 iPos:"left", iName:"view_comfy"},
-				{href:"status.php", text:this.props.msg.status,
+				{href:"status.php"+(this.props.dat.getCid?"?cid="+this.props.dat.getCid:""),
+				 text:(this.props.dat.getCid?"C. ":"")+this.props.msg.status,
 				 iPos:"left", iName:"clear_all"},
 				{href:"ranklist.php", text:this.props.msg.ranklist,
 				 iPos:"left", iName:"equalizer"},
@@ -104,8 +102,7 @@ class Header extends React.Component{
 				{href: "./status.php?user="+this.props.dat.user_id,
 				 text: "Reciente",
 				 iPos: "left", iName: "send"}],
-			text:'',
-			aux:[]
+			text:''
 		};
 		if(this.props.dat.user_id!=""){
 			this.state.menu.push({
@@ -156,7 +153,7 @@ class Header extends React.Component{
 				<a href={this.props.dat.oj_home}>
 				  <img src="template/og/image/juez-patito2.svg" style={{height:100/this.props.dat.screenWidth}}/>
 				</a>
-				<Menu dat={this.props.dat} msg={this.props.msg} items={this.state.menu} itemsUser={this.state.menuUser} aux={this.state.aux}/>
+				<Menu dat={this.props.dat} msg={this.props.msg} items={this.state.menu} itemsUser={this.state.menuUser}/>
 			  </nav>
 			</div>
 		);
@@ -431,11 +428,17 @@ class Tabla extends React.Component{
 	}
 	render(){
 		return(				 
-				<table className={"striped "+this.props.dat.bg2[localStorage.getItem("skin")]}>
+				<table className={"responsive-table"+this.props.dat.bg2[localStorage.getItem("skin")]}
+			style={{width:this.state.table.props.width}}>
 				<thead className={this.props.dat.bg4[localStorage.getItem("skin")]}>
 				<tr>{this.state.table.head.row.map((item,index)=>{
+					var col=this.props.dat.tx1[localStorage.getItem("skin")];
+					if(item.ctext) col = item.ctext;
 					return(
-						<th key={item.text}>{item.text}<i className="material-icons left" onClick={(e)=>this.handleClick(e,index)}>{"swap_vert"}</i></th>
+						<th key={item.text} style={{textAlign:"center"}}>
+						  <i className="material-icons left"
+							 onClick={(e)=>this.handleClick(e,index)}>{"swap_vert"}</i>
+						  <a href={item.link} className={col}>{item.text}</a></th>
 					);
 				})}</tr>
 				</thead>
@@ -445,14 +448,23 @@ class Tabla extends React.Component{
 					if(index%2) bg="rgba(0,0,0,0.1)";
 					else bg="rgba(0,0,0,0.0)";
 					return(
-							<tr className={item.props.bgColor} key={"tr"+index}  style={{backgroundColor: bg}}>
+						<tr className={item.props.bgColor} key={"tr"+index}
+							style={{backgroundColor: bg}}>
 						  {item.row.map((iitem, iindex)=>{
 							  var col=this.props.dat.tx1[localStorage.getItem("skin")];
 							  if(iitem.ctext) col = iitem.ctext;
 							  return (
-								  <td className={iitem.ctext}
+								  <td className={(iitem.ctext?iitem.ctext:"")+" "+
+									  (iitem.bgcolor?iitem.bgcolor:"")}
 									  key={"tr"+index+"td"+iindex+iitem.link}
-									  style={{height: "10px", padding: "0 0 0 0",
+									  style={{height: "10px", padding: "0 0 0 0",width:"1%",
+											  borderBottomColor:iitem.borderBottomColor,
+											  borderBottomStyle:iitem.borderBottomStyle,
+											  borderBottomWidth:iitem.borderBottomWidth,
+											  borderRightColor:iitem.borderLeftColor,
+											  borderRightStyle:iitem.borderLeftStyle,
+											  borderRightWidth:iitem.borderLeftWidth,
+											  backgroundColor:iitem.bgColorHTML,
 									  textAlign:iitem.textAlign}}>
 									<a href={iitem.link} className={"validate "+col}><p dangerouslySetInnerHTML={{__html: iitem.text}}></p>
 									</a>
@@ -881,7 +893,6 @@ class Problem extends React.Component {
 		super(props);
 	}
 	copiarAlPortapapeles(e, text) {
-		//text=text.replace(/\r\n/g, "\n");
 		var aux = document.createElement("textarea");
 		aux.innerHTML=text;
 		document.body.appendChild(aux);
@@ -954,7 +965,8 @@ class Problem extends React.Component {
 		return (			
 				<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
 				<Header dat={dat} msg={msg}/>
-				<div className="container">
+				<div style={{align:'', width:'90%',
+				   marginLeft:'auto', marginRight:'auto', textAlign:''}}>
 				<div className={"card"+this.props.dat.st4[localStorage.getItem("skin")]}
 			align="center">
 				<div className="card-title">
@@ -1062,8 +1074,6 @@ class Contestproblemset extends React.Component{
 	}
 	render(){
 		var converter = new showdown.Converter();
-		//converter.tables(true);
-		console.log(converter);
 		var desHtml = converter.makeHtml(this.props.dat.getCDescription);
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
@@ -1306,3 +1316,54 @@ class Faqs extends React.Component{
 		);
 	}
 }
+
+class Contestrank extends React.Component{
+	render(){
+		var converter = new showdown.Converter();
+		var desHtml = converter.makeHtml(this.props.dat.getCDescription);
+		return (
+			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
+			  <Header dat={dat} msg={msg}/>
+			  <div style={{align:'center', width:'90%',
+				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
+				<Titulo tit={this.props.msg.contest+" - "+this.props.dat.getCTitle}
+						dat={this.props.dat}/>
+				<p dangerouslySetInnerHTML={{__html: desHtml}}></p>
+				<div className="fb-like"
+					 data-href={"contest.php?cid="+this.props.dat.getCid}
+					 data-layout="button_count"
+					 data-action="like" data-show-face="true" data-share="true" ></div>
+				<Labelcontesttime now={this.props.dat.getCNow}
+								  start={this.props.dat.getCStart}
+								  end={this.props.dat.getCEnd}
+								  tipo={this.props.dat.getCPrivate}/>
+				<div className="row">					
+					<a className={"btn waves-effect col s3"+
+					   this.props.dat.st4[localStorage.getItem("skin")]}
+					   href={"status.php?cid="+this.props.dat.getCid}>Estado
+					  <i className="material-icons right">clear_all</i>
+					</a>
+					<a className={"btn waves-effect col s3"+
+					   this.props.dat.st4[localStorage.getItem("skin")]}
+					   href={"contest.php?cid="+this.props.dat.getCid}>Problemas
+					  <i className="material-icons right">equalizer</i>
+					</a>
+					<a className={"btn waves-effect col s3"+
+					   this.props.dat.st4[localStorage.getItem("skin")]}
+					   href={"conteststatistics.php?cid="+this.props.dat.getCid}>Estadisticas
+					  <i className="material-icons right">trending_up</i>
+					</a>
+					<a className={"btn waves-effect col s3"+
+					   this.props.dat.st4[localStorage.getItem("skin")]}
+					   href={"contestrank.xls.php?cid="+this.props.dat.getCid}>Download
+					  <i className="material-icons right">file_download</i>
+					</a>
+				</div>
+				<Tabla dat={dat} tabla={this.props.tabla}/>
+			  </div>
+			  <Footer dat={dat} msg={msg}/>
+			</div>	
+		);
+	}
+}
+

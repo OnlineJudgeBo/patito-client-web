@@ -52,9 +52,7 @@ if(isset($sample_sql)){
 	$row=mysql_fetch_array($result);
 	$view_sample_input=$row[0];
 	$view_sample_output=$row[1];
-	mysql_free_result($result);
-	
-	
+	mysql_free_result($result);	
 }
 
 require("template/".$OJ_TEMPLATE."/submitpage.php");

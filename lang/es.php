@@ -129,6 +129,10 @@ $MSG_Start="Inicio";
 $MSG_TotalTime="Falta";
 $MSG_LeftTime="Termina en";
 $MSG_Ended="Termino";
+//other
+$MSG_RANK="#";
+$MSG_SOLVED="Resultos";
+$MSG_PENALTY="Penalidad";
 
 ?>
 

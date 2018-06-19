@@ -19,9 +19,7 @@
 		 <?php require_once("./init.php");
 		 crearTablaContestProblemSet();
 		 crearDatosContestProblemSet();
-		 ?>
-		 dat.getCid="<?php echo getCid();?>";
-		 dat.getCNow="<?php echo date("Y-m-d H:i:s")?>";
+		 ?>		 
 		 function loadPag(){
 			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
 			 ReactDOM.render(<Contestproblemset dat={dat} msg={msg} tabla={TablaCPS} />,

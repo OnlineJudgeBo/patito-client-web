@@ -378,13 +378,13 @@ function crearListStatusTabla(){
         $old = $sql;
         $sql = "select * from ($sql order by solution_id desc limit 1000) solution left join `sim` on solution.solution_id=sim.s_id WHERE 1 ";
         /*if (isset($_GET['showsim']) && intval($_GET['showsim']) > 0) {
-            $showsim = intval($_GET['showsim']);
-            $sql     = "select * from ($old ) solution
-                     left join `sim` on solution.solution_id=sim.s_id WHERE result=4 and sim>=$showsim limit 1000";
-            $sql = "SELECT * FROM ($sql) `solution`
-                        left join(select solution_id old_s_id,user_id old_user_id from solution limit 1000) old
-                        on old.old_s_id=sim_s_id WHERE  old_user_id!=user_id and sim_s_id!=solution_id ";
-                        }*/
+          $showsim = intval($_GET['showsim']);
+          $sql     = "select * from ($old ) solution
+          left join `sim` on solution.solution_id=sim.s_id WHERE result=4 and sim>=$showsim limit 1000";
+          $sql = "SELECT * FROM ($sql) `solution`
+          left join(select solution_id old_s_id,user_id old_user_id from solution limit 1000) old
+          on old.old_s_id=sim_s_id WHERE  old_user_id!=user_id and sim_s_id!=solution_id ";
+          }*/
         //$sql=$sql.$order_str." LIMIT 20";
     }
 
@@ -817,6 +817,8 @@ function crearDatosContestProblemSet(){
     echo "dat.getCTitle=\"$row->title\";";
     echo "dat.getCDescription=\"$des\";";
     echo "dat.getCPrivate=\"$row->private\";";
+    echo "dat.getCNow=\"".date("Y-m-d H:i:s")."\";";
+    echo "dat.getCid=\"".getCid()."\";";
 }
 function crearTablaUserlog(){
     echo "var TablaUL={props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}};";
@@ -842,7 +844,8 @@ function crearTablaUserlog(){
     }
 }
 function crearTablaRanklist(){
-    global $MSG_Number, $MSG_USER, $MSG_NICK, $MSG_AC, $MSG_SUBMIT, $MSG_RATIO, $MSG_RANKLIST, $OJ_MEMCACHE;
+    global $MSG_Number, $MSG_USER, $MSG_NICK, $MSG_AC, $MSG_SUBMIT, $MSG_RATIO, $MSG_RANKLIST, $OJ_MEMCACHE,
+        $view_total,$page_size, $view_title;
     echo "var TablaR={props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}};";
     echo "TablaR.head.row.push({text:\"$MSG_Number\"},{text:\"$MSG_USER\"},{text:\"$MSG_NICK\"},{text:\"$MSG_AC\"},{text:\"$MSG_SUBMIT\"},{text:\"$MSG_RATIO\"});";
     $view_title= $MSG_RANKLIST;
@@ -961,6 +964,268 @@ function crearTablaRanklist(){
 
 }
 /******************DISCUSSSSS PAGE ******************************/
-//echo "INININININ";
+
+function crearContestRank(){
+    global $MSG_CONTEST, $MSG_RANKLIST, $OJ_MEMCACHE, $cid, $title, $pid_cnt, $user_cnt, $U, $first_blood,$MSG_RANK, $MSG_USER, $MSG_NICK, $MSG_SOLVED, $MSG_PENALTY, $PID;
+    $view_title= $MSG_CONTEST.$MSG_RANKLIST;
+    $title="";
+    require_once("./include/const.inc.php");
+    require_once("initPHP.php");
+    //require_once("./include/my_func.inc.php");
+    class TM{
+        var $solved=0;
+        var $time=0;
+        var $p_wa_num;
+        var $p_ac_sec;
+        var $user_id;
+        var $nick;
+        function TM(){
+            $this->solved=0;
+            $this->time=0;
+            $this->p_wa_num=array(0);
+            $this->p_ac_sec=array(0);
+        }
+        function Add($pid,$sec,$res){
+            //              echo "Add $pid $sec $res<br>";
+            if (isset($this->p_ac_sec[$pid])&&$this->p_ac_sec[$pid]>0)
+                return;
+            if ($res!=4){
+                if(isset($this->p_wa_num[$pid])){
+                    $this->p_wa_num[$pid]++;
+                }else{
+                    $this->p_wa_num[$pid]=1;
+                }
+            }else{
+                $this->p_ac_sec[$pid]=$sec;
+                $this->solved++;
+                if(!isset($this->p_wa_num[$pid])) $this->p_wa_num[$pid]=0;
+                $this->time+=$sec+$this->p_wa_num[$pid]*1200;
+                //                      echo "Time:".$this->time."<br>";
+                //                      echo "Solved:".$this->solved."<br>";
+            }
+        }
+    }
+
+    function s_cmp($A,$B){
+        //      echo "Cmp....<br>";
+        if ($A->solved!=$B->solved) return $A->solved<$B->solved;
+        else return $A->time>$B->time;
+    }
+
+        // contest start time
+        if (!isset($_GET['cid'])) die("No Such Contest!");
+    $cid=intval($_GET['cid']);
+
+    $sql="SELECT `start_time`,`title`,`end_time` FROM `contest` WHERE `contest_id`='$cid'";
+    //$result=mysql_query($sql) or die(mysql_error());
+    //$rows_cnt=mysql_num_rows($result);
+    if($OJ_MEMCACHE){
+        require("./include/memcache.php");
+        $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+        if($result) $rows_cnt=count($result);
+        else $rows_cnt=0;
+    }else{
+
+        $result = mysql_query($sql);// or die("Error! ".mysql_error());
+        if($result) $rows_cnt=mysql_num_rows($result);
+        else $rows_cnt=0;
+    }
+
+
+    $start_time=0;
+    $end_time=0;
+    if ($rows_cnt>0){
+        //      $row=mysql_fetch_array($result);
+
+        if($OJ_MEMCACHE)
+            $row=$result[0];
+        else
+            $row=mysql_fetch_array($result);
+        $start_time=strtotime($row['start_time']);
+        $end_time=strtotime($row['end_time']);
+        $title=$row['title'];
+        
+    }
+    if(!$OJ_MEMCACHE)mysql_free_result($result);
+    if ($start_time==0){
+        $view_errors= "No Such Contest";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+
+    if ($start_time>time()){
+        $view_errors= "Contest Not Started!";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+    if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
+    $lock=$end_time-($end_time-$start_time)*$OJ_RANK_LOCK_PERCENT;
+
+    //echo $lock.'-'.date("Y-m-d H:i:s",$lock);
+
+
+    $sql="SELECT count(1) as pbc FROM `contest_problem` WHERE `contest_id`='$cid'";
+    //$result=mysql_query($sql);
+    if($OJ_MEMCACHE){
+        //        require("./include/memcache.php");
+        $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+        if($result) $rows_cnt=count($result);
+        else $rows_cnt=0;
+    }else{
+
+        $result = mysql_query($sql);// or die("Error! ".mysql_error());
+        if($result) $rows_cnt=mysql_num_rows($result);
+        else $rows_cnt=0;
+    }
+
+    if($OJ_MEMCACHE)
+        $row=$result[0];
+    else
+        $row=mysql_fetch_array($result);
+
+    //$row=mysql_fetch_array($result);
+    $pid_cnt=intval($row['pbc']);
+    if(!$OJ_MEMCACHE)mysql_free_result($result);
+
+    $sql="SELECT
+        users.user_id,users.nick,solution.result,solution.num,solution.in_date
+                FROM
+                        (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
+                left join users
+                on users.user_id=solution.user_id
+        ORDER BY users.user_id,in_date";
+    //echo $sql;
+    //$result=mysql_query($sql);
+    if($OJ_MEMCACHE){
+        //     require("./include/memcache.php");
+        $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+        if($result) $rows_cnt=count($result);
+        else $rows_cnt=0;
+    }else{
+
+        $result = mysql_query($sql);// or die("Error! ".mysql_error());
+        if($result) $rows_cnt=mysql_num_rows($result);
+        else $rows_cnt=0;
+    }
+    echo "var TablaCR={props:{width:\"".(($pid_cnt*125)+480)."px\"}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}};";
+    echo "TablaCR.head.row.push({text:\"$MSG_RANK\"},{text:\"$MSG_USER\"},{text:\"$MSG_NICK\"},{text:\"$MSG_SOLVED\"},{text:\"$MSG_PENALTY\"});";
+    echo "var aux=[{},{},{},{},{},{}];";
+    for ($i=0;$i<$pid_cnt;$i++){
+        echo "TablaCR.head.row.push({text:\"$PID[$i]\","
+            ."link:\"problem.php?cid=$cid&pid=$i\"});";
+        echo "aux.push({});";
+    }//echo "<td><a href=problem.php?cid=$cid&pid=$i>$PID[$i]</a></td>";
+    $user_cnt=0;
+    $user_name='';
+    $U=array();
+    for ($i=0;$i<$rows_cnt;$i++){       
+        if($OJ_MEMCACHE) $row=$result[$i];
+        else $row=mysql_fetch_array($result);        
+        $n_user=$row['user_id'];        
+        if (strcmp($user_name,$n_user)){
+            $user_cnt++;
+            $U[$user_cnt]=new TM();
+            $U[$user_cnt]->user_id=$row['user_id'];
+            $U[$user_cnt]->nick=$row['nick'];
+            $user_name=$n_user;
+        }        
+        if(time()<$end_time&&$lock<strtotime($row['in_date']))
+            $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0);
+        else
+            $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));       
+    }
+    if(!$OJ_MEMCACHE) mysql_free_result($result);
+    usort($U,"s_cmp");
+
+    ////firstblood
+    $first_blood=array();
+    for($i=0;$i<$pid_cnt;$i++){
+        $sql="select user_id from solution where contest_id=$cid and result=4 and num=$i order by in_date limit 1";
+        $result=mysql_query($sql);
+        $row_cnt=mysql_num_rows($result);
+        $row=mysql_fetch_array($result);
+        if($row_cnt==1){
+            $first_blood[$i]=$row['user_id'];
+        }else{
+            $first_blood[$i]="";
+        }
+
+    }
+    $rank=1;
+    for ($i=0;$i<$user_cnt;$i++){        
+        echo "TablaCR.body.rows.push({props:{},row:[{},{},{},{},{},{}]});\n";
+        for ($j=0;$j<$pid_cnt;$j++) echo "TablaCR.body.rows[$i].row.push({});";
+        $uuid=$U[$i]->user_id;
+        $nick=$U[$i]->nick;
+        if($rank<=6){
+            //echo "TablaCR.body.rows[$i].row[0].borderLeftStyle=\"solid\";";
+            //echo "TablaCR.body.rows[$i].row[0].borderLeftWidth=\"25px\";";
+        }
+        if($rank==1){
+            //echo "TablaCR.body.rows[$i].row[0].borderLeftColor=\"#FFD700\";";
+            echo "TablaCR.body.rows[$i].row[0].bgColorHTML=\"#FFD700\";";     
+        }
+        if($rank==2 || $rank==3){
+            //echo "TablaCR.body.rows[$i].row[0].borderLeftColor=\"#C0C0C0\";";
+            echo "TablaCR.body.rows[$i].row[0].bgColorHTML=\"#C0C0C0\";";
+        }
+        if($rank>=4 && $rank<=6){
+            //echo "TablaCR.body.rows[$i].row[0].borderLeftColor=\"#8C7853\";";
+            echo "TablaCR.body.rows[$i].row[0].bgColorHTML=\"#8C7853\";";
+        }
+        if($nick[0]!="*"){
+            echo "TablaCR.body.rows[$i].row[0].text=$rank;"; $rank++;
+        }else echo "TablaCR.body.rows[$i].row[0].text=*;";
+        
+        echo "TablaCR.body.rows[$i].row[0].textAlign=\"center\";";
+        $usolved=$U[$i]->solved;
+        if(isset($_GET['user_id']))
+            if($uuid==$_GET['user_id'])
+                echo "TablaCR.body.rows[$i].row[1].bgcolor=\"red\";";
+        echo "TablaCR.body.rows[$i].row[1].text=\"$uuid\";";
+        echo "TablaCR.body.rows[$i].row[1].link=\"userinfo.php?user=$uuid\";";
+        echo "TablaCR.body.rows[$i].row[2].text=\"".$U[$i]->nick."\";";
+        echo "TablaCR.body.rows[$i].row[2].link=\"userinfo.php?user=$uuid\";";
+        echo "TablaCR.body.rows[$i].row[3].text=$usolved;";
+        echo "TablaCR.body.rows[$i].row[3].textAlign=\"center\";";
+        echo "TablaCR.body.rows[$i].row[3].link=\"status.php?user_id=$uuid&cid=$cid\";";
+        echo "TablaCR.body.rows[$i].row[4].text=\"".sec2str($U[$i]->time)."\";";
+        echo "TablaCR.body.rows[$i].row[4].textAlign=\"center\";";
+        for ($j=0;$j<$pid_cnt;$j++){
+            $bg_color="eeeeee";
+            if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0){
+                if($U[$i]->p_wa_num[$j]==0) $bg_color="green lighten-1";
+                if($U[$i]->p_wa_num[$j]>0) $bg_color="green lighten-2";
+                if($U[$i]->p_wa_num[$j]>3) $bg_color="green lighten-3";
+                if($U[$i]->p_wa_num[$j]>7) $bg_color="green lighten-4";
+                if($uuid==$first_blood[$j]){
+                    echo "TablaCR.body.rows[$i].row[".($j+5)."].ctext=\"white-text\";";
+                    echo "TablaCR.body.rows[$i].row[".($j+5)."].borderBottomColor=\"#ffeb3b\";";
+                    echo "TablaCR.body.rows[$i].row[".($j+5)."].borderBottomStyle=\"solid\";";
+                    echo "TablaCR.body.rows[$i].row[".($j+5)."].borderBottomWidth=\"3px\";";
+                    $bg_color="green accent-4";
+                }
+            }else if(isset($U[$i]->p_wa_num[$j])) {
+                if($U[$i]->p_wa_num[$j]==1) $bg_color="red lighten-5";
+                if($U[$i]->p_wa_num[$j]==2) $bg_color="red lighten-4";
+                if($U[$i]->p_wa_num[$j]==3) $bg_color="red lighten-3";
+                if($U[$i]->p_wa_num[$j]>3) $bg_color="red lighten-2";
+                if($U[$i]->p_wa_num[$j]>5) $bg_color="red lighten-1";
+            }
+            echo "TablaCR.body.rows[$i].row[".($j+5)."].bgcolor=\"$bg_color\";";
+            echo "TablaCR.body.rows[$i].row[".($j+5)."].textAlign=\"center\";";
+            if(isset($U[$i])){
+                echo "TablaCR.body.rows[$i].row[".($j+5)."].text=\"\";";
+                if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
+                    echo "TablaCR.body.rows[$i].row[".($j+5)."].text+=\""
+                                                 .sec2str($U[$i]->p_ac_sec[$j])."\";";
+                if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0)
+                    echo "TablaCR.body.rows[$i].row[".($j+5)."].text+=\"(-".
+                                                     $U[$i]->p_wa_num[$j].")\";";
+            }
+        }
+    }
+									
+}
 
 ?>
