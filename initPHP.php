@@ -203,7 +203,7 @@ function crearlistContest(){
     $view_contest=Array();
     while ($row=mysql_fetch_object($result)){
         $fecha=date("Y-m-d H:i:s");
-        if (!isset($_SESSION['administrator']) && intval($row->private)!=0) continue;
+        //if (!isset($_SESSION['administrator']) && intval($row->private)!=0) continue;
         if (time()>strtotime($row->end_time)) continue;
         $order=array("\r\n", "\n", "\r");
         $titulo=str_replace($order, "\\n", $row->title);
