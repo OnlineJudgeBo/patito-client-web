@@ -9,7 +9,7 @@ if($OJ_ONLINE){
 	$on = new online();
 }
 ////
-$view_title= "Bienvenido al Juez de la Carrera de Informatica - UMSA BETA";
+$view_title= "Bienvenido al Juez de la Carrera de Informatica - UMSA";
 ?>
 <html>
 	<head>
