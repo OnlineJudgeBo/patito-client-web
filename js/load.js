@@ -43,10 +43,10 @@ function load(){
 						   "<style type='text/css'>strong,em{ font-weight: bold;}</style>");			
 			break;
 		case "mathjax":
-			document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML&delayStartupUntil=configured' async></script>"+
+			document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>"+
 						   "<script type='text/x-mathjax-config'>"+
 						   "MathJax.Hub.Config({"+
-						   "tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}"+
+						   "tex2jax: {inlineMath: [['$','$']]}"+
 						   "});</script>");
 			break;
 		case "mathjs":
@@ -71,6 +71,10 @@ function load(){
 						   ".scrollmargin { height: 8px; text-align: center; }"+
 						   "</style><script src='./util/ace/src-noconflict/ace.js'"+
 						   "type='text/javascript' charset='utf-8'></script>");
+			break;
+		case "chartjs":
+			document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>");
+			document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js'></script>");
 			break;
 		}
 	}

@@ -437,8 +437,8 @@ function problem(){
                 echo "dat.error+=\"<h3>Este problema esta siendo usado en los siguientes concursos privados</h3>\";";
             }
             while($row=mysql_fetch_object($result)){
-                echo "dat.error+=\"<h5><a href=problem.php?cid=$row->contest_id&pid=$row->num>\";";
-                echo "dat.error+=\"Concurso #$row->contest_id:$row->title</a></h5>\";";
+                echo "dat.error+=\"<h5><a href=contest.php?cid=$row->contest_id>\";";
+                echo "dat.error+=\"Concurso #$row->contest_id:$row->title problema ".$PID[$row->num]."</a></h5>\";";
             }
             return ;
         }
@@ -446,45 +446,6 @@ function problem(){
         $view_title= $row->title;
         mysql_free_result($result);
         imprimirProb($row, -1, -1, "dat.problem");
-    }else if (isset($_GET['cid']) && isset($_GET['pid'])){//contest
-        $cid=intval($_GET['cid']);
-        $pid=intval($_GET['pid']);
-        $result=mysql_query("SELECT * FROM contest WHERE defunct='N' AND contest_id=$cid");
-        if (mysql_num_rows($result)==0){ // NO EXISTE TAL CONCURSO
-            echo "dat.error=\"<h3>No existe tal concurso!...</h3>\";";
-            return ;
-        }
-        mysql_free_result($result);
-        $ok = (isset($_SESSION['administrator'])||isset($_SESSION['problem_master_editor']));
-        $sql="SELECT langmask,private FROM contest WHERE ".
-            "defunct='N' AND contest_id=$cid AND start_time<'$now'";
-        $result=mysql_query($sql);
-        if (mysql_num_rows($result)==0 && !$ok){// EL CONTEST NO EMPEZO
-            echo "dat.error=\"<h3>El concurso aún no empezo!...</h3>\";";
-            return ;
-        }
-        $row=mysql_fetch_row($result);
-        if ( ($row[1] && !isset($_SESSION['c'.$cid]) ) && !($ok)  ){// NO ESTAS INVITADO
-            echo "dat.errr=\"<h3>No estas invitado al concurso!...</h3>\";";
-            return ;
-        }
-        $langmask=$row[0];
-        mysql_free_result($result);    
-        $sql="SELECT * FROM problem WHERE defunct='N' AND problem_id=(
-            SELECT problem_id FROM contest_problem WHERE contest_id=$cid AND num=$pid)";
-        $result=mysql_query($sql) or die(mysql_error());
-        if (mysql_num_rows($result)==0){
-            echo "dat.error=\"<h3>No hay tal problema de tal concurso!...</h3>\";";
-            return ;
-        }
-        $row=mysql_fetch_object($result);
-        $view_title=$row->title;
-        mysql_free_result($result);
-        imprimirProb($row, $pid, $cid, "dat.problemContest");
-        echo "dat.PID=[\"".implode("\",\"", $PID)."\"];";
-        echo "dat.title=\"$MSG_PROBLEM $PID[$pid]: $row->title\";";
-        echo "dat.contest={langmask:\"$langmask\"};";
-    }else if(isset($_GET['cid'])){// OJO XD LOL no deberia entrar aca
     }else{
         $view_title=$MSG_PROBLEMS;
         crearTablaProblemSet();
@@ -759,7 +720,7 @@ function crearTablaStatus(){
         if (isset($_SESSION['http_judge'])) {
             echo "TablaS.body.rows[$i].row.push({});";
             echo "TablaS.body.rows[$i].row[9].textAlign=\"center\";";
-            echo "TablaS.body.rows[$i].row[9].text=\"<div style='width:270px; align:center;'>"
+            echo "TablaS.body.rows[$i].row[9].text=\"<div style='width:370px; align:center;' class='input-field'>"
                 ."<div class='row'><form method=post action='admin/problem_judge.php'>"
                 ."<input type='hidden' name='sid' value='".$row['solution_id']."'>\";";            
             echo "TablaS.body.rows[$i].row[9].text+=\"<select class='btn input-small' "
@@ -770,9 +731,9 @@ function crearTablaStatus(){
             echo "TablaS.body.rows[$i].row[9].text+=\"</select>\";";
             echo "TablaS.body.rows[$i].row[9].text+=\"<button class=' waves-effect' "
                 ."style='width:50px;' type='submit' name='manual'>OK</button>\";";
-            echo "TablaS.body.rows[$i].row[9].text+=\"<input class=' input-small' "
-                ."title='$MSG_Explain' type='text' name='explain'"
-                ."style='width:150px; color:black' value='Explicacion...'>\";";            
+            echo "TablaS.body.rows[$i].row[9].text+=\"<span class='input-field'><input class='input-small' style='width:150px;' "
+                ."title='$MSG_Explain' type='text' id='explainID' name='explain'>"
+                ."<label for='explainID'>Explicacion....</label><span>\";";
             echo "TablaS.body.rows[$i].row[9].text+=\"</form></div></div>\";";
         }
         echo "TablaS.body.rows[$i].row[4].textAlign=\"center\";";
@@ -886,8 +847,32 @@ function crearTablaContestSet(){
 	}
 	mysql_free_result($result);
 }
+
+function crearDatosContest($cid){
+    global $PID;
+    $view_cid=$cid;
+    $sql="SELECT * FROM `contest` WHERE `contest_id`='$cid' ";
+    $result=mysql_query($sql);
+    $rows_cnt=mysql_num_rows($result);
+    $row=mysql_fetch_object($result);       
+    $view_title=$row->title;
+    $now=time();
+    $start_time=strtotime($row->start_time);
+    $end_time=strtotime($row->end_time);
+    echo "dat.title=".json_encode($row->title).";";
+    echo "dat.contest.start=\"$row->start_time\";";
+    echo "dat.contest.end=\"$row->end_time\";";
+    echo "dat.contest.title=".json_encode($row->title).";";
+    echo "dat.contest.description=".json_encode($row->description).";";
+    echo "dat.contest.private=\"$row->private\";";
+    echo "dat.contest.now=\"".date("Y-m-d H:i:s")."\";";
+    echo "dat.contest.id=\"".$cid."\";";
+    //echo "holaaaa:::$row->langmask|||||||||||asfa";
+    echo "dat.contest.langmask=\"$row->langmask\";";
+    echo "dat.PID=[\"".implode("\",\"", $PID)."\"];";
+}
 function contest(){
-    global $PID, $MSG_PROBLEM_ID, $MSG_TITLE, $MSG_SOURCE, $MSG_AC, $MSG_SUBMIT, $view_title, $MSG_CONTESTS;
+    global $PID, $MSG_PROBLEM_ID, $MSG_TITLE, $MSG_SOURCE, $MSG_AC, $MSG_SUBMIT, $view_title, $MSG_CONTESTS, $MSG_PRIVATE_WARNING, $MSG_WATCH_RANK, $MSG_AC, $MSG_PE, $MSG_WA, $MSG_TLE, $MSG_MLE, $MSG_OLE, $MSG_RE, $MSG_CE;
     if (isset($_GET['cid'])){
         $cid=intval($_GET['cid']);
         $sql="SELECT * FROM `contest` WHERE `contest_id`='$cid' ";
@@ -906,9 +891,12 @@ function contest(){
                 echo "dat.error=\"<h3>Recien iniciara el concurso!...</h3>".$row->start_time."\";";
                 return ;
             }
-            if (!$contest_ok){
-                echo "dat.Error=\"<h3>$MSG_PRIVATE_WARNING <a href=contestrank.php?cid=$cid>".
-                            $MSG_WATCH_RANK."</a></h3>\";";
+            if (!$contest_ok){                
+                echo "dat.contest={onlyContest:1};";
+                crearDatosContest($cid);
+                crearContestRank();
+                //echo "dat.error=\"<h3>$MSG_PRIVATE_WARNING <a href=contestrank.php?cid=$cid>".
+                //$MSG_WATCH_RANK."</a></h3>\";";
                 return ;
             }
         }
@@ -925,7 +913,7 @@ function contest(){
  left join (select problem_id pid2,count(1) submit from solution where contest_id=$cid  group by pid2) p2 on problem.problem_id=p2.pid2
  order by pnum
 	";
-        echo "dat.contest={tabla:{props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}}, problem:[]};\n";
+        echo "dat.contest={tabla:{props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}}, problem:[], statistics:{tabla:{props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}}}};\n";
         echo "dat.contest.tabla.head.row.push({text:\"$MSG_PROBLEM_ID\"},{text:\"$MSG_TITLE\"},{text:\"$MSG_SOURCE\"},{text:\"$MSG_AC\"},{text:\"$MSG_SUBMIT\"});";
         $result=mysql_query($sql);// or die(mysql_error());
         //echo $result;
@@ -958,31 +946,110 @@ function contest(){
             echo "dat.contest.tabla.body.rows[$i].row[4].textAlign=\"center\";\n";
             imprimirProb($row, $i, $cid, "dat.contest.problem[$i]");
             $i++;
-        }
+        }        
         mysql_free_result($result);
         // DATOS
-        $cid=intval($_GET['cid']);
-        $view_cid=$cid;
-        $sql="SELECT * FROM `contest` WHERE `contest_id`='$cid' ";
+        crearDatosContest($cid);
+        crearContestRank();
+        //////////////////.************************STATISTICS******************
+
+        $sql="SELECT count(`num`) FROM `contest_problem` WHERE `contest_id`='$cid'";
         $result=mysql_query($sql);
-        $rows_cnt=mysql_num_rows($result);
-        $row=mysql_fetch_object($result);       
-        $view_title=$row->title;
-        $now=time();
-        $start_time=strtotime($row->start_time);
-        $end_time=strtotime($row->end_time);
-        echo "dat.contest.start=\"$row->start_time\";";
-        echo "dat.contest.end=\"$row->end_time\";";
-        echo "dat.contest.title=".json_encode($row->title).";";
-        echo "dat.contest.description=".json_encode($row->description).";";
-        echo "dat.contest.private=\"$row->private\";";
-        echo "dat.contest.now=\"".date("Y-m-d H:i:s")."\";";
-        echo "dat.contest.id=\"".$cid."\";";
-        //echo "holaaaa:::$row->langmask|||||||||||asfa";
-        echo "dat.contest.langmask=\"$row->langmask\";";
-        echo "dat.PID=[\"".implode("\",\"", $PID)."\"];";
+        $row=mysql_fetch_array($result);
+        $pid_cnt=intval($row[0]);
+        mysql_free_result($result);
+
+        $sql="SELECT `result`,`num`,`language` FROM `solution` WHERE `contest_id`='$cid' and num>=0"; 
+        $result=mysql_query($sql);
+        $R=array();
+        while ($row=mysql_fetch_object($result)){
+            $res=intval($row->result)-4;
+            if ($res<0) $res=8;
+            $num=intval($row->num);
+            $lag=intval($row->language);
+            if(!isset($R[$num][$res]))
+                $R[$num][$res]=1;
+            else
+                $R[$num][$res]++;
+            if(!isset($R[$num][$lag+10]))
+                $R[$num][$lag+10]=1;
+            else
+                $R[$num][$lag+10]++;
+            if(!isset($R[$pid_cnt][$res]))
+                $R[$pid_cnt][$res]=1;
+            else
+                $R[$pid_cnt][$res]++;
+            if(!isset($R[$pid_cnt][$lag+10]))
+                $R[$pid_cnt][$lag+10]=1;
+            else
+                $R[$pid_cnt][$lag+10]++;
+            if(!isset($R[$num][8]))
+                $R[$num][8]=1;
+            else
+                $R[$num][8]++;
+            if(!isset($R[$pid_cnt][8]))
+                $R[$pid_cnt][8]=1;
+            else
+                $R[$pid_cnt][8]++;
+        }
+        mysql_free_result($result);
+
+        $res=3600;
+
+        $sql="SELECT (UNIX_TIMESTAMP(end_time)-UNIX_TIMESTAMP(start_time))/100 FROM contest WHERE contest_id=$cid ";
+        $result=mysql_query($sql);
+        $view_userstat=array();
+        if($row=mysql_fetch_array($result)){
+            $res=$row[0];
+        }
+        mysql_free_result($result);
+
+        $sql=   "SELECT floor(UNIX_TIMESTAMP((in_date))/$res)*$res*1000 md,count(1) c FROM `solution` where  `contest_id`='$cid'   group by md order by md desc ";
+        $result=mysql_query($sql);//mysql_escape_string($sql));
+        $chart_data_all= array();
+        //echo $sql;
+   
+        while ($row=mysql_fetch_array($result)){
+            $chart_data_all[$row['md']]=$row['c'];
+        }
+   
+        $sql=   "SELECT floor(UNIX_TIMESTAMP((in_date))/$res)*$res*1000 md,count(1) c FROM `solution` where  `contest_id`='$cid' and result=4 group by md order by md desc ";
+        $result=mysql_query($sql);//mysql_escape_string($sql));
+        $chart_data_ac= array();
+        //echo $sql;
+   
+        while ($row=mysql_fetch_array($result)){
+            $chart_data_ac[$row['md']]=$row['c'];
+        }
+        echo "dat.contest.statistics.tabla.head.row.push({text:\"#\"},{text:\"$MSG_AC\"},{text:\"$MSG_PE\"},{text:\"$MSG_WA\"},{text:\"$MSG_TLE\"},{text:\"$MSG_MLE\"},{text:\"$MSG_OLE\"},{text:\"$MSG_RE\"},{text:\"$MSG_CE\"},{text:\"Total\"},{text:\"C\"},{text:\"C++\"},{text:\"Pascal\"},{text:\"Java\"},{text:\"Ruby\"},{text:\"Bash\"},{text:\"Python\"},{text:\"PHP\"},{text:\"Perl\"},{text:\"C#\"},{text:\"Obj-c\"},{text:\"FreeBasic\"},{});";
+
+        for ($i=0;$i<$pid_cnt;$i++){
+            echo "dat.contest.statistics.tabla.body.rows.push({props:{},row:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]});\n";
+            echo "dat.contest.statistics.tabla.body.rows[$i].row[0]={text:\"$PID[$i]\", click:$i, textAlign:\"center\"};";
+            //echo "<a href='problem.php?cid=$cid&pid=$i'>$PID[$i]</a>";
+            for ($j=0;$j<22;$j++) {
+                if(isset($R[$i][$j]))
+                    echo "dat.contest.statistics.tabla.body.rows[$i].row[".($j+1)."]={text:".$R[$i][$j].", textAlign:\"center\"};";
+                else
+                    echo "dat.contest.statistics.tabla.body.rows[$i].row[".($j+1)."]={text:0, textAlign:\"center\"};";
+                //  echo "<td>".$R[$i][$j];
+            }
+            //echo "</tr>";
+        }
+        echo "dat.contest.statistics.graphics={d1:[], d2:[], labels:[]};\n";
+        foreach($chart_data_all as $k=>$d){
+            echo "dat.contest.statistics.graphics.labels.push(new Date($k).toLocaleString());";
+            echo "dat.contest.statistics.graphics.d1.push({x:new Date($k).toLocaleString(), y:$d});";
+        }
+        foreach($chart_data_ac as $k=>$d){		
+            echo "dat.contest.statistics.graphics.d2.push({x:new Date($k).toLocaleString(), y:$d});";
+        }
+        //////////////////.************************STATISTICS******************
+        mysql_free_result($result);
+
     }else{
         $view_title=$MSG_CONTESTS;
+        echo "dat.title=\"$view_title\";";
         crearTablaContestSet();
     }
     
@@ -1138,7 +1205,6 @@ function crearContestRank(){
     $view_title= $MSG_CONTEST.$MSG_RANKLIST;
     $title="";
     require_once("./include/const.inc.php");
-    require_once("initPHP.php");
     //require_once("./include/my_func.inc.php");
     class TM{
         var $solved=0;
@@ -1199,7 +1265,6 @@ function crearContestRank(){
         else $rows_cnt=0;
     }
 
-
     $start_time=0;
     $end_time=0;
     if ($rows_cnt>0){
@@ -1231,7 +1296,6 @@ function crearContestRank(){
 
     //echo $lock.'-'.date("Y-m-d H:i:s",$lock);
 
-
     $sql="SELECT count(1) as pbc FROM `contest_problem` WHERE `contest_id`='$cid'";
     //$result=mysql_query($sql);
     if($OJ_MEMCACHE){
@@ -1246,10 +1310,8 @@ function crearContestRank(){
         else $rows_cnt=0;
     }
 
-    if($OJ_MEMCACHE)
-        $row=$result[0];
-    else
-        $row=mysql_fetch_array($result);
+    if($OJ_MEMCACHE) $row=$result[0];
+    else $row=mysql_fetch_array($result);
 
     //$row=mysql_fetch_array($result);
     $pid_cnt=intval($row['pbc']);
@@ -1275,12 +1337,14 @@ function crearContestRank(){
         if($result) $rows_cnt=mysql_num_rows($result);
         else $rows_cnt=0;
     }
-    echo "var TablaCR={props:{width:\"".(($pid_cnt*125)+480)."px\"}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}};";
-    echo "TablaCR.head.row.push({text:\"$MSG_RANK\"},{text:\"$MSG_USER\"},{text:\"$MSG_NICK\"},{text:\"$MSG_SOLVED\"},{text:\"$MSG_PENALTY\"});";
+    echo "if(!(dat.contest)) dat.contest={};";
+    echo "dat.contest.ranking={tabla:{props:{width:\"".(($pid_cnt*125)+500)."px\"}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}}};";
+    //echo "dat.contest.ranking={tabla:{props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}}};";
+    echo "dat.contest.ranking.tabla.head.row.push({text:\"$MSG_RANK\"},{text:\"$MSG_USER\"},{text:\"$MSG_NICK\"},{text:\"$MSG_SOLVED\"},{text:\"$MSG_PENALTY\"});";
     echo "var aux=[{},{},{},{},{},{}];";
     for ($i=0;$i<$pid_cnt;$i++){
-        echo "TablaCR.head.row.push({text:\"$PID[$i]\","
-            ."link:\"problem.php?cid=$cid&pid=$i\"});";
+        echo "dat.contest.ranking.tabla.head.row.push({text:\"$PID[$i]\",click:$i});";
+            //."link:\"problem.php?cid=$cid&pid=$i\"});";
         echo "aux.push({});";
     }//echo "<td><a href=problem.php?cid=$cid&pid=$i>$PID[$i]</a></td>";
     $user_cnt=0;
@@ -1321,44 +1385,44 @@ function crearContestRank(){
     }
     $rank=1;
     for ($i=0;$i<$user_cnt;$i++){        
-        echo "TablaCR.body.rows.push({props:{},row:[{},{},{},{},{},{}]});\n";
-        for ($j=0;$j<$pid_cnt;$j++) echo "TablaCR.body.rows[$i].row.push({});";
+        echo "dat.contest.ranking.tabla.body.rows.push({props:{},row:[{},{},{},{},{},{}]});\n";
+        for ($j=0;$j<$pid_cnt;$j++) echo "dat.contest.ranking.tabla.body.rows[$i].row.push({});";
         $uuid=$U[$i]->user_id;
         $nick=$U[$i]->nick;
         if($rank<=6){
-            //echo "TablaCR.body.rows[$i].row[0].borderLeftStyle=\"solid\";";
-            //echo "TablaCR.body.rows[$i].row[0].borderLeftWidth=\"25px\";";
+            //echo "dat.contest.ranking.tabla.body.rows[$i].row[0].borderLeftStyle=\"solid\";";
+            //echo "dat.contest.ranking.tabla.body.rows[$i].row[0].borderLeftWidth=\"25px\";";
         }
         if($rank==1){
-            //echo "TablaCR.body.rows[$i].row[0].borderLeftColor=\"#FFD700\";";
-            echo "TablaCR.body.rows[$i].row[0].bgColorHTML=\"#FFD700\";";     
+            //echo "dat.contest.ranking.tabla.body.rows[$i].row[0].borderLeftColor=\"#FFD700\";";
+            echo "dat.contest.ranking.tabla.body.rows[$i].row[0].bgColorHTML=\"#FFD700\";";     
         }
         if($rank==2 || $rank==3){
-            //echo "TablaCR.body.rows[$i].row[0].borderLeftColor=\"#C0C0C0\";";
-            echo "TablaCR.body.rows[$i].row[0].bgColorHTML=\"#C0C0C0\";";
+            //echo "dat.contest.ranking.tabla.body.rows[$i].row[0].borderLeftColor=\"#C0C0C0\";";
+            echo "dat.contest.ranking.tabla.body.rows[$i].row[0].bgColorHTML=\"#C0C0C0\";";
         }
         if($rank>=4 && $rank<=6){
-            //echo "TablaCR.body.rows[$i].row[0].borderLeftColor=\"#8C7853\";";
-            echo "TablaCR.body.rows[$i].row[0].bgColorHTML=\"#8C7853\";";
+            //echo "dat.contest.ranking.tabla.body.rows[$i].row[0].borderLeftColor=\"#8C7853\";";
+            echo "dat.contest.ranking.tabla.body.rows[$i].row[0].bgColorHTML=\"#8C7853\";";
         }
         if($nick[0]!="*"){
-            echo "TablaCR.body.rows[$i].row[0].text=$rank;"; $rank++;
-        }else echo "TablaCR.body.rows[$i].row[0].text=*;";
+            echo "dat.contest.ranking.tabla.body.rows[$i].row[0].text=$rank;"; $rank++;
+        }else echo "dat.contest.ranking.tabla.body.rows[$i].row[0].text=*;";
         
-        echo "TablaCR.body.rows[$i].row[0].textAlign=\"center\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[0].textAlign=\"center\";";
         $usolved=$U[$i]->solved;
         if(isset($_GET['user_id']))
             if($uuid==$_GET['user_id'])
-                echo "TablaCR.body.rows[$i].row[1].bgcolor=\"red\";";
-        echo "TablaCR.body.rows[$i].row[1].text=\"$uuid\";";
-        echo "TablaCR.body.rows[$i].row[1].link=\"userinfo.php?user=$uuid\";";
-        echo "TablaCR.body.rows[$i].row[2].text=\"".$U[$i]->nick."\";";
-        echo "TablaCR.body.rows[$i].row[2].link=\"userinfo.php?user=$uuid\";";
-        echo "TablaCR.body.rows[$i].row[3].text=$usolved;";
-        echo "TablaCR.body.rows[$i].row[3].textAlign=\"center\";";
-        echo "TablaCR.body.rows[$i].row[3].link=\"status.php?user_id=$uuid&cid=$cid\";";
-        echo "TablaCR.body.rows[$i].row[4].text=\"".sec2str($U[$i]->time)."\";";
-        echo "TablaCR.body.rows[$i].row[4].textAlign=\"center\";\n";
+                echo "dat.contest.ranking.tabla.body.rows[$i].row[1].bgcolor=\"red\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[1].text=\"$uuid\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[1].link=\"userinfo.php?user=$uuid\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[2].text=\"".$U[$i]->nick."\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[2].link=\"userinfo.php?user=$uuid\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[3].text=$usolved;";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[3].textAlign=\"center\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[3].link=\"status.php?user_id=$uuid&cid=$cid&jresult=4\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[4].text=\"".sec2str($U[$i]->time)."\";";
+        echo "dat.contest.ranking.tabla.body.rows[$i].row[4].textAlign=\"center\";\n";
         for ($j=0;$j<$pid_cnt;$j++){
             $bg_color="eeeeee";
             if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0){
@@ -1367,10 +1431,10 @@ function crearContestRank(){
                 if($U[$i]->p_wa_num[$j]>3) $bg_color="green lighten-3";
                 if($U[$i]->p_wa_num[$j]>7) $bg_color="green lighten-4";
                 if($uuid==$first_blood[$j]){
-                    echo "TablaCR.body.rows[$i].row[".($j+5)."].ctext=\"white-text\";";
-                    echo "TablaCR.body.rows[$i].row[".($j+5)."].borderBottomColor=\"#ffeb3b\";";
-                    echo "TablaCR.body.rows[$i].row[".($j+5)."].borderBottomStyle=\"solid\";";
-                    echo "TablaCR.body.rows[$i].row[".($j+5)."].borderBottomWidth=\"3px\";";
+                    echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].ctext=\"white-text\";";
+                    echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].borderBottomColor=\"#ffeb3b\";";
+                    echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].borderBottomStyle=\"solid\";";
+                    echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].borderBottomWidth=\"3px\";";
                     $bg_color="green accent-4";
                 }
             }else if(isset($U[$i]->p_wa_num[$j])) {
@@ -1380,19 +1444,19 @@ function crearContestRank(){
                 if($U[$i]->p_wa_num[$j]>3) $bg_color="red lighten-2";
                 if($U[$i]->p_wa_num[$j]>5) $bg_color="red lighten-1";
             }
-            echo "TablaCR.body.rows[$i].row[".($j+5)."].bgcolor=\"$bg_color\";";
-            echo "TablaCR.body.rows[$i].row[".($j+5)."].textAlign=\"center\";\n";
+            echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].bgcolor=\"$bg_color\";";
+            echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].textAlign=\"center\";\n";
             if(isset($U[$i])){
-                echo "TablaCR.body.rows[$i].row[".($j+5)."].text=\"\";";
+                echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].text=\"\";";
                 if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
-                    echo "TablaCR.body.rows[$i].row[".($j+5)."].text+=\""
+                    echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].text+=\""
                                                      .sec2str($U[$i]->p_ac_sec[$j])."\";";
                 if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0)
-                    echo "TablaCR.body.rows[$i].row[".($j+5)."].text+=\"(-".
+                    echo "dat.contest.ranking.tabla.body.rows[$i].row[".($j+5)."].text+=\"(-".
                                                      $U[$i]->p_wa_num[$j].")\";";
             }
         }
     }
-									
+    crearDatosContest($cid);									
 }
 ?>

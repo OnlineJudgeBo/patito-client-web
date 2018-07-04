@@ -28,68 +28,37 @@ class Footer extends React.Component{
 		var a = new Date();
 		var t = a.getHours()*3600+a.getMinutes()*60+a.getSeconds();
 		var frm=[{s:1, t:""},{s:60, t:":"}, {s:3600, t:":"}];
-		return (			
+		return (<div> <br/><br/><br/><br/>
 				<div className={"footer-copyright z-depth-2"+
 								this.props.dat.st3[localStorage.getItem("skin")]}
-			style={{padding:"25 0 25 0"}}>
+				style={{padding:"25 0 25 0", bottom:"0", width:"100%", position:"fixed"}}>
 				<div className="container">
-				Bienvenido {this.props.dat.user_id} al Juez Virtual de la Universidad Mayor de San Andrés
+				Bienvenido <strong>{this.props.dat.user_id}</strong> al Juez Virtual de la Universidad Mayor de San Andrés
 				<div className="right"><Timer start={t} frmt={frm} flag={1}/></div>
 				</div>
 				</div>
+				</div>
 		);
 	}
 }
 
-class Menu extends React.Component {
+class Header extends React.Component{	
 	constructor(props){
 		super(props);
-		this.state={items:this.props.items};
 		this.handleClick = this.handleClick.bind(this);
-	}
-	handleClick(e, href, icn){
-		if(icn=="brightness_4"){
-			localStorage.setItem("skin", 1-localStorage.getItem("skin"));
-			loadPag();
-		}else if(icn=="details"){
-			this.setState(prevState => ({items:this.props.itemsUser}));
-		}else{
-			this.setState(prevState => ({items:this.props.items}));
-		}		
-	}
-	render() {
-		return (
-			<ul id="nav-mobile" className="right">
-			  {this.state.items.map(item => (
-				  <li key={item.href+item.iName} onClick={(e)=>this.handleClick(e,item.href, item.iName)}>
-					<a href={item.href} className={this.props.dat.tx3[localStorage.getItem("skin")]}>{item.text}
-					  <i className={"material-icons "+item.iPos} style={{fontSize:+this.props.dat.px}}>{item.iName}</i>
-					</a>
-				  </li>
-			  ))}
-			</ul>
-		);
-	}
-}
-
-class Header extends React.Component{
-	constructor(props){
-		super(props);
-		
 		this.state = {
-			menu:[
-				{href:"problem.php"+(this.props.dat.getCid?"?cid="+this.props.dat.getCid:""),
-				 text:(this.props.dat.getCid?"C. ":"")+this.props.msg.problems,
+			menuMain:[
+				{href:(this.props.dat.contest?"#":(this.props.dat.problemSet?"#":"problem.php")),
+				 text:this.props.msg.problems,
+				 click:"problemSet",
 				 iPos:"left", iName:"view_comfy"},
-				{href:"status.php"+(this.props.dat.getCid?"?cid="+this.props.dat.getCid:""),
-				 text:(this.props.dat.getCid?"C. ":"")+this.props.msg.status,
+				{href:"status.php"+(this.props.dat.contest?"?cid="+this.props.dat.contest.id:""),
+				 text:this.props.msg.status, target:"_blank",
 				 iPos:"left", iName:"clear_all"},
-				{href:"ranklist.php", text:this.props.msg.ranklist,
-				 iPos:"left", iName:"equalizer"},
-				{href:"contest.php", text:this.props.msg.numContest+" "+this.props.msg.contests,
-				 iPos:"left", iName:"view_headline"},
-				{href:"faqs.php", text:this.props.msg.faq,
-				 iPos:"left", iName:"question_answer"}],
+				{href:(this.props.dat.contest?"#":"ranklist.php"),
+				 text:this.props.msg.ranklist,
+				 click:"ranking",
+				 iPos:"left", iName:"equalizer"}],
 			menuUser:[
 				{href: "./modifypage.php",
 				 text: this.props.msg.userInfo,
@@ -103,24 +72,34 @@ class Header extends React.Component{
 				{href: "./status.php?user="+this.props.dat.user_id,
 				 text: "Reciente",
 				 iPos: "left", iName: "send"}],
-			text:''
+			text:'',
+			menu:[]
 		};
+		if(!this.props.dat.contest){
+			this.state.menuMain.push({href:"contest.php", text:this.props.msg.numContest+" "+this.props.msg.contests,
+				 iPos:"left", iName:"view_headline"},
+				{href:"faqs.php", text:this.props.msg.faq,
+				 iPos:"left", iName:"question_answer"});
+		}else{
+			this.state.menuMain.push({href:"#", text:"Estadisticas", click:"statistics",
+									  iPos:"left", iName:"trending_up"});
+		}
 		if(this.props.dat.user_id!=""){
-			this.state.menu.push({
+			this.state.menuMain.push({
 				href: "./userinfo.php?user="+this.props.dat.user_id,
 				text: this.props.dat.user_id,
 				iPos: "left", iName: "account_box"
 			});
 			if(this.props.dat.mail>0)
-				this.state.menu.push({
+				this.state.menuMain.push({
   					href: "./mail.php", text: this.props.dat.mail,
   					iPos: "left", iName: "mail"
   				});
-			this.state.menu.push(/*{href: "#", text: "",iPos: "", iName: "brightness_4"},*/
-				{href: "#", text: "",iPos: "", iName: "details"});
+			this.state.menuMain.push(/*{href: "#", text: "",iPos: "", iName: "brightness_4"},*/
+ 				{href: "#", text: "",iPos: "", iName: "details"});
 		}else{
-			this.state.menu.push(/*{href: "#", text: "",iPos: "", iName: "brightness_4"},*/
-				{href: "./loginpage.php", text: "Ingresar",
+			this.state.menuMain.push(/*{href: "#", text: "",iPos: "", iName: "brightness_4"},*/
+				{href: "./loginpage.php", text: "Ingresar/Registrarse",
 				 iPos: "left", iName: "transfer_within_a_station"});
 		}
 		if(this.props.dat.admin ||
@@ -146,17 +125,43 @@ class Header extends React.Component{
 		  this.state.menuUser[i].iPos="";
 		  this.props.dat.px=7;
 		  }*/
+		this.state.menu=this.state.menuMain;
+	}
+	handleClick(e, href, icn, click){
+		if(icn=="brightness_4"){
+			//localStorage.setItem("skin", 1-localStorage.getItem("skin"));
+			//loadPag();
+		}else if(icn=="details"){
+			this.setState(prevState => ({menu:prevState.menuUser}));
+		}else{
+			this.setState(prevState => ({menu:prevState.menuMain}));
+		}
+		if(click!=undefined){
+			console.log("HE ",click);
+			this.props.page(click);
+		}
 	}
 	render(){
 		return (
 			<div className="navbar-fixed">
-			  <nav className={"nav-wrapper z-depth-2 "+this.props.dat.bg3[localStorage.getItem("skin")]}>
+			  <nav className={"nav-wrapper z-depth-2 "+this.props.dat.st3[localStorage.getItem("skin")]}>
 				<a href={this.props.dat.oj_home}>
-				  <img src="template/og/image/juez-patito2.svg" style={{height:100/this.props.dat.screenWidth}}/>
+				  <img src="template/og/image/juez-patito2.svg" style={{height:100/this.props.dat.screenWidth}}/>				  
 				</a>
-				<Menu dat={this.props.dat} msg={this.props.msg} items={this.state.menu} itemsUser={this.state.menuUser}/>
-			  </nav>
-			</div>
+				<div className={"brand-logo"+this.props.dat.st3[localStorage.getItem("skin")]}
+					 style={{zIndex:-1, position:"absolute", padding:"0 0 0 20"}}><strong>{dat.title}</strong></div>
+				<ul id="nav-mobile" className="right fixed white-text">
+				  {this.state.menu.map(item => (<li key={item.href+item.iName}
+														onClick={(e)=>this.handleClick(e,item.href, item.iName, item.click)}>
+												<a href={item.href} className={"hoverable "+this.props.dat.st3[localStorage.getItem("skin")]}
+													   target={item.target}><strong>{item.text}</strong>
+													  <i className={"material-icons "+item.iPos} style={{fontSize:+this.props.dat.px}}>{item.iName}</i>
+													</a>
+												</li>
+											   ))}
+			</ul>
+				</nav>
+				</div>
 		);
 	}
 }
@@ -402,11 +407,9 @@ class Tabla extends React.Component{
 	constructor(props){
 		super(props);
 		this.state={order:0, table:this.props.tabla};
-	}
-	handleClick(e, val){
-		if(typeof val != 'number'){
-			click.val = val; return ;
-		}
+		this.handleClickTd = this.handleClickTd.bind(this);
+	}	
+	handleClick(e, val){		
 		var num = val;
 		var aux = this.state.table;
 		if(this.state.order==num) aux.body.rows.sort(function(a, b){
@@ -428,7 +431,12 @@ class Tabla extends React.Component{
 			return 0;
 		});
 		if(this.state.order==num) this.setState({order:-1, table:aux});
-		else this.setState({order:num, table:aux});
+		else this.setState({order:num, table:aux});		
+	}
+	handleClickTd(e, click){
+		if(click!=undefined){
+			this.props.page(click);
+		}
 	}
 	render(){
 		return(				 
@@ -439,11 +447,11 @@ class Tabla extends React.Component{
 					var col=this.props.dat.tx1[localStorage.getItem("skin")];
 					if(item.ctext) col = item.ctext;
 					return(
-						<th key={item.text} style={{textAlign:"center"}}
-							onClick={(e)=>this.handleClick(e,index)} className="hoverable">
-						  <i className="material-icons left">{"swap_vert"}</i>
+						<th key={item.text+item.link} style={{textAlign:"center"}}
+							 className="hoverable">
+						  <i className="material-icons tiny" onClick={(e)=>this.handleClick(e,index)}>{"swap_vert"}</i>
 						  <a href={item.link}  target="_blank"
-							 className={col}>{item.text}</a></th>
+							 className={col} onClick={(e)=>this.handleClickTd(e,item.click)}>{item.text}</a></th>
 					);
 				})}</tr>
 				</thead>
@@ -459,7 +467,7 @@ class Tabla extends React.Component{
 							  var col=this.props.dat.tx1[localStorage.getItem("skin")];
 							  if(iitem.ctext) col = iitem.ctext;
 							  return (
-								  <td className={((iitem.link||iitem.click)?"hoverable ":"")+
+								  <td className={(((typeof iitem.link!= 'undefined')||(typeof iitem.click!='undefined'))?"hoverable ":"")+
 												 (iitem.ctext?iitem.ctext:"")+" "+
 									  (iitem.bgcolor?iitem.bgcolor:"")}
 									  key={"tr"+index+"td"+iindex+iitem.link}
@@ -471,9 +479,9 @@ class Tabla extends React.Component{
 											  borderRightStyle:iitem.borderLeftStyle,
 											  borderRightWidth:iitem.borderLeftWidth,
 											  backgroundColor:iitem.bgColorHTML,
-									  textAlign:iitem.textAlign}}>
-									<a href={iitem.link} target="_blank"
-									   onClick={(e)=>this.handleClick(e,""+iitem.click)}
+									  textAlign:iitem.textAlign}}
+									  onClick={(e)=>this.handleClickTd(e,iitem.click)}>
+									<a href={iitem.link} target="_blank"									   
 									  className={col}>
 									  <p dangerouslySetInnerHTML={{__html: iitem.text}}></p>
 									</a>
@@ -526,13 +534,13 @@ class Pagescroll extends React.Component {
 		return (
 			<div className="center-align row">
 			  <h5 className="col s4" style={{textAlign:"right"}}>Paginas</h5><ul className="pagination col s8" style={{textAlign:"left"}}>
-				{arrpag.map(item => (
+				{arrpag.map((item) =>{ return (
 					<li className={item.class} key={item.href+item.icon}>
 					  <a href={item.href} className={this.props.dat.tx1[localStorage.getItem("skin")]}>
 						{item.text}<i className="material-icons">{item.icon}</i>
 					  </a>
 					</li>
-				))}
+				);})}
 			</ul>
 				</div>
 		);
@@ -850,43 +858,52 @@ class Submit extends React.Component {
 
 
 /******************PROBLEM*************************/
-var click={val:"tabla"};
+
 class Problempage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleClick = this.handleClick.bind(this);
+		this.state={problemPage:"problemSet", pages:["problemSet"]};
+		this.handlePageChange = this.handlePageChange.bind(this);
 	}
-	handleClick(event) {
-		loadPag();
+	handlePageChange(changedPage){
+		console.log(changedPage, this.state.pages);
+		console.log(this.state.pages.includes(changedPage) || typeof changedPage == 'number');
+		console.log(this.state.pages.includes(changedPage));
+		console.log(typeof changedPage == 'number');
+		
+		if(this.state.pages.includes(changedPage) || typeof changedPage == 'number'){
+			console.log(changedPage);
+			this.setState({problemPage:changedPage});
+		}
+	}
+	componentDidMount() {
+		MathJax.Hub.Typeset();
+		console.log("hola");
 	}
 	cambiar(event, num){
 		if(num==0){
-			click.val="tabla"; return ;
+			this.setState(prevState=>({problemPage:"problemSet"}));
+			return ;
 		}
-		click.val=parseInt(click.val);
-		click.val+=parseInt(num);
-		if(click.val<0 || click.val>=this.props.dat.problemSet.problem.length){
-			click.val="tabla"; return ;
-			
+		console.log("cambiar", this.state);
+		var aux = this.state.problemPage;
+		aux += num;		
+		if(aux<0 || aux>=this.props.dat.problemSet.problem.length){
+			this.setState(prevState=>({problemPage:"problemSet"}));
+			return ;
 		}
-	}
+		this.setState(prevState=>({problemPage:aux}));
+	}	
 	render() {
+		console.log(dat);
+		var body=<h1>ProblemPage ERROR!. ..Como llegaste aqui?... :)</h1>;
 		if(this.props.dat.problem){
-			return (
-				<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-				  <Header dat={dat} msg={msg}/>
-				  <div style={{align:'', width:'90%',
-					   marginLeft:'auto', marginRight:'auto', textAlign:''}}>
-					<Problem dat={dat} msg={msg} problem={this.props.dat.problem}/>
-				  </div>
-				  <Footer dat={dat} msg={msg}/>
-				</div>
-			);
+			body=(<Problem dat={dat} msg={msg} problem={this.props.dat.problem}/>);
 		}
-		if(this.props.dat.problemSet){ // arreglarn
-			var body;
+		console.log("no es problem", this.state);
+		if(this.props.dat.problemSet){ // arreglar			
 			var pagS=(
-				<div className="row"><br/>  
+				<div className="row">
 				  <div className={"col s4 hoverable center-align"+
 					   this.props.dat.st4[localStorage.getItem("skin")]}
 					   onClick={(e)=>this.cambiar(e, -1)}>
@@ -904,7 +921,7 @@ class Problempage extends React.Component {
 </div>
 </div>
 			);
-			if(click.val=="tabla" || click.val=='undefined'){
+			if(this.state.problemPage=="problemSet"){
 				body=(
 					<div>
 					  <Titulo tit={this.props.msg.problems} dat={this.props.dat}/>
@@ -941,49 +958,64 @@ class Problempage extends React.Component {
 						  </button>
 						</form>
 					  </div>
-					  <Tabla dat={this.props.dat} tabla={this.props.dat.problemSet.tabla}/>
+					  <Tabla dat={this.props.dat} tabla={this.props.dat.problemSet.tabla} page={this.handlePageChange}/>
 					  <Pagescroll dat={dat}/>
 					</div>
 				);
-			}else{
+			}
+			if(this.state.problemPage>=0 && this.state.problemPage<this.props.dat.problemSet.problem.length){
 				body=(
 					<div>
-					  {pagS}
-					  <Problem dat={dat} msg={msg}
-							   problem={this.props.dat.problemSet.problem[parseInt(click.val)]}/>
-					  {pagS}
-					</div>);
+				  <div className="row">
+					<div className={"col s2 center-align"}
+						 style={{padding:"150 0 0 0"}}
+						 onClick={(e)=>(this.cambiar(e, -1))}>
+				<div className={"pinned"}>
+				  <i className={"material-icons large hoverable"}
+					 style={{borderRadius:"50px 0px 0px 50px"}}>{"arrow_back"}
+				  </i>
+				</div></div>
+<div className={"col s8"}>
+  <Problem dat={dat} msg={msg}
+							   problem={this.props.dat.problemSet.problem[this.state.problemPage]}/>
+</div>
+<div className={"col offset-s1 s1 center-align"}
+	 style={{padding:"150 0 0 0"}}
+	 onClick={(e)=>this.cambiar(e, 1)}>
+  <div className={"pinned"}><i className={"material-icons large hoverable"}
+							   style={{borderRadius:"0px 50px 50px 0px"}}>arrow_forward</i></div>
+</div>
+</div>
+</div>
+					  
+					);
 			}
-			return (
-				<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-				  <Header dat={dat} msg={msg}/>
-				  <div style={{align:'center', width:'90%',
-					   marginLeft:'auto', marginRight:'auto'}}>					
-					<div onClick={(e)=>this.handleClick(e)}>
-										{body}
-										</div>
-</div>
-<Footer dat={dat} msg={msg}/>
-
-</div>
-			);		
 		}
-		if(this.props.dat.problemContest){
-			return (
-				<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-				  <Header dat={dat} msg={msg}/>
-				  <Problem dat={dat} msg={msg} problem={this.props.dat.problemContest}/>
-				  <Footer dat={dat} msg={msg}/>
-				</div>
-			);
-		}		
-		return (<h1>Como llegaste aqui?... :)</h1>);
-	}
+	
+	return (
+		<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
+		  <Header dat={dat} msg={msg} page={this.handlePageChange}/>
+		  <div style={{align:'', width:'90%',
+			   marginLeft:'auto', marginRight:'auto', textAlign:''}}>
+			{body}
+		  </div>
+		  <Footer dat={dat} msg={msg}/>
+		</div>
+	);
+}
 }
 
 class Problem extends React.Component {
 	constructor(props) {
 		super(props);
+	}
+	componentDidMount() {
+		MathJax.Hub.Typeset();
+		console.log("Did Problem");
+	}
+	componentDidUpdate(){
+		MathJax.Hub.Typeset();
+		console.log("Did Update Problem");
 	}
 	copiarAlPortapapeles(e, text) {
 		var aux = document.createElement("textarea");
@@ -1003,13 +1035,14 @@ class Problem extends React.Component {
 		if(this.props.problem.cId){
 			title=(
 				<Titulo tit={this.props.msg.problem+" "+
-						this.props.dat.PID[this.props.problem.pId]+":"+
+						this.props.dat.PID[this.props.problem.pId]+": "+
 						this.props.problem.title} dat={this.props.dat}/>);
-			menu.push({text:this.props.msg.submit,
-					   link:"submitpage.php?cid="+this.props.problem.cId+
-					   "&pid="+this.props.problem.pId+"&langmask="+
-					   this.props.dat.contest.langmask,
-					   icon:"send"});
+			if(this.props.problem.submit)
+				menu.push({text:this.props.msg.submit,
+						   link:"submitpage.php?cid="+this.props.problem.cId+
+						   "&pid="+this.props.problem.pId+"&langmask="+
+						   this.props.dat.contest.langmask,
+						   icon:"send"});
 			menu.push({text:this.props.msg.status,
 					   link:"status.php?problem_id="+this.props.dat.PID[this.props.problem.pId]+
 					   "&cid="+this.props.problem.cId,
@@ -1017,9 +1050,10 @@ class Problem extends React.Component {
 		}else{
 			title=(<Titulo tit={this.props.problem.id+":"+this.props.problem.title}
 				   dat={this.props.dat}/>);
-			menu.push({text:this.props.msg.submit,
-					   link:"submitpage.php?id="+this.props.problem.id,
-					   icon:"send"});
+			if(this.props.problem.submit)
+				menu.push({text:this.props.msg.submit,
+						   link:"submitpage.php?id="+this.props.problem.id,
+						   icon:"send"});
 			menu.push({text:this.props.msg.status,
 					   link:"status.php?problem_id="+this.props.problem.id,
 					   icon:"list"});
@@ -1042,12 +1076,13 @@ class Problem extends React.Component {
 					   this.props.problem.id+"&order=name&srt=yes",
 					   icon:"attach_file"});
 		}else{
-			spc=(<div className="col s2"></div>);
+			if(!(this.props.problem.submit))spc=(<div className="col s3"></div>);
+			else spc=(<div className="col s2"></div>);
 		}
-		var desHtml = ltxParse((converter.makeHtml(this.props.problem.des)));
-		var inHtml = ltxParse(converter.makeHtml(this.props.problem.input));
-		var outHtml = ltxParse(converter.makeHtml(this.props.problem.output));
-		var hintHtml = ltxParse(converter.makeHtml(this.props.problem.hint));
+		var desHtml = (converter.makeHtml(this.props.problem.des));// ltxParse
+		var inHtml = (converter.makeHtml(this.props.problem.input));
+		var outHtml = (converter.makeHtml(this.props.problem.output));
+		var hintHtml = (converter.makeHtml(this.props.problem.hint));
 		var hint;
 		if(this.props.problem.hint){
 			hint=(<div><h5 className="col s1">{this.props.msg.hint}</h5>
@@ -1079,25 +1114,21 @@ class Problem extends React.Component {
 					))}
 			</div>				  
 				</div>
-				<div className="z-depth-2">
-				<div className={this.props.dat.st4[localStorage.getItem("skin")]}>
-				<h4 style={{padding:"25 0 25 30"}}>
+				<div className="row z-depth-2">
+				<h4 style={{padding:"25 0 25 30"}} className={this.props.dat.st4[localStorage.getItem("skin")]}>
 				{this.props.msg.description}</h4>
-				</div>
 				<h5 dangerouslySetInnerHTML={{__html: desHtml}}
 			style={{padding:"5 30 5 30"}}></h5>
 				</div>
-				<div className="z-depth-2">
-				<div className={this.props.dat.st4[localStorage.getItem("skin")]}>
-				<h4 style={{padding:"25 0 25 30"}}>
-				{this.props.msg.input}</h4></div>
+				<div className="row z-depth-2"> 
+				<h4 style={{padding:"25 0 25 30"}} className={this.props.dat.st4[localStorage.getItem("skin")]}>
+				{this.props.msg.input}</h4>
 				<h5 dangerouslySetInnerHTML={{__html: inHtml}}
 			style={{padding:"5 30 5 30"}}></h5>
 				</div>
-				<div className="z-depth-2">
-				<div className={this.props.dat.st4[localStorage.getItem("skin")]}>
-				<h4 style={{padding:"25 0 25 30"}}>
-				{this.props.msg.output}</h4></div>
+				<div className="row z-depth-2">
+				<h4 style={{padding:"25 0 25 30"}} className={this.props.dat.st4[localStorage.getItem("skin")]}>
+				{this.props.msg.output}</h4>
 				<h5 dangerouslySetInnerHTML={{__html: outHtml}}
 			style={{padding:"5 30 5 30"}}></h5>
 				</div>
@@ -1105,13 +1136,13 @@ class Problem extends React.Component {
 				<div className={"col s6"+this.props.dat.st4[localStorage.getItem("skin")]}>
 				<h4 style={{padding:"25 0 25 30"}}>{this.props.msg.sampleInput}
 				<i className="waves-effect material-icons small right hoverable" onClick={
-					(e)=>this.copiarAlPortapapeles(e,this.props.dat.probSinput)}>
+					(e)=>this.copiarAlPortapapeles(e,this.props.problem.sinput)}>
 				content_copy</i></h4>
 				</div>
 				<div className={"col s6"+this.props.dat.st4[localStorage.getItem("skin")]}>
 				<h4 style={{padding:"25 0 25 30"}}>{this.props.msg.sampleOutput}
 				<i className="waves-effect material-icons small right hoverable" onClick={
-					(e)=>this.copiarAlPortapapeles(e,this.props.dat.probSoutput)}>
+					(e)=>this.copiarAlPortapapeles(e,this.props.dat.problem.soutput)}>
 				content_copy</i>
 				</h4>
 				</div>
@@ -1139,124 +1170,212 @@ class Problem extends React.Component {
 }
 
 class Contestpage extends React.Component{
-	constructor(props) {
+	constructor(props){
 		super(props);
-		this.handleClick = this.handleClick.bind(this);
+		this.state={contestPage:"problemSet"};
+		this.handlePageChange = this.handlePageChange.bind(this);
 	}
-	handleClick(event) {
-		loadPag();
-	}
-	cambiar(event, num){
-		if(num==0){
-			click.val="tabla"; return ;
-		}
-		click.val=parseInt(click.val);
-		click.val+=parseInt(num);
-		if(click.val<0){
-			click.val=this.props.dat.contest.problem.length-1; return ;
-		}
-		if(click.val>=this.props.dat.contest.problem.length){
-			click.val=0; return ;
-		}
+	handlePageChange(changedPage){
+		this.setState({contestPage:changedPage});
 	}
 	render(){
-		var body;
+		var body=<h1>ContestPage ERROR, Explicame como llegaste aqui ?</h1>;
 		if(this.props.dat.contestSet){
-			return (
-				<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
-				  <Header dat={dat} msg={msg}/>
-				  <div style={{align:'center', width:'90%',
-					   marginLeft:'auto', marginRight:'auto'}}>
-					<Titulo tit={this.props.msg.contests} dat={this.props.dat}/>
-					<Tabla tabla={this.props.dat.contestSet.tabla} dat={dat}/>
-				  </div>				
-				  <Footer dat={dat} msg={msg}/>
-				</div>	
-			);
+			body=<div><Titulo tit={this.props.msg.contests} dat={this.props.dat}/>
+				<Tabla tabla={this.props.dat.contestSet.tabla} dat={dat}/></div>;
 		}
 		if(this.props.dat.contest){
-			if(click.val=="tabla" || click.val=='undefined'){							
-				var converter = new showdown.Converter();
-				var desHtml = converter.makeHtml(this.props.dat.contest.description);
-				body = (
-					<div>
-					  <Titulo tit={this.props.msg.contest+" - "+this.props.dat.contest.title}
-							  dat={this.props.dat}/>
-					  <center><h5 dangerouslySetInnerHTML={{__html: desHtml}}></h5>
-					  <div className="fb-like"
-						   data-href={"contest.php?cid="+this.props.dat.contest.id}
-						   data-layout="button_count"
-						   data-action="like" data-show-face="true" data-share="true" ></div>
-					  <Labelcontesttime now={this.props.dat.contest.now}
-										start={this.props.dat.contest.start}
-										end={this.props.dat.contest.end}
-										tipo={this.props.dat.contest.private}/></center>
-					  <div className="row">					
-						<a className={"btn waves-effect offset-s1 col s3"+
-						   this.props.dat.st4[localStorage.getItem("skin")]}
-						   href={"status.php?cid="+this.props.dat.contest.id}>Estado
-						  <i className="material-icons right">clear_all</i>
-						</a>
-						<a className={"btn waves-effect col s4"+
-						   this.props.dat.st4[localStorage.getItem("skin")]}
-						   href={"contestrank.php?cid="+this.props.dat.contest.id}>Posciciones
-						  <i className="material-icons right">equalizer</i>
-						</a>
-						<a className={"btn waves-effect col s3"+
-						   this.props.dat.st4[localStorage.getItem("skin")]}
-						   href={"conteststatistics.php?cid="+this.props.dat.contest.id}>Estadisticas
-						  <i className="material-icons right">trending_up</i>
-						</a>
-					  </div>
-					  <Tabla tabla={this.props.dat.contest.tabla} dat={dat}/>
-					</div>
-				);
-			}else{
-				body=(
-					<div>
-					  <div onClick={(e)=>this.cambiar(e, 0)}>
-						<Titulo tit={this.props.msg.contest+" - "+this.props.dat.contest.title}
-							  dat={this.props.dat}/></div>
-					  <div className="row"><br/>  
-						<div className={"col s1 center-align"}
-							 style={{padding:"150 0 0 0"}}
-							 onClick={(e)=>this.cambiar(e, -1)}>
-						  <i className={"material-icons large valign-wrapper hoverable"+
-							 this.props.dat.st4[localStorage.getItem("skin")]}
-							 style={{padding:"500 0 500 0",
-							 borderRadius:"25px 0px 0px 25px"}}>arrow_back</i></div>
-						<div className={"col s10"}>
-						  <Problem dat={dat} msg={msg}
-								   problem={this.props.dat.contest.problem[parseInt(click.val)]}/>
-						</div>
-						<div className={"col s1 center-align"}
-							 style={{padding:"150 0 0 0"}}
-							 onClick={(e)=>this.cambiar(e, 1)}>
-						  <i className={"material-icons large valign-wrapper hoverable"+
-							 this.props.dat.st4[localStorage.getItem("skin")]}
-							 style={{padding:"500 0 500 0",
-							 borderRadius:"0px 25px 25px 0px"}}>arrow_forward</i>
-						</div>
-					  </div>
-					</div>);
-			}
-			return (
-				<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-				  <Header dat={dat} msg={msg}/>
-				  <div style={{align:'center', width:'90%',
-					   marginLeft:'auto', marginRight:'auto'}}>					
-					<div onClick={(e)=>this.handleClick(e)}>
-					  {body}
-					</div>
-				  </div>
-				  <Footer dat={dat} msg={msg}/>
-				</div>
-			);
+			body=<Contest contest={this.props.dat.contest} page={this.state.contestPage}/>;
 		}
-		return (<h1>Explicame como llegaste aqui?</h1>);
+		return (
+			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
+			  <Header dat={dat} msg={msg} page={this.handlePageChange}/>
+			  <div style={{align:'center', width:'90%',
+				   marginLeft:'auto', marginRight:'auto'}}>
+				{body}
+			  </div>				
+			  <Footer dat={dat} msg={msg}/>
+			</div>	
+		);
 	}
 }
 
+
+class Contest extends React.Component{ // dat msg global variables
+	constructor(props) {
+		super(props);
+		if(this.props.contest.onlyContest){			
+			this.state={page:"ranking", onlyContest:1}; return ;
+		}
+		this.state={page:this.props.page};
+		if(this.state.page==undefined){
+			this.state.page="problemSet";
+		}
+		this.handlePageChange = this.handlePageChange.bind(this);
+		this.state.config = {
+			type: 'line',
+			data: {
+				labels: this.props.contest.statistics.graphics.labels,
+				datasets: [{
+					label: 'Sub',
+					backgroundColor: 'rgb(2, 151, 39, 0.7)',
+					borderColor: Chart.helpers.color.red,
+					//fill: false,
+					lineTension:0.1,
+					data:  this.props.contest.statistics.graphics.d2
+					
+				},{
+					label: 'Ac',					
+					backgroundColor: 'rgb(255,0,0, 0.5)',
+					borderColor: Chart.helpers.color.green,
+					//fill: false,
+					lineTension:0.1,
+					data:  this.props.contest.statistics.graphics.d1
+				}]
+			},
+			options: {
+				title: {
+					text: 'Chart.js Time Scale'
+				},
+				scales: {
+					xAxes: [{}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'value'
+						},
+						ticks: {
+							beginAtZero:true,
+							stepSize:1		
+						},
+						//height:5
+					}],
+					
+				},
+			}
+		};
+		for(var i=0; i<this.props.contest.problem.length; i++){
+			this.props.contest.problem[i].submit=
+				(this.props.contest.now<this.props.contest.end);
+		}
+		console.log(this.state);
+	}
+	handlePageChange(changedPage){
+		if(this.state.onlyContest) return ;
+		this.setState({page:changedPage});
+		
+		//var ctx = document.getElementById("myChart");
+		//console.log("handle",ctx);
+		//if(ctx)var myLineChart = new Chart(ctx, this.state.config);
+	}
+	componentWillReceiveProps(nextProps) {
+		if(this.state.onlyContest) return ;
+		//console.log("Will",nextProps, this.props);
+		if (nextProps.page !== this.props.page || nextProps.page !== this.state.page) {
+			this.setState({
+				page: nextProps.page
+			});
+		}
+	}
+	componentDidUpdate(prevProps) {
+		var ctx = document.getElementById("myChart");
+		if(ctx)var myLineChart = new Chart(ctx, this.state.config);
+	}	
+	cambiar(event, num){
+		if(num==0){
+			this.setState(prevState=>({page:"problemSet"}));
+			return ;
+		}
+		var aux = this.state.page;
+		aux += num;		
+		if(aux<0){
+			aux = this.props.contest.problem.length-1;
+		}else if(aux>=this.props.contest.problem.length){
+			aux = 0;
+		}
+		this.setState(prevState=>({page:aux}));
+	}	
+	render(){
+		console.log("Crender",this.state);
+		var body=(<h1>CONTEST ERROR!... Explicame como llegaste aqui...</h1>);
+		
+		var converter = new showdown.Converter();
+		if(this.state.page=="problemSet"){			
+			var desHtml = converter.makeHtml(this.props.contest.description);
+			body = (
+				<Tabla tabla={this.props.contest.tabla} dat={dat} page={this.handlePageChange}/>
+			);
+		}
+		if(this.state.page>=0 && this.state.page<this.props.contest.problem.length){
+			body=(
+				<div>
+				  <div className="row">
+					<div className={"col s2 center-align"}
+						 style={{padding:"150 0 0 0"}}
+						 onClick={(e)=>(this.cambiar(e, -1))}>
+				<div className={"pinned"}>
+				  <i className={"material-icons large hoverable"}
+					 style={{borderRadius:"50px 0px 0px 50px"}}>{"arrow_back"}
+				  </i>
+				</div></div>
+<div className={"col s8"}>
+  <Problem dat={dat} msg={msg}
+		   problem={this.props.contest.problem[this.state.page]}/>
+</div>
+<div className={"col offset-s1 s1 center-align"}
+	 style={{padding:"150 0 0 0"}}
+	 onClick={(e)=>this.cambiar(e, 1)}>
+  <div className={"pinned"}><i className={"material-icons large hoverable"}
+							   style={{borderRadius:"0px 50px 50px 0px"}}>arrow_forward</i></div>
+</div>
+</div>
+</div>);
+		}
+		if(this.state.page=="ranking"){
+			desHtml = converter.makeHtml(this.props.contest.description);
+			body=(
+				<div>
+				  <div className="row">
+					<a className={"btn waves-effect offset-s4 col s4"+
+					   dat.st4[localStorage.getItem("skin")]}
+					   href={"contestrank.xls.php?cid="+this.props.contest.id}>Download
+					  <i className="material-icons right">file_download</i>
+					</a>
+				  </div>
+				  <Tabla dat={dat} tabla={this.props.contest.ranking.tabla} page={this.handlePageChange}/>
+				</div>
+			);
+		}
+		if(this.state.page=="statistics"){			
+			body=(
+				<div>				  
+				  <Tabla dat={dat} tabla={this.props.contest.statistics.tabla} page={this.handlePageChange}/>
+				  <div style={{width:"60%", height:"200px"}}>
+					<canvas id="myChart" width="400px" height="400px" ref="canvaMyChart"></canvas>
+				  </div>
+				</div>
+			);
+		}
+		var onlyContest;
+		if(this.props.contest.onlyContest)
+			onlyContest=<h3>Solo estas permitido a ver el Ranking como invitado</h3>;
+		return (
+			<div>			  
+			  <Titulo tit={msg.contest+" - "+dat.title} dat={dat}/>
+			  <center><h5 dangerouslySetInnerHTML={{__html: desHtml}}></h5>
+					<div className="fb-like"
+						 data-href={"contest.php?cid="+this.props.contest.id}
+						 data-layout="button_count"
+						 data-action="like" data-show-face="true" data-share="true" ></div>
+					<Labelcontesttime now={this.props.contest.now}
+									  start={this.props.contest.start}
+									  end={this.props.contest.end}
+									  tipo={this.props.contest.private}/>
+					{onlyContest}{body}</center>
+			</div>
+		);
+	}
+}
 class Ranklist extends React.Component{
 	render(){
 		var paginas=[];
@@ -1320,12 +1439,12 @@ class Ranklist extends React.Component{
 				<Tabla dat={dat} tabla={this.props.tabla}/><br/>
 				<h3>Posiciones</h3>
 				<div className="row">
-				  {paginas.map(item => (
-					  <a className={"btn waves-effect col s1"+
-						 this.props.dat.st4[localStorage.getItem("skin")]}
-						 href={item.link} key={item.link}><span>{item.text}</span>
-					  </a>
-				  ))}
+				  {paginas.map((item) => 
+							   <a className={"btn waves-effect col s1"+
+											 this.props.dat.st4[localStorage.getItem("skin")]}
+									  href={item.link} key={item.link}><span>{item.text}</span>
+								   </a>
+							  )}
 			</div>
 				</div>
 				<Footer dat={dat} msg={msg}/>
@@ -1420,21 +1539,19 @@ public class Main{
 ## Mis Respuestas
 | Respuesta | Explicación |
 | --- | --- |
-| Pending | Estoy ocupado, en un momento revisare su codigo|
-| Pending Rejudge | Los datos de prueba se actualizaron y volvere a revisarlos de nuevo :D|
-| Compiling | Estoy compilando su codigo|
-| Running & Judging | Estoy evaluando tu codigo|
-| Accepted | OK! todo esta super!|
-| Presentation Error | Tienes un espacio en blanco o una linea en blanco al final|
-| Wrong Answer | Tu codigo no corre para todos los casos, intenta de nuevo ;-)|
-| Time Limit Exceeded | Tu programa no corre dentro los limites de tiempo|
-| Memory Limit Exceeded | Tu programa consume mucha memoria|
-| Output Limit Exceeded | Tu programa intento escribir demasiada informacion de salida|
-| Runtime Error |  Tu programa se desborda o hay división entre cero|
-| Compile Error | Hay un error en la compilacion|
+| Pendiente | Estoy ocupado, en un momento revisare su codigo|
+| Pendiente para Juzgar | Los datos de prueba se actualizaron y volvere a revisarlos de nuevo :D|
+| Compilando | Estoy compilando su codigo|
+| Ejecutando y Juzgando | Estoy evaluando tu codigo|
+| Aceptado | OK! todo esta super!|
+| Error de Presentación | Tienes un espacio en blanco o una linea en blanco al final|
+| Respuesta Incorrecta | Tu codigo no corre para todos los casos, intenta de nuevo ;-)|
+| Tiempo Limite Exedido | Tu programa no corre dentro los limites de tiempo|
+| Memoria Limite Exedida | Tu programa consume mucha memoria|
+| Salida Limte Exedida | Tu programa intento escribir demasiada informacion de salida|
+| Error en Tiempo de Ejecución|  Tu programa se desborda o hay división entre cero|
+| Error de Compilación | Hay un error en la compilacion|
 
-## Sugerencias
-[Foro](bbs.php)
 ## Agradecimientos
 [HUSTOJ](index.php)
 [R1980+](http://code.google.com/p/hustoj/source/detail?r=1980)
@@ -1457,46 +1574,31 @@ public class Main{
 class Contestrank extends React.Component{
 	render(){
 		var converter = new showdown.Converter();
-		var desHtml = converter.makeHtml(this.props.dat.getCDescription);
+		var desHtml = converter.makeHtml(this.props.contest.description);
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>			  
 			  <Header dat={dat} msg={msg}/>
 			  <div style={{align:'center', width:'90%',
 				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
-				<Titulo tit={this.props.msg.contest+" - "+this.props.dat.getCTitle}
+				<Titulo tit={this.props.msg.contest+" - "+this.props.dat.contest.title}
 						dat={this.props.dat}/>
 				<p dangerouslySetInnerHTML={{__html: desHtml}}></p>
 				<div className="fb-like"
-					 data-href={"contest.php?cid="+this.props.dat.getCid}
+					 data-href={"contest.php?cid="+this.props.contest.id}
 					 data-layout="button_count"
 					 data-action="like" data-show-face="true" data-share="true" ></div>
-				<Labelcontesttime now={this.props.dat.getCNow}
-								  start={this.props.dat.getCStart}
-								  end={this.props.dat.getCEnd}
-								  tipo={this.props.dat.getCPrivate}/>
-				<div className="row">					
-				  <a className={"btn waves-effect col s3"+
+				<Labelcontesttime now={this.props.contest.now}
+								  start={this.props.contest.start}
+								  end={this.props.contest.end}
+								  tipo={this.props.contest.private}/>
+				<div className="row">
+				  <a className={"btn waves-effect offset-s4 col s4"+
 					 this.props.dat.st4[localStorage.getItem("skin")]}
-					 href={"status.php?cid="+this.props.dat.getCid}>Estado
-					<i className="material-icons right">clear_all</i>
-				  </a>
-				  <a className={"btn waves-effect col s3"+
-					 this.props.dat.st4[localStorage.getItem("skin")]}
-					 href={"contest.php?cid="+this.props.dat.getCid}>Problemas
-					<i className="material-icons right">equalizer</i>
-				  </a>
-				  <a className={"btn waves-effect col s3"+
-					 this.props.dat.st4[localStorage.getItem("skin")]}
-					 href={"conteststatistics.php?cid="+this.props.dat.getCid}>Estadisticas
-					<i className="material-icons right">trending_up</i>
-				  </a>
-				  <a className={"btn waves-effect col s3"+
-					 this.props.dat.st4[localStorage.getItem("skin")]}
-					 href={"contestrank.xls.php?cid="+this.props.dat.getCid}>Download
+					 href={"contestrank.xls.php?cid="+this.props.contest.id}>Download
 					<i className="material-icons right">file_download</i>
 				  </a>
 				</div>
-				<Tabla dat={dat} tabla={this.props.tabla}/>
+				<Tabla dat={dat} tabla={this.props.contest.ranking.tabla}/>
 			  </div>
 			  <Footer dat={dat} msg={msg}/>
 			</div>	
