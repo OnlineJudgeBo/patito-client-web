@@ -36,7 +36,7 @@ function load(){
 			document.write("<script src='./util/showdown/showdown.min.js'></script>");
 			document.write("<script>showdown.setOption('tables', 1);"+
 						   "showdown.setOption('headerLevelStart', 3);"+
-						   "showdown.setOption('simpleLineBreaks', 1);"+
+						   //"showdown.setOption('simpleLineBreaks', 1);"+
 						   "showdown.setOption('emoji',1);"+
 						   "showdown.setOption('literalMidWordUnderscores',0);"+
 						   "showdown.setOption('literalMidWordAsterisks',0);</script>"+

@@ -137,7 +137,6 @@ class Header extends React.Component{
 			this.setState(prevState => ({menu:prevState.menuMain}));
 		}
 		if(click!=undefined){
-			console.log("HE ",click);
 			this.props.page(click);
 		}
 	}
@@ -865,27 +864,19 @@ class Problempage extends React.Component {
 		this.state={problemPage:"problemSet", pages:["problemSet"]};
 		this.handlePageChange = this.handlePageChange.bind(this);
 	}
-	handlePageChange(changedPage){
-		console.log(changedPage, this.state.pages);
-		console.log(this.state.pages.includes(changedPage) || typeof changedPage == 'number');
-		console.log(this.state.pages.includes(changedPage));
-		console.log(typeof changedPage == 'number');
-		
+	handlePageChange(changedPage){		
 		if(this.state.pages.includes(changedPage) || typeof changedPage == 'number'){
-			console.log(changedPage);
 			this.setState({problemPage:changedPage});
 		}
 	}
 	componentDidMount() {
 		MathJax.Hub.Typeset();
-		console.log("hola");
 	}
 	cambiar(event, num){
 		if(num==0){
 			this.setState(prevState=>({problemPage:"problemSet"}));
 			return ;
 		}
-		console.log("cambiar", this.state);
 		var aux = this.state.problemPage;
 		aux += num;		
 		if(aux<0 || aux>=this.props.dat.problemSet.problem.length){
@@ -895,12 +886,10 @@ class Problempage extends React.Component {
 		this.setState(prevState=>({problemPage:aux}));
 	}	
 	render() {
-		console.log(dat);
 		var body=<h1>ProblemPage ERROR!. ..Como llegaste aqui?... :)</h1>;
 		if(this.props.dat.problem){
 			body=(<Problem dat={dat} msg={msg} problem={this.props.dat.problem}/>);
 		}
-		console.log("no es problem", this.state);
 		if(this.props.dat.problemSet){ // arreglar			
 			var pagS=(
 				<div className="row">
@@ -1011,11 +1000,9 @@ class Problem extends React.Component {
 	}
 	componentDidMount() {
 		MathJax.Hub.Typeset();
-		console.log("Did Problem");
 	}
 	componentDidUpdate(){
 		MathJax.Hub.Typeset();
-		console.log("Did Update Problem");
 	}
 	copiarAlPortapapeles(e, text) {
 		var aux = document.createElement("textarea");
@@ -1258,19 +1245,13 @@ class Contest extends React.Component{ // dat msg global variables
 			this.props.contest.problem[i].submit=
 				(this.props.contest.now<this.props.contest.end);
 		}
-		console.log(this.state);
 	}
 	handlePageChange(changedPage){
 		if(this.state.onlyContest) return ;
 		this.setState({page:changedPage});
-		
-		//var ctx = document.getElementById("myChart");
-		//console.log("handle",ctx);
-		//if(ctx)var myLineChart = new Chart(ctx, this.state.config);
 	}
 	componentWillReceiveProps(nextProps) {
 		if(this.state.onlyContest) return ;
-		//console.log("Will",nextProps, this.props);
 		if (nextProps.page !== this.props.page || nextProps.page !== this.state.page) {
 			this.setState({
 				page: nextProps.page
@@ -1296,7 +1277,6 @@ class Contest extends React.Component{ // dat msg global variables
 		this.setState(prevState=>({page:aux}));
 	}	
 	render(){
-		console.log("Crender",this.state);
 		var body=(<h1>CONTEST ERROR!... Explicame como llegaste aqui...</h1>);
 		
 		var converter = new showdown.Converter();
