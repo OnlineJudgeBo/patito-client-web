@@ -15,24 +15,34 @@ if($OJ_ONLINE){
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<script src="./js/load.js"></script> 
-		<script>load("materialize", "react", "app");</script>
+		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg"/>
+		<style type='text/css'>strong,em{font-weight: bold;}</style>
+
+		<script src=" /util/materialize/materialize.min.js"></script>
+		<link rel="stylesheet" href="./util/materialize/materialize.min.css"/>
+		<link rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+		<script src='./util/react/react.development.js'></script>
+		<script src='./util/react/react-dom.development.js'></script>
+		<script src='./util/react/babel.min.js'></script>
+
+		<script type="text/babel" src="./js/app.js"></script>
+		
 		<script type="text/babel">
 		 <?php require_once("./init.php");
 		 crearlistContest();?>
 		 function loadPag(){
 			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
 			 ReactDOM.render(<Index dat={dat} msg={msg} list={listContest}/>,
-							 document.getElementById("index"));
+							 document.getElementById("content"));
 		 }
 		 loadPag();
 		</script>		
 		<title>Bienvenido al Juez de la Carrera de Informatica - UMSA BETA</title>
-	    <link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg"/>
 	</head>
 	<body>
-		<div id="index">
-			<div class="preloader-wrapper active">
+		<div id="content">
+			<center><div class="preloader-wrapper active">
 				<div class="spinner-layer spinner-red-only">
 					<div class="circle-clipper left">
 						<div class="circle"></div>
@@ -42,7 +52,7 @@ if($OJ_ONLINE){
 						<div class="circle"></div>
 					</div>
 				</div>
-			</div>
+			</div></center>
 		</div>		
 	</body>
 </html>

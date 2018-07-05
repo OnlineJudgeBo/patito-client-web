@@ -11,32 +11,29 @@ var dat = {
     problemME: <?php $a=false; if(isset($_SESSION['problem_master_editor'])) $a=true; echo "\"$a\"";?>,
     sourceBrowser: <?php $a=false; if(isset($_SESSION['source_browser'])) $a=true; echo "\"$a\"";?>,
     screenWidth: (window.innerWidth<1020?2:1),
-    bg0: [" black", " white"],
-    bg1: [" grey lighten-5", " grey darken-4"], // fondo
-    bg2: [" grey lighten-4", " grey darken-3"], // fondo2
-    bg3: [" blue-grey lighten-5", " grey darken-1"], // header footer
-    bg4: [" blue-grey lighten-4"," grey lighten-3"], // resaltar
-    bg5: [" orange accent-4"," grey accent-3"],
-    bg6: [" orange lighten-5", " grey darken-2"],    
-    tx0: [" black-text", " white-text"],
-    tx1: [" grey-text text-darken-4", " grey-text text-lighten-5"], // fondo
-    tx2: [" grey-text text-darken-3", " grey-text text-lighten-5"], // fondo2
-    tx3: [" blue-grey-text text-darken-4 ", " grey-text text-lighten-4"], // head
-    tx4: [" blue-grey-text text-darken-4", " grey-text text-darken-3"], // resaltar 
-    tx5: [" deep-orange-text text-accent-4", " grey-text text-darken-3"],
-    tx6: [" grey-text text-lighten-5", " grey-text text-lighten-5"],
-    st1: [" grey lighten-5 grey-text text-darken-4",
-          " grey darken-4 grey-text text-lighten-5"], // fondo
-    st3: [" blue-grey lighten-5 blue-grey-text text-darken-4",
-          " grey darken-1"], // header footer
-    st4: [" blue-grey lighten-4 blue-grey-text text-darken-4",
-          " grey lighten-3 grey-text text-darken-3"], // resaltar
-    //st1: [" orange darken orange-text text-darken"," grey darken-3 grey-text text-lighten-4"],
+    bg0: [" black", " white", ""],
+    bg1: [" grey lighten-5", " blue-grey darken-3", ""], // fondo
+    bg2: [" grey lighten-4", " blue-grey darken-2", ""], // fondo2
+    bg3: [" blue-grey lighten-5", " blue-grey darken-2", ""], // header footer
+    bg4: [" blue-grey lighten-4"," blue-grey", ""], // resaltar
+    bg5: [" orange accent-4"," grey accent-3", ""],
+    bg6: [" orange lighten-5", " grey darken-2", ""],    
+    tx0: [" black-text", " white-text", ""],
+    tx1: [" grey-text text-darken-4", " blue-grey-text text-lighten-5", ""], // fondo
+    tx2: [" grey-text text-darken-3", " grey-text text-lighten-5", ""], // fondo2
+    tx3: [" blue-grey-text text-darken-4 ", " teal-text text-lighten-5", ""], // head footer
+    tx4: [" blue-grey-text text-darken-4", " teal-text text-lighten-3", ""], // resaltar 
+    tx5: [" deep-orange-text text-accent-4", " grey-text text-darken-3", ""],
+    tx6: [" grey-text text-lighten-5", " grey-text text-lighten-5", ""],
     bg4HTML: ["#cfd8dc"," grey lighten-3"], // resaltar
     cl1: [" #EF5350", "#EF5350"], //red ligh
     cl2: [" #66BB6A", "#EF5350"] //red ligh //no se 
              
 };
+dat.st1=[dat.bg1[0]+" "+dat.tx1[0], dat.bg1[1]+" "+dat.tx1[1], dat.bg1[2]+" "+dat.tx1[2]]; //fondo body
+dat.st2=[dat.bg2[0]+" "+dat.tx2[0], dat.bg2[1]+" "+dat.tx2[1], dat.bg2[2]+" "+dat.tx2[2]]; // 
+dat.st3=[dat.bg3[0]+" "+dat.tx3[0], dat.bg3[1]+" "+dat.tx3[1], dat.bg3[2]+" "+dat.tx3[2]]; // header footer
+dat.st4=[dat.bg4[0]+" "+dat.tx4[0], dat.bg4[1]+" "+dat.tx4[1], dat.bg4[2]+" "+dat.tx4[2]]; // resaltar
 var msg = {
     problem: <?php echo "\"$MSG_PROBLEM\"";?>,
     //problemId: <?php echo "\"$MSG_PROBLEM_ID\"";?>,
