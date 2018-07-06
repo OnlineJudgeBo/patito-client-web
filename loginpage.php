@@ -25,7 +25,8 @@ if (isset($_SESSION['user_id'])){
 		<script type="text/babel" src="./js/app.js"></script>
 		
 		<script type="text/babel">			
-		 <?php require_once("./init.php");?>
+		 <?php require_once("./init.php");
+         registerPage();?>
 		 function loadPag(){
 			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
 			 ReactDOM.render(<Login dat={dat} msg={msg} />, document.getElementById("content"));

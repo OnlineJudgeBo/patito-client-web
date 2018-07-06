@@ -69,6 +69,7 @@ var msg = {
     //codeLength: <?php echo "\"$MSG_CODE_LENGTH\""?>,
     //submitTime: <?php echo "\"$MSG_SUBMIT_TIME\""?>,
     //submits: "Envios"
+    
 };
 
 

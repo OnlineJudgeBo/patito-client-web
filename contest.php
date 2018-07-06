@@ -5,7 +5,7 @@ require_once('./include/db_info.inc.php'); ?>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg"/>		
-		<style type='text/css'>strong,em{ font-weight: bold;} html{min-height: 100%;}</style>
+		
 		<script src=" /util/materialize/materialize.min.js"></script>
 		<link rel="stylesheet" href="./util/materialize/materialize.min.css"/>
 		<link rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -32,7 +32,8 @@ require_once('./include/db_info.inc.php'); ?>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js'></script>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js'></script>
-		
+
+		<style type='text/css'>strong,em{font-weight: bold;} html{min-height: 100%; position: relative;} body{margin:0;}</style>
 
 		<script type="text/babel">
 		 <?php require_once("./init.php"); contest();
@@ -64,7 +65,7 @@ require_once('./include/db_info.inc.php'); ?>
 			 fjs.parentNode.insertBefore(js, fjs);
 		 }(document, 'script', 'facebook-jssdk'));</script>
 	</head>
-	<body>
+	<body style="min-height: 100%;">
 		<div id="content">
 			<center><div class="preloader-wrapper active">
 				<div class="spinner-layer spinner-red-only">

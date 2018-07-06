@@ -5,8 +5,7 @@ require_once('./include/db_info.inc.php'); ?>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg"/>
-		<style type='text/css'>strong,em{ font-weight: bold;}</style>
-		
+				
 		<script src=" /util/materialize/materialize.min.js"></script>
 		<link rel="stylesheet" href="./util/materialize/materialize.min.css"/>
 		<link rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
@@ -16,7 +15,8 @@ require_once('./include/db_info.inc.php'); ?>
 		<script src='./util/react/babel.min.js'></script>
 
 		<script type="text/babel" src="./js/app.js"></script>
-
+		<style type='text/css'>strong,em{ font-weight: bold;}</style>
+		
 		<script src='./util/showdown/showdown.min.js'></script>
 		<script>showdown.setOption('tables', 1);
 		 showdown.setOption('headerLevelStart', 3);
@@ -24,7 +24,6 @@ require_once('./include/db_info.inc.php'); ?>
 		 showdown.setOption('literalMidWordUnderscores',0);
 		 showdown.setOption('literalMidWordAsterisks',0);</script>
 		
-
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 		<script type='text/x-mathjax-config'>
 		 MathJax.Hub.Config({

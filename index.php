@@ -16,12 +16,13 @@ if($OJ_ONLINE){
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg"/>
-		<style type='text/css'>strong,em{font-weight: bold;}</style>
-
+		
 		<script src=" /util/materialize/materialize.min.js"></script>
 		<link rel="stylesheet" href="./util/materialize/materialize.min.css"/>
 		<link rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 
+		<style type='text/css'>strong,em{font-weight: bold;}</style>
+		
 		<script src='./util/react/react.development.js'></script>
 		<script src='./util/react/react-dom.development.js'></script>
 		<script src='./util/react/babel.min.js'></script>

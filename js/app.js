@@ -1,7 +1,7 @@
 class Errorpage extends React.Component{
 	render(){
 		return (
-			<div className={this.props.dat.st1[localStorage.getItem("skin")]} style={{height:"100%"}}>
+			<div className={this.props.dat.st1[localStorage.getItem("skin")]} style={{minHeight:"100%"}}>
 			  <Header dat={dat} msg={msg}/>
 			  <div style={{align:'center', width:'90%',
 				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
@@ -92,7 +92,7 @@ class Header extends React.Component{
 				{href: "./mail.php",
 				 text: this.props.dat.mail,
 				 iPos: "left", iName: "mail"},
-				{href: "./status.php?user="+this.props.dat.user_id,
+				{href: "./status.php?user_id="+this.props.dat.user_id,
 				 text: "Reciente",
 				 iPos: "left", iName: "send"}],
 			text:'',
@@ -108,20 +108,15 @@ class Header extends React.Component{
 									  iPos:"left", iName:"trending_up"});
 		}
 		if(this.props.dat.user_id!=""){
-			/*this.state.menuMain.push({
-				href: 
-				text: this.props.dat.user_id,
-				iPos: "left", iName: "account_box"
-			});*/
 			if(this.props.dat.mail>0)
 				this.state.menuMain.push({
   					href: "./mail.php", text: this.props.dat.mail,
   					iPos: "left", iName: "mail"
   				});
-			this.state.menuMain.push(/*{href: "#", text: "",iPos: "", iName: "brightness_4"},*/
+			this.state.menuMain.push(
  				{href: "#", text: "",iPos: "", iName: "details"});
 		}else{
-			this.state.menuMain.push(/*{href: "#", text: "",iPos: "", iName: "brightness_4"},*/
+			this.state.menuMain.push(
 				{href: "./loginpage.php", text: "Ingresar/Registrarse",
 				 iPos: "left", iName: "transfer_within_a_station"});
 		}
@@ -151,10 +146,7 @@ class Header extends React.Component{
 		this.state.menu=this.state.menuMain;
 	}
 	handleClick(e, href, icn, click){
-		if(icn=="brightness_4"){
-			//localStorage.setItem("skin", 1-localStorage.getItem("skin"));
-			//loadPag();
-		}else if(icn=="details"){
+		if(icn=="details"){
 			this.setState(prevState => ({menu:prevState.menuUser}));
 		}else{
 			this.setState(prevState => ({menu:prevState.menuMain}));
@@ -176,7 +168,7 @@ class Header extends React.Component{
 				  {this.state.menu.map(item => (<li key={item.href+item.iName}
 														onClick={(e)=>this.handleClick(e,item.href, item.iName, item.click)}>
 												<a href={item.href} className={"hoverable "+this.props.dat.st3[localStorage.getItem("skin")]}
-													   target={item.target}><strong>{item.text}</strong>
+													   target={item.target}><strong className="hide-on-med-and-down">{item.text}</strong>
 													  <i className={"material-icons "+item.iPos} style={{fontSize:+this.props.dat.px}}>{item.iName}</i>
 													</a>
 												</li>
@@ -291,7 +283,7 @@ class Labelcontestlist extends React.Component{
 			  }}
 			  >
 			  <h5
-				className={color}
+				className={color+ " truncate"}
 				style={{padding:'10 20 15 20'}}>
 				<a href={"contest.php?cid="+this.props.id}
 				   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
@@ -361,7 +353,7 @@ class Index extends React.Component {
 				  <div className="row">
 					<div className="col s12">
 					  <h4 style={{textAlign:"center"}}>Actividades</h4>					  
-					  <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;mode=AGENDA&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%235A6986&amp;src=br1o1n70iqgrrbc875vcehacjg%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=google.com_jqv7qt9iifsaj94cuknckrabd8%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=50buvctqlvh01of5oupqeaepv4%40group.calendar.google.com&amp;color=%23A32929&amp;src=p0q3ahkka6tc69jt629k4dk33k%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com&amp;color=%234E5D6C&amp;ctz=America%2FLa_Paz" style={{borderWidth:0}} width="100%" height="500" frameborder="0" scrolling="no"></iframe>
+					  <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;mode=AGENDA&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%235A6986&amp;src=br1o1n70iqgrrbc875vcehacjg%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=google.com_jqv7qt9iifsaj94cuknckrabd8%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=50buvctqlvh01of5oupqeaepv4%40group.calendar.google.com&amp;color=%23A32929&amp;src=p0q3ahkka6tc69jt629k4dk33k%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com&amp;color=%234E5D6C&amp;ctz=America%2FLa_Paz" style={{borderWidth:0}} width="100%" height="500" frameBorder="0" scrolling="no"></iframe>
 					</div>
 				  </div>
 				</div>
@@ -381,49 +373,173 @@ class Login extends React.Component {
 		return (
 			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>				
 			  <Header dat={dat} msg={msg}/>
-			  <br/><br/>
-			  <form action="login.php" method="post">
+			  <div style={{align:'center', width:'90%',
+				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
+				<br/><br/>
 				<div className="row">
-				  <div className="col s10 center-align">
-					<div className="input-field">
-					  <input id="password" name="user_id" type="text"
-							 className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}/>
-					  <label htmlFor="password"
-							 className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						{this.props.msg.userId}</label>
-					</div>
-					<div className="input-field">
-					  <input id="password" name="password" type="password"
-							 className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}/>
-					  <label htmlFor="password"
-							 className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						Password</label>
-					</div>
-				  </div>					
-				  <div className="col s2 center-align">
-					<input name="submit" type="submit" size="10" value="Ingresar"
-						   className={"btn waves-effect"+
-						   this.props.dat.st4[localStorage.getItem('skin')]}
-						   style={{padding:"15 10 15 10", height:"100px"}}/>
+				  <div className="col s7">
+					<Titulo tit={"Ingresar"}
+							dat={this.props.dat}/>
+					<form action="login.php" method="post">
+					  <div className="row">
+						<div className="col s8 center-align">
+						  <div className="input-field">
+							<input id="password" name="user_id" type="text"
+								   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
+								   pattern=".{3,50}"/>
+							<label htmlFor="password"
+								   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+							  {this.props.msg.userId}</label>
+						  </div>
+						  <div className="input-field">
+							<input id="password" name="password" type="password"
+								   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
+								   pattern=".{3,50}"/>
+							<label htmlFor="password"
+								   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+							  Password</label>
+						  </div>
+						</div>					
+						<div className="col s4 center-align">
+						  <button name="submit" type="submit" value="Ingresar"
+								 className={"btn waves-effect valign-wrapper"+
+								 this.props.dat.st4[localStorage.getItem('skin')]}
+								  style={{padding:"15 10 15 10", height:"100px", width:"100%"}}>Ingresar</button>
+						</div>
+					  </div>
+					  <div className="row">
+						<div className="col s10 offset-s1 center-align">
+						  <a href="lostpassword.php"
+							 className={"col s5 btn waves-effect "+
+							 this.props.dat.st4[localStorage.getItem('skin')] }>
+							Recuperar contraseña
+						  </a>
+						  <a href="./registerpage.php"
+							 className={"col s5 offset-s2 btn waves-effect"+
+							 this.props.dat.st4[localStorage.getItem('skin')]}>
+							¿No tienes usuario?
+						  </a>						
+						</div>					  
+					  </div>
+					</form>
+				  </div>
+				  <div className="col offset-s1 s4 ">
+					<Titulo tit={this.props.msg.regInfo}
+							dat={this.props.dat}/>
+					<form method="post" action="register.php" id="formulario">
+					  <div className="input-field">
+						<i className="material-icons prefix">account_box</i>
+						<input placeholder={this.props.msg.userId}
+							   id="userId" name="user_id"
+							   type="text" required
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}
+							   pattern=".{3,50}"/>
+						<label htmlFor="userId"
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+						  {this.props.msg.userId}</label>
+						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+					  </div>
+					  <div className="input-field">
+						<i className="material-icons prefix">tag_faces</i>
+						<input placeholder={this.props.msg.nick}
+							   id="nick" name="name"
+							   type="text" required
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+							   pattern=".{3,50}"/>
+						<label htmlFor="nick"
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+						  {this.props.msg.nick}</label>
+						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+					  </div>
+					  <div className="input-field">
+						<i className="material-icons prefix">tag_faces</i>
+						<input placeholder={this.props.msg.lastname}
+							   id="lastname" name="lastname"
+							   type="text" required
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+							   pattern=".{3,50}"/>
+						<label htmlFor="lastname"
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+						  {this.props.msg.lastname}</label>
+						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+					  </div>
+					  <div className="input-field">
+						<i className="material-icons prefix">email</i>
+						<input placeholder={this.props.msg.email}
+							   id="email" 
+							   type="email" required
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}
+							   name="email"/>
+						<label htmlFor="email"
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+						  {this.props.msg.email}</label>
+						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							  data-error="Correo no valido" data-success="right">correo</span>
+					  </div>
+					  <Select name={"pais"} id="pais"
+							  selected={-1}
+							  options={this.props.dat.paisArr.options}
+							  values={this.props.dat.paisArr.values}
+							  label={this.props.msg.country}
+							  form={"formulario"}
+							  todos={0} onChange={0} dat={this.props.dat}
+							  />
+					  <div className="input-field">
+						<i className="material-icons prefix">school</i>
+						<input placeholder={this.props.msg.institute}
+							   id="institucion" name="school"
+							   type="text" required
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+							   pattern=".{3,50}"/>
+						<label htmlFor="institucion"
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+						  {this.props.msg.institute}</label>
+						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+					  </div>
+					  <div className="input-field">
+						<i className="material-icons prefix">vpn_key</i>
+						<input placeholder={this.props.msg.password}
+							   id="password" name="password"
+							   type="password" required
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+							   pattern=".{6,50}"/>
+						<label htmlFor="password"
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+						  {this.props.msg.password}</label>
+						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							  data-error="Muy corto/Muy largo" data-success="right">6 a 50 caracteres</span>
+					  </div>
+					  <div className="input-field">
+						<i className="material-icons prefix">vpn_key</i>
+						<input placeholder={this.props.msg.repeatPassword}
+							   id="rptpassword" name="rptpassword"
+							   type="password" required
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+							   pattern=".{6,50}"/>
+						<label htmlFor="rptpassword"
+							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+						  {this.props.msg.repeatPassword}</label>
+						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							  data-error="Muy corto/Muy largo" data-success="right">6 a 50 caracteres</span>
+					  </div>
+					  <button className={"btn waves-effect"+
+							  this.props.dat.st4[localStorage.getItem("skin")]}
+							  type="submit" name="submit" id="submit">{"Crear"}
+						<i className="material-icons right">check</i>
+					  </button>
+					  <button className={"btn waves-effect"+
+							  this.props.dat.st4[localStorage.getItem("skin")]}
+							  type="reset" name="reset" id="reset">{"Reset"}
+						<i className="material-icons right">clear</i>
+					  </button>
+					</form>
 				  </div>
 				</div>
-				<div className="row">
-				  <div className="col s10 offset-s1 center-align">
-					<a href="lostpassword.php"
-					   className={"col s5 btn waves-effect "+
-					   this.props.dat.st4[localStorage.getItem('skin')] }>
-					  Recuperar contraseña
-					</a>
-					<a href="./registerpage.php"
-					   className={"col s5 offset-s2 btn waves-effect"+
-					   this.props.dat.st4[localStorage.getItem('skin')]}>
-					  ¿No tienes usuario?
-					</a>
-					
-				  </div>
-				  
-				</div>
-			  </form>
+			  </div>
 			  <Footer dat={dat} msg={msg}/>
 			</div>
 		);
@@ -598,7 +714,7 @@ class Select extends React.Component{
 					  onChange={this.handleChange}>
 				{aux}
 				{this.props.options.map((item , index)=> (
-					<option value={index} key={index} selected={this.props.selected==index}>
+					<option value={(this.props.values?this.props.values[index]:index)} key={index} selected={this.props.selected==index}>
 					  {item}
 					</option>
 				))}
@@ -1052,7 +1168,7 @@ class Problem extends React.Component {
 				<Titulo tit={this.props.msg.problem+" "+
 						this.props.dat.PID[this.props.problem.pId]+": "+
 						this.props.problem.title} dat={this.props.dat}/>);
-			if(this.props.problem.submit)
+			if(this.props.problem.submit && (this.props.dat.user_id!=""))
 				menu.push({text:this.props.msg.submit,
 						   link:"submitpage.php?cid="+this.props.problem.cId+
 						   "&pid="+this.props.problem.pId+"&langmask="+
@@ -1065,21 +1181,20 @@ class Problem extends React.Component {
 		}else{
 			title=(<Titulo tit={this.props.problem.id+":"+this.props.problem.title}
 				   dat={this.props.dat}/>);
-			if(this.props.problem.submit)
+			if(this.props.problem.submit && (this.props.dat.user_id!=""))
 				menu.push({text:this.props.msg.submit,
 						   link:"submitpage.php?id="+this.props.problem.id,
 						   icon:"send"});
 			menu.push({text:this.props.msg.status,
 					   link:"status.php?problem_id="+this.props.problem.id,
 					   icon:"list"});
-		}
-		
+		}		
 		menu.push({text:"Estadísticas",
 				   link:"problemstatistics.php?id="+this.props.problem.id,
 				   icon:"trending_up"});
-		menu.push({text:this.props.msg.bbs,
+		/*menu.push({text:this.props.msg.bbs,
 				   link:"#",//"bbs.php?pid="+this.props.problem.id,
-				   icon:"forum"});
+				   icon:"forum"});*/
 		var spc;
 		if(this.props.dat.admin){
 			menu.push({text:"Editar",
@@ -1090,9 +1205,10 @@ class Problem extends React.Component {
 					   link:"admin/quixplorer/index.php?action=list&dir="+
 					   this.props.problem.id+"&order=name&srt=yes",
 					   icon:"attach_file"});
+			spc=(<div className="col s1"></div>);
 		}else{
-			if(!(this.props.problem.submit))spc=(<div className="col s3"></div>);
-			else spc=(<div className="col s2"></div>);
+			if((this.props.problem.submit) && (this.props.dat.user_id!=""))spc=(<div className="col s3"></div>);
+			else spc=(<div className="col s4"></div>);
 		}
 		var desHtml = (converter.makeHtml(this.props.problem.des));// ltxParse
 		var inHtml = (converter.makeHtml(this.props.problem.input));
@@ -1405,7 +1521,7 @@ class Ranklist extends React.Component{
 				<Titulo tit={this.props.msg.ranklist} dat={this.props.dat}/>
 				<form action="userinfo.php">
 				  <div className="row">
-					<div className="input-field col s2">
+					<div className="input-field inline col s2">
 					  <input placeholder="usuario"
 							 id="userId"
 							 type="text"
@@ -1468,16 +1584,30 @@ class Userinfo extends React.Component{
 			  <Header dat={dat} msg={msg}/>
 			  <div style={{align:'center', width:'90%',
 				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
-				<h1>{this.props.dat.getUser+":"+this.props.dat.userNick}</h1>
-				<h4>{((this.props.dat.userSchool!="")?this.props.dat.userSchool:"-")
-				  +" "+this.props.dat.userEmail}</h4>
+				<h1>{this.props.dat.user.rank+". "+this.props.dat.user.id+":"+this.props.dat.user.nick}</h1>
+				<h4>{((this.props.dat.user.school!="")?this.props.dat.user.school:"-")
+				  +" "+this.props.dat.user.email}</h4>
 				<a className={"btn waves-effect col s3"+
 				   this.props.dat.st4[localStorage.getItem("skin")]}
-				   href={"href=mail.php?to_user=$user"+this.props.dat.getUser}>
+				   href={"href=mail.php?to_user=$user"+this.props.dat.user.id}>
 				  {this.props.msg.mail}
 				  <i className="material-icons right">mail</i>
 				</a>
-				<Tabla dat={dat} tabla={this.props.tabla}/>
+				<div className="row">
+				  <div className="col s5">
+					<Tabla dat={dat} tabla={this.props.dat.user.tablaSubmit}/>
+				  </div>
+				  <div className="col s7">
+					{this.props.dat.user.problemsAc.map((item) =>
+														<span><a className={this.props.dat.st4[localStorage.getItem("skin")]}
+														   href={"problem.php?id="+item} key={item} target="_blank">{item}
+														</a> </span>
+					)}
+					
+				  </div>
+				</div>
+				
+			{this.props.dat.user.tablaLogs.body.rows.length>0?<Tabla dat={dat} tabla={this.props.dat.user.tablaLogs}/>:""}
 			  </div>
 			  <Footer dat={dat} msg={msg}/>
 			</div>	

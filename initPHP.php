@@ -1054,29 +1054,6 @@ function contest(){
     }
     
 }
-function crearTablaUserlog(){
-    echo "var TablaUL={props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}};";
-    echo "TablaUL.head.row.push({text:\"UserID\"},{text:\"Password\"},{text:\"IP\"},{text:\"Time\"});";
-    $user=getUser();
-    $user_mysql=mysql_real_escape_string($user);
-    if (isset($_SESSION['administrator'])){
-        $sql="SELECT * FROM `loginlog` WHERE `user_id`='$user_mysql' order by `time` desc LIMIT 0,10";
-        $result=mysql_query($sql) or die(mysql_error());
-        $view_userinfo=array();
-        $i=0;
-        for (;$row=mysql_fetch_row($result);){
-            echo "TablaUL.body.rows.push({props:{},row:[{},{},{},{}]});\n";
-            $view_userinfo[$i]=$row;
-            echo "TablaUL.body.rows[$i].row[0].text=\"$row[0]\";";
-            echo "TablaUL.body.rows[$i].row[1].text=\"$row[1]\";";
-            echo "TablaUL.body.rows[$i].row[2].text=\"$row[2]\";";
-            echo "TablaUL.body.rows[$i].row[3].text=\"$row[3]\";";
-            $i++;
-        }
-        //echo "</table>";
-        mysql_free_result($result);
-    }
-}
 
 function crearTablaRanklist(){
     global $MSG_Number, $MSG_USER, $MSG_NICK, $MSG_AC, $MSG_SUBMIT, $MSG_RATIO, $MSG_RANKLIST, $OJ_MEMCACHE,
@@ -1458,5 +1435,157 @@ function crearContestRank(){
         }
     }
     crearDatosContest($cid);									
+}
+function registerPage(){
+    global $MSG_REG_INFO, $MSG_USER_ID, $MSG_NICK, $MSG_LASTNAME, $MSG_EMAIL, $MSG_COUNTRY, $MSG_INSTITUTE, $MSG_PASSWORD, $MSG_REPEAT_PASSWORD;
+    echo "msg.regInfo=\"$MSG_REG_INFO\";";
+    echo "msg.userId=\"$MSG_USER_ID\";";
+    echo "msg.nick=\"$MSG_NICK\";";
+    echo "msg.lastname=\"$MSG_LASTNAME\";";
+    echo "msg.email=\"$MSG_EMAIL\";";
+    echo "msg.country=\"$MSG_COUNTRY\";";
+    echo "msg.institute=\"$MSG_INSTITUTE\";";
+    echo "msg.password=\"$MSG_PASSWORD\";";
+    echo "msg.repeatPassword=\"$MSG_REPEAT_PASSWORD\";";
+    $sql = "SELECT * FROM pais order by usuarios";
+    $data = mysql_query($sql);
+    //$sel = " selected";
+    echo "dat.paisArr={options:[], values:[]};";
+    for ($i=0; $i <mysql_num_rows($data) ; $i++) { 
+        //$retorno .="<option value='".mysql_result($data, $i,'id_pais')."'".$sel." >".utf8_decode(mysql_result($data, $i,'nombre'))."</option>";
+        //$sel = "";
+        echo "dat.paisArr.options.push(\"".utf8_decode(mysql_result($data, $i,'nombre'))."\");";
+        echo "dat.paisArr.values.push(\"".mysql_result($data, $i,'id_pais')."\");\n";
+    }
+}
+
+function userInfo(){
+    global $Rank, $MSG_MAIL, $MSG_NUMBER, $MSG_SOLVED, $jresult;
+    $user=$_GET['user'];
+    if (!is_valid_user_name($user)){
+        echo "dat.erro=\"</br></br></br><h3>Usuario no valido!...</h3></br></br></br>\";";
+        return ;
+    }
+    $view_title=$user;
+    $user_mysql=mysql_real_escape_string($user);
+    $sql="SELECT `school`,`email`,`nick` FROM `users` WHERE `user_id`='$user_mysql'";
+    $result=mysql_query($sql);
+    $row_cnt=mysql_num_rows($result);
+    if ($row_cnt==0){
+        echo "dat.error=\"</br></br></br><h3>No hay tal usuario!...</h3></br></br></br>\";";
+        return ;
+    }
+    $row=mysql_fetch_object($result);
+    $school=$row->school;
+    $email=$row->email;
+    $nick=$row->nick;
+    mysql_free_result($result);
+    // count solved
+    $sql="SELECT count(DISTINCT problem_id) as `ac` FROM `solution` WHERE `user_id`='".$user_mysql."' AND `result`=4";
+    $result=mysql_query($sql) or die(mysql_error());
+    $row=mysql_fetch_object($result);
+    $AC=$row->ac;
+    mysql_free_result($result);
+    // count submission
+    $sql="SELECT count(solution_id) as `Submit` FROM `solution` WHERE `user_id`='".$user_mysql."'";
+    $result=mysql_query($sql) or die(mysql_error());
+    $row=mysql_fetch_object($result);
+    $Submit=$row->Submit;
+    mysql_free_result($result);
+    // update solved 
+    $sql="UPDATE `users` SET `solved`='".strval($AC)."',`submit`='".strval($Submit)."' WHERE `user_id`='".$user_mysql."'";
+    $result=mysql_query($sql);
+    $sql="SELECT count(*) as `Rank` FROM `users` WHERE `solved`>$AC";
+    $result=mysql_query($sql);
+    $row=mysql_fetch_array($result);
+    $Rank=intval($row[0])+1;
+
+    $i=0;
+    $sql="SELECT result,count(1) FROM solution WHERE `user_id`='$user_mysql'  AND result>=4 group by result order by result";
+    $result=mysql_query($sql);
+    $view_userstat=array();
+    while($row=mysql_fetch_array($result)){
+        $view_userstat[$i++]=$row;
+    }
+    mysql_free_result($result);
+
+    $sql=	"SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution` where  `user_id`='$user_mysql'   group by md order by md desc ";
+    $result=mysql_query($sql);//mysql_escape_string($sql));
+    $chart_data_all= array();
+    //echo $sql;
+    
+    while ($row=mysql_fetch_array($result)){
+        $chart_data_all[$row['md']]=$row['c'];
+    }
+    
+    $sql=	"SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution` where  `user_id`='$user_mysql' and result=4 group by md order by md desc ";
+    $result=mysql_query($sql);//mysql_escape_string($sql));
+    $chart_data_ac= array();
+    //echo $sql;
+    while ($row=mysql_fetch_array($result)){
+        $chart_data_ac[$row['md']]=$row['c'];
+    }  
+    mysql_free_result($result);
+
+
+    ///TABLA USER LOG
+
+    echo "dat.user={};";
+    echo "dat.user.tablaLogs={props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}};";
+    echo "dat.user.tablaLogs.head.row.push({text:\"UserID\"},{text:\"Password\"},{text:\"IP\"},{text:\"Time\"});";
+    $user=getUser();
+    $user_mysql=mysql_real_escape_string($user);
+    if (isset($_SESSION['administrator'])){
+        $sql="SELECT * FROM `loginlog` WHERE `user_id`='$user_mysql' order by `time` desc LIMIT 0,10";
+        $result=mysql_query($sql) or die(mysql_error());
+        $view_userinfo=array();
+        $i=0;
+        for (;$row=mysql_fetch_row($result);){
+            echo "dat.user.tablaLogs.body.rows.push({props:{},row:[{},{},{},{}]});\n";
+            $view_userinfo[$i]=$row;
+            echo "dat.user.tablaLogs.body.rows[$i].row[0].text=\"$row[0]\";";
+            echo "dat.user.tablaLogs.body.rows[$i].row[1].text=\"$row[1]\";";
+            echo "dat.user.tablaLogs.body.rows[$i].row[2].text=\"$row[2]\";";
+            echo "dat.user.tablaLogs.body.rows[$i].row[3].text=\"$row[3]\";";
+            $i++;
+        }
+        //echo "</table>";
+        mysql_free_result($result);
+    }
+    // DATOS USER    
+    echo "dat.user.id=\"$user\";";
+    echo "dat.user.nick=\"$nick\";";
+    echo "dat.user.school=\"$school\";";
+    echo "dat.user.email=\"$email\";";
+    echo "msg.mail=\"$MSG_MAIL\";";
+    echo "msg.number=\"$MSG_NUMBER\";";
+    echo "dat.user.rank=\"$Rank\";";
+    echo "msg.solved=\"$MSG_SOLVED\";";
+    echo "dat.user.ac=\"$AC\";";
+    echo "dat.user.problemsAc=[];";
+    $sql="SELECT DISTINCT `problem_id` FROM `solution` WHERE `user_id`='$user_mysql' AND `result`=4 ORDER BY `problem_id` ASC";	
+    if (!($result=mysql_query($sql))) echo mysql_error();
+    while ($row=mysql_fetch_array($result))
+        echo "dat.user.problemsAc.push(".$row[0].");\n";
+    mysql_free_result($result);
+    echo "dat.user.submit=\"$Submit\";";
+    echo "dat.user.tablaSubmit={props:{}, head:{props:{}, row:[]}, body:{props:{}, rows:[]}};";
+    echo "dat.user.tablaSubmit.head.row.push({text:\"N\"},{text:\"Tipo\"},{text:\"#\"});";
+    echo "dat.user.tablaSubmit.body.rows.push({props:{},row:[{},{},{}]});\n";
+    echo "dat.user.tablaSubmit.body.rows[0].row[0].text=0;";
+    echo "dat.user.tablaSubmit.body.rows[0].row[1].text=\"Envios\";";
+    echo "dat.user.tablaSubmit.body.rows[0].row[2].text=$Submit;";
+    echo "dat.user.tablaSubmit.body.rows[0].row[2].link=\"status.php?user_id=$user\";";
+    $i=1;
+    foreach($view_userstat as $row){
+        echo "dat.user.tablaSubmit.body.rows.push({props:{},row:[{},{},{}]});\n";
+        echo "dat.user.tablaSubmit.body.rows[$i].row[0].text=$i;";
+        echo "dat.user.tablaSubmit.body.rows[$i].row[1].text=\"".$jresult[$row[0]]."\";";
+        echo "dat.user.tablaSubmit.body.rows[$i].row[2].text=".$row[1].";\n";
+        echo "dat.user.tablaSubmit.body.rows[$i].row[2].link=\"status.php?user_id=$user&jresult=".$row[0]."\";";
+        //echo "<tr bgcolor=#D7EBFF><td>".$jresult[$row[0]]."<td align=center><a href=status.php?user_id=$user&jresult=".$row[0]." >".$row[1]."</a></tr>";
+        $i++;
+    }
+    //echo "<tr bgcolor=#D7EBFF><td>".$jresult[$row[0]]."<td align=center><a href=status.php?user_id=$user&jresult=".$row[0]." >".$row[1]."</a></tr>";
 }
 ?>
