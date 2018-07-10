@@ -314,7 +314,7 @@ class Contestlist extends React.Component {
 			  <h4 className={this.props.dat.st4[localStorage.getItem("skin")]+" center-align"}
 				  style={{padding:"5 20 15 20",borderRadius: 5}}>
 				{this.props.msg.contests}
-			  </h4>			
+			  </h4>
 			  {this.state.items.map(item => (				  
 					  <Labelcontestlist
 							start={item.start}
@@ -352,7 +352,10 @@ class Index extends React.Component {
 				  </div>
 				  <div className="row">
 					<div className="col s12">
-					  <h4 style={{textAlign:"center"}}>Actividades</h4>					  
+					  <h4 className={this.props.dat.st4[localStorage.getItem("skin")]+" center-align"}
+						  style={{padding:"5 20 15 20",borderRadius: 5}}>
+						Actividades
+					  </h4>	
 					  <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;mode=AGENDA&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%235A6986&amp;src=br1o1n70iqgrrbc875vcehacjg%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=google.com_jqv7qt9iifsaj94cuknckrabd8%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=50buvctqlvh01of5oupqeaepv4%40group.calendar.google.com&amp;color=%23A32929&amp;src=p0q3ahkka6tc69jt629k4dk33k%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com&amp;color=%234E5D6C&amp;ctz=America%2FLa_Paz" style={{borderWidth:0}} width="100%" height="500" frameBorder="0" scrolling="no"></iframe>
 					</div>
 				  </div>
@@ -607,7 +610,7 @@ class Tabla extends React.Component{
 												 (iitem.ctext?iitem.ctext:"")+" "+
 									  (iitem.bgcolor?iitem.bgcolor:"")}
 									  key={"tr"+index+"td"+iindex+iitem.link}
-									  style={{height: "10px", padding: "0 0 0 0",width:"1%",
+									  style={{ padding: "5 0 5 0",
 											  borderBottomColor:iitem.borderBottomColor,
 											  borderBottomStyle:iitem.borderBottomStyle,
 											  borderBottomWidth:iitem.borderBottomWidth,
@@ -905,7 +908,8 @@ class Submit extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleClick = this.handleClick.bind(this);
-		this.handleChange = this.handleChange.bind(this);		
+		this.handleChange = this.handleChange.bind(this);
+		console.log(ace);
 	}
 	handleClick(event) {
 		do_submit(editor);
@@ -914,25 +918,26 @@ class Submit extends React.Component {
 		this.cambiarLenguage(document.getElementById("language").value);
 	}
 	componentDidMount(){
-		editor = ace.edit("editor");
-		//editor.setTheme("ace/theme/monokai");
-		editor.session.setMode("ace/mode/javascript");		
+		this.props.dat.editor = ace.edit("editor");
+		if(localStorage.getItem("skin")==1)
+			this.props.dat.editor.setTheme("ace/theme/monokai");
+		this.props.dat.editor.session.setMode("ace/mode/javascript");		
 		//editor.setReadOnly(true);
 		document.getElementById("editor").style.position="relative";
 		document.getElementById("editor").style.width='100%';
 		document.getElementById("editor").style.height='500px';
 		document.getElementById("editor").style.fontSize='20px';
-		editor.resize();
-		this.cambiarLenguage(document.getElementById("language").value);
+		this.props.dat.editor.resize();
+		//this.cambiarLenguage(document.getElementById("language").value);
 	}
 	cambiarLenguage(lan){
-		if(lan==0) editor.session.setMode("ace/mode/c_cpp");
-		if(lan==1) editor.session.setMode("ace/mode/c_cpp");
-		if(lan==2) editor.session.setMode("ace/mode/pascal");
-		if(lan==3) editor.session.setMode("ace/mode/java");
-		if(lan==10) editor.session.setMode("ace/mode/objectivec");
-		if(lan==11) editor.session.setMode("ace/mode/c_cpp");
-		if(lan==12) editor.session.setMode("ace/mode/javascript");		
+		if(lan==0) this.props.dat.editor.session.setMode("ace/mode/c_cpp");
+		if(lan==1) this.props.dat.editor.session.setMode("ace/mode/c_cpp");
+		if(lan==2) this.props.dat.editor.session.setMode("ace/mode/pascal");
+		if(lan==3) this.props.dat.editor.session.setMode("ace/mode/java");
+		if(lan==10) this.props.dat.editor.session.setMode("ace/mode/objectivec");
+		if(lan==11) this.props.dat.editor.session.setMode("ace/mode/c_cpp");
+		if(lan==12) this.props.dat.editor.session.setMode("ace/mode/javascript");		
 	}
 	render() {
 		var aux;
@@ -978,8 +983,7 @@ class Submit extends React.Component {
 				<textarea style={{width:"80%", display:"none"}} cols="180" rows="20"
 			id="source" name="source"></textarea>
 				<div id="editor" style={{position:"relative"}}>
-				{this.props.dat.viewsrc}
-			</div>
+				{this.props.dat.viewsrc}</div>
 				<input id="Submit"
 			className={"btn waves-effect col s4"+
 					   this.props.dat.st4[localStorage.getItem("skin")]} type="button"
@@ -1195,7 +1199,7 @@ class Problem extends React.Component {
 					   this.props.dat.getKey,
 					   icon:"edit"});
 			menu.push({text:"Casos",
-					   link:"admin/quixplorer/index.php?action=list&dir="+
+					   link:"jv/admin/quixplorer/index.php?action=list&dir="+
 					   this.props.problem.id+"&order=name&srt=yes",
 					   icon:"attach_file"});
 			spc=(<div className="col s1"></div>);
@@ -1232,7 +1236,7 @@ class Problem extends React.Component {
 						<div className={"col s2 hoverable btn"+this.props.dat.st4[localStorage.getItem("skin")]} key={item.icon}>
 						  <a href={item.link} target="_blank"
 							 className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-							{item.text}
+							<span className="hide-on-med-and-down">{item.text}</span>
 							<i className="material-icons right">{item.icon}</i></a>
 						</div>
 					))}

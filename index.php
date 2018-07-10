@@ -21,13 +21,12 @@ if($OJ_ONLINE){
 		<link rel="stylesheet" href="./util/materialize/materialize.min.css"/>
 		<link rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 
-		<style type='text/css'>strong,em{font-weight: bold;}</style>
-		
 		<script src='./util/react/react.development.js'></script>
 		<script src='./util/react/react-dom.development.js'></script>
 		<script src='./util/react/babel.min.js'></script>
 
 		<script type="text/babel" src="./js/app.js"></script>
+		<style type='text/css'>strong,em{font-weight: bold;}</style>
 		
 		<script type="text/babel">
 		 <?php require_once("./init.php");

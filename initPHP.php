@@ -673,7 +673,7 @@ function crearTablaStatus(){
             if (isset($cid)) {
                 echo "TablaS.body.rows[$i].row[2].text=\"".$PID[$row['num']]."\";";
             } else {
-                echo "TablaS.body.rows[$i].row[2].text=\"".$row['problem_id']."\";";
+                echo "TablaS.body.rows[$i].row[2].text=\"".$PID[$row['num']]." (".$row['problem_id'].")\";";
             }
         } else {
             echo "TablaS.body.rows[$i].row[2].link=\"problem.php?id=".$row['problem_id']."\";";
@@ -687,15 +687,15 @@ function crearTablaStatus(){
                 if($row['result']==5) echo "TablaS.body.rows[$i].props.bgColor=\"orange\";";
                 if($row['result']>=6 and $row['result']<=11) echo "TablaS.body.rows[$i].props.bgColor=\"red\";";
             }
-        }else{
-            if($row['result']==4) echo "TablaS.body.rows[$i].row[3].ctext=\"green-text\";";
-            if($row['result']==5) echo "TablaS.body.rows[$i].row[3].ctext=\"orange-text\";";
-            if($row['result']>=6 and $row['result']<=11) echo "TablaS.body.rows[$i].row[3].ctext=\"red-text\";";
-            if($row['result']==7) echo "TablaS.body.rows[$i].row[5].ctext=\"red-text\";";
-            if($row['result']==8) echo "TablaS.body.rows[$i].row[4].ctext=\"red-text\";";
-            if($row['result']==10)echo "TablaS.body.rows[$i].row[7].ctext=\"red-text\";";
-            if($row['result']==11 || $row['result']==10)echo "TablaS.body.rows[$i].row[6].ctext=\"red-text\";";
         }
+        if($row['result']==4) echo "TablaS.body.rows[$i].row[3].ctext=\"green-text\";"; // AC
+        if($row['result']==5) echo "TablaS.body.rows[$i].row[3].ctext=\"orange-text\";"; // PE
+        if($row['result']>=6 and $row['result']<=11) echo "TablaS.body.rows[$i].row[3].ctext=\"red-text\";"; // !AC
+        if($row['result']==7) echo "TablaS.body.rows[$i].row[5].ctext=\"red-text\";"; // TLE
+        if($row['result']==8) echo "TablaS.body.rows[$i].row[4].ctext=\"red-text\";"; // MLE
+        //if($row['result']==10)echo "TablaS.body.rows[$i].row[7].ctext=\"red-text\";"; // CE
+        if($row['result']==11 || $row['result']==10)echo "TablaS.body.rows[$i].row[6].ctext=\"red-text\";"; // CE RE
+        
         if (intval($row['result']) == 11 && ((isset($_SESSION['user_id']) && $row['user_id'] == $_SESSION['user_id']) || isset($_SESSION['source_browser']))) {
             echo "TablaS.body.rows[$i].row[3].link=\"ceinfo.php?sid=".$row['solution_id']."\";";
         } else
