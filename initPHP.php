@@ -680,14 +680,8 @@ function crearTablaStatus(){
             echo "TablaS.body.rows[$i].row[2].text=\"".$row['problem_id']."\";";
         }
         echo "TablaS.body.rows[$i].row[3].text=\"".$judge_result[$row['result']]."\";\n";
-        echo "TablaS.body.rows[$i].row[3].textAlign=\"center\";\n";        
-        if (isset($_SESSION['user_id'])){
-            if($row['user_id']==$_SESSION['user_id']){
-                if($row['result']==4) echo "TablaS.body.rows[$i].props.bgColor=\"green\";";
-                if($row['result']==5) echo "TablaS.body.rows[$i].props.bgColor=\"orange\";";
-                if($row['result']>=6 and $row['result']<=11) echo "TablaS.body.rows[$i].props.bgColor=\"red\";";
-            }
-        }
+        echo "TablaS.body.rows[$i].row[3].textAlign=\"center\";\n";
+
         if($row['result']==4) echo "TablaS.body.rows[$i].row[3].ctext=\"green-text\";"; // AC
         if($row['result']==5) echo "TablaS.body.rows[$i].row[3].ctext=\"orange-text\";"; // PE
         if($row['result']>=6 and $row['result']<=11) echo "TablaS.body.rows[$i].row[3].ctext=\"red-text\";"; // !AC
@@ -695,6 +689,19 @@ function crearTablaStatus(){
         if($row['result']==8) echo "TablaS.body.rows[$i].row[4].ctext=\"red-text\";"; // MLE
         //if($row['result']==10)echo "TablaS.body.rows[$i].row[7].ctext=\"red-text\";"; // CE
         if($row['result']==11 || $row['result']==10)echo "TablaS.body.rows[$i].row[6].ctext=\"red-text\";"; // CE RE
+
+        if (isset($_SESSION['user_id'])){
+            if($row['user_id']==$_SESSION['user_id']){
+                echo "TablaS.body.rows[$i].row[3].ctext=\"black-text\";";
+                echo "TablaS.body.rows[$i].row[4].ctext=\"black-text\";";
+                echo "TablaS.body.rows[$i].row[5].ctext=\"black-text\";";
+                echo "TablaS.body.rows[$i].row[6].ctext=\"black-text\";";                
+                if($row['result']==4) echo "TablaS.body.rows[$i].props.bgColor=\"green\";";
+                if($row['result']==5) echo "TablaS.body.rows[$i].props.bgColor=\"orange\";";
+                if($row['result']>=6 and $row['result']<=11) echo "TablaS.body.rows[$i].props.bgColor=\"red\";";
+            }
+        }
+        
         
         if (intval($row['result']) == 11 && ((isset($_SESSION['user_id']) && $row['user_id'] == $_SESSION['user_id']) || isset($_SESSION['source_browser']))) {
             echo "TablaS.body.rows[$i].row[3].link=\"ceinfo.php?sid=".$row['solution_id']."\";";
