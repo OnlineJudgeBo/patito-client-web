@@ -339,9 +339,9 @@ class Index extends React.Component {
 			  <Header dat={dat} msg={msg}/>				
 			  <div className="row">
 				<div className="col s9 center-align" id="principal">
-				  <h1>Juez Virtual</h1>
-				  <h2>Universidad Mayor de San Andres</h2>
-				  <img className="responsive-img" src="./image/opibanner.png" height="218px;"/>
+				  <h2>Juez Virtual</h2>
+				  <h3>Universidad Mayor de San Andres</h3>
+				  <img className="responsive-img" src="./image/opibanner.png" style={{height:"180px"}}/>
 				  <h3>Tambien puedes visitar nuestra antigua interfaz <a href="https://jv.umsa.bo/jv/">Clic</a></h3>
 				</div>				
 				<div className="col s3" id="contest-list">
