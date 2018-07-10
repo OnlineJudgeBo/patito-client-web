@@ -342,7 +342,7 @@ class Index extends React.Component {
 				  <h1>Juez Virtual</h1>
 				  <h2>Universidad Mayor de San Andres</h2>
 				  <img className="responsive-img" src="./image/opibanner.png"/>
-				  <h3>Tambien puedes visitar nuestra antigua interfaz</h3>
+				  <h3>Tambien puedes visitar nuestra antigua interfaz <a href="https://jv.umsa.bo/jv/">Clic</a></h3>
 				</div>				
 				<div className="col s3" id="contest-list">
 				  <div className="row">
