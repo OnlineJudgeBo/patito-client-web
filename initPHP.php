@@ -27,7 +27,6 @@ function checkmail(){
     return $retmsg;
 }  
 function check_ac($cid,$pid){
-	require_once("./include/db_info.inc.php");
 	$sql="SELECT count(*) FROM `solution` WHERE `contest_id`='$cid' AND `num`='$pid' AND `result`='4' AND `user_id`='".$_SESSION['user_id']."'";
 	$result=mysql_query($sql);
 	$row=mysql_fetch_array($result);
@@ -341,23 +340,6 @@ function getGet(){
     return $ans;
 }
 
-function crearlistContest(){
-    echo "var listContest=[];";
-    $sql="SELECT * FROM `contest` WHERE `defunct`='N' ORDER BY `contest_id` DESC limit 100";
-    $result=mysql_query($sql);
-    $view_contest=Array();
-    while ($row=mysql_fetch_object($result)){
-        $fecha=date("Y-m-d H:i:s");
-        //if (!isset($_SESSION['administrator']) && intval($row->private)!=0) continue;
-        if (time()>strtotime($row->end_time)) continue;
-        $order=array("\r\n", "\n", "\r");
-        $titulo=str_replace($order, "\\n", $row->title);
-        $titulo=str_replace("\"", "\\\"", $titulo);
-        echo "listContest.push({id:$row->contest_id, title:\"$titulo\", start:\"$row->start_time\", end:\"$row->end_time\", now:\"$fecha\", tipo:\"$row->private\"});";
-    }
-    mysql_free_result($result);
-}
-
 function arrSub(){
     $subArr=Array();
     // sub_arry vector donde [problem_id] esta en true si le acepto y false si no 
@@ -404,7 +386,7 @@ function imprimirProb($row, $pid, $cid, $root){
     echo "$root.hint=".json_encode($row->hint).";";
     echo "$root.source=\"$row->source\";\n";
 }
-function problem(){
+/*function problem(){ //OBSOLETO
     global $OJ_TEMPLATE, $MSG_PROBLEM, $PID, $MSG_PROBLEMS, $view_title;
     $now=strftime("%Y-%m-%d %H:%M",time());
     if (isset($_GET['id'])){//practice
@@ -450,7 +432,7 @@ function problem(){
         $view_title=$MSG_PROBLEMS;
         crearTablaProblemSet();
     }
-}
+    }
 function crearTablaProblemSet(){ // mas datos 
     global $MSG_PROBLEM_ID,$MSG_TITLE,$MSG_SOURCE,$MSG_AC;
     // sub_arry vector donde [problem_id] esta en true si le acepto y false si no 
@@ -512,7 +494,7 @@ function crearTablaProblemSet(){ // mas datos
         $i++;
     }
     mysql_free_result($result);  
-}
+    }*/
 $top;
 $bottom;
 function crearTablaStatus(){
@@ -1442,28 +1424,6 @@ function crearContestRank(){
         }
     }
     crearDatosContest($cid);									
-}
-function registerPage(){
-    global $MSG_REG_INFO, $MSG_USER_ID, $MSG_NICK, $MSG_LASTNAME, $MSG_EMAIL, $MSG_COUNTRY, $MSG_INSTITUTE, $MSG_PASSWORD, $MSG_REPEAT_PASSWORD;
-    echo "msg.regInfo=\"$MSG_REG_INFO\";";
-    echo "msg.userId=\"$MSG_USER_ID\";";
-    echo "msg.nick=\"$MSG_NICK\";";
-    echo "msg.lastname=\"$MSG_LASTNAME\";";
-    echo "msg.email=\"$MSG_EMAIL\";";
-    echo "msg.country=\"$MSG_COUNTRY\";";
-    echo "msg.institute=\"$MSG_INSTITUTE\";";
-    echo "msg.password=\"$MSG_PASSWORD\";";
-    echo "msg.repeatPassword=\"$MSG_REPEAT_PASSWORD\";";
-    $sql = "SELECT * FROM pais order by usuarios";
-    $data = mysql_query($sql);
-    //$sel = " selected";
-    echo "dat.paisArr={options:[], values:[]};";
-    for ($i=0; $i <mysql_num_rows($data) ; $i++) { 
-        //$retorno .="<option value='".mysql_result($data, $i,'id_pais')."'".$sel." >".utf8_decode(mysql_result($data, $i,'nombre'))."</option>";
-        //$sel = "";
-        echo "dat.paisArr.options.push(\"".utf8_decode(mysql_result($data, $i,'nombre'))."\");";
-        echo "dat.paisArr.values.push(\"".mysql_result($data, $i,'id_pais')."\");\n";
-    }
 }
 
 function userInfo(){

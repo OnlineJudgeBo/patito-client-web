@@ -30,8 +30,8 @@
 			
 		}else{
 			echo "<script language='javascript'>\n";
-            echo "window.history.back()\n";
-			echo "history.go(-2);\n";
+            //echo "window.history.back()\n";
+			echo "history.go(-1);\n";
 			echo "</script>";
 		}
 	}else{

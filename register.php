@@ -167,4 +167,4 @@ while ($row=mysql_fetch_assoc($result)){
 $_SESSION['ac']=Array();
 $_SESSION['sub']=Array();
 ?>
-<script>history.go(-2);</script>
+<script>history.go(-1);</script>

@@ -29,7 +29,7 @@ $MSG_Wrong_Answer="Respuesta Incorrecta";
 $MSG_Time_Limit_Exceed="Tiempo Limite Exedido";
 $MSG_Memory_Limit_Exceed="Memoria Limite Exedida";
 $MSG_Output_Limit_Exceed="Salida Limite Exedida";
-$MSG_Runtime_Error="Runtime Error";
+$MSG_Runtime_Error="Error en Tiempo de Ejecución";
 $MSG_TEST_RUN="Test Running Done";
 $MSG_Compile_Error="Error de Compilación";
 

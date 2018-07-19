@@ -1,5 +1,4 @@
-<?php $OJ_CACHE_SHARE=!isset($_GET['cid']);
-require_once('./include/cache_start.php');
+<?php
 require_once('./include/db_info.inc.php'); ?>
 <html>
 	<head>
@@ -81,6 +80,3 @@ require_once('./include/db_info.inc.php'); ?>
 		</div>
 	</body>
 </html>
-<?php if(file_exists('./include/cache_end.php'))
-	require_once('./include/cache_end.php'); ?>
-

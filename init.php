@@ -9,7 +9,8 @@ var dat = {
     contestCreator: <?php $a=false; if(isset($_SESSION['contest_creator'])) $a=true; echo "\"$a\"";?>,
     problemEditor: <?php $a=false; if(isset($_SESSION['problem_editor'])) $a=true; echo "\"$a\"";?>,
     problemME: <?php $a=false; if(isset($_SESSION['problem_master_editor'])) $a=true; echo "\"$a\"";?>,
-    sourceBrowser: <?php $a=false; if(isset($_SESSION['source_browser'])) $a=true; echo "\"$a\"";?>,
+    sourceBrowser: <?php $a=false; if(isset($_SESSION['source_browser'])) $a=true; echo "\"$a\"";?>,    
+    PID:<?php echo "[\"".implode("\",\"", $PID)."\"]"; ?>,
     //screenWidth: (window.innerWidth<1020?2:1),
     bg0: [" black", " white", ""],
     bg1: [" grey lighten-5", " blue-grey darken-3", ""], // fondo
@@ -71,6 +72,26 @@ var msg = {
     //submits: "Envios"
     
 };
-
-
+/////////////////////// REGISTER
+<?php
+echo "msg.regInfo=\"$MSG_REG_INFO\";";
+echo "msg.userId=\"$MSG_USER_ID\";";
+echo "msg.nick=\"$MSG_NICK\";";
+echo "msg.lastname=\"$MSG_LASTNAME\";";
+echo "msg.email=\"$MSG_EMAIL\";";
+echo "msg.country=\"$MSG_COUNTRY\";";
+echo "msg.institute=\"$MSG_INSTITUTE\";";
+echo "msg.password=\"$MSG_PASSWORD\";";
+echo "msg.repeatPassword=\"$MSG_REPEAT_PASSWORD\";";
+$sql = "SELECT * FROM pais order by usuarios";
+$data = mysql_query($sql);
+//$sel = " selected";
+echo "dat.paisArr={options:[], values:[]};";
+for ($i=0; $i <mysql_num_rows($data) ; $i++) { 
+    //$retorno .="<option value='".mysql_result($data, $i,'id_pais')."'".$sel." >".utf8_decode(mysql_result($data, $i,'nombre'))."</option>";
+    //$sel = "";
+    echo "dat.paisArr.options.push(\"".utf8_decode(mysql_result($data, $i,'nombre'))."\");";
+    echo "dat.paisArr.values.push(\"".mysql_result($data, $i,'id_pais')."\");\n";
+}
+?>
 

@@ -8,7 +8,7 @@ class Errorpage extends React.Component{
 				<p dangerouslySetInnerHTML={{__html: this.props.dat.error}}></p>		
 			  </div>
 			  <Footer dat={dat} msg={msg}/>
-			</div>	
+			</div>
 		);
 	}
 }
@@ -68,57 +68,87 @@ class Footer extends React.Component{
 class Header extends React.Component{	
 	constructor(props){
 		super(props);
+		//this.state={tipe:"main", list:this.props.list};
+		//{["problem.php", "status.php", ]}
 		this.handleClick = this.handleClick.bind(this);
+		
 		this.state = {
 			menuMain:[
-				{href:(this.props.dat.contest?"#":(this.props.dat.problemSet?"#":"problem.php")),
+				{href:(this.props.pro?"#":"problem.php"),
 				 text:this.props.msg.problems,
 				 click:"problemSet",
-				 iPos:"left", iName:"view_comfy"},
-				{href:"status.php"+(this.props.dat.contest?"?cid="+this.props.dat.contest.id:""),
-				 text:this.props.msg.status, target:"_blank",
-				 iPos:"left", iName:"clear_all"},
-				{href:(this.props.dat.contest?"#":"ranklist.php"),
+				  iName:"view_comfy"},
+				{href:(this.props.sta?"#":"status.php"),
+				 text:this.props.msg.status,
+				 click:"status",
+				 target:"_blank",
+				  iName:"clear_all"},
+				{href:(this.props.ra?"#":"ranklist.php"),
 				 text:this.props.msg.ranklist,
 				 click:"ranking",
-				 iPos:"left", iName:"equalizer"}],
+				  iName:"equalizer"},
+				{href:(this.props.co?"#":"contest.php"),
+				 text:this.props.msg.numContest+" "+this.props.msg.contests,
+				 click:"contestSet",
+				  iName:"view_headline"},
+				{href:"faqs.php", text:this.props.msg.faq,
+				 click:"faqs",
+				  iName:"question_answer"}],
+			menuContest:[
+				{href:"#", text:this.props.msg.problems,
+				 click:"problemSet",
+				  iName:"view_comfy"},
+				{href:(this.props.sta?"#":"status.php"),
+				 text:this.props.msg.status,
+				 click:"status",
+				 target:"_blank",
+				  iName:"clear_all"},
+				{href:"#", text:this.props.msg.ranklist,
+				 click:"ranking",
+				 iName:"equalizer"},
+				{href:"#", text:"Estadisticas",
+				 click:"statistics",
+				 iName:"trending_up"},
+				{href:(this.props.co?"#":"contest.php"),
+				text:this.props.msg.numContest+" "+this.props.msg.contests,
+				 click:"contestSet", iName:"view_headline"}],
 			menuUser:[
 				{href: "./modifypage.php",
 				 text: this.props.msg.userInfo,
-				 iPos: "left", iName: "edit"},
+				 iName: "edit"},
 				{href: "./userinfo.php?user="+this.props.dat.user_id,
 				 text: this.props.dat.user_id,
-				 iPos: "left", iName: "person"},
+				 iName: "person"},
 				{href: "./mail.php",
 				 text: this.props.dat.mail,
-				 iPos: "left", iName: "mail"},
+				 iName: "mail"},
 				{href: "./status.php?user_id="+this.props.dat.user_id,
 				 text: "Reciente",
-				 iPos: "left", iName: "send"}],
+				 iName: "send"}],
 			text:'',
-			menu:[]
+			menu:[],
+			head:"main"
 		};
-		if(!this.props.dat.contest){
-			this.state.menuMain.push({href:"contest.php", text:this.props.msg.numContest+" "+this.props.msg.contests,
-				 iPos:"left", iName:"view_headline"},
-				{href:"faqs.php", text:this.props.msg.faq,
-				 iPos:"left", iName:"question_answer"});
-		}else{
-			this.state.menuMain.push({href:"#", text:"Estadisticas", click:"statistics",
-									  iPos:"left", iName:"trending_up"});
-		}
 		if(this.props.dat.user_id!=""){
-			if(this.props.dat.mail>0)
+			if(this.props.dat.mail>0){
 				this.state.menuMain.push({
   					href: "./mail.php", text: this.props.dat.mail,
-  					iPos: "left", iName: "mail"
+  					iName: "mail"
   				});
+			}
 			this.state.menuMain.push(
- 				{href: "#", text: "",iPos: "", iName: "details"});
+ 				{href: "#", text: "|", iName: "arrow_downward"});
+			this.state.menuContest.push(
+ 				{href: "#", text: "|", iName: "arrow_downward"});
 		}else{
 			this.state.menuMain.push(
-				{href: "./loginpage.php", text: "Ingresar/Registrarse",
-				 iPos: "left", iName: "transfer_within_a_station"});
+				{href: "#", text: "Ingresar/Registrarse",
+				 click:"login",
+				 iName: "transfer_within_a_station"});
+			this.state.menuContest.push(
+				{href: "#", text: "Ingresar/Registrarse",
+				 click:"login",
+				 iName: "transfer_within_a_station"});
 		}
 		if(this.props.dat.admin ||
 		   this.props.dat.contestCreator ||
@@ -126,50 +156,59 @@ class Header extends React.Component{
 		   this.props.dat.problemME)
 			this.state.menuUser.push({
   				href: "./admin", text: this.props.msg.admin,
-  				iPos: "left", iName: "build"
+  				iName: "build"
   			});
 		this.state.menuUser.push({href: "./logout.php", text: this.props.msg.logout,
-  								  iPos: "left", iName: "exit_to_app"},
-								 {href: "#", text: "",iPos: "", iName: "arrow_upwards"});
-		this.props.dat.px=24;
-		/*if(this.props.dat.screenWidth==2){
-		  for(var i=0; i<this.state.menu.length; i++)
-		  this.state.menu[i].text="";					
-		  for(var i=0; i<this.state.menu.length; i++)
-		  this.state.menu[i].iPos="";
-		  for(var i=0; i<this.state.menuUser.length; i++)
-		  this.state.menuUser[i].text="";					
-		  for(var i=0; i<this.state.menuUser.length; i++)
-		  this.state.menuUser[i].iPos="";
-		  this.props.dat.px=7;
-		  }*/
+  								  iName: "exit_to_app"},
+								 {href: "#", text:"|" , iName: "arrow_upward"});
 		this.state.menu=this.state.menuMain;
 	}
+	componentWillReceiveProps(nextProps) {
+		console.log("ReciveProps Head", nextProps);
+		if(nextProps.head==this.state.head) return;
+		console.log("ReciveProps Headdddddddddddddddddd", nextProps);
+		if(nextProps.head=="contest"){
+			this.setState(prevState=>({
+				head:"contest",
+				menu:prevState.menuContest
+			}));
+			return ;
+		}
+		if(nextProps.head=="main"){
+			this.setState(prevState=>({
+				head:"main",
+				menu:prevState.menuMain
+			}));
+		}		
+	}
 	handleClick(e, href, icn, click){
-		if(icn=="details"){
-			this.setState(prevState => ({menu:prevState.menuUser}));
-		}else{
-			this.setState(prevState => ({menu:prevState.menuMain}));
-		}
 		if(click!=undefined){
-			this.props.page(click);
+			this.props.pageChange(click);
 		}
+		if(icn=="arrow_downward"){
+			this.setState(prevState => ({menu:prevState.menuUser}));
+			return ;
+		}
+		if(icn=="arrow_upward"){
+			this.setState(prevState => ({menu:prevState.menuMain}));
+		}		
 	}
 	render(){
 		return (
 			<div className="navbar-fixed">
-			  <nav className={"nav-wrapper z-depth-2 "+this.props.dat.st3[localStorage.getItem("skin")]}>
-				<a href={this.props.dat.oj_home}>
+			  <nav className={"nav-wrapper z-depth-2 "+
+				   this.props.dat.st3[localStorage.getItem("skin")]}>
+				<a href={this.props.ho?"#":this.props.dat.oj_home}
+				   onClick={(e)=>this.handleClick(e,"#", "pato", "home")}>
 				  <img src="./image/juez-patito-logo.png"/>
 				</a>
 				<div className={"brand-logo"+this.props.dat.st3[localStorage.getItem("skin")]}
 					 style={{zIndex:-1, position:"absolute", padding:"0 0 0 20"}}><strong>{dat.title}</strong></div>
 				<ul id="nav-mobile" className="right fixed white-text">
 				  {this.state.menu.map(item => (<li key={item.href+item.iName}
-														onClick={(e)=>this.handleClick(e,item.href, item.iName, item.click)}>
-												<a href={item.href} className={"hoverable "+this.props.dat.st3[localStorage.getItem("skin")]}
-													   target={item.target}><strong className="hide-on-med-and-down">{item.text}</strong>
-													  <i className={"material-icons "+item.iPos} style={{fontSize:+this.props.dat.px}}>{item.iName}</i>
+														onClick={(e)=>this.handleClick(e,item.href, item.iName, item.click)} className="hoverable">
+												<a href={item.href} className={this.props.dat.st3[localStorage.getItem("skin")]} target={item.target}><strong className="hide-on-med-and-down">{item.text}</strong>
+													  <i className={"material-icons left"}>{item.iName}</i>
 													</a>
 												</li>
 											   ))}
@@ -268,7 +307,7 @@ class Labelcontestlist extends React.Component{
 		var frm=[{s:1, t:"s"},{s:60, t:"m"}, {s:3600, t:"h"}, {s:90000, t:"d"}];
 		var color, c;
 		if(this.state.now<this.state.start){
-			color="green lighten-1"; c=0
+			color="green lighten-1"; c=0;
 		}else{
 			color="red lighten-1"; c=1;
 		}
@@ -306,9 +345,14 @@ class Labelcontestlist extends React.Component{
 class Contestlist extends React.Component {
 	constructor(props){
 		super(props);
-		this.state={items:this.props.list};
+		this.state={items:this.props.list};		
 	}
-	render() {		
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			items: nextProps.list
+		});
+	}
+	render() {
 		return (
 			<div className={this.props.dat.bg2[localStorage.getItem("skin")]} >
 			  <h4 className={this.props.dat.st4[localStorage.getItem("skin")]+" center-align"}
@@ -329,214 +373,308 @@ class Contestlist extends React.Component {
 	}
 }
 //*******************************************INDEX****************************/
+
+class Judgeduck extends React.Component {
+	constructor(props){
+		super(props);
+		this.state={page:this.props.page?this.props.page:"home",
+					head:"main",
+					contestPage:"problemSet", contestId:-1
+				   };
+		// page:"home", "problemSet", "contestSet", "contest", "login"
+		this.handlePageChange=this.handlePageChange.bind(this);
+		this.handleHeadChange=this.handleHeadChange.bind(this);
+	}
+	handleHeadChange(changedHead){
+		if(changedHead!=this.state.head){
+			this.setState({head:changedHead});
+		}
+	}	
+	handlePageChange(changedPage, num){
+		if(changedPage=="home"){
+			this.setState({page:"home"});
+		}
+		if(changedPage=="problemSet"){
+			if(this.state.page=="contest")
+				this.setState({contestPage:"problemSet"});
+			else
+				this.setState({page:"problemSet"});
+		}
+		if(changedPage=="contestSet"){
+			this.setState({page:"contestSet",
+						   head:"main",
+						   contestPage:-1,
+						   contestId:-1
+						  });
+		}
+		if(changedPage=="ranking"){
+			if(this.state.page=="contest")
+				this.setState({contestPage:"ranking"});
+			else
+				this.setState({page:"ranking"});
+		}
+		if(changedPage=="statistics"){
+			if(this.state.page=="contest")
+				this.setState({contestPage:"statistics"});
+			else
+				this.setState({page:"home"});
+		}
+		if(changedPage=="contest"){
+			this.setState({page:"contest",
+						   head:"contest",
+						   contestPage:"problemSet",
+						   contestId:num
+						  });
+		}
+		if(changedPage=="login"){
+			this.setState({page:"login"});
+		}
+	}
+	render(){
+		var body;
+		if(this.state.page=="home"){
+			body=<Index dat={dat} msg={msg}/>;
+		}
+		if(this.state.page=="problemSet"){
+			body=<Problemset dat={dat} msg={msg} problem={-1}/>;
+		}
+		if(this.state.page=="contestSet" || this.state.page=="contest"){
+			body=<Contestset dat={dat} msg={msg}
+			pageChange={this.handlePageChange}
+			contest={this.state.contestId}
+			contestPage={this.state.contestPage}/>;
+		}
+		if(this.state.page=="ranking"){
+			body=<Ranking dat={dat} msg={msg}/>;
+		}
+		if(this.state.page=="login"){
+			body=<Login_register dat={dat} msg={msg}/>;
+		}
+		return (
+			<div className={this.props.dat.st1[localStorage.getItem("skin")]} style={{minHeight:"100%"}}>
+			  <Header dat={dat} msg={msg}
+					  pageChange={this.handlePageChange}
+					  pro={1}
+					  ho={1}
+					  co={1}
+					  ra={1}
+					  head={this.state.head}/>
+			  <div style={{align:'center', width:'90%',
+				   marginLeft:'auto', marginRight:'auto'}}>
+				{body}
+			  </div>
+			  <Footer dat={dat} msg={msg}/>
+			</div>
+		);
+		
+	}
+}
 class Index extends React.Component {
 	constructor(props){
 		super(props);
+		this.state={list:[]};
+	}
+	componentWillMount(){
+		fetch('http://jv.umsa.bo/api/listContest.php')
+			.then((response) => {
+				return response.json();
+			})
+			.then((resp) => {
+				this.setState({list:resp});
+			});
 	}
 	render() {
 		return (
-			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>				
-			  <Header dat={dat} msg={msg}/>				
-			  <div className="row">
-				<div className="col s9 center-align" id="principal">
-				  <h2>Juez Virtual</h2>
-				  <h3>Universidad Mayor de San Andres</h3>
-				  <img className="responsive-img" src="./image/opibanner.png" style={{height:"180px"}}/>
-				  <h3>Tambien puedes visitar nuestra antigua interfaz <a href="https://jv.umsa.bo/jv/">Clic</a></h3>
-				</div>				
-				<div className="col s3" id="contest-list">
-				  <div className="row">
-					<div className="col s12">
-					  <Contestlist dat={dat} list={this.props.list} msg={this.props.msg}/>
-					</div>
+			<div className="row">
+			  <div className="col s9 center-align" id="principal">
+				<h2>Juez Virtual</h2>
+				<h3>Universidad Mayor de San Andres</h3>
+				<img className="responsive-img" src="./image/opibanner.png" style={{height:"180px"}}/>
+				<h3>Tambien puedes visitar nuestra antigua interfaz <a href="https://jv.umsa.bo/jv/">Clic</a></h3>
+			  </div>				
+			  <div className="col s3" id="contest-list">
+				<div className="row">
+				  <div className="col s12">
+					<Contestlist dat={dat} list={this.state.list} msg={msg}/>
 				  </div>
-				  <div className="row">
-					<div className="col s12">
-					  <h4 className={this.props.dat.st4[localStorage.getItem("skin")]+" center-align"}
-						  style={{padding:"5 20 15 20",borderRadius: 5}}>
-						Actividades
-					  </h4>	
-					  <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;mode=AGENDA&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%235A6986&amp;src=br1o1n70iqgrrbc875vcehacjg%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=google.com_jqv7qt9iifsaj94cuknckrabd8%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=50buvctqlvh01of5oupqeaepv4%40group.calendar.google.com&amp;color=%23A32929&amp;src=p0q3ahkka6tc69jt629k4dk33k%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com&amp;color=%234E5D6C&amp;ctz=America%2FLa_Paz" style={{borderWidth:0}} width="100%" height="500" frameBorder="0" scrolling="no"></iframe>
-					</div>
+				</div>
+				<div className="row">
+				  <div className="col s12">
+					<h4 className={this.props.dat.st4[localStorage.getItem("skin")]+" center-align"}
+						style={{padding:"5 20 15 20",borderRadius: 5}}>
+					  Actividades
+					</h4>	
+					<iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;mode=AGENDA&amp;height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%235A6986&amp;src=br1o1n70iqgrrbc875vcehacjg%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=google.com_jqv7qt9iifsaj94cuknckrabd8%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=50buvctqlvh01of5oupqeaepv4%40group.calendar.google.com&amp;color=%23A32929&amp;src=p0q3ahkka6tc69jt629k4dk33k%40group.calendar.google.com&amp;color=%234E5D6C&amp;src=appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com&amp;color=%234E5D6C&amp;ctz=America%2FLa_Paz" style={{borderWidth:0}} width="100%" height="500" frameBorder="0" scrolling="no"></iframe>
 				  </div>
 				</div>
 			  </div>
-			  <Footer dat={dat} msg={msg}/>
 			</div>
 		);
 	}
 }
 
 //*******************************************LOGIN****************************/
-class Login extends React.Component {
+class Login_register extends React.Component {
 	constructor(props){
 		super(props);
 	}
 	render() {
-		return (
-			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>				
-			  <Header dat={dat} msg={msg}/>
-			  <div style={{align:'center', width:'90%',
-				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
-				<br/><br/>
-				<div className="row">
-				  <div className="col s7">
-					<Titulo tit={"Ingresar"}
-							dat={this.props.dat}/>
-					<form action="login.php" method="post">
-					  <div className="row">
-						<div className="col s8 center-align">
-						  <div className="input-field">
-							<input id="password" name="user_id" type="text"
-								   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
-								   pattern=".{3,50}"/>
-							<label htmlFor="password"
-								   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-							  {this.props.msg.userId}</label>
-						  </div>
-						  <div className="input-field">
-							<input id="password" name="password" type="password"
-								   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
-								   pattern=".{3,50}"/>
-							<label htmlFor="password"
-								   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-							  Password</label>
-						  </div>
-						</div>					
-						<div className="col s4 center-align">
-						  <button name="submit" type="submit" value="Ingresar"
-								 className={"btn waves-effect valign-wrapper"+
-								 this.props.dat.st4[localStorage.getItem('skin')]}
-								  style={{padding:"15 10 15 10", height:"100px", width:"100%"}}>Ingresar</button>
-						</div>
-					  </div>
-					  <div className="row">						
-						<a href="lostpassword.php"
-						   className={"offset-s1 col s10 btn waves-effect "+
-						   this.props.dat.st4[localStorage.getItem('skin')] }>
-						  Recuperar contraseña
-						</a>
-					  </div>
-					</form>
-				  </div>
-				  <div className="col offset-s1 s4 ">
-					<Titulo tit={this.props.msg.regInfo}
-							dat={this.props.dat}/>
-					<form method="post" action="register.php" id="formulario">
+		return (			
+			<div className="row">
+			  <div className="col s7">
+				<Titulo tit={"Ingresar"}
+						dat={this.props.dat}/>
+				<form action="login.php" method="post">
+				  <div className="row">
+					<div className="col s8 center-align">
 					  <div className="input-field">
-						<i className="material-icons prefix">account_box</i>
-						<input placeholder={this.props.msg.userId}
-							   id="userId" name="user_id"
-							   type="text" required
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}
+						<input id="password" name="user_id" type="text"
+							   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
 							   pattern=".{3,50}"/>
-						<label htmlFor="userId"
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						  {this.props.msg.userId}</label>
-						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
-							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
-					  </div>
-					  <div className="input-field">
-						<i className="material-icons prefix">tag_faces</i>
-						<input placeholder={this.props.msg.nick}
-							   id="nick" name="name"
-							   type="text" required
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
-							   pattern=".{3,50}"/>
-						<label htmlFor="nick"
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						  {this.props.msg.nick}</label>
-						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
-							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
-					  </div>
-					  <div className="input-field">
-						<i className="material-icons prefix">tag_faces</i>
-						<input placeholder={this.props.msg.lastname}
-							   id="lastname" name="lastname"
-							   type="text" required
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
-							   pattern=".{3,50}"/>
-						<label htmlFor="lastname"
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						  {this.props.msg.lastname}</label>
-						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
-							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
-					  </div>
-					  <div className="input-field">
-						<i className="material-icons prefix">email</i>
-						<input placeholder={this.props.msg.email}
-							   id="email" 
-							   type="email" required
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}
-							   name="email"/>
-						<label htmlFor="email"
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						  {this.props.msg.email}</label>
-						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
-							  data-error="Correo no valido" data-success="right">correo</span>
-					  </div>
-					  <Select name={"pais"} id="pais"
-							  selected={-1}
-							  options={this.props.dat.paisArr.options}
-							  values={this.props.dat.paisArr.values}
-							  label={this.props.msg.country}
-							  form={"formulario"}
-							  todos={0} onChange={0} dat={this.props.dat}
-							  />
-					  <div className="input-field">
-						<i className="material-icons prefix">school</i>
-						<input placeholder={this.props.msg.institute}
-							   id="institucion" name="school"
-							   type="text" required
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
-							   pattern=".{3,50}"/>
-						<label htmlFor="institucion"
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						  {this.props.msg.institute}</label>
-						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
-							  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
-					  </div>
-					  <div className="input-field">
-						<i className="material-icons prefix">vpn_key</i>
-						<input placeholder={this.props.msg.password}
-							   id="password" name="password"
-							   type="password" required
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
-							   pattern=".{6,50}"/>
 						<label htmlFor="password"
 							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						  {this.props.msg.password}</label>
-						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
-							  data-error="Muy corto/Muy largo" data-success="right">6 a 50 caracteres</span>
+						  {this.props.msg.userId}</label>
 					  </div>
 					  <div className="input-field">
-						<i className="material-icons prefix">vpn_key</i>
-						<input placeholder={this.props.msg.repeatPassword}
-							   id="rptpassword" name="rptpassword"
-							   type="password" required
-							   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
-							   pattern=".{6,50}"/>
-						<label htmlFor="rptpassword"
+						<input id="password" name="password" type="password"
+							   className={"validate"+this.props.dat.tx1[localStorage.getItem("skin")]}
+							   pattern=".{3,50}"/>
+						<label htmlFor="password"
 							   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						  {this.props.msg.repeatPassword}</label>
-						<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
-							  data-error="Muy corto/Muy largo" data-success="right">6 a 50 caracteres</span>
+						  Password</label>
 					  </div>
-					  <button className={"btn waves-effect"+
-							  this.props.dat.st4[localStorage.getItem("skin")]}
-							  type="submit" name="submit" id="submit">{"Crear"}
-						<i className="material-icons right">check</i>
-					  </button>
-					  <button className={"btn waves-effect"+
-							  this.props.dat.st4[localStorage.getItem("skin")]}
-							  type="reset" name="reset" id="reset">{"Reset"}
-						<i className="material-icons right">clear</i>
-					  </button>
-					</form>
+					</div>					
+					<div className="col s4 center-align">
+					  <button name="submit" type="submit" value="Ingresar"
+							  className={"btn waves-effect valign-wrapper"+
+							  this.props.dat.st4[localStorage.getItem('skin')]}
+							  style={{padding:"15 10 15 10", height:"100px", width:"100%"}}>Ingresar</button>
+					</div>
 				  </div>
-				</div>
+				  <div className="row">						
+					<a href="lostpassword.php"
+					   className={"offset-s1 col s10 btn waves-effect "+
+					   this.props.dat.st4[localStorage.getItem('skin')] }>
+					  Recuperar contraseña
+					</a>
+				  </div>
+				</form>
 			  </div>
-			  <Footer dat={dat} msg={msg}/>
+			  <div className="col offset-s1 s4 ">
+				<Titulo tit={this.props.msg.regInfo}
+						dat={this.props.dat}/>
+				<form method="post" action="register.php" id="formulario">
+				  <div className="input-field">
+					<i className="material-icons prefix">account_box</i>
+					<input placeholder={this.props.msg.userId}
+						   id="userId" name="user_id"
+						   type="text" required
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}
+						   pattern=".{3,50}"/>
+					<label htmlFor="userId"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.userId}</label>
+					<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+						  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+				  </div>
+				  <div className="input-field">
+					<i className="material-icons prefix">tag_faces</i>
+					<input placeholder={this.props.msg.nick}
+						   id="nick" name="name"
+						   type="text" required
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+						   pattern=".{3,50}"/>
+					<label htmlFor="nick"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.nick}</label>
+					<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+						  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+				  </div>
+				  <div className="input-field">
+					<i className="material-icons prefix">tag_faces</i>
+					<input placeholder={this.props.msg.lastname}
+						   id="lastname" name="lastname"
+						   type="text" required
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+						   pattern=".{3,50}"/>
+					<label htmlFor="lastname"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.lastname}</label>
+					<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+						  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+				  </div>
+				  <div className="input-field">
+					<i className="material-icons prefix">email</i>
+					<input placeholder={this.props.msg.email}
+						   id="email" 
+						   type="email" required
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}
+						   name="email"/>
+					<label htmlFor="email"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.email}</label>
+					<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+						  data-error="Correo no valido" data-success="right">correo</span>
+				  </div>
+				  <Select name={"pais"} id="pais"
+						  selected={-1}
+						  options={this.props.dat.paisArr.options}
+						  values={this.props.dat.paisArr.values}
+						  label={this.props.msg.country}
+						  form={"formulario"}
+						  todos={0} onChange={0} dat={this.props.dat}
+						  />
+				  <div className="input-field">
+					<i className="material-icons prefix">school</i>
+					<input placeholder={this.props.msg.institute}
+						   id="institucion" name="school"
+						   type="text" required
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+						   pattern=".{3,50}"/>
+					<label htmlFor="institucion"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.institute}</label>
+					<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+						  data-error="Muy corto/Muy largo" data-success="right">3 a 50 caracteres</span>
+				  </div>
+				  <div className="input-field">
+					<i className="material-icons prefix">vpn_key</i>
+					<input placeholder={this.props.msg.password}
+						   id="password" name="password"
+						   type="password" required
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+						   pattern=".{6,50}"/>
+					<label htmlFor="password"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.password}</label>
+					<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+						  data-error="Muy corto/Muy largo" data-success="right">6 a 50 caracteres</span>
+				  </div>
+				  <div className="input-field">
+					<i className="material-icons prefix">vpn_key</i>
+					<input placeholder={this.props.msg.repeatPassword}
+						   id="rptpassword" name="rptpassword"
+						   type="password" required
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+" validate"}						   
+						   pattern=".{6,50}"/>
+					<label htmlFor="rptpassword"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+					  {this.props.msg.repeatPassword}</label>
+					<span className={"helper-text"+this.props.dat.tx1[localStorage.getItem("skin")]}
+						  data-error="Muy corto/Muy largo" data-success="right">6 a 50 caracteres</span>
+				  </div>
+				  <button className={"btn waves-effect"+
+						  this.props.dat.st4[localStorage.getItem("skin")]}
+						  type="submit" name="submit" id="submit">{"Crear"}
+					<i className="material-icons right">check</i>
+				  </button>
+				  <button className={"btn waves-effect"+
+						  this.props.dat.st4[localStorage.getItem("skin")]}
+						  type="reset" name="reset" id="reset">{"Reset"}
+					<i className="material-icons right">clear</i>
+				  </button>
+				</form>
+			  </div>
 			</div>
 		);
 	}
@@ -547,7 +685,12 @@ class Tabla extends React.Component{
 		super(props);
 		this.state={order:0, table:this.props.tabla};
 		this.handleClickTd = this.handleClickTd.bind(this);
-	}	
+	}
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			table: nextProps.tabla
+		});
+	}
 	handleClick(e, val){		
 		var num = val;
 		var aux = this.state.table;
@@ -635,57 +778,6 @@ class Tabla extends React.Component{
 	}
 }
 
-class Pagescroll extends React.Component {
-	render() {
-		if(this.props.dat.totalPage==0) return (<div></div>);
-		var arrpag=[];
-		if(this.props.dat.page>1){
-			arrpag.push({class:"waves-effect hoverable",
-						 href:"problem.php?page="+(this.props.dat.page-1),
-						 text:"",
-						 icon:"chevron_left"});
-		}else{
-			arrpag.push({class:"disabled",
-						 href:"#!",
-						 text:"",
-						 icon:"chevron_left"});
-		}
-		for(var i=1; i<=this.props.dat.totalPage; i++){
-			if(i==this.props.dat.page)
-				arrpag.push({class:this.props.dat.st4[localStorage.getItem("skin")],
-							 href:"problem.php?page="+i,
-							 text:i});
-			else arrpag.push({class:"waves-effect hoverable",
-							  href:"problem.php?page="+i,
-							  text:i});
-		}
-		if(this.props.dat.page<this.props.dat.totalPage){
-			arrpag.push({class:"waves-effect hoverable",
-						 href:"problem.php?page="+(this.props.dat.page+1),
-						 text:"",
-						 icon:"chevron_right"});
-		}else{
-			arrpag.push({class:"disabled",
-						 href:"#!",
-						 text:"",
-						 icon:"chevron_right"});
-		}
-		return (
-			<div className="center-align row">
-			  <h5 className="col s4" style={{textAlign:"right"}}>Paginas</h5><ul className="pagination col s8" style={{textAlign:"left"}}>
-				{arrpag.map((item) =>{ return (
-					<li className={item.class} key={item.href+item.icon}>
-					  <a href={item.href} className={this.props.dat.tx1[localStorage.getItem("skin")]}>
-						{item.text}<i className="material-icons">{item.icon}</i>
-					  </a>
-					</li>
-				);})}
-			</ul>
-				</div>
-		);
-	}
-}
-
 class Select extends React.Component{
 	constructor(props) {
 		super(props);
@@ -750,11 +842,7 @@ class Status extends React.Component {
 			hrefAnterior+=this.props.dat.getGet+"&top="+(parseInt(this.props.dat.top)+20);
 		}
 		return (
-			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-			  <Header dat={dat} msg={msg}/>
-			  <div style={{align:'center', width:'90%',
-				   marginLeft:'auto', marginRight:'auto', minHeight:"100%"}}>
-				<Titulo tit={"Estado"} dat={this.props.dat}/>
+			<div><Titulo tit={"Estado"} dat={this.props.dat}/>
 				<div className="row">
 				  <form id="simform" action="status.php" method="get">
 					<div className="input-field col s2 hoverable">
@@ -825,8 +913,6 @@ class Status extends React.Component {
 					<i className="material-icons right">fast_forward</i>
 				  </a>
 				</div>
-			  </div>
-			  <Footer dat={dat} msg={msg}/>
 			</div>
 		);
 	}
@@ -999,63 +1085,189 @@ class Submit extends React.Component {
 
 /******************PROBLEM*************************/
 
-class Problempage extends React.Component {
-	constructor(props) {
+class Pagescroll extends React.Component {
+	constructor(props){
 		super(props);
-		this.state={problemPage:"problemSet", pages:["problemSet"]};
-		this.handlePageChange = this.handlePageChange.bind(this);
-	}
-	handlePageChange(changedPage){		
-		if(this.state.pages.includes(changedPage) || typeof changedPage == 'number'){
-			this.setState({problemPage:changedPage});
+		this.handleClick = this.handleClick.bind(this);
+	}	
+	handleClick(e, click){
+		if(click!=undefined){
+			this.props.changePage(click);
 		}
 	}
-	componentDidMount() {
-		MathJax.Hub.Typeset();
+	render() {
+		if(this.props.pages==0) return (<div></div>);
+		var arrpag=[];
+		if(this.props.page>1){
+			arrpag.push({class:"waves-effect hoverable",
+						 href:"#",
+						 click:this.props.page-1,
+						 text:"",
+						 icon:"chevron_left"});
+		}else{
+			arrpag.push({class:"disabled",
+						 href:"#!",
+						 text:"",
+						 icon:"chevron_left"});
+		}
+		for(var i=1; i<=this.props.pages; i++){
+			if(i==this.props.page)
+				arrpag.push({class:this.props.dat.st4[localStorage.getItem("skin")],
+							 href:"#",
+							 text:i});
+			else arrpag.push({class:"waves-effect hoverable",
+							  href:"#",
+							  click:i,
+							  text:i});
+		}
+		if(this.props.page<this.props.pages){
+			arrpag.push({class:"waves-effect hoverable",
+						 href:"#",
+						 click:this.props.page+1,
+						 text:"",
+						 icon:"chevron_right"});
+		}else{
+			arrpag.push({class:"disabled",
+						 href:"#!",
+						 text:"",
+						 icon:"chevron_right"});
+		}
+		return (
+			<div className="center-align row">
+			  <h5 className="col s4" style={{textAlign:"right"}}>Paginas</h5><ul className="pagination col s8" style={{textAlign:"left"}}>
+				{arrpag.map((item) =>{ return (
+					<li className={item.class}
+						key={item.href+item.icon+item.click}
+						onClick={(e)=>this.handleClick(e,item.click)}>
+																				<a href={item.href} className={this.props.dat.tx1[localStorage.getItem("skin")]}>
+																				{item.text}<i className="material-icons">{item.icon}</i>
+																				</a>
+</li>
+				);})}
+			</ul>
+				</div>
+		);
+	}
+}
+
+
+class Problemset extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state={problemNum:0, problem:this.props.problem, problemSet:-1};
+		this.handleProblemChange = this.handleProblemChange.bind(this);
+		this.handlePageChange = this.handlePageChange.bind(this);
+	}
+	componentWillMount(){
+		fetch('http://jv.umsa.bo/api/problem.php')
+			.then((response) => {
+				return response.json();
+			})
+			.then((resp) => {
+				this.setState({problemSet:resp});
+			});
+	}
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			problem: nextProps.problem
+		});
+	}
+	handleProblemChange(changedProblem){
+		var url = "http://jv.umsa.bo/api/problem.php?id="
+			+this.state.problemSet.tabla.body.rows[changedProblem].row[0].text;
+		fetch(url)
+			.then((response) => {
+				return response.json();
+			})
+			.then((resp) => {
+				if(resp.id){
+					this.setState({problem:resp, problemNum:changedProblem});
+				}else{
+					console.log("algo salio mal Problempage1 handleProblemChange");
+				}
+			});
+	}
+	handlePageChange(changedPage){
+		if(changedPage=="problemSet"){
+			this.setState({problem:-1}); return ;
+		}
+		var url = "http://jv.umsa.bo/api/problem.php?page="+changedPage;
+		fetch(url)
+			.then((response) => {
+				return response.json();
+			})
+			.then((resp) => {
+				this.setState({problemSet:resp, problem:-1});
+			});
 	}
 	cambiar(event, num){
 		if(num==0){
-			this.setState(prevState=>({problemPage:"problemSet"}));
+			this.setState(prevState=>({problem:-1}));
 			return ;
 		}
-		var aux = this.state.problemPage;
+		var aux = this.state.problemNum;
 		aux += num;		
-		if(aux<0 || aux>=this.props.dat.problemSet.problem.length){
-			this.setState(prevState=>({problemPage:"problemSet"}));
+		if(aux<0 || aux>=this.state.problemSet.tabla.body.rows.length){
+			this.setState(prevState=>({problem:-1}));
 			return ;
 		}
-		this.setState(prevState=>({problemPage:aux}));
-	}	
+		this.handleProblemChange(aux);
+	}
 	render() {
-		var body=<h1>ProblemPage ERROR!. ..Como llegaste aqui?... :)</h1>;
-		if(this.props.dat.problem){
-			body=(<Problem dat={dat} msg={msg} problem={this.props.dat.problem}/>);
-		}
-		if(this.props.dat.problemSet){ // arreglar			
-			var pagS=(
-				<div className="row">
-				  <div className={"col s4 hoverable center-align"+
-					   this.props.dat.st4[localStorage.getItem("skin")]}
-					   onClick={(e)=>this.cambiar(e, -1)}>
-																				<i className="material-icons small">
-																				  arrow_back</i></div>
-<div className={"col s4 center-align hoverable"+this.props.dat.st4[localStorage.getItem("skin")]}
-	 onClick={(e)=>this.cambiar(e, 0)}>
-																<i className="material-icons small"
-																   >arrow_downward</i>
-</div>
-
-<div className={"col s4 center-align hoverable"+this.props.dat.st4[localStorage.getItem("skin")]} onClick={(e)=>this.cambiar(e, 1)}>
-			  <i className="material-icons small"
-				 >arrow_forward</i>
-</div>
-</div>
+		if(this.state.problem!=-1){ //Problem
+			return (
+				<div>
+				  <div className="row">
+					<div className={"col s2 center-align"}
+						 style={{padding:"150 0 0 0"}}
+						 onClick={(e)=>(this.cambiar(e, -1))}>
+					  <div className={"pinned"}>
+						<i className={"material-icons large hoverable"}
+						   style={{borderRadius:"50px 0px 0px 50px"}}>{"arrow_back"}
+						</i>
+					  </div>
+					</div>
+					<div className={"col s8"}>
+					  <Problem dat={dat} msg={msg}
+							   problem={this.state.problem}/>
+					</div>
+					<div className={"col offset-s1 s1 center-align"}
+						 style={{padding:"150 0 0 0"}}
+						 onClick={(e)=>this.cambiar(e, 1)}>
+					  <div className={"pinned"}><i className={"material-icons large hoverable"}
+												   style={{borderRadius:"0px 50px 50px 0px"}}>arrow_forward</i></div>
+					</div>
+				  </div>
+				</div>				
 			);
-			if(this.state.problemPage=="problemSet"){
-				body=(
+		}else{
+			if(this.state.problemSet!=-1){ //ProblemSet			
+				var pagS=(
+					<div className="row">
+					  <div className={"col s4 hoverable center-align"+
+						   this.props.dat.st4[localStorage.getItem("skin")]}
+						   onClick={(e)=>this.cambiar(e, -1)}>
+						<i className="material-icons small">
+						  arrow_back</i></div>
+					  <div className={"col s4 center-align hoverable"+this.props.dat.st4[localStorage.getItem("skin")]}
+						   onClick={(e)=>this.cambiar(e, 0)}>
+						<i className="material-icons small"
+						   >arrow_downward</i>
+					  </div>
+
+					  <div className={"col s4 center-align hoverable"+this.props.dat.st4[localStorage.getItem("skin")]} onClick={(e)=>this.cambiar(e, 1)}>
+						<i className="material-icons small"
+						   >arrow_forward</i>
+					  </div>
+					</div>
+				);
+				return (
 					<div>
 					  <Titulo tit={this.props.msg.problems} dat={this.props.dat}/>
-					  <Pagescroll dat={dat}/>			
+					  <Pagescroll dat={dat}
+								  pages={this.state.problemSet.pages.total}
+								  page={this.state.problemSet.pages.in}
+								  changePage={this.handlePageChange}/>
 					  <div className="row">
 						<form action="problem.php">
 						  <div className="input-field col s3 offset-s1 hoverable">
@@ -1088,61 +1300,52 @@ class Problempage extends React.Component {
 						  </button>
 						</form>
 					  </div>
-					  <Tabla dat={this.props.dat} tabla={this.props.dat.problemSet.tabla} page={this.handlePageChange}/>
-					  <Pagescroll dat={dat}/>
+					  <Tabla dat={this.props.dat} tabla={this.state.problemSet.tabla} page={this.handleProblemChange}/>
+					  <Pagescroll dat={dat}
+								  pages={this.state.problemSet.pages.total}
+								  page={this.state.problemSet.pages.in}
+								  changePage={this.handlePageChange}/>
 					</div>
 				);
 			}
-			if(this.state.problemPage>=0 && this.state.problemPage<this.props.dat.problemSet.problem.length){
-				body=(
-					<div>
-				  <div className="row">
-					<div className={"col s2 center-align"}
-						 style={{padding:"150 0 0 0"}}
-						 onClick={(e)=>(this.cambiar(e, -1))}>
-				<div className={"pinned"}>
-				  <i className={"material-icons large hoverable"}
-					 style={{borderRadius:"50px 0px 0px 50px"}}>{"arrow_back"}
-				  </i>
-				</div></div>
-<div className={"col s8"}>
-  <Problem dat={dat} msg={msg}
-							   problem={this.props.dat.problemSet.problem[this.state.problemPage]}/>
-</div>
-<div className={"col offset-s1 s1 center-align"}
-	 style={{padding:"150 0 0 0"}}
-	 onClick={(e)=>this.cambiar(e, 1)}>
-  <div className={"pinned"}><i className={"material-icons large hoverable"}
-							   style={{borderRadius:"0px 50px 50px 0px"}}>arrow_forward</i></div>
-</div>
-</div>
-</div>
-					  
-					);
-			}
 		}
-	
-	return (
-		<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-		  <Header dat={dat} msg={msg} page={this.handlePageChange}/>
-		  <div style={{align:'', width:'90%',
-			   marginLeft:'auto', marginRight:'auto', textAlign:''}}>
-			{body}
-		  </div>
-		  <Footer dat={dat} msg={msg}/>
-		</div>
-	);
-}
+		return (
+			<div className="preloader-wrapper big active">
+			  <div className="spinner-layer spinner-blue">
+				<div className="circle-clipper left">
+				  <div className="circle"></div>
+				</div><div className="gap-patch">
+				  <div className="circle"></div>
+				</div><div className="circle-clipper right">
+				  <div className="circle"></div>
+				</div>
+			  </div>
+			</div>
+		);
+	}
 }
 
 class Problem extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state={problem:{}, problemId:-1, problemContest:-1};
+	}
+	componentWillMount(){
+		fetch('http://jv.umsa.bo/api/problem.php?id='+this.props.id)
+			.then((response) => {
+				return response.json();
+			})
+			.then((empleados) => {
+				this.setState({ problem: empleados });				
+			});
+		//console.log("State Problem Will", this.state);
 	}
 	componentDidMount() {
+		//console.log("State Problem Did", this.state);
 		MathJax.Hub.Typeset();
 	}
 	componentDidUpdate(){
+		//console.log("State Problem DidUpdate", this.state);
 		MathJax.Hub.Typeset();
 	}
 	copiarAlPortapapeles(e, text) {
@@ -1185,14 +1388,15 @@ class Problem extends React.Component {
 			menu.push({text:this.props.msg.status,
 					   link:"status.php?problem_id="+this.props.problem.id,
 					   icon:"list"});
+			menu.push({text:"Estadísticas",
+					   link:"problemstatistics.php?id="+this.props.problem.id,
+					   icon:"trending_up"});
 		}		
-		menu.push({text:"Estadísticas",
-				   link:"problemstatistics.php?id="+this.props.problem.id,
-				   icon:"trending_up"});
 		/*menu.push({text:this.props.msg.bbs,
 				   link:"#",//"bbs.php?pid="+this.props.problem.id,
 				   icon:"forum"});*/
 		var spc;
+		var spcNum=0;
 		if(this.props.dat.admin){
 			menu.push({text:"Editar",
 					   link:"admin/problem_edit.php?id="+this.props.problem.id+"&getkey="+
@@ -1202,11 +1406,18 @@ class Problem extends React.Component {
 					   link:"jv/admin/quixplorer/index.php?action=list&dir="+
 					   this.props.problem.id+"&order=name&srt=yes",
 					   icon:"attach_file"});
-			spc=(<div className="col s1"></div>);
-		}else{
-			if((this.props.problem.submit) && (this.props.dat.user_id!=""))spc=(<div className="col s3"></div>);
-			else spc=(<div className="col s4"></div>);
+			spcNum=1;
+			if(this.props.problem.cId) spcNum++;
+		}else{			
+			if((this.props.problem.submit) &&
+			   (this.props.dat.user_id!=""))
+				spcNum=3;
+			else spcNum=4;
+			if((this.props.problem.cId)) spcNum++;
+			
 		}
+		if(spcNum)
+			spc=(<div className={"col s"+spcNum}></div>);
 		var desHtml = (converter.makeHtml(this.props.problem.des));// ltxParse
 		var inHtml = (converter.makeHtml(this.props.problem.input));
 		var outHtml = (converter.makeHtml(this.props.problem.output));
@@ -1296,61 +1507,101 @@ class Problem extends React.Component {
 		);
 	}
 }
-
-class Contestpage extends React.Component{
+//////////////////////****************CONTEST*******************************///////////////
+class Contestset extends React.Component{
 	constructor(props){
 		super(props);
-		this.state={contestPage:"problemSet"};
-		this.handlePageChange = this.handlePageChange.bind(this);
+		this.state={page:"loading",
+					contestId:this.props.contest, contestPage:this.props.contestPage};
+		this.handleContestChange = this.handleContestChange.bind(this);
+		this.cargar = this.cargar.bind(this);
 	}
-	handlePageChange(changedPage){
-		this.setState({contestPage:changedPage});
+	cargar(contestId, contestPage){
+		if(contestId==-1){
+			fetch('http://jv.umsa.bo/api/contest.php')
+				.then((response) => {
+					return response.json();
+				})
+				.then((resp) => {
+					console.log("resp",resp);
+					this.setState({page:"contestSet",
+								   contest:-1,
+								   contestSet:resp
+								   });
+				});
+		}else{
+			var url = "http://jv.umsa.bo/api/contest.php?id="+contestId;
+			fetch(url)
+				.then((response) => {
+					return response.json();
+				})
+				.then((resp) => {
+					if(resp.id){
+						this.setState({page:"contest",
+									   contest:resp,
+									   contestPage:contestPage});
+					}else{
+						console.log("algo salio mal Problempage1 handleProblemChange");
+					}
+				});
+		}
+	}
+	componentWillMount(){
+		this.cargar(this.props.contest, this.props.contestPage);
+	}
+	componentWillReceiveProps(nextProps) {
+		this.setState({page:"loading"});
+		this.cargar(nextProps.contest, nextProps.contestPage);
+	}
+	handleContestChange(changedContest){
+		this.props.pageChange("contest", changedContest);
 	}
 	render(){
-		var body=<h1>ContestPage ERROR, Explicame como llegaste aqui ?</h1>;
-		if(this.props.dat.contestSet){
-			body=<div><Titulo tit={this.props.msg.contests} dat={this.props.dat}/>
-				<Tabla tabla={this.props.dat.contestSet.tabla} dat={dat}/></div>;
-		}
-		if(this.props.dat.contest){
-			body=<Contest contest={this.props.dat.contest} page={this.state.contestPage}/>;
+		if(this.state.page=="contest"){
+			return <Contest contest={this.state.contest} page={this.state.contestPage}/>;
+		}else{
+			if(this.state.page=="contestSet"){
+				return <div><Titulo tit={this.props.msg.contests} dat={this.props.dat}/>
+					<Tabla tabla={this.state.contestSet.tabla} dat={dat}
+				page={this.handleContestChange}/></div>;
+			}
 		}
 		return (
-			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-			  <Header dat={dat} msg={msg} page={this.handlePageChange}/>
-			  <div style={{align:'center', width:'90%',
-				   marginLeft:'auto', marginRight:'auto'}}>
-				{body}
-			  </div>				
-			  <Footer dat={dat} msg={msg}/>
-			</div>	
+			<div className="preloader-wrapper big active">
+			  <div className="spinner-layer spinner-blue">
+				<div className="circle-clipper left">
+				  <div className="circle"></div>
+				</div><div className="gap-patch">
+				  <div className="circle"></div>
+				</div><div className="circle-clipper right">
+				  <div className="circle"></div>
+				</div>
+			  </div>
+			</div>
 		);
 	}
 }
 
-
 class Contest extends React.Component{ // dat msg global variables
 	constructor(props) {
 		super(props);
+		this.handleProblemChange = this.handleProblemChange.bind(this);
+		this.state={page:(this.props.page?this.props.page:"loading"), problem:-1, contest:this.props.contest};
 		if(this.props.contest.onlyContest){			
-			this.state={page:"ranking", onlyContest:1}; return ;
+			this.state.page="ranking";
+			return ;
 		}
-		this.state={page:this.props.page};
-		if(this.state.page==undefined){
-			this.state.page="problemSet";
-		}
-		this.handlePageChange = this.handlePageChange.bind(this);
 		this.state.config = {
 			type: 'line',
 			data: {
-				labels: this.props.contest.statistics.graphics.labels,
-				datasets: [{
+				labels: this.state.contest.statistics.graphics.labels.map((x)=>{return (new Date(parseFloat(x))).toLocaleString();})
+				,datasets: [{
 					label: 'Sub',
 					backgroundColor: 'rgb(2, 151, 39, 0.7)',
 					borderColor: Chart.helpers.color.red,
 					//fill: false,
 					lineTension:0.1,
-					data:  this.props.contest.statistics.graphics.d2
+					data:  this.state.contest.statistics.graphics.d2//.map((x)=>{return new Date(x).toLocaleString();})
 					
 				},{
 					label: 'Ac',					
@@ -1358,7 +1609,7 @@ class Contest extends React.Component{ // dat msg global variables
 					borderColor: Chart.helpers.color.green,
 					//fill: false,
 					lineTension:0.1,
-					data:  this.props.contest.statistics.graphics.d1
+					data:  this.state.contest.statistics.graphics.d1//.map((x)=>{return new Date(x).toLocaleString();})
 				}]
 			},
 			options: {
@@ -1370,87 +1621,112 @@ class Contest extends React.Component{ // dat msg global variables
 					yAxes: [{
 						scaleLabel: {
 							display: true,
-							labelString: 'value'
+							labelString: 'value',
 						},
 						ticks: {
 							beginAtZero:true,
 							stepSize:1		
 						},
 						//height:5
-					}],
-					
+					}],					
 				},
 			}
 		};
-		for(var i=0; i<this.props.contest.problem.length; i++){
-			this.props.contest.problem[i].submit=
-				(this.props.contest.now<this.props.contest.end);
-		}
-	}
-	handlePageChange(changedPage){
+	}	
+	handleProblemChange(changedProblem){
 		if(this.state.onlyContest) return ;
-		this.setState({page:changedPage});
+		this.setState({page:"loading"});
+		var cad = this.state.contest.tabla.body.rows[changedProblem].row[0].text;
+		var numc = "";
+		var sw = 0;
+		for(var i=0; i<cad.length; i++){
+			if(cad.charAt(i)==")") break;
+			if(cad.charAt(i)=="("){ sw=1; i++; }
+			if(sw==1){
+				numc+=cad.charAt(i);
+			}
+		}
+		var url = "http://jv.umsa.bo/api/problem.php?id="+numc;
+		fetch(url)
+			.then((response) => {
+				return response.json();
+			})
+			.then((resp) => {
+				resp.submit=(this.state.contest.now<this.state.contest.end);
+				resp.cId=parseInt(numc);
+				resp.pId=parseInt(changedProblem);
+				if(resp.id){					
+					this.setState({problem:resp, problemNum:changedProblem, page:"problem"});
+				}else{
+					console.log("algo salio mal Problempage1 handleProblemChange");
+				}
+			});
 	}
 	componentWillReceiveProps(nextProps) {
 		if(this.state.onlyContest) return ;
-		if (nextProps.page !== this.props.page || nextProps.page !== this.state.page) {
+		if (nextProps.page !== this.state.page) {
 			this.setState({
-				page: nextProps.page
+				page: nextProps.page,
+				contest: nextProps.contest
 			});
 		}
+		console.log("will Prop");
 	}
-	componentDidUpdate(prevProps) {
+	componentDidMount(prevProps) {
 		var ctx = document.getElementById("myChart");
-		if(ctx)var myLineChart = new Chart(ctx, this.state.config);
+		if(ctx)
+			var myLineChart = new Chart(ctx, this.state.config);
+		console.log("ctx", ctx);
 	}	
 	cambiar(event, num){
 		if(num==0){
 			this.setState(prevState=>({page:"problemSet"}));
 			return ;
 		}
-		var aux = this.state.page;
-		aux += num;		
-		if(aux<0){
-			aux = this.props.contest.problem.length-1;
-		}else if(aux>=this.props.contest.problem.length){
-			aux = 0;
+		var aux = this.state.problemNum;
+		aux += num;
+		if(aux<0 || aux>=this.state.contest.tabla.body.rows.length){
+			this.setState(prevState=>({page:"problemSet",problem:-1}));
+			return ;
 		}
-		this.setState(prevState=>({page:aux}));
+		this.handleProblemChange(aux);		
 	}	
 	render(){
-		var body=(<h1>CONTEST ERROR!... Explicame como llegaste aqui...</h1>);
-		
+		var body=(<h1>CONTEST ERROR!... Explicame como llegaste aqui...</h1>);		
 		var converter = new showdown.Converter();
 		if(this.state.page=="problemSet"){			
 			var desHtml = converter.makeHtml(this.props.contest.description);
 			body = (
-				<Tabla tabla={this.props.contest.tabla} dat={dat} page={this.handlePageChange}/>
+				<Tabla tabla={this.state.contest.tabla} dat={dat}
+					   page={this.handleProblemChange}/>
 			);
 		}
-		if(this.state.page>=0 && this.state.page<this.props.contest.problem.length){
+		if(this.state.page=="problem"){
 			body=(
 				<div>
 				  <div className="row">
 					<div className={"col s2 center-align"}
 						 style={{padding:"150 0 0 0"}}
 						 onClick={(e)=>(this.cambiar(e, -1))}>
-				<div className={"pinned"}>
-				  <i className={"material-icons large hoverable"}
-					 style={{borderRadius:"50px 0px 0px 50px"}}>{"arrow_back"}
-				  </i>
-				</div></div>
-<div className={"col s8"}>
-  <Problem dat={dat} msg={msg}
-		   problem={this.props.contest.problem[this.state.page]}/>
-</div>
-<div className={"col offset-s1 s1 center-align"}
-	 style={{padding:"150 0 0 0"}}
-	 onClick={(e)=>this.cambiar(e, 1)}>
-  <div className={"pinned"}><i className={"material-icons large hoverable"}
-							   style={{borderRadius:"0px 50px 50px 0px"}}>arrow_forward</i></div>
-</div>
-</div>
-</div>);
+					  <div className={"pinned"}>
+						<i className={"material-icons large hoverable"}
+						   style={{borderRadius:"50px 0px 0px 50px"}}>{"arrow_back"}
+						</i>
+					</div></div>
+					<div className={"col s8"}>
+					  <Problem dat={dat} msg={msg}
+							   problem={this.state.problem}/>
+					</div>
+					<div className={"col offset-s1 s1 center-align"}
+						 style={{padding:"150 0 0 0"}}
+						 onClick={(e)=>this.cambiar(e, 1)}>
+					  <div className={"pinned"}>
+						<i className={"material-icons large hoverable"}
+						   style={{borderRadius:"0px 50px 50px 0px"}}>arrow_forward</i>
+					  </div>
+					</div>
+				  </div>
+				</div>);
 		}
 		if(this.state.page=="ranking"){
 			desHtml = converter.makeHtml(this.props.contest.description);
@@ -1463,112 +1739,170 @@ class Contest extends React.Component{ // dat msg global variables
 					  <i className="material-icons right">file_download</i>
 					</a>
 				  </div>
-				  <Tabla dat={dat} tabla={this.props.contest.ranking.tabla} page={this.handlePageChange}/>
+				  <Tabla dat={dat} tabla={this.props.contest.ranking.tabla}
+						 page={this.handleProblemChange}/>
 				</div>
 			);
 		}
 		if(this.state.page=="statistics"){			
 			body=(
 				<div>				  
-				  <Tabla dat={dat} tabla={this.props.contest.statistics.tabla} page={this.handlePageChange}/>
+				  <Tabla dat={dat} tabla={this.props.contest.statistics.tabla} page={this.handleProblemChange}/>
 				  <div style={{width:"60%", height:"200px"}}>
 					<canvas id="myChart" width="400px" height="400px" ref="canvaMyChart"></canvas>
+					
 				  </div>
+				  <div style={{height:"800px"}}></div>
 				</div>
 			);
 		}
+		if(this.state.page=="loading"){
+			body=(
+				<div className="preloader-wrapper big active">
+				  <div className="spinner-layer spinner-blue">
+					<div className="circle-clipper left">
+					  <div className="circle"></div>
+					</div><div className="gap-patch">
+					  <div className="circle"></div>
+					</div><div className="circle-clipper right">
+					  <div className="circle"></div>
+					</div>
+				  </div>
+				</div>);
+		}
 		var onlyContest;
-		if(this.props.contest.onlyContest)
+		if(this.state.contest.onlyContest)
 			onlyContest=<h3>Solo estas permitido a ver el Ranking como invitado</h3>;
 		return (
 			<div>			  
-			  <Titulo tit={msg.contest+" - "+dat.title} dat={dat}/>
+			  <Titulo tit={msg.contest+" - "+this.state.contest.title} dat={dat}/>
 			  <center><h5 dangerouslySetInnerHTML={{__html: desHtml}}></h5>
 					<div className="fb-like"
-						 data-href={"contest.php?cid="+this.props.contest.id}
+						 data-href={"contest.php?cid="+this.state.contest.id}
 						 data-layout="button_count"
 						 data-action="like" data-show-face="true" data-share="true" ></div>
-					<Labelcontesttime now={this.props.contest.now}
-									  start={this.props.contest.start}
-									  end={this.props.contest.end}
-									  tipo={this.props.contest.private}/>
+					<Labelcontesttime now={this.state.contest.now}
+									  start={this.state.contest.start}
+									  end={this.state.contest.end}
+									  tipo={this.state.contest.private}/>
 					{onlyContest}{body}</center>
 			</div>
 		);
 	}
 }
-class Ranklist extends React.Component{
+class Ranking extends React.Component{
+	constructor(props){
+		super(props);
+		this.state={page:"loading", ranking:-1};
+		this.handlePageChange = this.handlePageChange.bind(this);
+	}
+	componentWillMount(){
+		console.log("WillMount");
+		fetch('http://jv.umsa.bo/api/ranking.php')
+			.then((response) => {
+				return response.json();
+			})
+			.then((resp) => {
+				console.log(resp);
+				this.setState({page:"ranking",
+							   ranking:resp});
+			});
+	}
+	handlePageChange(changedPage){
+		this.setState({page:"loading"});
+		fetch('http://jv.umsa.bo/api/'+changedPage)
+			.then((response) => {
+				return response.json();
+			})
+			.then((resp) => {
+				
+				this.setState({page:"ranking",
+							   ranking:resp});
+			});
+	}
 	render(){
+		console.log(this.state, "Render Rank");
+		if(this.state.page=="loading"){
+			return (
+				<div className="preloader-wrapper big active">
+				  <div className="spinner-layer spinner-blue">
+					<div className="circle-clipper left">
+					  <div className="circle"></div>
+					</div><div className="gap-patch">
+					  <div className="circle"></div>
+					</div><div className="circle-clipper right">
+					  <div className="circle"></div>
+					</div>
+				  </div>
+				</div>
+			);
+		}
 		var paginas=[];
-		this.props.dat.pageTotal=parseInt(this.props.dat.pageTotal);
-		this.props.dat.pageSize=parseInt(this.props.dat.pageSize);
-		for(var i=0; i<this.props.dat.pageTotal; i+=this.props.dat.pageSize){
-			var aux=(1+i)+"-"+(i+this.props.dat.pageSize);
+		//this.props.dat.pageTotal=parseInt(this.props.dat.pageTotal);
+		//this.props.dat.pageSize=parseInt(this.props.dat.pageSize);
+		for(var i=0; i<this.state.ranking.pageTotal; i+=this.state.ranking.pageSize){
+			var aux=(1+i)+"-"+(i+this.state.ranking.pageSize);
 			paginas.push({text:aux,
-						  link:"ranklist.php?start="+i+
+						  link:"#",
+						  click:"ranking.php?start="+i+
 						  (this.props.dat.getScope!=""?"&scope="+
 						   this.props.dat.getScope:"")});
 			
 		}
 		return (
-			<div className={this.props.dat.st1[localStorage.getItem("skin")]}>
-			  <Header dat={dat} msg={msg}/>
-			  <div style={{align:'center', width:'90%',
-				   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
-				<Titulo tit={this.props.msg.ranklist} dat={this.props.dat}/>
-				<form action="userinfo.php">
-				  <div className="row">
-					<div className="input-field inline col s2">
-					  <input placeholder="usuario"
-							 id="userId"
-							 type="text"
-							 className={this.props.dat.tx1[localStorage.getItem("skin")]}
-							 name="user"
-							 defaultValue={this.props.dat.getUserId}/>
-					  <label htmlFor="userId"
-							 className={this.props.dat.tx1[localStorage.getItem("skin")]+
-							 (this.props.dat.getUserId!=""?" active":"")}>
-						{this.props.msg.user}</label>
-					</div>
-					<button className={"btn waves-effect col s2"+
-							this.props.dat.st4[localStorage.getItem("skin")]}
-							type="submit">{this.props.msg.search}
-					  <i className="material-icons right">search</i>
-					</button>
-					<a className={"btn waves-effect offset-s4 col s1"+
-					   this.props.dat.st4[localStorage.getItem("skin")]}
-					   href={"ranklist.php?scope=d"}>Dia
-					  <i className="material-icons right">date_range</i>
-					</a>
-					<a className={"btn waves-effect col s1"+
-					   this.props.dat.st4[localStorage.getItem("skin")]}
-					   href={"ranklist.php?scope=w"}>Semana
-					  <i className="material-icons right">date_range</i>
-					</a>
-					<a className={"btn waves-effect col s1"+
-					   this.props.dat.st4[localStorage.getItem("skin")]}
-					   href={"ranklist.php?scope=m"}>Mes
-					  <i className="material-icons right">date_range</i>
-					</a>
-					<a className={"btn waves-effect col s1"+
-					   this.props.dat.st4[localStorage.getItem("skin")]}
-					   href={"ranklist.php?scope=y"}>Año
-					  <i className="material-icons right">date_range</i>
-					</a>
-				  </div>
-				</form>
-				<Tabla dat={dat} tabla={this.props.tabla}/><br/>
-				<h3>Posiciones</h3>
+			<div>
+			  <Titulo tit={this.props.msg.ranklist} dat={this.props.dat}/>
+			  <form action="userinfo.php">
 				<div className="row">
-				  {paginas.map((item) => 
-							   <a className={"btn waves-effect col s1"+
-											 this.props.dat.st4[localStorage.getItem("skin")]}
-									  href={item.link} key={item.link}><span>{item.text}</span>
-								   </a>
-							  )}
-			</div>
+				  <div className="input-field inline col s2">
+					<input placeholder="usuario"
+						   id="userId"
+						   type="text"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]}
+						   name="user"
+						   defaultValue={this.state.ranking.getUserId}/>
+					<label htmlFor="userId"
+						   className={this.props.dat.tx1[localStorage.getItem("skin")]+
+						   (this.state.ranking.getUserId!=""?" active":"")}>
+					  {this.props.msg.user}</label>
+				  </div>
+				  <button className={"btn waves-effect col s2"+
+						  this.props.dat.st4[localStorage.getItem("skin")]}
+						  type="submit">{this.props.msg.search}
+					<i className="material-icons right">search</i>
+				  </button>
+				  <a className={"btn waves-effect offset-s4 col s1"+
+					 this.props.dat.st4[localStorage.getItem("skin")]}
+					 href={"ranklist.php?scope=d"}>Dia
+					<i className="material-icons right">date_range</i>
+				  </a>
+				  <a className={"btn waves-effect col s1"+
+					 this.props.dat.st4[localStorage.getItem("skin")]}
+					 href={"ranklist.php?scope=w"}>Semana
+					<i className="material-icons right">date_range</i>
+				  </a>
+				  <a className={"btn waves-effect col s1"+
+					 this.props.dat.st4[localStorage.getItem("skin")]}
+					 href={"ranklist.php?scope=m"}>Mes
+					<i className="material-icons right">date_range</i>
+				  </a>
+				  <a className={"btn waves-effect col s1"+
+					 this.props.dat.st4[localStorage.getItem("skin")]}
+					 href={"ranklist.php?scope=y"}>Año
+					<i className="material-icons right">date_range</i>
+				  </a>
 				</div>
-				<Footer dat={dat} msg={msg}/>
+			  </form>
+			  <Tabla dat={dat} tabla={this.state.ranking.tabla}/><br/>
+			  <h3>Posiciones</h3>
+			  <div className="row">
+				{paginas.map((item) => 
+							 <a className={"btn waves-effect col s1"+
+										   this.props.dat.st4[localStorage.getItem("skin")]}
+									onClick={(e)=>this.handlePageChange(e, item.click)}
+									href={item.link} key={item.link}><span>{item.text}</span>
+								 </a>
+							)}</div>
 				</div>
 		);
 	}
@@ -1740,4 +2074,3 @@ class Contestrank extends React.Component{
 		);
 	}
 }
-

@@ -133,7 +133,7 @@ $MSG_Ended="Termino";
 $MSG_RANK="#";
 $MSG_SOLVED="Resultos";
 $MSG_PENALTY="Penalidad";
-
+$MSG_SUBMITS="Envios";
 ?>
 
 

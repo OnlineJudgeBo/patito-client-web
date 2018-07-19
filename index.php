@@ -1,7 +1,4 @@
 <?php
-$OJ_CACHE_SHARE=false;
-$cache_time=10;
-require_once('./include/cache_start.php');
 require_once('./include/db_info.inc.php');
 //antes del tamplate
 if(function_exists('apc_cache_info')){
@@ -26,14 +23,35 @@ if($OJ_ONLINE){
 		<script src='./util/react/babel.min.js'></script>
 
 		<script type="text/babel" src="./js/app.js"></script>
-		<style type='text/css'>strong,em{font-weight: bold;}</style>
+
+		<script src='./util/showdown/showdown.min.js'></script>
+		<script>showdown.setOption('tables', 1);
+		 showdown.setOption('headerLevelStart', 3);
+		 showdown.setOption('emoji',1);
+		 showdown.setOption('literalMidWordUnderscores',0);
+		 showdown.setOption('literalMidWordAsterisks',0);</script>
+		
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+		<script type='text/x-mathjax-config'>
+		 MathJax.Hub.Config({
+			 tex2jax: {inlineMath: [['$','$']]}
+         });</script>
+
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js'></script>
+
+		<style type='text/css'>strong,em{font-weight: bold;} html{min-height: 100%; position: relative;} body{margin:0;}</style>
 		
 		<script type="text/babel">
 		 <?php require_once("./init.php");
-		 crearlistContest();?>
+         if(isset($_SESSION['administrator']) ||isset($_SESSION['problem_master_editor'])){
+             require_once("include/set_get_key.php");
+             echo "dat.getKey=\"".$_SESSION['getkey']."\";";
+         }?>
 		 function loadPag(){
 			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
-			 ReactDOM.render(<Index dat={dat} msg={msg} list={listContest}/>,
+			 ReactDOM.render(<Judgeduck dat={dat} msg={msg} page={"home"} />,
 							 document.getElementById("content"));
 		 }
 		 loadPag();
@@ -56,6 +74,3 @@ if($OJ_ONLINE){
 		</div>		
 	</body>
 </html>
-<?php if(file_exists('./include/cache_end.php'))
-	require_once('./include/cache_end.php');
-?>
