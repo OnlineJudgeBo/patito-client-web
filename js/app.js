@@ -475,7 +475,7 @@ class Index extends React.Component {
 		this.state={list:[]};
 	}
 	componentWillMount(){
-		fetch('http://jv.umsa.bo/api/listContest.php')
+		fetch('https://jv.umsa.bo/api/listContest.php')
 			.then((response) => {
 				return response.json();
 			})
@@ -842,6 +842,13 @@ class Status extends React.Component {
 			hrefAnterior+=this.props.dat.getGet+"&top="+(parseInt(this.props.dat.top)+20);
 		}
 		return (
+                        <div className={this.props.dat.st1[localStorage.getItem("skin")]} style={{minHeight:"100%"}}>
+                          <Header dat={dat} msg={msg}/>
+                          <div style={{align:'center', width:'90%',
+                                   marginLeft:'auto', marginRight:'auto', textAlign:'center'}}>
+                                <p dangerouslySetInnerHTML={{__html: this.props.dat.error}}></p>
+
+
 			<div><Titulo tit={"Estado"} dat={this.props.dat}/>
 				<div className="row">
 				  <form id="simform" action="status.php" method="get">
@@ -914,6 +921,11 @@ class Status extends React.Component {
 				  </a>
 				</div>
 			</div>
+
+ </div>
+                          <Footer dat={dat} msg={msg}/>
+                        </div>
+
 		);
 	}
 }
@@ -1159,7 +1171,7 @@ class Problemset extends React.Component {
 		this.handlePageChange = this.handlePageChange.bind(this);
 	}
 	componentWillMount(){
-		fetch('http://jv.umsa.bo/api/problem.php')
+		fetch('https://jv.umsa.bo/api/problem.php')
 			.then((response) => {
 				return response.json();
 			})
@@ -1173,7 +1185,7 @@ class Problemset extends React.Component {
 		});
 	}
 	handleProblemChange(changedProblem){
-		var url = "http://jv.umsa.bo/api/problem.php?id="
+		var url = "https://jv.umsa.bo/api/problem.php?id="
 			+this.state.problemSet.tabla.body.rows[changedProblem].row[0].text;
 		fetch(url)
 			.then((response) => {
@@ -1191,7 +1203,7 @@ class Problemset extends React.Component {
 		if(changedPage=="problemSet"){
 			this.setState({problem:-1}); return ;
 		}
-		var url = "http://jv.umsa.bo/api/problem.php?page="+changedPage;
+		var url = "https://jv.umsa.bo/api/problem.php?page="+changedPage;
 		fetch(url)
 			.then((response) => {
 				return response.json();
@@ -1331,7 +1343,7 @@ class Problem extends React.Component {
 		this.state={problem:{}, problemId:-1, problemContest:-1};
 	}
 	componentWillMount(){
-		fetch('http://jv.umsa.bo/api/problem.php?id='+this.props.id)
+		fetch('https://jv.umsa.bo/api/problem.php?id='+this.props.id)
 			.then((response) => {
 				return response.json();
 			})
@@ -1518,7 +1530,7 @@ class Contestset extends React.Component{
 	}
 	cargar(contestId, contestPage){
 		if(contestId==-1){
-			fetch('http://jv.umsa.bo/api/contest.php')
+			fetch('https://jv.umsa.bo/api/contest.php')
 				.then((response) => {
 					return response.json();
 				})
@@ -1530,7 +1542,7 @@ class Contestset extends React.Component{
 								   });
 				});
 		}else{
-			var url = "http://jv.umsa.bo/api/contest.php?id="+contestId;
+			var url = "https://jv.umsa.bo/api/contest.php?id="+contestId;
 			fetch(url)
 				.then((response) => {
 					return response.json();
@@ -1646,7 +1658,7 @@ class Contest extends React.Component{ // dat msg global variables
 				numc+=cad.charAt(i);
 			}
 		}
-		var url = "http://jv.umsa.bo/api/problem.php?id="+numc;
+		var url = "https://jv.umsa.bo/api/problem.php?id="+numc;
 		fetch(url)
 			.then((response) => {
 				return response.json();
@@ -1798,7 +1810,7 @@ class Ranking extends React.Component{
 	}
 	componentWillMount(){
 		console.log("WillMount");
-		fetch('http://jv.umsa.bo/api/ranking.php')
+		fetch('https://jv.umsa.bo/api/ranking.php')
 			.then((response) => {
 				return response.json();
 			})
@@ -1810,7 +1822,7 @@ class Ranking extends React.Component{
 	}
 	handlePageChange(changedPage){
 		this.setState({page:"loading"});
-		fetch('http://jv.umsa.bo/api/'+changedPage)
+		fetch('https://jv.umsa.bo/api/'+changedPage)
 			.then((response) => {
 				return response.json();
 			})
