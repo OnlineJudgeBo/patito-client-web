@@ -1,0 +1,6 @@
+{
+    "require": {
+        "league/html-to-markdown": "^4.4",
+        "pixel418/markdownify": "^2.2"
+    }
+}

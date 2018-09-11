@@ -21,12 +21,18 @@ if (isset($_GET['id'])){
   $id=intval($_GET['id']);
   //require("oj-header.php");
   //if (!isset($_SESSION['administrator']) && $id!=1000&&!isset($_SESSION['contest_creator'])&&!isset($_SESSION['problem_master_editor']))
-  if (!isset($_SESSION['administrator']) &&!isset($_SESSION['contest_creator'])&&!isset($_SESSION['problem_master_editor']))
+  if (!isset($_SESSION['administrator']) &&!isset($_SESSION['contest_creator'])&&!isset($_SESSION['problem_master_editor'])){
     $sql="SELECT * FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
     SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN(
                 SELECT `contest_id` FROM `contest` WHERE `end_time`>'$now' or `private`='1'))
     ";
-  else
+ $sql="SELECT * FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
+    SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN(
+                SELECT `contest_id` FROM `contest` WHERE `end_time`>'$now'))
+    ";
+
+//echo $sql;
+  } else
     $sql="SELECT * FROM `problem` WHERE `problem_id`=$id";
   $pr_flag=true;
 }else
@@ -74,14 +80,15 @@ if (isset($_GET['id'])){
   }
 
 $result=mysql_query($sql) or die(mysql_error());
-
+//echo $sql;
 if (mysql_num_rows($result)!=1){
   $view_errors="";
   if(isset($_GET['id'])){
     $id=intval($_GET['id']);
     mysql_free_result($result);
     $sql="SELECT  contest.`contest_id` , contest.`title`,contest_problem.num FROM `contest_problem`,`contest` WHERE contest.contest_id=contest_problem.contest_id and `problem_id`=$id and defunct='N'  ORDER BY `num`";
-    //echo $sql;
+//$sql="SELECT  contest.`contest_id` , contest.`title`,contest_problem.num FROM `contest_problem`,`contest` WHERE contest.contest_id=contest_problem.contest_id and `problem_id`=$id and contest.end_time > '$now'  ORDER BY `num`";
+//    echo $sql;
     $result=mysql_query($sql);
     if($i=mysql_num_rows($result)){
       $view_errors.= "This problem is in Contest(s) below:<br>";

@@ -10,6 +10,7 @@
 	<li><a href="contest.php"><?php echo checkcontest($MSG_CONTEST)?></a></li>
 	<!--<a class='btn <?php if ($url=="recent-contest.php") echo " $ACTIVE";?>' href="recent-contest.php"><i class="icon-share"></i><?php echo "$MSG_RECENT_CONTEST"?></a>-->
 	<li ><a href="faqs.php"><?php echo "$MSG_FAQ"?></a></li>
+        <li><a href="tutoriales/index.html" target="_blank">Tutoriales</a></li>
       </ul>
     </div>
   <div id="profile" >

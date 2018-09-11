@@ -1,0 +1,92 @@
+<?php
+$cache_time=30;
+$OJ_CACHE_SHARE=false;
+require_once('./include/cache_start.php');
+require_once('./include/db_info.inc.php');
+$now=strftime("%Y-%m-%d %H:%M",time());
+if (isset($_GET['id'])){//practice
+    $id=intval($_GET['id']);    
+    $result=mysql_query("SELECT * FROM problem WHERE problem_id=$id");
+    if (mysql_num_rows($result)==0){
+        $view_errors="<h3>No existe tal problema!..</h3>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+    mysql_free_result($result);
+    if (isset($_SESSION['administrator'])||
+        isset($_SESSION['contest_creator'])||
+        isset($_SESSION['problem_master_editor']))
+        $sql="SELECT * FROM problem WHERE problem_id=$id";
+    else
+        $sql="SELECT * FROM problem WHERE problem_id=$id AND defunct='N' AND problem_id NOT IN ( ".
+            "SELECT problem_id FROM contest_problem WHERE contest_id IN( ".
+            "SELECT contest_id FROM contest WHERE end_time>'$now' and private='1'))";
+    $result=mysql_query($sql) or die(mysql_error());
+    if (mysql_num_rows($result)==0){
+        $view_errors="";
+        mysql_free_result($result);
+        $sql="SELECT contest.contest_id, contest.title, contest_problem.num FROM contest_problem, contest ".
+            "WHERE contest.contest_id=contest_problem.contest_id AND contest_problem.problem_id=$id ".
+            "AND contest.defunct='N' AND contest.end_time>'$now' AND contest.private='1'";
+        $result=mysql_query($sql); echo mysql_error(); //OJOOJOJ
+        if(mysql_num_rows($result)==1)
+            $view_errors.="<h3>Este problema esta siendo usado en el siguiente concurso privado</h3>";
+        else
+            $view_errors.="<h3>Este problema esta siendo usado en los siguientes concursos privados</h3>";
+        while($row=mysql_fetch_object($result))
+            $view_errors.= "<h5><a href=problem.php?cid=$row->contest_id&pid=$row->num>".
+                        "Concurso #$row->contest_id:$row->title</a></h5>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+    $row=mysql_fetch_object($result);
+    $view_title= $row->title;    
+}else if (isset($_GET['cid']) && isset($_GET['pid'])){//contest
+    $cid=intval($_GET['cid']);
+    $pid=intval($_GET['pid']);
+    $result=mysql_query("SELECT * FROM contest WHERE defunct='N' AND contest_id=$cid");
+    if (mysql_num_rows($result)==0){ // NO EXISTE TAL CONCURSO
+        $view_errors="<h3>No existe tal concurso!...</h3>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+    mysql_free_result($result);
+    $ok = (isset($_SESSION['administrator'])||isset($_SESSION['problem_master_editor']));
+    $sql="SELECT langmask,private FROM contest WHERE ".
+            "defunct='N' AND contest_id=$cid AND start_time<'$now'";
+    $result=mysql_query($sql);
+    if (mysql_num_rows($result)==0 && !$ok){// EL CONTEST NO EMPEZO
+        $view_errors="<h3>El concurso aún no empezo!...</h3>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+    $row=mysql_fetch_row($result);
+    if ( ($row[1] && !isset($_SESSION['c'.$cid]) ) && !($ok)  ){// NO ESTAS INVITADO
+        $view_errors= "<h3>No estas invitado al concurso!...</h3>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+    //$langmask=$row[0];
+    mysql_free_result($result);    
+    $sql="SELECT * FROM problem WHERE defunct='N' AND problem_id=(
+            SELECT problem_id FROM contest_problem WHERE contest_id=$cid AND num=$pid)";
+    $result=mysql_query($sql) or die(mysql_error());
+    if (mysql_num_rows($result)==0){
+        $view_errors="<h3>No hay tal problema de tal concurso!...</h3>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+    $row=mysql_fetch_object($result);
+    $view_title= $row->title;    
+}else{// ERROR DE URL
+    $view_errors="<h3>Error!...</h3>";
+    require("template/".$OJ_TEMPLATE."/error.php");
+    exit(0);
+}
+mysql_free_result($result);
+/////////////////////////Template
+require("template/".$OJ_TEMPLATE."/problem.php");
+/////////////////////////Common foot
+if(file_exists('./include/cache_end.php'))
+    require_once('./include/cache_end.php');
+?>
