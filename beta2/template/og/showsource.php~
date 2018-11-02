@@ -1,0 +1,144 @@
+<?php $view_title= "Código Fuente"; ?>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<!--Let browser know website is optimized for mobile-->
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+		<link rel="stylesheet" href="./materialize/materialize.min.css">
+		<script src="./materialize/materialize.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script src="./react/react.development.js"></script>
+		<script src="./react/react-dom.development.js"></script>
+		<script src="./react/babel.min.js"></script>
+		<script type="text/babel" src="./react/app.js"></script>
+
+		
+		<title><?php echo $view_title?></title>
+		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg" />
+
+
+
+		<!-- HIGHHHH -->
+		<link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/> 
+		<link href='highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/> 
+		<script src='highlight/scripts/shCore.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushJava.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushDelphi.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushRuby.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushBash.js' type='text/javascript'></script>
+		<script src='highlight/scripts/shBrushPython.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushPhp.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushPerl.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushCSharp.js' type='text/javascript'></script> 
+		<script src='highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+
+
+
+		<script type="text/babel">
+		 <?php require_once("./init.php");
+		 crearCodigoFuente();?>
+		 //dat.codigo="holaaa este es un codigo de pruebazx";
+		 function loadPag(){
+			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
+			 ReactDOM.render(<ShowSource dat={dat} msg={msg} />, document.getElementById("showSource"));
+			 holaaa(dat);
+		 }
+		 loadPag();
+		 
+		</script>
+		
+		<!-- HIGHHHH -->		
+	</head>
+	<body onload="loadPag()">
+		<button onclick="hola()">Hoola
+		</button>
+		<pre class='brush: c' id='cod1'>
+	private static boolean balance(String line) {
+		char[] chars = line.toCharArray();
+		Stack<Integer> stack = new Stack<Integer>();
+
+			for (char c : chars) {
+			if (c == '(') {
+			stack.push(PAREN);
+			} else if (c == '[') {
+			stack.push(BRACKET);
+			} else if (c == ')') {
+			if (stack.isEmpty())
+			return false;
+			if (stack.pop() != PAREN)
+			return false;
+			} else if (c == ']') {
+			if (stack.isEmpty())
+			return false;
+			if (stack.pop() != BRACKET)
+			return false;
+			}
+			}
+
+			return stack.isEmpty();
+			}
+			}
+			/**************************************************************
+			Problem: 1233
+			User: brian9sito
+			Language: Java
+			Result: Accepted
+			Time:288 ms
+			Memory:34056 kb
+			****************************************************************/
+
+		</pre>
+
+		<script type="text/javascript">
+		 //alert("1111"+dat.codigo);
+		 
+		 alert(JSON.stringify(SyntaxHighlighter));
+		 /*function cargeSyntax(){
+			 alert("carge");
+			 SyntaxHighlighter.all();
+		 }*/
+		 var Glo={};
+		 function holaaa(aux){
+			 alert("holaaa");
+			 //var a = document.getElementById("cod1");
+			 //console.log("cod1:::",a);
+			 Glo=aux;
+			 //a.innerHTML="hoallalsfaapsuasfasf";
+			 console.log("auxxx:",aux);
+			 SyntaxHighlighter.all();
+			 return aux;
+		 }
+		 
+		 console.log("Glooo", Glo);
+		 //var a = document.getElementById("cod1");
+		 //console.log("aaaaaa88888",a);
+		 //a.innerHTML="cambiooooo1o11111";
+		 SyntaxHighlighter.all();
+		 function hola(){
+			 return "holasfa a sfasl\nholasfaf";
+		 }
+		 //alert("2222"+dat.codigo);
+		</script>
+
+		
+		<script>document.write("<pre class='brush: c' id='cod'>hkjhkhfdssdg </pre>");</script>
+		<div id="showSource">
+			<div class="preloader-wrapper active">
+				<div class="spinner-layer spinner-red-only">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div><div class="gap-patch">
+						<div class="circle"></div>
+					</div><div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+
+

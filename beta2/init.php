@@ -1,0 +1,68 @@
+<?php require_once("initPHP.php");?>
+var dat = {
+    pag_title: "<?php if(isset($view_title)) echo $view_title;?>",
+    oj_home: "./",
+    user_id: <?php $a="";if(isset($_SESSION['user_id'])) $a=$_SESSION['user_id']; echo "\"$a\"";?>,
+    mail: "<?php echo checkmail();?>",
+    admin: <?php $a=false;if(isset($_SESSION['user_id'])) $a=true; echo "\"$a\"";?>,
+    contestCreator: <?php $a=false; if(isset($_SESSION['contest_creator'])) $a=true; echo "\"$a\"";?>,
+    problemEditor: <?php $a=false; if(isset($_SESSION['problem_editor'])) $a=true; echo "\"$a\"";?>,
+    problemME: <?php $a=false; if(isset($_SESSION['problem_master_editor'])) $a=true; echo "\"$a\"";?>,
+    sourceBrowser: <?php $a=false; if(isset($_SESSION['source_browser'])) $a=true; echo "\"$a\"";?>,
+    screenWidth: (window.innerWidth<1020?2:1),
+    bg0: [" black", " white"],
+    bg1: [" grey lighten-5", " grey darken-4"], // fondo
+    bg2: [" grey lighten-4", " grey darken-3"], // fondo2
+    bg3: [" blue-grey lighten-5", " grey darken-1"], // header footer
+    bg4: [" blue-grey lighten-4"," grey lighten-3"], // resaltar
+    bg5: [" orange accent-4"," grey accent-3"],
+    bg6: [" orange lighten-5", " grey darken-2"],    
+    tx0: [" black-text", " white-text"],
+    tx1: [" grey-text text-darken-4", " grey-text text-lighten-5"], // fondo
+    tx2: [" grey-text text-darken-3", " grey-text text-lighten-5"], // fondo2
+    tx3: [" blue-grey-text text-darken-4 ", " grey-text text-lighten-4"], // head
+    tx4: [" blue-grey-text text-darken-4", " grey-text text-darken-3"], // resaltar 
+    tx5: [" deep-orange-text text-accent-4", " grey-text text-darken-3"],
+    tx6: [" grey-text text-lighten-5", " grey-text text-lighten-5"],
+    st1: [" grey lighten-5 grey-text text-darken-4",
+          " grey darken-4 grey-text text-lighten-5"], // fondo
+    st3: [" blue-grey lighten-5 blue-grey-text text-darken-4",
+          " grey darken-1"], // header footer
+    st4: [" blue-grey lighten-4 blue-grey-text text-darken-4",
+          " grey lighten-3 grey-text text-darken-3"], // resaltar
+    //st1: [" orange darken orange-text text-darken"," grey darken-3 grey-text text-lighten-4"],
+    bg4HTML: ["#cfd8dc"," grey lighten-3"], // resaltar
+    cl1: [" #EF5350", "#EF5350"], //red ligh
+    cl2: [" #66BB6A", "#EF5350"] //red ligh
+             
+};
+var msg = {
+    problem: <?php echo "\"$MSG_PROBLEM\"";?>,
+    //problemId: <?php echo "\"$MSG_PROBLEM_ID\"";?>,
+    problems: <?php echo "\"$MSG_PROBLEMS\"";?>,
+    status: <?php echo "\"$MSG_STATUS\"";?>,
+    ranklist: <?php echo "\"$MSG_RANKLIST\"";?>,
+    contest: <?php  $a=checkcontest($MSG_CONTEST); echo "\"$a\"";?>,
+    faq: <?php echo "\"$MSG_FAQ\"";?>,
+    userInfo: <?php echo "\"$MSG_USERINFO\"";?>,
+    logout: <?php echo "\"$MSG_LOGOUT\"";?>,
+    admin: <?php echo "\"$MSG_ADMIN\"";?>,
+    user: <?php echo "\"$MSG_USER\""?>,
+    userId: <?php echo "\"$MSG_USER_ID\""?>,
+    //title: <?php echo "\"$MSG_TITLE\""?>,
+    //source: <?php echo "\"$MSG_SOURCE\""?>,
+    search: <?php echo "\"$MSG_SEARCH\""?>,
+    //ac: <?php echo "\"$MSG_AC\""?>,
+    submit: <?php echo "\"$MSG_SUBMIT\""?>,
+    //runId: <?php echo "\"$MSG_RUNID\""?>,
+    //result: <?php echo "\"$MSG_RESULT\""?>,
+    //memory: <?php echo "\"$MSG_MEMORY\""?>,
+    //time: <?php echo "\"$MSG_TIME\""?>,
+    //lang: <?php echo "\"$MSG_LANG\""?>,
+    //codeLength: <?php echo "\"$MSG_CODE_LENGTH\""?>,
+    //submitTime: <?php echo "\"$MSG_SUBMIT_TIME\""?>,
+    //submits: "Envios"
+};
+
+
+

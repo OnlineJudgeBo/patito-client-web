@@ -1,0 +1,126 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--Para que funciones $ para mate-->
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      MathJax.Hub.Config({
+      tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true }
+      });
+    </script>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/template/og/css/materialize.min.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="/template/og/js/materialize.js"></script>
+
+		
+		<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+		<script src="/template/og/componentes.js"></script>
+
+		
+    <link rel="next" href="submitpage.php?
+			   <?php
+			      if ($pr_flag){
+			      echo "id=$id";
+			      }else{
+			      echo "cid=$cid&pid=$pid&langmask=$langmask";
+			      }
+			      ?>">
+    <?php 
+       $boton = "class='btn waves-effect orange accent-4'";
+       $STL2 = "style='text-align:justify; font-family:impact; padding: 5 0 5 0;' class='orange accent-3 z-depth-3'";
+       $STL1 = "style='text-align:justify; font-family:Lucida Sans Unicode, Lucida Grande, sans-serif; padding: 0 20 0 20;' class='orange accent-1 z-depth-2'";
+       $PID=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ");
+       if ($pr_flag) echo "<title>$MSG_PROBLEM $row->problem_id. -- $row->title</title>";
+       else echo "<title>$MSG_PROBLEM $PID[$pid]: $row->title </title>";
+    ?>
+  </head>
+  <body class="orange lighten-5 orange-text text-darken-4" onload="cargar()">        
+    <!-- HEADER-->
+    <?php require_once("oj-headerM.php");?>
+    <center>
+      <!-- Tarjeta con el titulo, caracteristicas problema, botones-->
+      <div class='card orange accent-2'>
+        <div class='card-title'>
+          <h1 class='yellow-text orange accent-4' style=' font-family:impact' >
+            <?php if($pr_flag) echo "$id: $row->title"; else echo "$MSG_PROBLEM $PID[$pid]: $row->title";?>
+          </h1>
+        </div>
+        <h6>Tiempo Límite: <?php echo"$row->time_limit";?>seg. Memoria Límite: <?php echo "$row->memory_limit";?> MB</h6>        
+        <h6>Enviados: <?php echo $row->submit;?> Aceptados: <?php echo $row->accepted;?></h6>
+	<?php if ($row->spj) echo "<span class=red-text>SPECIAL JUDGE</span>"; ?>
+        <div class='card-action'  style="position:initial">
+          <?php if ($pr_flag) echo "<a href='submitpage.php?id=$id' ";
+          else echo "<a href='submitpage.php?cid=$cid&pid=$pid&langmask=$langmask' ";
+          echo "$boton>$MSG_SUBMIT";?><i class='material-icons right'>send</i></a>
+          <a href='problemstatus.php?id=<?php echo $row->problem_id;?>' <?php echo"$boton>$MSG_STATUS";?><i class='material-icons right'>list</i></a>
+          <a href='bbs.php?pid=<?php echo"$row->problem_id$ucid";?>' <?php echo"$boton>$MSG_BBS";?><i class='material-icons right'>forum</i></a>
+          <?php if(isset($_SESSION['administrator']) ||isset($_SESSION['problem_master_editor'])){
+	    require_once("include/set_get_key.php");
+          ?>
+          <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" <?php echo $boton;?> >Editar<i class='material-icons right'>edit</i></a>
+          <a href="admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes" <?php echo $boton;?> >Casos de prueba<i class='material-icons right'>attach_file</i></a>
+          <?php } ?>
+        </div>
+      </div>
+      <!-- Descriopcion, Entrada, Salida, Casos de Ejemplo, Hints, Source-->
+      <div style='width:95%'>
+      <div <?php echo $STL1;?> >
+        <div <?php echo $STL2;?> >
+          <h4>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $MSG_Description;?></h4>
+        </div>
+        <p><?php echo $row->description;?></p>
+      </div>
+      <div <?php echo $STL1;?> >
+        <div <?php echo $STL2;?> >
+          <h4>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $MSG_Input;?></h4>
+        </div>
+        <p><?php echo $row->input;?></p>
+      </div>
+      <div <?php echo $STL1;?> >
+        <div <?php echo $STL2;?> >
+          <h4>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $MSG_Output;?></h4>
+        </div>
+        <p><?php echo $row->output;?></p>
+      </div>
+      <?php $sinput=str_replace("<","&lt;",$row->sample_input);
+        $sinput=str_replace(">","&gt;",$sinput);
+	$soutput=str_replace("<","&lt;",$row->sample_output);
+	$soutput=str_replace(">","&gt;",$soutput);
+      if($sinput || $soutput) {?>
+      <table <?php echo $STL1;?> >
+        <tr <?php echo $STL2;?> >
+	  <td>
+	    <div><h4>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $MSG_Sample_Input;?></h4></div>
+	  </td>
+	  <td>
+	    <div><h4>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $MSG_Sample_Output;?></h4></div>
+	  </td>
+        </tr>
+        <tr>
+	  <td>
+	    <div><pre><span class='white'><?php echo $sinput;?></span</pre></div>
+          </td>
+          <td>
+	    <div><pre><span class='white'><?php echo$soutput;?></span></pre></div>
+	  </td>
+        </tr>
+      </table>
+      <?php }
+      if (!($row->hint || $row->source)) echo "</br>";
+      if ($row->hint) 
+        echo "<h5>$MSG_HINT</h5><div echo $STL1><p>".nl2br($row->hint)."</p></div>";
+      if ($row->source) 
+        echo "<h5>Por:</h5> <div class=content><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>"; #$MSG_Source ?>
+    </center>
+    <!-- FOOTER -->
+    <?php require_once("oj-footerM.php");?>
+		<div id="pruebaaaa"></div>
+  </body>
+</html>

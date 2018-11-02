@@ -92,9 +92,9 @@
 		    echo "<h2>$MSG_Sample_Output</h2> <pre class=content><span class=sampledata>".($soutput)."</span></pre>";
 		}
 		echo "</td> </tr> </table>";
-		if ($pr_flag || true ) 
-		    echo "<h2>$MSG_HINT</h2> <div class=content><p>".nl2br($row->hint)."</p></div>";
-		if ($pr_flag) 
+		if ($pr_flag || true )
+		    echo "<h2>$MSG_HINT</h2> <div class=content><p>".$row->hint."</p></div>";
+		if ($pr_flag)
 		    echo "<h2>$MSG_Source</h2> <div class=content><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
 		?>
 	    </section>

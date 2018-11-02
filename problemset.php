@@ -84,7 +84,7 @@ else{
 	"WHERE `defunct`='N' and $filter_sql AND `problem_id` NOT IN(
 		SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN (
 			SELECT `contest_id` FROM `contest` WHERE 
-			(`end_time`>'$now' or private=1)and `defunct`='N'
+			(`end_time`>'$now')and `defunct`='N'
 			
 			)
 ) ";

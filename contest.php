@@ -1,209 +1,82 @@
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&appId=1505282666151605&version=v2.0";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+<?php
+require_once('./include/db_info.inc.php'); ?>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="icon" type="image/png" href="template/og/image/juez-patito2.svg"/>		
+		
+		<script src=" /util/materialize/materialize.min.js"></script>
+		<link rel="stylesheet" href="./util/materialize/materialize.min.css"/>
+		<link rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 
- <?php
- $OJ_CACHE_SHARE=!isset($_GET['cid']);
- require_once('./include/cache_start.php');
- require_once('./include/db_info.inc.php');
- require_once('./include/my_func.inc.php');
- require_once('./include/setlang.php');
- $view_title= $MSG_CONTEST;
- function formatTimeLength($length){
- 	$hour = 0;
- 	$minute = 0;
- 	$second = 0;
- 	$result = '';
+		<script src='./util/react/react.development.js'></script>
+		<script src='./util/react/react-dom.development.js'></script>
+		<script src='./util/react/babel.min.js'></script>
 
- 	if ($length >= 60){
- 		$second = $length % 60;
- 		if ($second > 0){
- 			$result = $second . 'seg ';
- 		}
- 		$length = floor($length / 60);
- 		if ($length >= 60){
- 			$minute = $length % 60;
- 			if ($minute == 0){
- 				if ($result != ''){
- 					$result = '0minuto ' . $result;
- 				}
- 			}
- 			else{
- 				$result = $minute . 'min ' . $result;
- 			}
- 			$length = floor($length / 60);
- 			if ($length >= 24){
- 				$hour = $length % 24;
- 				if ($hour == 0){
- 					if ($result != ''){
- 						$result = '0hora ' . $result;
- 					}
- 				}
- 				else{
- 					$result = $hour . 'horas ' . $result;
- 				}
- 				$length = floor($length / 24);
- 				$result = $length . 'dias ' . $result;
- 			}
- 			else{
- 				$result = $length . 'hora' . $result;
- 			}
- 		}
- 		else{
- 			$result = $length . 'min ' . $result;
- 		}
- 	}
- 	else{
- 		$result = $length . 'segundo ';
- 	}
- 	return $result;
- }
+		<script type="text/babel" src="./js/app.js"></script>
 
+		<script src='./util/showdown/showdown.min.js'></script>
+		<script>showdown.setOption('tables', 1);
+		 showdown.setOption('headerLevelStart', 3);
+		 showdown.setOption('emoji',1);
+		 showdown.setOption('literalMidWordUnderscores',0);
+		 showdown.setOption('literalMidWordAsterisks',0);</script>
 
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+		<script type='text/x-mathjax-config'>
+		 MathJax.Hub.Config({
+			 tex2jax: {inlineMath: [['$','$']]}
+		 });</script>
 
- if (isset($_GET['cid'])){
- 	$cid=intval($_GET['cid']);
- 	$view_cid=$cid;
-		//	print $cid;
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js'></script>
 
+		<style type='text/css'>strong,em{font-weight: bold;} html{min-height: 100%; position: relative;} body{margin:0;}</style>
 
-			// check contest valid
- 	$sql="SELECT * FROM `contest` WHERE `contest_id`='$cid' ";
- 	$result=mysql_query($sql);
- 	$rows_cnt=mysql_num_rows($result);
- 	$contest_ok=true;
-
-
- 	if ($rows_cnt==0){
- 		mysql_free_result($result);
- 		$view_title= "No Such Contest!";
-
- 	}else{
- 		$row=mysql_fetch_object($result);
- 		$view_private=$row->private;
- 		if ($row->private && !isset($_SESSION['c'.$cid])) $contest_ok=false;
- 		if ($row->defunct=='Y') $contest_ok=false;
- 		if (isset($_SESSION['administrator'])) $contest_ok=true;
-
- 		$now=time();
- 		$start_time=strtotime($row->start_time);
- 		$end_time=strtotime($row->end_time);
- 		$view_description=$row->description;
- 		$view_title= $row->title;
- 		$view_start_time=$row->start_time;
- 		$view_end_time=$row->end_time;
-
-
-
- 		if (!isset($_SESSION['administrator']) && $now<$start_time){
- 			$view_errors=  "<h2>Recien iniciara </h2>".$row->start_time;
- 			require("template/".$OJ_TEMPLATE."/error.php");
- 			exit(0);
- 		}
- 	}
- 	if (!$contest_ok){
- 		$view_errors=  "<h2>$MSG_PRIVATE_WARNING <a href=contestrank.php?cid=$cid>$MSG_WATCH_RANK</a></h2>";
- 		require("template/".$OJ_TEMPLATE."/error.php");
- 		exit(0);
- 	}
-
- 	$sql="select * from (SELECT `problem`.`title` as `title`,`problem`.`problem_id` as `pid`,source as source, `contest_problem`.`num` as pnum
- 		FROM `contest_problem`,`problem`
- 		WHERE `contest_problem`.`problem_id`=`problem`.`problem_id` AND `problem`.`defunct`='N'
- 		AND `contest_problem`.`contest_id`=$cid
- 		) problem
- left join (select problem_id pid1,count(1) accepted from solution where result=4 and contest_id=$cid group by pid1) p1 on problem.pid=p1.pid1
- left join (select problem_id pid2,count(1) submit from solution where contest_id=$cid  group by pid2) p2 on problem.pid=p2.pid2
- order by pnum
- ";
-
- $result=mysql_query($sql);
- $view_problemset=Array();
-
- $cnt=0;
- while ($row=mysql_fetch_object($result)){
-
- 	$view_problemset[$cnt][0]="";
- 	if (isset($_SESSION['user_id'])) 
- 		$view_problemset[$cnt][0]=check_ac($cid,$cnt);
-
- 	$view_problemset[$cnt][1]= "$row->pid Problem &nbsp;".(chr($cnt+ord('A')));
- 	$view_problemset[$cnt][2]= "<a href='problem.php?cid=$cid&pid=$cnt'>$row->title</a>";
- 	$view_problemset[$cnt][3]=$row->source ;
- 	$view_problemset[$cnt][4]=$row->accepted ;
- 	$view_problemset[$cnt][5]=$row->submit ;
- 	$cnt++;
- }
-
- mysql_free_result($result);
-
-}else{
-
-	$sql="SELECT * FROM `contest` WHERE `defunct`='N' ORDER BY `contest_id` DESC limit 100";
-	$result=mysql_query($sql);
-
-	$view_contest=Array();
-	$i=0;
-	while ($row=mysql_fetch_object($result)){
-
-		$view_contest[$i][0]= $row->contest_id;
-		$view_contest[$i][1]= "<a href='contest.php?cid=$row->contest_id'>$row->title</a>";
-		$start_time=strtotime($row->start_time);
-		$end_time=strtotime($row->end_time);
-		$now=time();
-
-
-		$length=$end_time-$start_time;
-		$left=$end_time-$now;
-	// past
-
-		if ($now>$end_time) {
-			$view_contest[$i][2]= "<span class=green>$MSG_Ended@$row->end_time</span>";
-
-	// pending
-
-		}else if ($now<$start_time){
-			$view_contest[$i][2]= "<span class=blue>$MSG_Start@$row->start_time</span>&nbsp;";
-			$view_contest[$i][2].= "<span class=green>$MSG_TotalTime".formatTimeLength($length)."</span>";
-	// running
-
-		}else{
-			$view_contest[$i][2]= "<span class=red> $MSG_Running</font>&nbsp;";
-			$view_contest[$i][2].= "<span class=green> $MSG_LeftTime ".formatTimeLength($left)." </span>";
-		}
-
-
-
-
-
-		$private=intval($row->private);
-		if ($private==0)
-			$view_contest[$i][4]= "<span class=blue>$MSG_Public</span>";
-		else
-			$view_contest[$i][5]= "<span class=red>$MSG_Private</span>";
-
-
-
-		$i++;
-	}
-
-	mysql_free_result($result);
-
-}
-
-
-/////////////////////////Template
-if(isset($_GET['cid']))
-	require("template/".$OJ_TEMPLATE."/contest.php");
-else
-	require("template/".$OJ_TEMPLATE."/contestset.php");
-/////////////////////////Common foot
-if(file_exists('./include/cache_end.php'))
-	require_once('./include/cache_end.php');
-?>
-
+		<script type="text/babel">
+		 <?php require_once("./init.php"); contest();
+		 if(isset($_SESSION['administrator']) ||isset($_SESSION['problem_master_editor'])){
+			 // para editar los problemas de los contests
+			 require_once("include/set_get_key.php");
+			 echo "dat.getKey=\"".$_SESSION['getkey']."\";";
+		 }?>
+		 function loadPag(){ // load para cargar el skin de nuevo
+			 if(!localStorage.getItem("skin")) localStorage.setItem("skin", 0);
+			 if(dat.error){
+				 ReactDOM.render(<Errorpage dat={dat} msg={msg} />,
+			 					 document.getElementById("content"));
+			 }else{
+				 ReactDOM.render(<Contestpage dat={dat} msg={msg}/>,
+								 document.getElementById("content"));
+			 }
+			 MathJax.Hub.Typeset();
+		 }
+		 loadPag();
+		</script>
+		<title><?php echo $view_title?></title>
+        <div id="fb-root"></div>
+		<script>(function(d, s, id) {
+			 var js, fjs = d.getElementsByTagName(s)[0];
+			 if (d.getElementById(id)) return;
+			 js = d.createElement(s); js.id = id;
+			 js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&appId=1505282666151605&version=v2.0";
+			 fjs.parentNode.insertBefore(js, fjs);
+		 }(document, 'script', 'facebook-jssdk'));</script>
+	</head>
+	<body style="min-height: 100%;">
+		<div id="content">
+			<center><div class="preloader-wrapper active">
+				<div class="spinner-layer spinner-red-only">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div><div class="gap-patch">
+						<div class="circle"></div>
+					</div><div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</center></div>
+		</div>
+	</body>
+</html>

@@ -3,7 +3,7 @@ require_once("./include/db_info.inc.php");
 
 if(!empty($_POST["key"])) {
 
-$query ="SELECT * FROM colegios WHERE nombre like '" . $_POST["key"] . "%' LIMIT 0,3";
+$query ="SELECT * FROM colegios WHERE nombre like '%".$_POST["key"]."%'";
 $result = mysql_query($query);
 
 if(!empty($result)) {

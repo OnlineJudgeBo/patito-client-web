@@ -3,6 +3,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title><?php echo $view_title?></title>
 	<link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE?>/<?php echo isset($OJ_CSS)?$OJ_CSS:"hoj.css" ?>' type='text/css'>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
 </head>
 <body>
 <div id="wrapper">
@@ -18,13 +23,13 @@
    var exps=new Array();
 
 pats[0]=/System\.out\.print.*%.*/
-exps[0]="Java中System.out.print用法跟C语言printf不同，请试用System.out.format";
+exps[0]="El uso de Java System.out.print es diferente del printf de C, por favor intente System.out.format";
 pats[1]=/.*没有那个文件或目录.*/
-exps[1]="服务器为Linux系统，不能使用windows下特有的非标准头文件。";
+exps[1]="El servidor es un sistema Linux y no puede usar archivos de encabezado no estándar específicos de Windows.";
 pats[2]=/not a statement/
-exps[2]="检查大括号{}匹配情况，eclipse整理代码快捷键Ctrl+Shift+F";
+exps[2]="Verifique las llaves {} coincidencia, eclipse desfragmentación código de acceso directo Ctrl + Shift + F";
 pats[3]=/class, interface, or enum expected/
-exps[3]="请不要将java函数（方法）放置在类声明外部，注意大括号的结束位置}";
+exps[3]="No coloque funciones Java (métodos) fuera de la declaración de clase, preste atención al final de las llaves}";
 pats[4]=/asm.*java/
 exps[4]="请不要将java程序提交为C语言";
 pats[5]=/package .* does not exist/
@@ -38,9 +43,9 @@ exps[8]="字符串应用英文双引号(\")引起";
 pats[9]=/cannot find symbol/
 exps[9]="拼写错误或者缺少调用函数所需的对象如println()需对System.out调用";
 pats[10]=/';' expected/
-exps[10]="缺少分号。";
+exps[10]="Falta el punto y coma.。";
 pats[11]=/should be declared in a file named/
-exps[11]="Java必须使用public class Main。";
+exps[11]="Java debe usar public class Main。";
 pats[12]=/expected ‘.*’ at end of input/
 exps[12]="代码没有结束，缺少匹配的括号或分号，检查复制时是否选中了全部代码。";
 pats[13]=/invalid conversion from ‘.*’ to ‘.*’/
@@ -135,7 +140,7 @@ exps[56]="参数或表达式没写完";
    function explain(){
      //alert("asdf");
        var errmsg=document.getElementById("errtxt").innerHTML;
-	   var expmsg="辅助解释：<br>";
+	   var expmsg="Explicación auxiliar:<br>";
 	   for(var i=0;i<pats.length;i++){
 		   var pat=pats[i];
 		   var exp=exps[i];

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<?php
+$cache_time=10;
+$OJ_CACHE_SHARE=false;
+require_once('./include/cache_start.php');
+require_once('./include/db_info.inc.php');
+require_once('./include/setlang.php');
+$view_title= "Bienvenido al Juez de la Carrera de Informatica - UMSA BETA";
+?>
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <style></style>
+    <script src="./react/react.development.js"></script>
+    <script src="./react/react-dom.development.js"></script>
+    <script src="./react/babel.min.js"></script>
+    <script type="text/babel">
+      //alert("hola");
+      console.log("hola");
+      ReactDOM.render(<h1>Hola Mundo!</h1>,document.getElementById('roota'));
+      const dat = {
+        pag_title: <?php echo "\"$view_title\"";?>,
+        skin: localStorage.getItem("skin")
+      };
+      console.log("hola");
+      console.log(dat.pag_title);
+      console.log(dat.skin);
+
+
+      //alert(pag_title);
+    </script>
+  </head>
+  <body>
+    <script type="text/babel"></script>
+    <h1> Hola </h1>
+    <div id="root"></div>
+  </body>
+</html>
