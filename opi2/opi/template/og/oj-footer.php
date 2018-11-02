@@ -1,1 +1,0 @@
-Admin:<a href="//facebook.com/JuezPatito">Algun Error?</a> 
