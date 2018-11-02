@@ -97,7 +97,7 @@ if ($len>100){
 }
 $lastname=trim($_POST['lastname']);
 $len=strlen($lastname);
-if($len > 15){
+if($len > 30){
 	$err_str=$err_str."Apellido demasiado largo!\\n";
 	$err_cnt++;
 }
