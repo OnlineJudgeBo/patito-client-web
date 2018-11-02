@@ -18,16 +18,10 @@
 						</tr>
 						<tr>
 							<td>
-								<?php 
-								require_once("fckeditor/fckeditor.php"); 
-								$description = new FCKeditor('content') ;
-								$description->BasePath = 'fckeditor/' ;
-								$description->Height = 250 ;
-								$description->Width=800;
-								$description->Value = "<p> $row->content; </p>" ;
-								$description->Create() ;
-								?> 
-							</td>
+<textarea  class="input input-xxlarge"  rows=13 name="content" cols=80>
+     <?php echo $row->content;?>
+     </textarea>
+     </td>
 						</tr>
 						<tr>
 							<td>

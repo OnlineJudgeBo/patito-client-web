@@ -96,8 +96,3 @@
 
 
  require("template/".$OJ_TEMPLATE."/contestsetlist.php");
- ?>
-<<<<<<< HEAD
-
-=======
->>>>>>> 3cba796a64884dea6528cc46f96e543def7c3c0e

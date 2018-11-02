@@ -9,13 +9,12 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<?php require_once("oj-header.php");?>
 			<section id="main">
 			</p>
 			<label>Actualizar Informacion:</label><br>
 			<div id="registro">
 				<form action="modify.php" method="post">
-					<?php require_once('./include/set_post_key.php');?>
+<?php require_once("init.php");require_once('./include/set_post_key.php');?>
 					<label><?php echo $MSG_USER_ID; ?>:</label>
 					<input name="user_id" type="text" size="20" value="<?php echo $_SESSION['user_id']?>" disabled="disabled"><br>
 
@@ -69,9 +68,6 @@
 			</div>
 		</section>
 	</div>
-	<section id="foot">
-		<?php require_once("oj-footer.php");?>
-	</section>
 </body>
 </html>
 

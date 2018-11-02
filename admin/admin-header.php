@@ -1,5 +1,6 @@
 <?php @session_start();?>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8f">
 <link rel=stylesheet href='../include/hoj.css' type='text/css'>
 <?php if (!(isset($_SESSION['administrator'])||
 			isset($_SESSION['contest_creator'])||

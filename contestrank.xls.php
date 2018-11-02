@@ -15,7 +15,7 @@ if(isset($OJ_LANG)){
 		require_once("./lang/$OJ_LANG.php");
 }
 require_once("./include/const.inc.php");
-require_once("./include/my_func.inc.php");
+require_once("./initPHP.php");
 class TM{
 	var $solved=0;
 	var $time=0;
@@ -43,13 +43,14 @@ class TM{
 		else{
 			$this->p_ac_sec[$pid]=$sec;
 			$this->solved++;
-			$this->time+=$sec+$this->p_wa_num[$pid]*1200;
+			if(isset($this->p_wa_num[$pid])) $this->time+=$sec+$this->p_wa_num[$pid]*1200;
 			if($this->mark==0){
 				$this->mark=$mark_base;
 			}else{
 				$this->mark+=$mark_per_problem;
 			}
-			$punish=intval($this->p_wa_num[$pid]*$mark_per_punish);
+            $punish=0;
+			if(isset($this->p_wa_num[$pid])) $punish=intval($this->p_wa_num[$pid]*$mark_per_punish);
 			if($punish<intval($mark_per_problem*.8))
 				$this->mark-=$punish;
 			else

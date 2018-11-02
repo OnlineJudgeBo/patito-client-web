@@ -4,7 +4,6 @@ $OJ_CACHE_SHARE=false;
 	$debug = true;
 	require_once('./include/cache_start.php');
     require_once('./include/db_info.inc.php');
-	require_once('./include/setlang.php');
 	require_once('./include/online.php');
 	$on = new online();
 	$view_title= "Welcome To Online Judge";
@@ -12,8 +11,6 @@ $OJ_CACHE_SHARE=false;
 	$users = $on->getAll();
 	$ip = new IpLocation();
 ?>
-
-
 
 <?php 
 $view_online=Array();

@@ -1,26 +1,25 @@
 <?php require("admin-header.php");
-include_once("../fckeditor/fckeditor.php") ;
-include_once("../include/const.inc.php");
+include_once("../initPHP.php");
 if (isset($_POST['syear']))
 {
 	require_once("../include/check_post_key.php");
 	
 	$starttime=intval($_POST['syear'])."-".intval($_POST['smonth'])."-".intval($_POST['sday'])." ".intval($_POST['shour']).":".intval($_POST['sminute']).":00";
 	$endtime=intval($_POST['eyear'])."-".intval($_POST['emonth'])."-".intval($_POST['eday'])." ".intval($_POST['ehour']).":".intval($_POST['eminute']).":00";
-//	echo $starttime;
-//	echo $endtime;
-	 
+    //	echo $starttime;
+    //	echo $endtime;
+	
 	$title=mysql_real_escape_string($_POST['title']);
 	$description=mysql_real_escape_string($_POST['description']);
 	$private=mysql_real_escape_string($_POST['private']);
 	if (get_magic_quotes_gpc ()) {
-        $title = stripslashes ( $title);
-        //$description = stripslashes ( $description);
-  }
-   $lang=$_POST['lang'];
-   $langmask=0;
-   foreach($lang as $t){
-			$langmask+=1<<$t;
+		$title = stripslashes ( $title);
+		//$description = stripslashes ( $description);
+	}
+    $lang=$_POST['lang'];
+    $langmask=0;
+    foreach($lang as $t){
+		$langmask+=1<<$t;
 	} 
 	$langmask=((1<<count($language_ext))-1)&(~$langmask);
 	echo $langmask;	
@@ -49,7 +48,7 @@ if (isset($_POST['syear']))
 		mysql_query($sql_1) or die(mysql_error());
 		$sql="update `problem` set defunct='N' where `problem_id` in ($plist)";
 		mysql_query($sql) or die(mysql_error());
-	
+		
 	}
 	
 	$sql="DELETE FROM `privilege` WHERE `rightstr`='c$cid'";
@@ -105,66 +104,55 @@ if (isset($_POST['syear']))
 ?>
 
 <form method=POST >
-<?php require_once("../include/set_post_key.php");?>
-<p align=center><font size=4 color=#333399>Edit a Contest</font></p>
-<input type=hidden name='cid' value=<?php echo $cid?>>
-<p align=left>Title:<input class=input-xxlarge type=text name=title size=71 value='<?php echo $title?>'></p>
-<p align=left>Start Time:<br>&nbsp;&nbsp;&nbsp;
-Year:<input class=input-mini  type=text name=syear value=<?php echo substr($starttime,0,4)?> size=4 >
-Month:<input class=input-mini  type=text name=smonth value='<?php echo substr($starttime,5,2)?>' size=2 >
-Day:<input class=input-mini  type=text name=sday size=2 value='<?php echo substr($starttime,8,2)?>'>
-Hour:<input class=input-mini  type=text name=shour size=2 value='<?php echo substr($starttime,11,2)?>'>
-Minute:<input class=input-mini  type=text name=sminute size=2 value=<?php echo substr($starttime,14,2)?>></p>
-<p align=left>End Time:<br>&nbsp;&nbsp;&nbsp;
+	<?php require_once("../include/set_post_key.php");?>
+	<p align=center><font size=4 color=#333399>Edit a Contest</font></p>
+	<input type=hidden name='cid' value=<?php echo $cid?>>
+	<p align=left>Title:<input class=input-xxlarge type=text name=title size=71 value='<?php echo $title?>'></p>
+	<p align=left>Start Time:<br>&nbsp;&nbsp;&nbsp;
+		Year:<input class=input-mini  type=text name=syear value=<?php echo substr($starttime,0,4)?> size=4 >
+		Month:<input class=input-mini  type=text name=smonth value='<?php echo substr($starttime,5,2)?>' size=2 >
+		Day:<input class=input-mini  type=text name=sday size=2 value='<?php echo substr($starttime,8,2)?>'>
+		Hour:<input class=input-mini  type=text name=shour size=2 value='<?php echo substr($starttime,11,2)?>'>
+		Minute:<input class=input-mini  type=text name=sminute size=2 value=<?php echo substr($starttime,14,2)?>></p>
+	<p align=left>End Time:<br>&nbsp;&nbsp;&nbsp;
 
-Year:<input class=input-mini  type=text name=eyear value=<?php echo substr($endtime,0,4)?> size=4 >
-Month:<input class=input-mini  type=text name=emonth value=<?php echo substr($endtime,5,2)?> size=2 >
-Day:<input class=input-mini  type=text name=eday size=2 value=<?php echo substr($endtime,8,2)?>>
-Hour:<input class=input-mini  type=text name=ehour size=2 value=<?php echo substr($endtime,11,2)?>> 
-Minute:<input class=input-mini  type=text name=eminute size=2 value=<?php echo substr($endtime,14,2)?>></p>
+		Year:<input class=input-mini  type=text name=eyear value=<?php echo substr($endtime,0,4)?> size=4 >
+		Month:<input class=input-mini  type=text name=emonth value=<?php echo substr($endtime,5,2)?> size=2 >
+		Day:<input class=input-mini  type=text name=eday size=2 value=<?php echo substr($endtime,8,2)?>>
+		Hour:<input class=input-mini  type=text name=ehour size=2 value=<?php echo substr($endtime,11,2)?>> 
+		Minute:<input class=input-mini  type=text name=eminute size=2 value=<?php echo substr($endtime,14,2)?>></p>
 
-Public/Private:<select name=private>
-	<option value=0 <?php echo $private=='0'?'selected=selected':''?>>Public</option>
-	<option value=1 <?php echo $private=='1'?'selected=selected':''?>>Private</option>
-</select>
-<br>Problems:<input class=input-xxlarge type=text size=60 name=cproblem value='<?php echo $plist?>'>
+	Public/Private:<select name=private>
+		<option value=0 <?php echo $private=='0'?'selected=selected':''?>>Public</option>
+		<option value=1 <?php echo $private=='1'?'selected=selected':''?>>Private</option>
+	</select>
+	<br>Problems:<input class=input-xxlarge type=text size=60 name=cproblem value='<?php echo $plist?>'>
 
- Language:<select name="lang[]"  multiple="multiple"    style="height:220px">
-<?php
-$lang_count=count($language_ext);
+    Language:<select name="lang[]"  multiple="multiple"    style="height:220px">
+		<?php
+		$lang_count=count($language_ext);
 
 
-$lang=(~((int)$langmask))&((1<<$lang_count)-1);
-if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
- else $lastlang=0;
- for($i=0;$i<$lang_count;$i++){
-               
-                 echo  "<option value=$i ".( $lang&(1<<$i)?"selected":"").">
-                        ".$language_name[$i]."
+		$lang=(~((int)$langmask))&((1<<$lang_count)-1);
+		if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
+		else $lastlang=0;
+		for($i=0;$i<$lang_count;$i++){
+            
+			echo  "<option value=$i ".( $lang&(1<<$i)?"selected":"").">
+            ".$language_name[$i]."
                  </option>";
-  }
+		}
 
-?>
+		?>
+		
+	</select>
 	
-   </select>
-	
 
-<br>
-<p align=left>Description:<br><!--<textarea rows=13 name=description cols=80></textarea>-->
-
-<?php
-$fck_description = new FCKeditor('description') ;
-$fck_description->BasePath = '../fckeditor/' ;
-$fck_description->Height = 300 ;
-$fck_description->Width=600;
-
-$fck_description->Value = $description ;
-$fck_description->Create() ;
-
-?>
-
-Users:<textarea name="ulist" rows="20" cols="20"><?php if (isset($ulist)) { echo $ulist; } ?></textarea>
-<p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
+	<br>
+	<p align=left>Descripcion (<a href="https://en.wikipedia.org/wiki/Markdown"> MarkDown</a>):<br>
+		<textarea  class="input input-xxlarge"  rows=13 name="description" cols=80><?php echo $description ?></textarea>
+		Users:<textarea name="ulist" rows="20" cols="20"><?php if (isset($ulist)) { echo $ulist; } ?></textarea>
+		<p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
 
 </form>
 <?php require_once("../oj-footer.php");?>

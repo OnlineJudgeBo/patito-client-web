@@ -38,6 +38,7 @@ Comment:
 	Have Fun...
 ------------------------------------------------------------------------------*/
 //------------------------------------------------------------------------------
+
 umask(002); // Added to make created files/dirs group writable
 //------------------------------------------------------------------------------
 require "./.include/init.php";	// Init
@@ -111,7 +112,7 @@ break;
 // DEFAULT: LIST FILES & DIRS
 case "list":
 default:
-	require "./.include/fun_list.php";
+	require "./.include/fun_list.php";    
 	list_dir($GLOBALS["dir"]);
 //------------------------------------------------------------------------------
 }				// end switch-statement
