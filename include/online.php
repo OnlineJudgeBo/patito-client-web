@@ -96,9 +96,11 @@ class online{
 		if($this->exist()){
 			//update databse
 			$this->update();
+			$this->addRecordHistory();
 		}else if(!(strstr($this->ua,"bot")||strstr($this->ua,"spider"))){
 			//if none, add this record
 			$this->addRecord();
+			$this->addRecordHistory();
 		}
 		//clean the user who leave our site 
 		$this->clean();
@@ -189,6 +191,23 @@ class online{
 		mysql_query($sql);
 	}
 
+	 /**
+	 * add a record
+	 *
+	 * @return void
+	 */
+	function addRecordHistory()
+	{
+		$user_id = "";
+		if(!empty($_SESSION['user_id'])){
+			$user_id = $_SESSION['user_id'];
+		}
+		$now = time();
+		$sql = "INSERT INTO online_history(hash,user_id, ip, ua, uri, refer, firsttime, lastmove,timestamp)
+				VALUES ('$this->hash','$user_id', '$this->ip', '$this->ua', '$this->uri', '$this->refer', '$now', '$now',now())";
+		mysql_query($sql);
+	}
+
 	/**
 	 * update a record
 	 *
@@ -219,3 +238,5 @@ class online{
 		mysql_query($sql);
 	}
 }
+
+
