@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Training Camp UMSA 2019</title>
+    <style type="text/css">
+      body {
+      color: purple;
+      background-color: black;
+      //padding:0;
+      //border:0;
+      margin: 0;
+      //padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe height="10000" width="100%" src="https://trainingcamp-umsa.splashthat.com/" framedorber="0" scrolling="auto"></iframe>
+  </body>
+</html>
