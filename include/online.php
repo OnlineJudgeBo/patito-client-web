@@ -205,6 +205,7 @@ class online{
 		$now = time();
 		$sql = "INSERT INTO online_history(hash,user_id, ip, ua, uri, refer, firsttime, lastmove,timestamp)
 				VALUES ('$this->hash','$user_id', '$this->ip', '$this->ua', '$this->uri', '$this->refer', '$now', '$now',now())";
+				
 		mysql_query($sql);
 	}
 
@@ -238,5 +239,4 @@ class online{
 		mysql_query($sql);
 	}
 }
-
 

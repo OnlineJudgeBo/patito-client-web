@@ -40,8 +40,7 @@
 				if ($brush=='pascal') $brush='delphi';
 				if ($brush=='obj-c') $brush='c';
 				if ($brush=='freebasic') $brush='vb';
-				if ($brush=='python3') $brush='python';
-				if ($brush=='python2') $brush='python';
+				if ($brush=='python2' || $brush=='python3' ||  $brush=='python3.7' ) $brush='python';
 				if ($brush=='C++11')   $brush='c++';
 
 				echo "<pre class=\"brush:".$brush.";\">";

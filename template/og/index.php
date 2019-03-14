@@ -24,39 +24,41 @@
       ga('send', 'pageview');
 
     </script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   </head>
   <body>
     <div id="wrapper">
       <?php require_once("oj-header.php");?>
       <section id="sidebar">
-	<!--list contest -->
-	<div>
+		<!--list contest -->
+		<div>
           <?php include "contestList.php";?>
-	</div>
-	<!-- end list contest-->
-	<h1>Noticias</h1>
-	<?php echo $view_news ?>
+		</div>
+		<!-- end list contest-->
+		<h1>Noticias</h1>
+		<?php echo $view_news ?>
       </section>
       <section id="main_main">
-	<div id="calendar">
-	  <!--
+		<div id="calendar">
+		  <!--
               <h1> Calendario de eventos</h1>
-	      <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showPrint=0&amp;showTabs=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%23B1440E&amp;src=ak75rre322mrpoascoedm4af08%40group.calendar.google.com&amp;color=%23B1365F&amp;src=hb26migjl0dktrssgdg5ocedoo%40group.calendar.google.com&amp;color=%232F6309&amp;src=raihanruhin%40gmail.com&amp;color=%231B887A&amp;src=gi183ogbbd1ar5i02bsb5u3uvakbuaqs%40import.calendar.google.com&amp;color=%23333333&amp;ctz=America%2FLa_Paz"  style="width: 100%;height:500px" frameborder="0" scrolling="no"></iframe>  
-	      --!>
-		<iframe src="https://jv.umsa.bo/iframe.html" style="width: 100%;height:900px" frameborder="0" scrolling="no"></iframe>
+			  <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showPrint=0&amp;showTabs=0&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=codechef.com_3ilksfmv45aqr3at9ckm95td5g%40group.calendar.google.com&amp;color=%23B1440E&amp;src=ak75rre322mrpoascoedm4af08%40group.calendar.google.com&amp;color=%23B1365F&amp;src=hb26migjl0dktrssgdg5ocedoo%40group.calendar.google.com&amp;color=%232F6309&amp;src=raihanruhin%40gmail.com&amp;color=%231B887A&amp;src=gi183ogbbd1ar5i02bsb5u3uvakbuaqs%40import.calendar.google.com&amp;color=%23333333&amp;ctz=America%2FLa_Paz"  style="width: 100%;height:500px" frameborder="0" scrolling="no"></iframe>  
+			  --!>
+			  <iframe src="https://jv.umsa.bo/iframe.html" style="width: 100%;height:900px" frameborder="0" scrolling="no"></iframe>
 
-	</div>
+		</div>
 
 
-	<!--
-	    <center><h2>Todos sean bienvenidos :D <b> <(') </b> </h2></center>
-							   <img src="flisol.jpg" />
-							   <br>
-							   <a href="blog_add.php"> Agregar entrada al blog </a>
-							   --!>  
+		<!--
+			<center><h2>Todos sean bienvenidos :D <b> <(') </b> </h2></center>
+														   <img src="flisol.jpg" />
+														   <br>
+														   <a href="blog_add.php"> Agregar entrada al blog </a>
+														   --!>  
       </section><!--end main-->
       <div id="blog">
-	<?php echo $view_blog ?>
+		<?php echo $view_blog ?>
       </div>
     </div><!--end wrapper-->
     <section id="foot">

@@ -8,7 +8,8 @@ $judge_result=Array($MSG_Pending,$MSG_Pending_Rejudging,$MSG_Compiling,$MSG_Runn
 $jresult=Array($MSG_PD,$MSG_PR,$MSG_CI,$MSG_RJ,$MSG_AC,$MSG_PE,$MSG_WA,$MSG_TLE,$MSG_MLE,$MSG_OLE,$MSG_RE,$MSG_CE,$MSG_CO,$MSG_TR);
 $judge_color=Array("gray","gray","orange","orange","green","red","red","red","red","red","red","navy ","navy");
                    // 0    1      2       3     4      5       6         7    8     9     10       11          12             13 ,14,15
-$language_name = Array("C","C++","Pascal","Java","Ruby","Bash","Python2","PHP","Perl","C#","Obj-C","FreeBasic","Other Language","","","Python3","C++11");
-$language_ext  = Array( "c", "cc", "pas"  ,"java", "rb" , "sh" ,"py"     ,"php","pl"  ,"cs","m"    ,"bas"      ,""              ,"","","py","cc" );
+$language_name = Array("C","C++","Pascal","Java","Ruby","Bash","Python2","PHP","Perl","C#","Obj-C","FreeBasic","Other Language","","","Python3","C++11","Python3.7");
+$language_ext  = Array( "c", "cc", "pas"  ,"java", "rb" , "sh" ,"py"     ,"php","pl"  ,"cs","m"    ,"bas"      ,""              ,"","","py","cc","py" );
 $PID="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 ?>
+

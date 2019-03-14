@@ -5,7 +5,7 @@
 	<link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE?>/<?php echo isset($OJ_CSS)?$OJ_CSS:"hoj.css" ?>' type='text/css'>
 	    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-		<script src='https://www.google.com/recaptcha/api.js'></script>
+		<script src='http://www.google.com/recaptcha/api.js'></script>
 	</head>
 	<body>
 		<div id="wrapper">
