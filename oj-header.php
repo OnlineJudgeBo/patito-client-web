@@ -5,7 +5,7 @@
 		$result=mysql_query($sql);
 		$row=mysql_fetch_row($result);
 		if (intval($row[0])==0) $retmsg=$MSG_CONTEST;
-		else $retmsg=$row[0]."<span class=red>&nbsp;$MSG_CONTEST</span>";
+		else $retmsg=$row[0]."<span class='red-text'>&nbsp;$MSG_CONTEST</span>";
 		mysql_free_result($result);
 		return $retmsg;
 	}

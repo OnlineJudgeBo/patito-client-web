@@ -1,11 +1,10 @@
 <?php
-ini_set("display_errors","On");
-		ob_start();
-		
+//ini_set("display_errors","On");
+ob_start();
 header ( "content-type:   application/excel" );
-		
+header('Content-Disposition: attachment; filename="Contest Rank.xls"');
 ?>
-<meta charset="utf-8"> 
+<meta charset="utf-8">
 <?php require_once("./include/db_info.inc.php");
 global $mark_base,$mark_per_problem,$mark_per_punish;
  $mark_start=60;
@@ -27,27 +26,30 @@ class TM{
 	function TM(){
 		$this->solved=0;
 		$this->time=0;
-		$this->p_wa_num=array(0);
-		$this->p_ac_sec=array(0);
+		$this->p_wa_num = array(0);
+		$this->p_ac_sec = array(0);
 	}
 	function Add($pid,$sec,$res,$mark_base,$mark_per_problem,$mark_per_punish){
-//		echo "Add $pid $sec $res<br>";
+	//	echo "Add $pid $sec $res<br>";
 	
-		if (isset($this->p_ac_sec[$pid])&&$this->p_ac_sec[$pid]>0)
+		if (isset($this->p_ac_sec[$pid]) && $this->p_ac_sec[$pid] > 0)
 			return;
-		if ($res!=4) 
-			if(isset($this->p_wa_num[$pid]))
+		if (empty($this->p_wa_num[$pid])){
+		 $this->p_wa_num[$pid] = 0;
+		}
+		if ($res != 4) {
+			if(!empty($this->p_wa_num[$pid]))
 				$this->p_wa_num[$pid]++;
 			else
-				$this->p_wa_num[$pid]=1;
-		else{
-			$this->p_ac_sec[$pid]=$sec;
+				$this->p_wa_num[$pid] = 1;
+	        } else {
+			$this->p_ac_sec[$pid] = $sec;
 			$this->solved++;
-			$this->time+=$sec+$this->p_wa_num[$pid]*1200;
-			if($this->mark==0){
-				$this->mark=$mark_base;
+			$this->time += $sec + $this->p_wa_num[$pid]*1200;
+			if($this->mark == 0){
+				$this->mark = $mark_base;
 			}else{
-				$this->mark+=$mark_per_problem;
+				$this->mark += $mark_per_problem;
 			}
 			$punish=intval($this->p_wa_num[$pid]*$mark_per_punish);
 			if($punish<intval($mark_per_problem*.8))

@@ -17,22 +17,11 @@
 		echo mysql_error();
 		while ($result&&$row=mysql_fetch_assoc($result))
 			$_SESSION[$row['rightstr']]=true;
+
+		echo "<script language='javascript'>\n";
+		echo "history.go(-2);\n";
+		echo "</script>";
 		
-		$sql = "SELECT user_id FROM users where user_id ='".$user_id."' and school !='-' ";
-		$result=mysql_query($sql);
-		if(mysql_numrows($result) > 0){
-			$sql2 = "UPDATE users SET school='-' WHERE user_id= '".$user_id."'";
-			$tt = mysql_query($sql2);
-			echo "<script language='javascript'>\n";
-			echo "alert('Actualice sus datos gracias.');\n";
-			echo "window.location='modifypage.php'";
-			echo "</script>";
-			
-		}else{
-			echo "<script language='javascript'>\n";
-			echo "history.go(-2);\n";
-			echo "</script>";
-		}
 	}else{
 		echo "<script language='javascript'>\n";
 		echo "alert('UserName or Password Wrong!');\n";

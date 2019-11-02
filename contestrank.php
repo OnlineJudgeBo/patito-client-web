@@ -15,44 +15,89 @@ class TM{
         var $p_ac_sec;
         var $user_id;
         var $nick;
+        var $pass_rate;
+        var $points;
         function TM(){
                 $this->solved=0;
                 $this->time=0;
-                $this->p_wa_num=array(0);
-                $this->p_ac_sec=array(0);
+                $this->p_wa_num  = array(0);
+                $this->p_ac_sec  = array(0);
+                $this->pass_rate = array(0);
+                $this->points    = 0;
         }
-        function Add($pid,$sec,$res){
-//              echo "Add $pid $sec $res<br>";
-                if (isset($this->p_ac_sec[$pid])&&$this->p_ac_sec[$pid]>0)
+        function Add($pid,$sec,$res, $pass_rate = 0, $obi = 0){
+              //echo "Add $this->user_id - $pid =  $res $pass_rate <br>";
+               if($obi == 0){
+                 if (isset($this->p_ac_sec[$pid]) && $this->p_ac_sec[$pid] > 0){
                         return;
-                if ($res!=4){
+                 }
+                }
+                if ($res != 4){
                         if(isset($this->p_wa_num[$pid])){
                                 $this->p_wa_num[$pid]++;
                         }else{
                                 $this->p_wa_num[$pid]=1;
                         }
                 }else{
-                        $this->p_ac_sec[$pid]=$sec;
-                        $this->solved++;
-                        if(!isset($this->p_wa_num[$pid])) $this->p_wa_num[$pid]=0;
-                        $this->time+=$sec+$this->p_wa_num[$pid]*1200;
-//                      echo "Time:".$this->time."<br>";
-//                      echo "Solved:".$this->solved."<br>";
+
+		if($obi ==  1){
+                 $pass_rate = (100-$pass_rate*100);
+                 if($pass_rate == 1){
+                    $pass_rate = 100;
+                 }
+                 if ($this->p_ac_sec[$pid] == 0){
+                    $this->solved++;
+                    $this->p_ac_sec[$pid]  = $sec;
+                 }
+                 if (($pass_rate) > $this->pass_rate[$pid]){
+                     $this->p_ac_sec[$pid]  = $sec;
+	             $this->pass_rate [$pid] = $pass_rate;
+                 }
+
+                }else{
+                     $this->p_ac_sec[$pid]  = $sec;
+                     $this->solved++;
                 }
+               $this->points = 0;
+                foreach($this->pass_rate as $index => $value){
+                 $this->points += $value;
+                }
+
+                        if(!isset($this->p_wa_num[$pid])) {
+                           $this->p_wa_num[$pid]=0;
+                        }
+                $this->time = 0;
+                foreach($this->p_ac_sec as $index => $value){
+                 $this->time += $value;
+                }
+
+
+//                        $this->time += $sec ;//+ $this->p_wa_num[$pid];//*1200;
+                }
+
         }
 }
 
 function s_cmp($A,$B){
-//      echo "Cmp....<br>";
-        if ($A->solved!=$B->solved) return $A->solved<$B->solved;
-        else return $A->time>$B->time;
+        if ($A->solved != $B->solved) 
+            return $A->solved < $B->solved;
+        else
+            return $A->time>$B->time;
 }
+
+function points_cmp($A,$B){
+        if ($A->points != $B->points) 
+            return $A->points < $B->points;
+        else
+            return $A->time > $B->time;
+}
+
 
 // contest start time
 if (!isset($_GET['cid'])) die("No Such Contest!");
 $cid=intval($_GET['cid']);
 
-$sql="SELECT `start_time`,`title`,`end_time` FROM `contest` WHERE `contest_id`='$cid'";
+$sql="SELECT obi, `start_time`,`title`,`end_time` FROM `contest` WHERE `contest_id`='$cid'";
 //$result=mysql_query($sql) or die(mysql_error());
 //$rows_cnt=mysql_num_rows($result);
 if($OJ_MEMCACHE){
@@ -70,6 +115,7 @@ if($OJ_MEMCACHE){
 
 $start_time=0;
 $end_time=0;
+$obi = 0;
 if ($rows_cnt>0){
 //      $row=mysql_fetch_array($result);
 
@@ -80,6 +126,7 @@ if ($rows_cnt>0){
         $start_time=strtotime($row['start_time']);
         $end_time=strtotime($row['end_time']);
         $title=$row['title'];
+        $obi = $row['obi'];
         
 }
 if(!$OJ_MEMCACHE)mysql_free_result($result);
@@ -114,45 +161,27 @@ if($OJ_MEMCACHE){
         else $rows_cnt=0;
 }
 
-if($OJ_MEMCACHE)
-        $row=$result[0];
-else
-        $row=mysql_fetch_array($result);
+$row=mysql_fetch_array($result);
 
-//$row=mysql_fetch_array($result);
 $pid_cnt=intval($row['pbc']);
 if(!$OJ_MEMCACHE)mysql_free_result($result);
 
 $sql="SELECT
-        users.user_id,users.nick,solution.result,solution.num,solution.in_date
+        users.user_id,users.nick,solution.result,solution.num,solution.in_date, solution.pass_rate
                 FROM
                         (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
                 left join users
                 on users.user_id=solution.user_id
         ORDER BY users.user_id,in_date";
-//echo $sql;
-//$result=mysql_query($sql);
-if($OJ_MEMCACHE){
-   //     require("./include/memcache.php");
-        $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
-        if($result) $rows_cnt=count($result);
-        else $rows_cnt=0;
-}else{
-
         $result = mysql_query($sql);// or die("Error! ".mysql_error());
         if($result) $rows_cnt=mysql_num_rows($result);
         else $rows_cnt=0;
-}
 
 $user_cnt=0;
 $user_name='';
 $U=array();
 for ($i=0;$i<$rows_cnt;$i++){
-        if($OJ_MEMCACHE)
-                $row=$result[$i];
-        else
-                $row=mysql_fetch_array($result);
-
+        $row=mysql_fetch_array($result);
         $n_user=$row['user_id'];
         if (strcmp($user_name,$n_user)){
                 $user_cnt++;
@@ -163,14 +192,31 @@ for ($i=0;$i<$rows_cnt;$i++){
 
                 $user_name=$n_user;
         }
-        if(time()<$end_time&&$lock<strtotime($row['in_date']))
-        	   $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0);
-        else
-        	   $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
-       
+        if( time() < $end_time && $lock < strtotime($row['in_date']) ){
+                  if($obi == 1){
+                     $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0,0,1);
+                  }else {
+        	     $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0,0,0);
+                  }
+        }else{
+                  if($obi == 1){
+                     if($row['pass_rate'] > 0.0){
+                       $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,4,$row['pass_rate'],1);
+                     }else{
+                       $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']),0,1);
+                     }
+                  }else {
+                     $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']),0);
+                  }
+        }
 }
+//echo "<pre>"; print_r($U); echo "</pre>"; exit();
 if(!$OJ_MEMCACHE) mysql_free_result($result);
-usort($U,"s_cmp");
+if( $obi == 1){
+   usort($U,"points_cmp");
+}else{
+   usort($U,"s_cmp");
+}
 
 ////firstblood
 $first_blood=array();

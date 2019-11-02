@@ -30,21 +30,25 @@ if (isset($_GET['pid']))
 				<?php echo $MSG_PROBLEMS?>
 			</a>
 		</li>
+               <?php if(($cid != 1761 && $cid != 1760) || !empty($_SESSION['administrator'])){ ?>
 		<li>
 			<a href='./contestrank.php?cid=<?php echo $cid?>'>
 				<?php echo $MSG_STANDING?>
 			</a>
 		</li>
+               <?php } ?>
 		<li>
 			<a href='./status.php?cid=<?php echo $cid?>'>
 				<?php echo $MSG_SEEOJ?>
 			</a>
 		</li>
+<?php if(($cid != 1761 && $cid != 1760) || !empty($_SESSION['administrator'])){ ?>
 		<li>
 			<a href='./conteststatistics.php?cid=<?php echo $cid?>'>
 				<?php echo $MSG_STATISTICS?>
 			</a>
 		</li>
+<?php } ?>
 	</ul>
 	</div>
 

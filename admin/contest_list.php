@@ -26,10 +26,19 @@ for ($i=1;$i<=$cnt;$i++){
         if ($i==$page) echo "<span class=red>$i</span>";
         else echo "<a href='contest_list.php?page=".$i."'>".$i."</a>";
 }
-$sql="select `contest_id`,`title`,`start_time`,`end_time`,`private`,`defunct` FROM `contest` where contest_id>=$pstart and contest_id <=$pend order by `contest_id` desc";
+$sql=sprintf("select contest.contest_id,contest.title,contest.start_time,contest.end_time,contest.private,contest.defunct, privilege.user_id
+FROM contest
+INNER JOIN privilege ON privilege.rightstr = CONCAT('%s',contest.contest_id) 
+where contest.contest_id>=%s and contest.contest_id <=%d 
+ORDER BY contest.contest_id DESC","m",$pstart,$pend);
 $keyword=$_GET['keyword'];
 $keyword=mysql_real_escape_string($keyword);
-if($keyword) $sql="select `contest_id`,`title`,`start_time`,`end_time`,`private`,`defunct` FROM `contest` where title like '%$keyword%' ";
+if($keyword){
+$sql=sprintf("select contest.contest_id,contest.title,contest.start_time,contest.end_time,contest.private,contest.defunct, privilege.user_id
+        FROM contest
+        INNER JOIN privilege ON privilege.rightstr = CONCAT('%s',contest.contest_id) 
+        where contest.title like '%s'","m",$pstart,$pend,"%".$keyword."%");
+} 
 $result=mysql_query($sql) or die(mysql_error());
 ?>
 <form action=contest_list.php class=center><input name=keyword><input type=submit value="<?php echo $MSG_SEARCH?>" ></form>
@@ -37,7 +46,7 @@ $result=mysql_query($sql) or die(mysql_error());
 
 <?php
 echo "<center><table class='table table-striped' width=90% border=1>";
-echo "<tr><td>ContestID<td>Title<td>StartTime<td>EndTime<td>Private<td>Status<td>Edit<td>Copy<td>Export<td>Logs";
+echo "<tr><td>ContestID<td>Title<td>StartTime<td>EndTime<td>Create By</td><td>Private<td>Status<td>Edit<td>Copy<td>Export<td>Logs";
 echo "</tr>";
 for (;$row=mysql_fetch_object($result);){
         echo "<tr>";
@@ -45,6 +54,7 @@ for (;$row=mysql_fetch_object($result);){
         echo "<td><a href='../contest.php?cid=$row->contest_id'>".$row->title."</a>";
         echo "<td>".$row->start_time;
         echo "<td>".$row->end_time;
+        echo "<td>".$row->user_id;
         $cid=$row->contest_id;
         if(isset($_SESSION['administrator'])||isset($_SESSION["m$cid"])){
                 echo "<td><a href=contest_pr_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->private=="0"?"Public->Private":"Private->Public")."</a>";
@@ -67,3 +77,4 @@ for (;$row=mysql_fetch_object($result);){
 echo "</table></center>";
 require("../oj-footer.php");
 ?>
+

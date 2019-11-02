@@ -29,15 +29,17 @@
 							else
 								echo "<tr class='evenrow'>";
 							foreach($row as $table_cell){
-								echo "<td>";
+								echo "<td>"; echo "\n";
 								echo "\t".$table_cell;
-								echo "</td>";
+								echo "</td>"; echo "\n";
 							}
-							echo "</tr>";
+							echo "</tr>"; echo "\n";
 
 							$cnt=1-$cnt;
 						}
 						?>
+<!-- RETO CTF -->
+<!-- Este es la bandera (flag) del reto: abcfer385kf79b3c46510a6dcef9dda -->
 					</tbody>
 
 				</table>

@@ -55,7 +55,7 @@ function make_link($_action,$_dir,$_item=NULL,$_order=NULL,$_srt=NULL,$_lang=NUL
 	if($_order!=NULL) $link.="&order=".$_order;
 	if($_srt!=NULL) $link.="&srt=".$_srt;
 	if($_lang!=NULL) $link.="&lang=".$_lang;
-	return "http".substr($link,4);
+	return "https".substr($link,4);
 }
 //------------------------------------------------------------------------------
 function get_abs_dir($dir) {			// get absolute path
