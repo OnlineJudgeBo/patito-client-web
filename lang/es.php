@@ -1,5 +1,5 @@
 <?php
-//oj-header.php
+	//oj-header.php
 $MSG_FAQ="F.A.Qs";
 $MSG_BBS="Foro";
 $MSG_HOME="Principal";
@@ -7,9 +7,6 @@ $MSG_PROBLEMS="Problemas";
 $MSG_STATUS="Estado";
 $MSG_RANKLIST="Ranklist";
 $MSG_CONTEST="Concursos";
-$MSG_RANKLIST="Ranking";
-$MSG_CONTEST="Concurso";
-$MSG_CONTESTS="Concursos";
 $MSG_RECENT_CONTEST="Reciente";
 $MSG_LOGOUT="Salir";
 $MSG_LOGIN="Entrar";
@@ -21,35 +18,35 @@ $MSG_USERINFO="Editar Usuario";
 $MSG_MAIL="Correo";
 $CHAT="Chat patito";
 	//status.php
-$MSG_Pending="Pendiente";
-$MSG_Pending_Rejudging="Pendiente para Juzgar";
-$MSG_Compiling="Compilando";
-$MSG_Running_Judging="Ejecutando y Juzgando";
-$MSG_Accepted="Aceptado";
-$MSG_Presentation_Error="Error de Presentación";
-$MSG_Wrong_Answer="Respuesta Incorrecta";
-$MSG_Time_Limit_Exceed="Tiempo Limite Exedido";
-$MSG_Memory_Limit_Exceed="Memoria Limite Exedida";
-$MSG_Output_Limit_Exceed="Salida Limite Exedida";
-$MSG_Runtime_Error="Error en Tiempo de Ejecución";
+$MSG_Pending="Pending";
+$MSG_Pending_Rejudging="Pending Rejudging";
+$MSG_Compiling="Compiling";
+$MSG_Running_Judging="Running & Judging";
+$MSG_Accepted="Accepted";
+$MSG_Presentation_Error="Presentation Error";
+$MSG_Wrong_Answer="Wrong Answer";
+$MSG_Time_Limit_Exceed="Time Limit Exceed";
+$MSG_Memory_Limit_Exceed="Memory Limit Exceed";
+$MSG_Output_Limit_Exceed="Output Limit Exceed";
+$MSG_Runtime_Error="Runtime Error";
 $MSG_TEST_RUN="Test Running Done";
-$MSG_Compile_Error="Error de Compilación";
+$MSG_Compile_Error="Compile Error";
 
 $MSG_Runtime_Click="Runtime Error(Click)";
 $MSG_Compile_Click="Compile Error(Click)";
 $MSG_Click_Detail="Click To View Detail";
 $MSG_Compile_OK="Compile OK";
 $MSG_RUNID="RunID";
-$MSG_USER="Usuario";
-$MSG_PROBLEM="Problema";
-$MSG_RESULT="Resultado";
-$MSG_MEMORY="Memoria";
-$MSG_TIME="Tiempo";
-$MSG_LANG="Lenguaje";
-$MSG_CODE_LENGTH="Tamaño del código";
-$MSG_SUBMIT_TIME="Tiempo de Envio";
-$MSG_Manual="Juzgar Manual";
-$MSG_OK="Bueno";
+$MSG_USER="User";
+$MSG_PROBLEM="Problem";
+$MSG_RESULT="Result";
+$MSG_MEMORY="Memory";
+$MSG_TIME="Time";
+$MSG_LANG="Language";
+$MSG_CODE_LENGTH="Code Length";
+$MSG_SUBMIT_TIME="Submit Time";
+$MSG_Manual="Manual Judge";
+$MSG_OK="OK";
 $MSG_Explain="Type reason or explaination";
 	//problemstatistics.php
 $MSG_PD="PD";
@@ -121,7 +118,7 @@ $MSG_UPDATE_DATABASE="UpdateDatabase";
 $MSG_ONLINE="En linea";
 
   //contest.php
-$MSG_PRIVATE_WARNING="Este es un concurso privado.";
+$MSG_PRIVATE_WARNING="Este es un concurso privado o iniciara recien :D";
 $MSG_WATCH_RANK="Click HERE to watch contest rank.";
 
 $MSG_Public="Publico";
@@ -131,9 +128,7 @@ $MSG_Start="Inicio";
 $MSG_TotalTime="Falta";
 $MSG_LeftTime="Termina en";
 $MSG_Ended="Termino";
-//other
-$MSG_RANK="#";
-$MSG_SOLVED="Resultos";
-$MSG_PENALTY="Penalidad";
-$MSG_SUBMITS="Envios";
+
+?>
+
 

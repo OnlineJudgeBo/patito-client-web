@@ -1,6 +1,5 @@
 <?php
- //cache foot start
-if(isset($file))
+ //cache foot start      
                 if($file){
                         if($OJ_MEMCACHE){
                                 $mem->set($file,ob_get_contents(),0,$cache_time);

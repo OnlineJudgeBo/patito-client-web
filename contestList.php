@@ -96,3 +96,5 @@
 
 
  require("template/".$OJ_TEMPLATE."/contestsetlist.php");
+ ?>
+

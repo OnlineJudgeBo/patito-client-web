@@ -1,5 +1,4 @@
 <?php
-
         require_once("./include/db_info.inc.php");
         //cache head start
         if(!isset($cache_time)) $cache_time=10;

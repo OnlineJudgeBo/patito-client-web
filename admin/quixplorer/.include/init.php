@@ -53,8 +53,6 @@ if(isset($_SERVER)) {
 	die("<B>ERROR: Your PHP version is too old</B><BR>".
 	"You need at least PHP 4.0.0 to run QuiXplorer; preferably PHP 4.3.1 or higher.");
 }
-$GLOBALS["language"]="en";
-$GLOBALS['__GET']["lang"]="en";
 //------------------------------------------------------------------------------
 // Get Action
 if(isset($GLOBALS['__GET']["action"])) $GLOBALS["action"]=$GLOBALS['__GET']["action"];
@@ -87,8 +85,8 @@ elseif(isset($GLOBALS['__POST']["lang"])) $GLOBALS["lang"]=$GLOBALS['__POST']["l
 ob_start(); // prevent unwanted output
 require "./.config/conf.php";
 if(isset($GLOBALS["lang"])) $GLOBALS["language"]=$GLOBALS["lang"];
-require "./_lang/en.php"; //require "./_lang/".$GLOBALS["language"].".php";
-require "./_lang/en_mimes.php"; //require "./_lang/".$GLOBALS["language"]."_mimes.php";
+require "./_lang/".$GLOBALS["language"].".php";
+require "./_lang/".$GLOBALS["language"]."_mimes.php";
 require "./.config/mimes.php";
 require "./.include/fun_extra.php";
 require "./.include/header.php";
@@ -100,6 +98,7 @@ ob_end_clean(); // get rid of cached unwanted output
 $tmp_msg = $GLOBALS["login_prompt"][$GLOBALS["language"]];
 if (isset($tmp_msg))
 	$GLOBALS["messages"]["actloginheader"] = $tmp_msg;
+
 ob_end_clean(); // get rid of cached unwanted output
 //------------------------------------------------------------------------------
 do_login();
@@ -112,8 +111,8 @@ if(!@file_exists($GLOBALS["home_dir"])) {
 	} else $extra=NULL;
 	show_error($GLOBALS["error_msg"]["home"],$extra);
 }
-if(!down_home($abs_dir)) show_error($GLOBALS["dir"]." aaaa: ".$GLOBALS["error_msg"]["abovehome"]);
-if(!is_dir($abs_dir)) show_error($GLOBALS["dir"]." bbbb : ".$GLOBALS["error_msg"]["direxist"]);
+if(!down_home($abs_dir)) show_error($GLOBALS["dir"]." : ".$GLOBALS["error_msg"]["abovehome"]);
+if(!is_dir($abs_dir)) show_error($GLOBALS["dir"]." : ".$GLOBALS["error_msg"]["direxist"]);
 //------------------------------------------------------------------------------
 /**
   Do the login if required

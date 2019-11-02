@@ -6,8 +6,8 @@ if (!isset($_SESSION['user_id'])){
 	exit(0);
 }
 require_once("include/db_info.inc.php");
-require_once("initPHP.php");
-$now=strftime("%Y-%m-%d %H:%M",time());
+require_once("include/const.inc.php");
+  $now=strftime("%Y-%m-%d %H:%M",time());
 $user_id=$_SESSION['user_id'];
 
 if (isset($_POST['cid'])){
@@ -28,10 +28,10 @@ if (isset($_POST['cid'])){
 
 $res=mysql_query($sql);
 if ($res&&mysql_num_rows($res)<1&&!isset($_SESSION['administrator'])&&!((isset($cid)&&$cid==0)||(isset($id)&&$id==0))){
-    mysql_free_result($res);
-    $view_errors=  "Where do find this link? No such problem.<br>";
-    require("template/".$OJ_TEMPLATE."/error.php");
-    exit(0);
+		mysql_free_result($res);
+		$view_errors=  "Where do find this link? No such problem.<br>";
+		require("template/".$OJ_TEMPLATE."/error.php");
+		exit(0);
 }
 mysql_free_result($res);
 
@@ -83,23 +83,21 @@ if (isset($_POST['id'])) {
 		mysql_free_result($result);
 	}
 }else{
-    $id=0;
-    /*
-      $view_errors= "No Such Problem!\n";
-      require("template/".$OJ_TEMPLATE."/error.php");
-      exit(0);
-    */
+       $id=0;
+/*
+	$view_errors= "No Such Problem!\n";
+	require("template/".$OJ_TEMPLATE."/error.php");
+	exit(0);
+*/
 }
 
 $language=intval($_POST['language']);
-//echo "$language AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";// exit(0);
 if ($language>count($language_name) || $language<0) $language=0;
 $language=strval($language);
 
 
 $source=$_POST['source'];
-$input_text="";
-if(isset($_POST['input_text']))$input_text=$_POST['input_text'];
+$input_text=$_POST['input_text'];
 if(get_magic_quotes_gpc()){
 	$source=stripslashes($source);
 	$input_text=stripslashes($input_text);
@@ -112,7 +110,7 @@ $input_text=mysql_real_escape_string($input_text);
 //use append Main code
 $append_file="$OJ_DATA/$id/append.$language_ext[$language]";
 if(isset($OJ_APPENDCODE)&&$OJ_APPENDCODE&&file_exists($append_file)){
-    $source.=mysql_real_escape_string("\n".file_get_contents($append_file));
+     $source.=mysql_real_escape_string("\n".file_get_contents($append_file));
 }
 //end of append 
 
@@ -139,7 +137,7 @@ if ($len>65536){
 }
 
 // last submit
-$now=strftime("%Y-%m-%d %X",time()-5);
+$now=strftime("%Y-%m-%d %X",time()-10);
 $sql="SELECT `in_date` from `solution` where `user_id`='$user_id' and in_date>'$now' order by `in_date` desc limit 1";
 $res=mysql_query($sql);
 if (mysql_num_rows($res)==1){
@@ -147,10 +145,9 @@ if (mysql_num_rows($res)==1){
 	//$last=strtotime($row[0]);
 	//$cur=time();
 	//if ($cur-$last<10){
-    //OJOJOJOOJOJOJOJOJOJJOJOJOJO OG
-	/*	$view_errors="You should not submit more than twice in 5 seconds.....<br>";
+		$view_errors="You should not submit more than twice in 10 seconds.....<br>";
 		require("template/".$OJ_TEMPLATE."/error.php");
-		exit(0);*/
+		exit(0);
 	//}
 }
 
@@ -158,10 +155,10 @@ if (mysql_num_rows($res)==1){
 if((~$OJ_LANGMASK)&(1<<$language)){
 
 	if (!isset($pid)){
-        $sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length)
+	$sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length)
 		VALUES('$id','$user_id',NOW(),'$language','$ip','$len')";
 	}else{
-        $sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length,contest_id,num)
+	$sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length,contest_id,num)
 		VALUES('$id','$user_id',NOW(),'$language','$ip','$len','$cid','$pid')";
 	}
 	mysql_query($sql);
@@ -174,49 +171,48 @@ if((~$OJ_LANGMASK)&(1<<$language)){
 		$sql="INSERT INTO `custominput`(`solution_id`,`input_text`)VALUES('$insert_id','$input_text')";
 		mysql_query($sql);
 	}
-	//echo $sql;
 }
 
 
-$statusURI=strstr($_SERVER['REQUEST_URI'],"submit",true)."status.php";
-if (isset($cid)) 
-    $statusURI.="?cid=$cid";
+	 $statusURI=strstr($_SERVER['REQUEST_URI'],"submit",true)."status.php";
+	 if (isset($cid)) 
+	    $statusURI.="?cid=$cid";
 	    
-$sid="";
-if (isset($_SESSION['user_id'])){
-    $sid.=session_id().$_SERVER['REMOTE_ADDR'];
-}
-if (isset($_SERVER["REQUEST_URI"])){
-    $sid.=$statusURI;
-}
-// echo $statusURI."<br>";
+        $sid="";
+        if (isset($_SESSION['user_id'])){
+                $sid.=session_id().$_SERVER['REMOTE_ADDR'];
+        }
+        if (isset($_SERVER["REQUEST_URI"])){
+                $sid.=$statusURI;
+        }
+   // echo $statusURI."<br>";
   
-$sid=md5($sid);
-$file = "cache/cache_$sid.html";
-//echo $file;  
-if($OJ_MEMCACHE){
-    $mem = new Memcache;
-    if($OJ_SAE)
-        $mem=memcache_init();
-    else{
-        $mem->connect($OJ_MEMSERVER,  $OJ_MEMPORT);
+        $sid=md5($sid);
+        $file = "cache/cache_$sid.html";
+    //echo $file;  
+    if($OJ_MEMCACHE){
+		$mem = new Memcache;
+                if($OJ_SAE)
+                        $mem=memcache_init();
+                else{
+                        $mem->connect($OJ_MEMSERVER,  $OJ_MEMPORT);
+                }
+        $mem->delete($file,0);
     }
-    $mem->delete($file,0);
-}
-else if(file_exists($file)) 
-    unlink($file);
-//echo $file;
+	else if(file_exists($file)) 
+	     unlink($file);
+    //echo $file;
     
-$statusURI="status.php?user_id=".$_SESSION['user_id'];
-if (isset($cid))
-    $statusURI.="&cid=$cid";
+  $statusURI="status.php?user_id=".$_SESSION['user_id'];
+  if (isset($cid))
+	    $statusURI.="&cid=$cid";
 	 
-if($id!=0||$cid!=0)	
+   if($id!=0||$cid!=0)	
 	header("Location: $statusURI");
-else{
+   else{
 	?>
 	<script>window.parent.setTimeout("fresh_result('<?php echo $insert_id;?>')",2000);</script>
-<?php
+	<?php
 	
-}
+   }
 ?>

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?php if(file_exists("include/db_info.inc.php")){
 		require_once("include/db_info.inc.php");
 	if(isset($OJ_LANG)){
@@ -16,4 +14,3 @@ $language_ext  = Array( "c", "cc", "pas"  ,"java", "rb" , "sh" ,"py"     ,"php",
 $PID="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 ?>
 
->>>>>>> master

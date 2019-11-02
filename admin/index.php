@@ -4,8 +4,8 @@
 </head>
 
 <frameset cols="20,80">
-<frame name="menu" src="menu.php"></frame>
-<frame name="main" src="update.php"></frame>
+<frame name="menu" src="menu.php">
+<frame name="main" src="update.php">
 <noframes>
 </noframes>
 </frameset>
