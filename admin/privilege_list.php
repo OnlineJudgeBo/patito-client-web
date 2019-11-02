@@ -1,8 +1,8 @@
 <?php require("admin-header.php");
 require_once("../include/set_get_key.php");
 if (!(isset($_SESSION['administrator']))){
-	echo "<a href='../loginpage.php'>Please Login First!</a>";
-	exit(1);
+        echo "<a href='../loginpage.php'>Please Login First!</a>";
+        exit(1);
 }
 echo "<title>Privilege List</title>"; 
 echo "<center><h2>Privilege List</h2></center>";
@@ -16,11 +16,11 @@ for (;$row=mysql_fetch_object($result);){
 }
 
 for ($i=0;$i<count($rowOr);$i++){
-	echo "<tr>";
-	echo "<td>".$rowOr[$i]->user_id;
-	echo "<td>".$rowOr[$i]->rightstr;
+        echo "<tr>";
+        echo "<td>".$rowOr[$i]->user_id;
+        echo "<td>".$rowOr[$i]->rightstr;
         echo "<td><a href='privilege_delete.php?uid=".$rowOr[$i]->user_id."&rightstr=".$rowOr[$i]->rightstr."&getkey=".$_SESSION['getkey']."'>Delete</a>";
-	echo "</tr>";
+        echo "</tr>";
 }
 echo "</table></center>";
 require("../oj-footer.php");
