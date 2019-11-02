@@ -19,8 +19,8 @@
 
 <script>
    var i=0;
-   var pats=new Array();
-   var exps=new Array();
+//   var pats=new Array();
+//   var exps=new Array();
 
 pats[0]=/System\.out\.print.*%.*/
 exps[0]="El uso de Java System.out.print es diferente del printf de C, por favor intente System.out.format";
@@ -53,11 +53,11 @@ exps[13]="隐含的类型转换无效，尝试用显示的强制类型转换如(
 pats[14]=/warning.*declaration of 'main' with no type/
 exps[14]="C++标准中，main函数必须有返回值";
 pats[15]=/'.*' was not declared in this scope/
-exps[15]="变量没有声明过，检查下是否拼写错误！";
+exps[15]="La variable no ha sido declarada, verifique si está escrita incorrectamente!！";
 pats[16]=/main’ must return ‘int’/
 exps[16]="在标准C语言中，main函数返回值类型必须是int，教材和VC中使用void是非标准的用法";
 pats[17]=/printf.*was not declared in this scope/
-exps[17]="printf函数没有声明过就进行调用，检查下是否导入了stdio.h或cstdio头文件";
+exps[17]="Verifique que el encabezado este importado stdio.h o cstdio";
 pats[18]=/warning: ignoring return value of/
 exps[18]="警告：忽略了函数的返回值，可能是函数用错或者没有考虑到返回值异常的情况";
 pats[19]=/:.*__int64’ undeclared/
@@ -79,7 +79,7 @@ exps[26]="gets函数没有声明过就进行调用，检查下是否导入了std
 pats[27]=/str.*was not declared in this scope/
 exps[27]="string类函数没有声明过就进行调用，检查下是否导入了string.h或cstring头文件";
 pats[28]=/‘import’ does not name a type/
-exps[28]="不要将Java语言程序提交为C/C++,提交前注意选择语言类型。";
+exps[28]="No envíe programas de lenguaje Java como C / C ++, y elija el tipo de idioma antes de enviar.";
 pats[29]=/asm’ undeclared/
 exps[29]="不允许在C/C++中嵌入汇编语言代码。";
 pats[30]=/redefinition of/
@@ -102,7 +102,7 @@ pats[38]=/cannot be used as a function/
 exps[38]="变量不能当成函数用，检查变量名和函数名重复的情况，也可能是拼写错误。";
 pats[39]=/format .* expects type .* but argument .* has type .*/
 exps[39]="scanf/printf的格式描述和后面的参数表不一致，检查是否多了或少了取址符“&”，也可能是拼写错误。";
-pats[40]=/类.*是公共的，应在名为 .*java 的文件中声明/
+pats[40]=/La clase. * Es pública y debe declararse en un archivo llamado .*Java/
 exps[40]="Java语言提交只能有一个public类，并且类名必须是Main，其他类请不要用public关键词";
 pats[41]=/expected ‘\)’ before ‘.*’ token/
 exps[41]="缺少右括号";
