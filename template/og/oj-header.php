@@ -1,4 +1,4 @@
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+<!--<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	<span class="navbar-toggler-icon"></span>
   </button>
@@ -10,10 +10,10 @@
   <a href="faqs.php"><?php echo "$MSG_FAQ"?></a>
   <div id="profile" >
     <script src="include/profile.php?<?php echo rand();?>" ></script></div>
-  <!--end profile-->
 </div>
 </nav>
-<!--<div id="header">
+-->
+<div id="header">
   <div id="logo"></div>
   <div id="menu">
     <ul>
@@ -31,4 +31,3 @@
 <div id="broadcast" class="container">
   <marquee id="broadcast" scrollamount="1" behavior="alternate" scrolldelay="1" onMouseOver='this.stop()' onMouseOut='this.start()';><?php echo $view_marquee_msg?></marquee>
 </div>
--->

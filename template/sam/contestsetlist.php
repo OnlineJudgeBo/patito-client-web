@@ -24,7 +24,12 @@
 			s=x.getSeconds();
 
 			n=y+"-"+mon+"-"+d+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
-			document.getElementById('nowdate').innerHTML=n;
+                        var elements = document.getElementsByName("nowdate");
+                        var j = elements.length; 
+                        for (var i = 0; i < j; i++){
+                         elements[i].innerHTML=n;
+                        }
+//			document.getElementsByTagName('nowdate').innerHTML=n;
 			setTimeout("clock()",1000);
 		} 
 		clock();

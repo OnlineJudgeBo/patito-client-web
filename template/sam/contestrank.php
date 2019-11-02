@@ -1,4 +1,3 @@
-
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -12,8 +11,8 @@
    $(document).ready(function() { 
      $.tablesorter.addParser({ 
         // set a unique id 
-        id: 'punish', 
-        is: function(s) { 
+        id: 'punish',
+        is: function(s) {
             // return false so this parser is not auto detected 
             return false; 
           }, 
@@ -29,14 +28,14 @@
       }); 
 
      $("#rank").tablesorter({ 
-      headers: { 
-        4: { 
-          sorter:'punish' 
+      headers: {
+        5: {
+          sorter:'punish'
         }
 
         <?php
         for ($i=0;$i<$pid_cnt;$i++){
-          echo ",".($i+5).": { ";
+          echo ",".($i+6).": { ";
           echo "    sorter:'punish' ";
           echo "}";
         }
@@ -55,7 +54,14 @@
     $rank=1;
     ?>
     <center>
-      <h3>Contest RankList -- <?php echo $title?></h3><a href="contestrank.xls.php?cid=<?php echo $cid?>" >Download</a>
+      <h3>Contest RankList -- <?php echo $title?></h3>
+          <?php
+               if($obi == 1){
+                echo '<a href="contestrank.xls.obi.php?cid='.$cid.'" >Download</a>';
+               }else{
+                echo '<a href="contestrank.xls.php?cid='.$cid.'" >Download</a>';
+               }
+          ?>
     </center>
 
 <div id = "tablarank" style="overflow:scroll">
@@ -65,6 +71,9 @@
           <td class="{sorter:'false'}" width="5%">
             Rank<th width=10%>User</th><th width=10%>Nick</th><th width=5%>Solved</th><th width=5%>Penalty</th>
             <?php
+           if($obi == 1){
+            echo '<th width=5%>Points</th>';
+            }
             for ($i=0;$i<$pid_cnt;$i++)
               echo "<td><a href=problem.php?cid=$cid&pid=$i>$PID[$i]</a></td>";
             echo "</tr></thead>\n<tbody>";
@@ -79,12 +88,15 @@
             else 
               echo "*";
             $usolved=$U[$i]->solved;
-            if($uuid==$_GET['user_id']) echo "<td bgcolor=#ffff77>";
+            if(!empty($_GET['user_id']) && $uuid==$_GET['user_id']) echo "<td bgcolor=#ffff77>";
             else echo"<td>";
             echo "<a name=\"$uuid\" href=userinfo.php?user=$uuid>$uuid</a>";
             echo "<td><a href=userinfo.php?user=$uuid>".$U[$i]->nick."</a>";
             echo "<td><a href=status.php?user_id=$uuid&cid=$cid>$usolved</a>";
             echo "<td>".sec2str($U[$i]->time);
+            if($obi == 1){
+              echo "<td>".$U[$i]->points;
+            }
             for ($j=0;$j<$pid_cnt;$j++){
               $bg_color="eeeeee";
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0){
@@ -107,8 +119,19 @@
             if(isset($U[$i])){
              if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
               echo sec2str($U[$i]->p_ac_sec[$j]);
-            if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) 
-              echo "(-".$U[$i]->p_wa_num[$j].")";
+             if($obi == 1 ){
+	        if($U[$i]->pass_rate[$j] > 0){
+                   echo " (".intval($U[$i]->pass_rate[$j])."%)";
+                }else{
+                  if (isset($U[$i]->p_wa_num[$j]) && $U[$i]->p_wa_num[$j] > 0){
+                    echo "(-".$U[$i]->p_wa_num[$j].")";
+                  }
+                }
+             }else{
+                 if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0){
+                  echo "(-".$U[$i]->p_wa_num[$j].")";
+                 }
+             }
           }
         }
         echo "</tr>\n";
