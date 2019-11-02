@@ -13,51 +13,21 @@ $sql=	"SELECT * "
 ."FROM `news` "
 ."WHERE `defunct`!='Y'"
 ."ORDER BY `importance` ASC,`time` DESC "
-."LIMIT 5";
+."LIMIT 1";
 	$result=mysql_query($sql);//mysql_escape_string($sql));
 
 if (!$result){
-	$view_news= "<h3>No hay noticias</h3>";
+	$view_news= "";
 	$view_news.= mysql_error();
 }else{
 	$view_news.= "";
 	while ($row=mysql_fetch_object($result)){
-		$view_news.= "<b>".$row->title."</b>";
-		$view_news.= "<h2>[".$row->user_id."]</h2>";
+		$view_news.= "<h3>".$row->title."</h3><br>";
 		$view_news.= $row->content;
 	}
 	mysql_free_result($result);
 }
 //////////////
-/* Ultimos blog */
-$view_blog="";
-$sql=	"SELECT * "
-."FROM `blog` "
-."ORDER BY `date` DESC,`date` ASC "
-."LIMIT 8";
-	$result=mysql_query($sql);//mysql_escape_string($sql));
-if (!$result){
-	$view_blog= "<h3>El blog esta vacio :( </h3>";
-		$view_blog.= mysql_error();
-	}else{
-		$view_news.= "";
-		while ($row=mysql_fetch_object($result)){
-			$view_blog.="<div id='blog_node'>";
-			$view_blog.= "<div id='title'><a href=blog.php?blog=$row->blog_id>".$row->title."</a></div>";
-			$view_blog.= "<div id='by'>Por [".$row->user_id."]</div>";
-			if($_SESSION['user_id'] == $row->user_id){
-				$view_blog.= "<b> <a href=blog_edit.php?blog=$row->blog_id > Editar </a></b>";
-			}
-			$view_blog.="<div id='content'>". $row->content."</div>";
-			//cargar los comentarios segun el blog construccion
-			//$view_blog.= "<p>"$row->comets;
-			$view_blog.='</div>';
-		}
-		//mysql_free_result($result);
-	}
-
-
-//
 	$view_apc_info="";
 
 	$sql="SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution`  group by md order by md desc ";

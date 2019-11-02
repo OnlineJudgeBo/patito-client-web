@@ -11,7 +11,7 @@ require('../include/db_info.inc.php');
 		$result=mysql_query($sql);
 		$row=mysql_fetch_row($result);
 		if (intval($row[0])==0) $retmsg=$MSG_CONTEST;
-		else $retmsg=$row[0]."<font color=red>&nbsp;$MSG_CONTEST</font>";
+		else $retmsg=$row[0]."<font color=blue>&nbsp;$MSG_CONTEST</font>";
 		mysql_free_result($result);
 		return $retmsg;
 	}
