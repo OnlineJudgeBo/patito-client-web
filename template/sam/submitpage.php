@@ -71,25 +71,24 @@
             <input id="pid" type='hidden' value='<?php echo $pid?>' name="pid">
             
             <?php }?>
-            Language:
+            Lenguaje:
             <select id="language" name="language">
               <?php
               $lang_count=count($language_ext);
-
               if(isset($_GET['langmask']))
                 $langmask=$_GET['langmask'];
               else
                 $langmask=$OJ_LANGMASK;
 
               $lang=(~((int)$langmask))&((1<<($lang_count))-1);
+              
               if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
               else $lastlang=0;
               for($i=0;$i<$lang_count;$i++){
-                if($lang&(1<<$i))
-                 echo"<option value=$i ".( $lastlang==$i?"selected":"").">
-               ".$language_name[$i]."
-             </option>";
-           }
+                if($lang&(1<<$i) && $language_visible[$i] == 1){
+                  echo "<option value=$i ".( $lastlang==$i?"selected":"").">".$language_name[$i]."</option>";
+                }
+              }
            ?>
          </select>
          

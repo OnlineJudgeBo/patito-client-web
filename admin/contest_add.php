@@ -137,14 +137,14 @@ else if(isset($_POST['problem2contest'])){
 	Public:<select name=private><option value=0>Public</option><option value=1>Private</option></select>
 	Language:<select name="lang[]" multiple="multiple"    style="height:220px">
 	<?php
-$lang_count=count($language_ext);
-$langmask=$OJ_LANGMASK;
+	$lang_count=count($language_ext);
+	$langmask=$OJ_LANGMASK;
 
- for($i=0;$i<$lang_count;$i++){
-                 echo "<option value=$i selected>
-                        ".$language_name[$i]."
-                 </option>";
-  }
+	for($i=0;$i<$lang_count;$i++){
+		if($language_visible[$i] == 1){
+			echo "<option value=$i selected>".$language_name[$i]."</option>";
+		}
+	}
 
 ?>
 

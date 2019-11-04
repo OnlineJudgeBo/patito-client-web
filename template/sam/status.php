@@ -27,7 +27,7 @@
         foreach ($language_name as $lang){
           if ($i==$language)
             echo "<option value=$i selected>$language_name[$i]</option>";
-          else if($i <= 1 or $i == 6 or $i == 15 or $i == 3)
+          else if($language_visible[$i] == 1)
             echo "<option value=$i>$language_name[$i]</option>";
           $i++;
         }
