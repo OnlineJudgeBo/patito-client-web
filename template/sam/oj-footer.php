@@ -1,2 +1,2 @@
-Admin:<a href="//facebook.com/JuezPatito">Algun Error?</a> 
+Admin:<a href="//www.facebook.com/acm.icpc.umsa">Algun Error?</a> 
 

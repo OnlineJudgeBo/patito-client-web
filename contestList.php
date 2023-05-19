@@ -72,16 +72,16 @@
  	}else{
 	// pending
  		//$view_contest[$i][0]    = $row->contest_id;
- 		$view_contest[$i][1]    = "<a href='contest.php?cid=$row->contest_id'><h3>$row->title</h3>";
+ 		$view_contest[$i][1]    = "<a href='contest.php?cid=$row->contest_id'><h5 class='black-text'>$row->title</h5>";
  		
  		//falta
  		if ($now<$start_time){
- 			$view_contest[$i][2] = "<span class=blue> $MSG_Start $row->start_time</span>&nbsp<br>";
- 			$view_contest[$i][2].= "<span class=green>$MSG_TotalTime ".formatTimeLength($start_time-$now)."</span>";
+ 			$view_contest[$i][2] = "<span class='blue-text'> $MSG_Start $row->start_time</span>&nbsp<br>";
+ 			$view_contest[$i][2].= "<span class='green-text'>$MSG_TotalTime <div name='nowdate'>".formatTimeLength($start_time-$now)."</div></span>";
  		}else{
 	// running
- 			$view_contest[$i][2] = "<span class=red> $MSG_Running</font>&nbsp;<br>";
- 			$view_contest[$i][2].= "<span class=green> $MSG_LeftTime ".formatTimeLength($left)." </span><br>";
+ 			$view_contest[$i][2] = "<span class='red-text'> $MSG_Running</font>&nbsp;<br>";
+ 			$view_contest[$i][2].= "<span class='green-text'> $MSG_LeftTime ".formatTimeLength($left)." </span><br>";
 
  		}
  		$view_contest[$i][2].="</a>";

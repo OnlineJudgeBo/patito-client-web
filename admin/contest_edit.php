@@ -131,19 +131,15 @@ Public/Private:<select name=private>
 
  Language:<select name="lang[]"  multiple="multiple"    style="height:220px">
 <?php
-$lang_count=count($language_ext);
-
-
-$lang=(~((int)$langmask))&((1<<$lang_count)-1);
-if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
- else $lastlang=0;
- for($i=0;$i<$lang_count;$i++){
-               
-                 echo  "<option value=$i ".( $lang&(1<<$i)?"selected":"").">
-                        ".$language_name[$i]."
-                 </option>";
-  }
-
+	$lang_count=count($language_ext);
+	$lang=(~((int)$langmask))&((1<<$lang_count)-1);
+	if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
+	else $lastlang=0;
+	for($i=0;$i<$lang_count;$i++){
+		if($language_visible[$i] == 1){
+			echo  "<option value=$i ".( $lang&(1<<$i)?"selected":"").">".$language_name[$i]."</option>";
+		}
+	}
 ?>
 	
    </select>

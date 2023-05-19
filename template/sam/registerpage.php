@@ -1,159 +1,162 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title><?php echo $view_title?></title>
-	<link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE?>/<?php echo isset($OJ_CSS)?$OJ_CSS:"hoj.css" ?>' type='text/css'>
-	    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-		<script src='http://www.google.com/recaptcha/api.js'></script>
-	</head>
-	<body>
-		<div id="wrapper">
-			<?php require_once("oj-header.php");?>
-			<section id="main">
-				<div id="registro">
-					<legend><?php echo $MSG_REG_INFO?></legend>
-					<form method="post" action="register.php" id="formulario" onsubmit="return captcha();">
-					</p>
-					<label><?php echo $MSG_USER_ID?>:</label>
-					<input name="user_id" type="text" size="20"><br>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title><?php echo $view_title?></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+	<link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE?>/<?php echo "boostrap.css" ?>' type='text/css'>
 
-					<label><?php echo $MSG_NICK?>:</label>
-					<input name="name" type="text" size="20"><br>
+</head>
+<body>
+	<?php require_once("oj-header.php");?>
+<div class="signup-form">
+    <form action="register.php" method="post">
+		<h2>Regístrate</h2>
+        <div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-user"></i></span>
+				<input type="text" class="form-control" name="user_id" placeholder="Usuario" required="required">
+			</div>
+		</div>
 
-					<label><?php echo $MSG_LASTNAME?>:</label>
-					<input name="lastname" type="text"><br>
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-user"></i></span>
+				<input type="text" class="form-control" name="name" placeholder="Nombre(s)" required="required">
+			</div>
+		</div>
 
-					<label><?php echo $MSG_EMAIL?>:</label>
-					<input name="email" size="30" type="email" required>*<br>
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-user"></i></span>
+				<input type="text" class="form-control" name="lastname" placeholder="Apellidos" required="required">
+			</div>
+		</div>
+		
+        <div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+				<input type="email" class="form-control" name="email" placeholder="Correo electrónico" required="required">
+			</div>
+        </div>
 
-					<label><?php echo $MSG_COUNTRY?>:</label>
-					<select id="pais" name="pais">
-						<?php include "pais.php"; ?>
-					</select>*<br>
-					<div id='obi-option'>
-						<input type="radio" name="obi" id="uni" value="0"> Universidad<br>
-						<input type="radio" name="obi" id="obi" value="1"> Colegio<br>
-					</div>
+        <div class="form-group">
+        	<div class="input-group">
+        		<label><?php echo $MSG_COUNTRY?>:</label>
+        		<select id="pais" name="pais">
+        			<?php include "pais.php"; ?>
+        		</select>
+        	</div>
+        </div>
 
-					<label><?php echo $MSG_INSTITUTE?>:</label>
-					<div id="institution-div"  style="display: inline;">
-						<input id="institution" name="institution" type="text" required autocomplete="off">*<br>
-					</div>
-					<input id="institution_id" name="institution_id" type="hidden">
-					<div id='master-institution'>
-						<div id="sug-institution"></div>
-					</div>
+        <div class="form-group">
+        	<div class="input-group">
+        		<label>Estudias en:</label>
+        		<div id='obi-option'>
+        			<input type="radio" class="form-check-input" name="obi" id="uni" value= "0" required> Universidad<br>
+        			<input type="radio" class="form-check-input" name="obi" id="obi" value= "1"> Colegio<br>
+        		</div>
+        	</div>
+        </div>
 
-					<label><?php echo $MSG_PASSWORD?>:</label>
-					<input name="password" size="20" type="password" required>*<br>
+        <div class="form-group">
+        	<div class="input-group">
+        		<label><?php echo $MSG_INSTITUTE?>:</label>
+        		<div id="institution-div"  style="display: inline;">
+        			<input id="institution" name="institution" type="text" autocomplete="off" placeholder="Escriba el nombre de su colegio"required>*<br>
+        		</div>
+        	</div>
+        </div>
 
-					<label><?php echo $MSG_REPEAT_PASSWORD?>:</label>
-					<input name="rptpassword" size=20 type="password" required>*<br>
-					<?php $ip =  $_SERVER['REMOTE_ADDR'];
-					 $v_ip =explode(".",$ip);
+        <div class="form-group">
+        	<div class="input-group">
+        		<input id="institution_id" name="institution_id" type="hidden" placeholder="Escriba el nombre de su colegio">
+        		<div id='master-institution'>
+        			<div id="sug-institution"></div>
+        		</div>
+        	</div>
+        </div>
 
- $OJ_VCODE=0;
-						?>
-												<?php if($OJ_VCODE){?>
-																	<div id="csscapt" >	  
-																							<div class="g-recaptcha" data-sitekey="<?php echo $publickey?>"</div>
-																												</div>
-																																	<?php  }?>	
-																																						<input type="submit" name="submit" id="submit" value="Crear">
-																																											<input type="reset"  name="reset" id="reset" value="Reset">
-																																															</form>
-																																																		</div>
-																																																				</section>
-																																																					</div>
-
-	<section id="foot">
-		<?php require_once("oj-footer.php");?>
-	</section>
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+				<input type="password" class="form-control" name="password" placeholder="Contraseña" required="required">
+			</div>
+        </div>
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-lock"></i>
+					<i class="fa fa-check"></i>
+				</span>
+				<input type="password" class="form-control" name="rptpassword" placeholder="Repite tu Contraseña" required="required">
+			</div>
+        </div>        
+		<div class="form-group">
+            <button type="submit" class="btn btn-block btn-lg">Registrar</button>
+        </div>
+    </form>
+	<div class="text-center">Tienes cuenta? <a href="/loginpage.php">Ingresar</a>.</div>
+</div>
 </body>
-</html>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#pais").val("0").change();
+		$("#institution-div").empty();
+		$("#obi-option").hide();
+		$("#pais").change(function(){
+			var pais = $("#pais").find("option:selected").val();
 
-	<script type="text/javascript">
-		function captcha(){
-					var formulario=document.getElementById("formulario");
-							if(document.getElementById("recaptcha_response_field").value==""){
-											alert("Escriba el texto debajo la imagen");
-														return false;
-													}else{
-																	formulario.submit();
-																				return true;
-																			}
-						}
-			
-			$(document).ready(function(){
-						$("#pais").val("0").change();
-								$("#institution-div").empty();
-								$("#obi-option").hide();
-										$("#pais").change(function(){
-														var pais = $("#pais").find("option:selected").val();
-																	
-																	var parametros = {
-																						"pais" : pais
-																										};
-																	
-																	if(pais == '26'){
-																						$("#obi-option").show();
+			var parametros = {
+				"pais" : pais
+			};
 
-																										$("#obi").click(function(){
-																																$("#institution-div").empty();
-																																					$("#institucion_uni").remove();
-																																					$("#institution-div").html("<input id=institution name=institution size=30 type=text required autocomplete=off>*<br>");
-																																										cambio_obi();
-																																									});
-																										$("#uni").click(function(){
-																																$("#institucion_uni").remove();
-																																					$("#institution-div").empty();
-																																					cambio_uni();
-																																									});
-																									}else{
-																														$("#obi-option").hide();
-																																		$("#institution-div").empty();
-																																		cambio_uni();
-																																					}
-																});
-									});
+			if(pais == '26'){
+				$("#obi-option").show();
 
-			function cambio_obi(){
+				$("#obi").click(function(){
+					$("#institution-div").empty();
+					$("#institucion_uni").remove();
+					$("#institution-div").html("<input id=institution name=institution size=30 type=text required autocomplete=off placeholder='Escriba el nombre de su colegio'>*<br>");
+				});
+				$("#uni").click(function(){
+					$("#institucion_uni").remove();
+					$("#institution-div").empty();
+					cambio_uni();
+				});
+			}else{
+				$("#obi-option").hide();
+				$("#institution-div").empty();
+				cambio_uni();
+			}
+		});
+	});
 
-						$("#institution").keyup(function(){
-										$.ajax({
-															type : "POST",
-																				url  : "institucion_obi.php",
-																								data : 'key='+$(this).val(),
-				beforeSend: function(){
-										$("#institution").css("background","#FFF url(LoaderIcon.gif) no-repeat 117px");
-														},
-																			success: function(data){
-																									$("#sug-institution").show();
-																														$("#sug-institution").html(data);
-																														$("#institution").css("background","#FFF");
-																																		}
-																		});
-												});
-							}
-			function cambio_uni(){
-						$.ajax({
-										type : "POST",
-														url  : "institucion_uni.php",
-																	data : 'key='+$("#pais").find("option:selected").val(),
+
+	function cambio_uni(){
+		$.ajax({
+			type : "POST",
+			url  : "institucion_uni.php",
+			data : 'key='+$("#pais").find("option:selected").val(),
 			beforeSend: function(){
-								$("#institution_uni").css("background","#FFF url(LoaderIcon.gif) no-repeat 117px");
-											},
-															success: function(data){
-																				$("#institution-div").html(data);
-																							}
-												});
-							}
+				$("#institution_uni").css("background","#FFF url(LoaderIcon.gif) no-repeat 117px");
+			},
+			success: function(data){
+				$("#institution-div").html(data);
+			}
+		});
+	}
 
-			function selectCountry(val,id) {
-						$("#institution").val(val);
-								$("#sug-institution").hide();
-								$("#institution_id").val(id);
-									}
-		</script>
-
+	function selectCountry(val,id) {
+		$("#institution").val(val);
+		$("#sug-institution").hide();
+		$("#institution_id").val(id);
+	}
+</script>
+</html>                            

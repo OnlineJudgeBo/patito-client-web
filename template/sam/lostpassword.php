@@ -9,7 +9,7 @@
       <div id="wrapper">
             <?php require_once("oj-header.php");?>
             <section id="main">
-
+                <center><h2>Recupera tu cuenta</h2></center>
                <form action="lostpassword.php" method="post">
                 <center>
                         <table width="400" algin="center">

@@ -33,9 +33,6 @@
 							echo "&nbsp;&nbsp;<span class=red>Private</font>"; 
 						?>
 						<br>
-						[<a href='status.php?cid=<?php echo $view_cid?>'>Status</a>]
-						[<a href='contestrank.php?cid=<?php echo $view_cid?>'>Standing</a>]
-						[<a href='conteststatistics.php?cid=<?php echo $view_cid?>'>Statistics</a>]						
 					</div>
 
 					<table id='problemset' width='90%' border="1">
@@ -54,7 +51,7 @@
 						<tbody>
 							<?php 
 							$cnt=0;
-							foreach($view_problemset as $row){
+							foreach($view_problemset as $row){ echo '\n';
 								if ($cnt) 
 									echo "<tr class='oddrow' align='center'>";
 								else
@@ -62,7 +59,7 @@
 								foreach($row as $table_cell){
 									echo "<td>";
 									echo "\t".$table_cell;
-									echo "</td>";
+									echo "</td>"; echo "\n";
 								}
 
 								echo "</tr>";

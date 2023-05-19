@@ -69,6 +69,25 @@ Usando Java:<br>
 }
 }</font></pre>
 
+<br><br>
+Usando Python:<br>
+<pre><font color="blue">
+print("Hola mundo!")
+</font></pre>
+
+<br><br>
+Usando Go:<br>
+<pre><font color="blue">
+package main
+
+import "fmt"
+
+func main() {
+   fmt.Print("Hola mundo! \n")
+}
+</font></pre>
+
+
 <hr>
 <font color=green> Mis respuestas son: </font><br>
 <hr>
