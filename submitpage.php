@@ -36,11 +36,13 @@ if (isset($_GET['id'])){
 	if (isset($_SESSION['source_browser'])) $ok=true;
 	mysql_free_result($result);
 	if ($ok==true){
+		$language = $row->language;
 		$sql="SELECT `source` FROM `source_code` WHERE `solution_id`='".$sid."'";
 		$result=mysql_query($sql);
 		$row=mysql_fetch_object($result);
-		if($row)
-			$view_src=$row->source;
+		if($row) {
+			$view_src = $row->source;
+		}
 		mysql_free_result($result);
 	}
 	
@@ -65,5 +67,3 @@ require("template/".$OJ_TEMPLATE."/submitpage.php");
 /////////////////////////Common foot
 if(file_exists('./include/cache_end.php'))
 	require_once('./include/cache_end.php');
-?>
-
