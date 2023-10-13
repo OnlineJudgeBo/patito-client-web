@@ -5,7 +5,7 @@
   <title><?php echo $view_title ?></title>
   <link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE ?>/<?php echo isset($OJ_CSS) ? $OJ_CSS : "hoj.css" ?>' type='text/css'>
   <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-
+  <link rel="stylesheet" href="/monaco-editor/min/vs/editor/editor.main.css" />
 </head>
 
 <body>
@@ -23,30 +23,32 @@
         if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') || isset($_GET['textarea'])) {
           $OJ_EDITE_AREA = false;
         }
-
-        if ($OJ_EDITE_AREA) {
         ?>
-          <script language="Javascript" type="text/javascript" src="edit_area/edit_area_full.js"></script>
-          <script language="Javascript" type="text/javascript">
-            editAreaLoader.init({
-              id: "source",
-              start_highlight: true,
-              allow_resize: "both",
-              allow_toggle: true,
-              word_wrap: true,
-              language: "en",
-              syntax: "cpp",
-              font_size: "8",
-              syntax_selection_allow: "basic,c,cpp,java,pas,perl,php,python,ruby",
-              toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,syntax_selection,|, change_smooth_selection, highlight, reset_highlight, word_wrap, |, help"
+        <script src="/monaco-editor/min/vs/loader.js"></script>
+        <script>
+          var editor;
+          require.config({
+            paths: {
+              'vs': '/monaco-editor/min/vs'
+            }
+          });
+          require(['vs/editor/editor.main'], function() {
+            let code_escaped = "<?php echo str_replace(array("\r\n", "\r", "\n"), '\\n', addslashes($view_src)); ?>"
+            if (code_escaped.length == 0) {
+              code_escaped = "Pegue aqui el codigo\n\n\n\n\n\n";
+            }
+            editor = monaco.editor.create(document.getElementById('source'), {
+              value: code_escaped.split('\\n').join('\n'),
+              theme: 'vs-dark',
+              minimap: {
+                enabled: false 
+              }
             });
-          </script>
-        <?php } ?>
+          });
+        </script>
 
         <script src="include/checksource.js"></script>
         <script src="include/jquery-latest.js"></script>
-
-
         <form id="frmSolution" action="submit.php" method="post" <?php if ($OJ_LANG == "cn") { ?> onsubmit="return checksource(document.getElementById('source').value);" <?php } ?>>
           <?php if (isset($id)) { ?>
             Problem <span class="blue"><b><?php echo $id ?></b></span>
@@ -70,7 +72,7 @@
 
           <?php } ?>
           Lenguaje:
-          <select id="language" name="language">
+          <select id="language" name="language" onchange="setModelLanguage(this)">
             <?php
             $lang_count = count($language_ext);
             if (isset($_GET['langmask']))
@@ -91,11 +93,14 @@
           </select>
 
           <br>
-          <textarea style="width:80%" cols="180" rows="20" id="source" name="source"><?php echo $view_src ?></textarea>
-          <br>
-          <input id="Submit" class="btn btn-info" type="button" value="<?php echo $MSG_SUBMIT ?>" onclick=do_submit();>
-        </form>
       </center>
+      <div id="source" style="height:600px;"></div>
+
+
+      </textarea>
+      <br>
+      <input id="Submit" class="btn btn-info" type="button" value="<?php echo $MSG_SUBMIT ?>" onclick=do_submit();>
+      </form>
       <script>
         var sid = 0;
         var i = 0;
@@ -222,6 +227,23 @@
 
           }
         }
+
+        function setModelLanguage(element) {
+          var currentValue = element.value;
+          const model = editor.getModel();
+          if (currentValue == 0 || currentValue == 1 || currentValue == 16) {
+            monaco.editor.setModelLanguage(model, 'c++');
+          } else if (currentValue == 3 ) {
+            monaco.editor.setModelLanguage(model, 'java');
+          } else if (currentValue == 17 || currentValue == 19 ) {
+            monaco.editor.setModelLanguage(model, 'python');
+          }
+        }
+        $(window).load(function(){
+          var option1 = document.createElement('option');
+          option1.value = "<?php echo $language?>";
+          setModelLanguage(option1);
+        })
       </script>
       <div id="foot">
         <?php require_once("oj-footer.php"); ?>
