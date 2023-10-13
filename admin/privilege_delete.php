@@ -5,7 +5,7 @@ if (!(isset($_SESSION['administrator']))){
 	exit(1);
 }
 if(isset($_GET['uid'])){
-    if($_GET['uid']=="OscarGauss" || $_GET['uid']=="starsaminf") echo "Ups... :v";
+    if($_GET['uid']=="OscarGauss") echo ":v Ups... :v";
     else{
 	$user_id=mysql_real_escape_string($_GET['uid']);
 	$rightstr =mysql_real_escape_string($_GET['rightstr']);

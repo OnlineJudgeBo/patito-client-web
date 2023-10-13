@@ -18,7 +18,7 @@
     <div id="main">
       <center>
         <?php 
-        if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
+        if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')||isset($_GET['textarea'])){
           $OJ_EDITE_AREA=false;
         }
 

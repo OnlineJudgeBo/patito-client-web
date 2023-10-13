@@ -1,10 +1,13 @@
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-62045758-1"></script>
 <script>
-  window.TrackJS && TrackJS.install({ 
-    token: "5c59ba7897dd425380b05b74717cd5e6",
-    application: "patito"
-  });
-</script>                        
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-62045758-1');
+</script>
+
 
 <div id="header">
   <div id="logo"></div>
@@ -18,7 +21,8 @@
        <li><a href="contest.php"><?php echo checkcontest($MSG_CONTEST)?></a></li>
        <!--<a class='btn <?php if ($url=="recent-contest.php") echo " $ACTIVE";?>' href="recent-contest.php"><i class="icon-share"></i><?php echo "$MSG_RECENT_CONTEST"?></a>-->
        <li ><a href="faqs.php"><?php echo "$MSG_FAQ"?></a></li>
-       <li><a href="tutoriales/index.html" target="_blank">Tutoriales</a></li>
+	   <li><a href="tutoriales/index.html" target="_blank">Tutoriales</a></li>
+	   <li style="text-align: center;line-height: 15px;"><a href="info.html">Carrera<br/>de Informática</a></li>
      </ul>
    </div>
    <div id="profile" >

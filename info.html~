@@ -1,0 +1,160 @@
+
+<html>
+  <head>
+	<link rel="stylesheet" href="spectre-0.5.8/dist/spectre.min.css">
+	<link rel="stylesheet" href="spectre-0.5.8/dist/spectre-exp.min.css">
+	<link rel="stylesheet" href="spectre-0.5.8/dist/spectre-icons.min.css">
+	<title></title>
+	<meta content="" charset="UTF-8">
+	<style></style>
+  </head>
+  <body>
+
+	<header class="navbar">
+	  <section class="navbar-section"><div class="divider-vert"></div>
+		<a href="/" class="btn btn-link text-dark">Principal</a><div class="divider-vert"></div>
+		<a href="/problemset.php" class="btn btn-link text-dark">Problemas</a><div class="divider-vert"></div>
+		<a href="/status.php" class="btn btn-link text-dark">Estado</a><div class="divider-vert"></div>
+		<a href="/ranklist.php" class="btn btn-link text-dark">Ranklist</a><div class="divider-vert"></div>
+		<a href="/contest.php" class="btn btn-link text-dark">Concursos</a><div class="divider-vert"></div>
+		<a href="/faqs.php" class="btn btn-link text-dark">F.A.Qs</a><div class="divider-vert"></div>
+		<a href="/tutoriales/index.html" class="btn btn-link text-dark">Tutoriales</a><div class="divider-vert"></div>
+		<a href="/info.php" class="btn btn-link text-dark">Carrera de Informática</a><div class="divider-vert"></div>
+	  </section>
+	  <section class="navbar-center">
+		<div id="logo"></div>
+	  </section>
+	  <section class="navbar-section text-dark">
+		<a href="#" class="btn btn-link">Usuario</a>
+	  </section>
+	</header>
+
+	<details class="accordion text-dark" open>
+	  <summary class="accordion-header">
+		<i class="icon icon-arrow-right mr-1"></i>
+		HORARIOS DE AUXILIATURA
+	  </summary>
+	  <div class="accordion-body">
+		<details class="accordion">
+		  <summary class="accordion-header">
+			<i class="icon icon-arrow-right mr-1"></i>
+			INF-111 - Introducción a la Informática
+		  </summary>
+		  <div class="accordion-body">
+			<table class="table table-striped table-hover">
+			  <thead class="active">
+				<tr>
+				  <th>Docente</th>
+				  <th>Paralelo</th>
+				  <th>Auxiliar</th>
+				  <th>Horario</th>
+				  <th>Aula</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr>
+				  <td>Morales Rios Menfy</td>
+				  <td>A</td>
+				  <td>Osvaldo Rodriguez</td>
+				  <td>Martes 14:00 - 16:00</td>
+				  <td>-</td>
+				</tr>
+				<tr>
+				  <td>Llanque Quispe Eufren</td>
+				  <td>B</td>
+				  <td>Oscar Antonio Rondo Rodriguez</td>
+				  <td>Miercoles 18:00 - 20:00</td>
+				  <td>Lasin 1</td>
+				</tr>
+				<tr>
+				  <td>Orihuela Sequeiros Nancy</td>
+				  <td>C</td>
+				  <td>Luis David Ajhuacho</td>
+				  <td>Jueves 14:00 - 16:00</td>
+				  <td>PB - A2</td>
+				</tr>
+				<tr>
+				  <td> Felipez Andrade Jhonny R.</td>
+				  <td>D</td>
+				  <td>Lizetd Gandarillas</td>
+				  <td>Viernes 10:00 - 12:00</td>
+				  <td>-</td>
+				</tr>
+				<tr>
+				  <td> Hurtado Cerruto Victoria</td>
+				  <td>E</td>
+				  <td>Royer Alanis</td>
+				  <td>Viernes 12:00 - 14:00</td>
+				  <td></td>
+				</tr>
+				<tr>
+				  <td>Teran Pomier Jorge Humberto</td>
+				  <td>F</td>
+				  <td>Jose Miranda</td>
+				  <td> Lunes 14:00 - 16:00</td>
+				  <td>Lasin 2</td>
+				</tr>
+				<tr>
+				  <td>Teran Pomier Jorge Humberto (Clases Pytdon)</td>
+				  <td>-</td>
+				  <td>Sergio Paucara</td>
+				  <td>Viernes 14:00 - 16:00</td>
+				  <td>Lasin 1</td>
+				</tr>
+			  </tbody>
+			</table>
+		  </div>
+		</details>
+		<details class="accordion">
+		  <summary class="accordion-header">
+			<i class="icon icon-arrow-right mr-1"></i>
+			INF-121 - Algoritmos y Programación
+		  </summary>
+		  <div class="accordion-body">
+			<table class="table table-striped table-hover">
+			  <thead class="active">
+				<tr>
+				  <th>Docente</th>
+				  <th>Paralelo</th>
+				  <th>Auxiliar</th>
+				  <th>Horario</th>
+				  <th>Aula</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr>
+				  <td>Morales Rios Menfy</td>
+				  <td>A</td>
+				  <td>Juan Pablo Hilara</td>
+				  <td>Viernes 10:00 - 12:00</td>
+				  <td>Lasin 2</td>
+				</tr>
+				<tr>
+				  <td>Tarquino Peralta Celia Elena</td>
+				  <td>B</td>
+				  <td>Herbert Wilmer Q.</td>
+				  <td>Sábados 08:00 - 10:00</td>
+				  <td>Sotano 1</td>
+				</tr>
+				<tr>
+				  <td>Aruquipa Chambi Marcelo German</td>
+				  <td>C</td>
+				  <td>Alberth Bernath C.</td>
+				  <td>Viernes 10:00 - 12:00</td>
+				  <td>Sotano 3</td>
+				</tr>
+				<tr>
+				  <td>Pozo Diaz Victor Pablo</td>
+				  <td>D</td>
+				  <td>Albert Jhonatan Q.</td>
+				  <td>Viernes 14:00 - 16:00</td>
+				  <td>Sotano 1</td>
+				</tr>
+			  </tbody>
+			</table>
+		  </div>
+		</details>
+	  </div>
+	</details>
+  </body>
+</html>

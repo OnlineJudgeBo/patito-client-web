@@ -4,11 +4,10 @@
                 require_once("../lang/$OJ_LANG.php");
         }
 
-
 echo "<title>Problem List</title>";
 echo "<center><h2>Contest List</h2></center>";
 require_once("../include/set_get_key.php");
-$sql="SELECT max(`contest_id`) as upid, min(`contest_id`) as btid  FROM `contest`";
+$sql="SELECT max(`contest_id`) as upid, min(`contest_id`) as btid  FROM `contest` WHERE end_time >= '2020-01-01 00:00:00'";
 $page_cnt=50;
 $result=mysql_query($sql);
 echo mysql_error();
@@ -30,6 +29,7 @@ $sql=sprintf("select contest.contest_id,contest.title,contest.start_time,contest
 FROM contest
 INNER JOIN privilege ON privilege.rightstr = CONCAT('%s',contest.contest_id) 
 where contest.contest_id>=%s and contest.contest_id <=%d 
+AND end_time >= '2020-01-01 00:00:00'
 ORDER BY contest.contest_id DESC","m",$pstart,$pend);
 $keyword=$_GET['keyword'];
 $keyword=mysql_real_escape_string($keyword);
@@ -38,7 +38,7 @@ $sql=sprintf("select contest.contest_id,contest.title,contest.start_time,contest
         FROM contest
         INNER JOIN privilege ON privilege.rightstr = CONCAT('%s',contest.contest_id) 
         where contest.title like '%s'","m",$pstart,$pend,"%".$keyword."%");
-} 
+}
 $result=mysql_query($sql) or die(mysql_error());
 ?>
 <form action=contest_list.php class=center><input name=keyword><input type=submit value="<?php echo $MSG_SEARCH?>" ></form>

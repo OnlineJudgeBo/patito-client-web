@@ -7,7 +7,7 @@
 		session_destroy();
 		session_start();
 
-		$sql = "INSERT INTO `loginlog` VALUES('$user_id','$pass2','".$_SERVER['REMOTE_ADDR']."',NOW())";
+		$sql = "INSERT INTO `loginlog` VALUES(NULL, '$user_id','$pass2','".$_SERVER['REMOTE_ADDR']."',NOW())";
 		@mysql_query($sql) or die(mysql_error());
 		$sql="SELECT `user_id`,`password`, accesstime FROM `users` WHERE `user_id`='".$user_id."'";
 		$result=mysql_query($sql);

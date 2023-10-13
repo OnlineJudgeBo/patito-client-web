@@ -10,7 +10,6 @@
     $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".mysql_real_escape_string($user_id)."'";
     $result=mysql_query($sql);
 	$login=check_login($user_id,$password);
-	
 	if ($login){
 		$_SESSION['user_id']=$login;
 		

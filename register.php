@@ -131,7 +131,7 @@ $sql="INSERT INTO users(user_id,email,ip,accesstime,password,reg_time,nick,schoo
 	."','".$school
 	."','".$lastname."','".$pais."','".$obi."','".$institucion."')";
 mysql_query($sql);
-$sql="INSERT INTO `loginlog` VALUES('$user_id','$password','$ip',NOW())";
+$sql="INSERT INTO `loginlog` VALUES(NULL, '$user_id','$password','$ip',NOW())";
 mysql_query($sql);
 $_SESSION['user_id']=$user_id;
 

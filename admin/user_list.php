@@ -12,7 +12,7 @@ if (!(isset($_SESSION['administrator'])||isset($_SESSION['problem_master_editor'
 <fieldset>
 	<legend>Lista de usuarios</legend>
 	<?php
-	$sql 	= 'SELECT user_id, email, nick, lastname FROM  users';
+	$sql 	= 'SELECT user_id, email, nick, lastname FROM  users WHERE is_deleted = 0';
 	$result = mysql_query($sql) or die(mysql_error());
 	?>
 	<table id="student_track"  class="display" cellspacing="0" width="100%"> 
