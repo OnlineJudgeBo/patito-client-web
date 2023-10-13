@@ -36,6 +36,9 @@
 			if ($ok==true or $_SESSION['user_id']=='starsaminf' or $_SESSION['user_id']=='jteran'){
 				if($view_user_id!=$_SESSION['user_id'])
 					echo "<a href='mail.php?to_user=$view_user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
+				echo "<div id='result' style='display: none;'>".$judge_result[$sresult]."</div>";
+				echo "<div id='time' style='display: none;'>".$stime." ms</div>";
+				echo "<div id='memory' style='display: none;'>".$smemory." kb</div>";
 				$brush=strtolower($language_name[$slanguage]);
 				if ($brush=='pascal') $brush='delphi';
 				if ($brush=='obj-c') $brush='c';
