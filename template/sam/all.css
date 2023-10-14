@@ -792,10 +792,6 @@ input {
     background: url(../../_img/tommy_white.png) no-repeat 0 0;
     background-size: 100% auto; }
 
-  .main,
-  main {
-    padding-top: 80px; }
-
   .logo-alpha {
     float: left; }
 
