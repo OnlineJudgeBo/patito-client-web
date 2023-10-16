@@ -19,7 +19,6 @@
 
     ?>
     <div id="main">
-      <center>
         <?php
         if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') || isset($_GET['textarea'])) {
           $OJ_EDITE_AREA = false;
@@ -38,7 +37,7 @@
             if (code_escaped.length == 0) {
               code_escaped = "Pegue aqui el codigo\n\n\n\n\n\n";
             }
-            editor = monaco.editor.create(document.getElementById('source'), {
+            editor = monaco.editor.create(document.getElementById('sourceView'), {
               value: code_escaped.split('\\n').join('\n'),
               theme: 'vs-dark',
               minimap: {
@@ -50,6 +49,7 @@
 
         <script src="include/checksource.js"></script>
         <script src="include/jquery-latest.js"></script>
+        <center>
         <form id="frmSolution" action="submit.php" method="post" <?php if ($OJ_LANG == "cn") { ?> onsubmit="return checksource(window.editor.getValue());" <?php } ?>>
           <?php if (isset($id)) { ?>
             Problem <span class="blue"><b><?php echo $id ?></b></span>
@@ -70,8 +70,8 @@
 
             <input id="cid" type='hidden' value='<?php echo $cid ?>' name="cid">
             <input id="pid" type='hidden' value='<?php echo $pid ?>' name="pid">
-
           <?php } ?>
+          <input type=hidden name="source" id="source">
           Lenguaje:
           <select id="language" name="language" onchange="setModelLanguage(this)">
             <?php
@@ -95,10 +95,8 @@
 
           <br>
       </center>
-      <div id="source" style="height:600px;"></div>
-      <input type="hidden" name = "source" id = "source">
+      <div id="sourceView" style="height:600px;"></div>
 
-      </textarea>
       <br>
       <input id="Submit" class="btn btn-info" type="button" value="<?php echo $MSG_SUBMIT ?>" onclick=do_submit();>
       </form>
@@ -170,7 +168,8 @@
         function do_submit() {
 
           document.getElementById("source").value = window.editor.getValue();
-          
+          console.log(document.getElementById("source").value)
+
           if (typeof(eAL) != "undefined") {
             eAL.toggle("source");
             eAL.toggle("source");
