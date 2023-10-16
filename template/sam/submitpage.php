@@ -6,6 +6,7 @@
   <link rel=stylesheet href='./template/<?php echo $OJ_TEMPLATE ?>/<?php echo isset($OJ_CSS) ? $OJ_CSS : "hoj.css" ?>' type='text/css'>
   <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
   <link rel="stylesheet" href="/monaco-editor/min/vs/editor/editor.main.css" />
+
 </head>
 
 <body>
@@ -49,7 +50,7 @@
 
         <script src="include/checksource.js"></script>
         <script src="include/jquery-latest.js"></script>
-        <form id="frmSolution" action="submit.php" method="post" <?php if ($OJ_LANG == "cn") { ?> onsubmit="return checksource(document.getElementById('source').value);" <?php } ?>>
+        <form id="frmSolution" action="submit.php" method="post" <?php if ($OJ_LANG == "cn") { ?> onsubmit="return checksource(window.editor.getValue());" <?php } ?>>
           <?php if (isset($id)) { ?>
             Problem <span class="blue"><b><?php echo $id ?></b></span>
             <input id="problem_id" type='hidden' value='<?php echo $id ?>' name="id"><br>
@@ -95,7 +96,7 @@
           <br>
       </center>
       <div id="source" style="height:600px;"></div>
-
+      <input type="hidden" name = "source" id = "source">
 
       </textarea>
       <br>
@@ -168,6 +169,8 @@
 
         function do_submit() {
 
+          document.getElementById("source").value = window.editor.getValue();
+          
           if (typeof(eAL) != "undefined") {
             eAL.toggle("source");
             eAL.toggle("source");
@@ -238,6 +241,36 @@
           } else if (currentValue == 17 || currentValue == 19 ) {
             monaco.editor.setModelLanguage(model, 'python');
           }
+
+          monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+            allowNonTsExtensions: true
+          });
+
+          monaco.languages.registerCompletionItemProvider('java', {
+                provideCompletionItems: function(model, position) {
+                    var suggestions = [
+                        {
+                            label: 'System.out.println',
+                            kind: monaco.languages.CompletionItemKind.Function,
+                            insertText: 'System.out.println(${1:message});',
+                            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                            detail: 'Print to console'
+                        },
+                        {
+                            label: 'for loop',
+                            kind: monaco.languages.CompletionItemKind.Keyword,
+                            insertText: 'for (${1:int i = 0; i < length; i++}) {\n\t${2: // Your code here }\n}',
+                            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                            detail: 'for loop'
+                        }
+                    ];
+
+                    return {
+                        suggestions: suggestions
+                    };
+                }
+            });
+            
         }
         $(window).load(function(){
           var option1 = document.createElement('option');
