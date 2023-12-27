@@ -35,7 +35,7 @@
           require(['vs/editor/editor.main'], function() {
             let code_escaped = "<?php echo str_replace(array("\r\n", "\r", "\n"), '\\n', addslashes($view_src)); ?>"
             if (code_escaped.length == 0) {
-              code_escaped = "Escriba aqui el codigo\n\n\n\n\n\n";
+              code_escaped = "Pegue aqui el codigo\n\n\n\n\n\n";
             }
             editor = monaco.editor.create(document.getElementById('sourceView'), {
               value: code_escaped.split('\\n').join('\n'),

@@ -16,4 +16,5 @@
 Para comprobar las soluciones enviadas a Python no tienen errores se usa <a target="_blank" href="https://github.com/PyCQA/pyflakes">Pyflakes</a>
 </ul>
 
+<li>Se integro el editor de codigo monaco</li>
 
