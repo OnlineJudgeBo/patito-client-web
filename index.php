@@ -1,64 +1,57 @@
 <?php
-////////////////////////////Common head
-$cache_time=10;
-$OJ_CACHE_SHARE=false;
 require_once('./include/cache_start.php');
 require_once('./include/db_info.inc.php');
 require_once('./include/setlang.php');
-$view_title= "Bienvenido al Juez de la Carrera de Informatica - UMSA";
+require_once ("./include/const.inc.php");
 
-///////////////////////////MAIN	
-$view_news="";
-$sql=	"SELECT * "
-."FROM `news` "
-."WHERE `defunct`!='Y'"
-."ORDER BY `importance` ASC,`time` DESC "
-."LIMIT 1";
-	$result=mysql_query($sql);//mysql_escape_string($sql));
+$view_title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
 
-if (!$result){
-	$view_news= "";
-	$view_news.= mysql_error();
-}else{
-	$view_news.= "";
-	while ($row=mysql_fetch_object($result)){
-		$view_news.= "<h3>".$row->title."</h3><br>";
-		$view_news.= $row->content;
-	}
-	mysql_free_result($result);
-}
-//////////////
-	$view_apc_info="";
+$view_news = [];
+$sql = "SELECT *
+FROM `news`
+WHERE `defunct`!='Y'
+ORDER BY `importance` ASC,`time` DESC
+LIMIT 1";
+$result = mysql_query($sql);
 
-	$sql="SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution`  group by md order by md desc ";
-	$result=mysql_query($sql);//mysql_escape_string($sql));
-$chart_data_all= array();
-//echo $sql;
-
-while ($row=mysql_fetch_array($result)){
-	$chart_data_all[$row['md']]=$row['c'];
+if (!$result) {
+    echo mysql_error();
+} else {
+    while ($row = mysql_fetch_array($result)) {
+        $tmp = array();
+        $tmp["title"] = $row["title"];
+        $tmp["content"] = $row["content"];
+        $view_news[] = $tmp;
+    }
+    mysql_free_result($result);
 }
 
-$sql=	"SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution` where result=4 group by md order by md desc ";
-	$result=mysql_query($sql);//mysql_escape_string($sql));
-$chart_data_ac= array();
-//echo $sql;
+$sql = "SELECT solution_id, problem_id, user_id, time, memory, in_date, result, language
+FROM solution
+WHERE problem_id > 0 AND
+contest_id IS NOT NULL
+ORDER BY in_date 
+DESC LIMIT 10;";
 
-while ($row=mysql_fetch_array($result)){
-	$chart_data_ac[$row['md']]=$row['c'];
+$result = mysql_query($sql);
+$view_last_runs = [];
+
+if (!$result) {
+    echo mysql_error();
+} else {
+    while ($row = mysql_fetch_array($result)) {
+        $tmp = array();
+        $tmp["solution_id"] = $row["solution_id"];
+        $tmp["problem_id"] = '<a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="problem.php?cid=2790&amp;pid=25">'.$row["problem_id"].'</a>';
+        $tmp["user_id"] = '<a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="problem.php?cid=2790&amp;pid=25">'.$row["user_id"].'</a>';
+        $tmp["time"] = '<div class="font-bold  decoration-solid decoration-sky-500 result-'.$judge_color[$row["result"]].'">'.$row["time"].'</div>';
+        $tmp["memory"] = '<div class="font-bold  decoration-solid decoration-sky-500 result-'.$judge_color[$row["result"]].'">'.$row["memory"].'</div>';
+        $tmp["in_date"] = $row["in_date"];
+        $tmp["result"] = '<div class="font-bold  decoration-solid decoration-sky-500 result-'.$judge_color[$row["result"]].'">'.$judge_result[$row["result"]].'</div>';
+        $tmp["language"] = $language_name[$row["language"]];
+        $view_last_runs[] = $tmp;
+    }
+    mysql_free_result($result);
 }
 
-
-
-
-if(function_exists('apc_cache_info')){
-	$_apc_cache_info = apc_cache_info(); 
-	$view_apc_info =_apc_cache_info;
-}
-
-/////////////////////////Template
-require("template/".$OJ_TEMPLATE."/index.php");
-/////////////////////////Common foot
-if(file_exists('./include/cache_end.php'))
-	require_once('./include/cache_end.php');
-?>
+require("template/" . $OJ_TEMPLATE . "/index.php");
