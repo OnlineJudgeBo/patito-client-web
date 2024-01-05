@@ -1,0 +1,28 @@
+.result-red {
+    color: red;
+}
+
+.result-green {
+    color: green;
+}
+
+.oddrow {
+    background-color: #E5ECF9;
+}
+
+.evenrow {
+    background-color: #f9f9f9;
+    white-space: nowrap;
+}
+
+.green-text {
+    color: #4CAF50 !important;
+}
+
+.blue-text {
+    color: #2196F3 !important;
+}
+
+.red-text {
+    color: #F44336 !important;
+}

@@ -1,0 +1,16 @@
+{
+    "name": "samuelloza/web",
+    "autoload": {
+        "psr-4": {
+            "PatitoOnlineJudge\\": "src/PatitoOnlineJudge/"
+        },
+        "files": ["Legacy/Include/const.inc.php", "Legacy/Include/en.php"]
+    },
+    "authors": [
+        {
+            "name": "Samuel Loza",
+            "email": "samuel.loza26@gmail.com"
+        }
+    ],
+    "require": {}
+}
