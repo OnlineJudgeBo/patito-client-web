@@ -15,13 +15,18 @@ class ComposerStaticInitf63e3d07acba8dce3c8746877dfa8db7
         'P' => 
         array (
             'PatitoOnlineJudge\\' => 18,
+            'PatitoOnlineJudgeModule\\' => 24,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
         'PatitoOnlineJudge\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src/PatitoOnlineJudge',
+            0 => __DIR__ . '/../..' . '/PatitoOnlineJudge',
+        ),
+        'PatitoOnlineJudgeModule\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/resources/View/Modules',
         ),
     );
 

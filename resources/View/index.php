@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juez Virtual Patito</title>
+  <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./assetes/base.css">
+
+</head>
+
+<body class="flex flex-col h-full">
+
+  <?php
+  require_once "oj-header.php" ?>
+
+  <main class="container mx-auto p-4 grid grid-cols-4 gap-4">
+    <div class="col-span-3">
+      <div class="bg-gray-100 p-0 mb-2">
+        <div class="container mx-auto bg-white shadow-lg rounded-lg border p-6">
+
+          <div class="my-1">
+            <h2 class="text-lg font-semibold">¿Nuevo aquí? ¡Bienvenido!</h2>
+            <p>Se encuentran disponibles una <span class="text-blue-600 underline">guía rápida</span>, una
+              <span class="text-blue-600 underline">guía en video</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full" data-v0-t="card">
+        <div class="flex flex-col space-y-1.5 p-6">
+          <h3 class="text-2xl font-semibold leading-none tracking-tight">Ultimos envios</h3>
+        </div>
+        <div class="p-2">
+          <div class="relative w-full overflow-auto">
+            <table class="border-collapse  border-slate-500 hover:table-fixed md:table-fixed hover:table-fixed">
+              <thead>
+                <tr class="border-b transition-colors hover:bg-muted/50">
+                  <th class="p-4 font-semibold">RunID</th>
+                  <th class="p-4 font-semibold">Usuario</th>
+                  <th class="p-4 font-semibold">Problema</th>
+                  <th class="p-4 font-semibold">Lenguaje</th>
+                  <th class="p-4 font-semibold">Resultado</th>
+                  <th class="p-4 font-semibold">Memoria</th>
+                  <th class="p-4 font-semibold">Tiempo</th>
+                  <th class="p-4 font-semibold">Hora de Envio</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <?php
+                foreach ($view_last_runs as $key => $value) {
+                  $css = "evenrow";
+                  if ($key % 2 == 0) {
+                    $css = "oddrow";
+                  }
+                  echo '<tr class="border-b transition-colors hover:bg-muted/50 ' . $css . '">';
+                  echo '<td class="p-4">' . $value["solution_id"] . '</td>';
+                  echo '<td class="p-4">' . $value["user_id"] . '</td>';
+                  echo '<td class="p-4">' . $value["problem_id"] . '</td>';
+                  echo '<td class="p-4">' . $value["language"] . '</td>';
+                  echo '<td class="p-4">' . $value["result"] . '</td>';
+                  echo '<td class="p-4">' . $value["memory"] . '</td>';
+                  echo '<td class="p-4">' . $value["time"] . '</td>';
+                  echo '<td class="p-4">' . $value["in_date"] . '</td>';
+                }
+                ?>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-1">
+      <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full mb-2">
+        <div class="px-4 py-3" role="alert">
+          <?php
+
+          use PatitoOnlineJudgeModule\ContestList\ContestList;
+
+          $contestListModule = new ContestList();
+          $contestListModule->render();
+          ?>
+        </div>
+      </div>
+
+
+      <div class="rounded-lg border bg-card text-card-foreground">
+        <div class="px-4 py-3" role="alert">
+          <h3 class="text-2xl font-bold text-center mb-3">Últimas Noticias</h3>
+          <?php
+          foreach ($view_news as $value) {
+            echo '<div class="flex mb-4 p-3">';
+            echo '<div>';
+            echo '<p class="font-bold">' . $value["title"] . '</p>';
+            echo '<p class="text-sm">' . $value["content"] . '</p>';
+            echo '</div>';
+            echo '</div>';
+          }
+          ?>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <?php require_once "oj-footer.php" ?>
+
+</body>
+
+</html>

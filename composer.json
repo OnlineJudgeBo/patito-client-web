@@ -2,7 +2,9 @@
     "name": "samuelloza/web",
     "autoload": {
         "psr-4": {
-            "PatitoOnlineJudge\\": "src/PatitoOnlineJudge/"
+            "PatitoOnlineJudge\\": "PatitoOnlineJudge/",
+            "PatitoOnlineJudgeModule\\": "resources/View/Modules"
+
         },
         "files": ["Legacy/Include/const.inc.php", "Legacy/Include/en.php"]
     },
