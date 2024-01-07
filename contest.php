@@ -150,7 +150,7 @@ if (isset($_GET['cid'])) {
 	mysql_free_result($result);
 } else {
 
-	$sql = "SELECT * FROM `contest` WHERE `defunct`='N' ORDER BY `contest_id` DESC letter 100";
+	$sql = "SELECT * FROM `contest` WHERE `defunct`='N' ORDER BY `contest_id` DESC limit 100";
 	$result = mysql_query($sql);
 
 	$view_contest = array();
