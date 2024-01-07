@@ -7,7 +7,7 @@
   <title>Juez Virtual Patito</title>
   <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./assetes/base.css">
+  <link rel="stylesheet" href="./assets/base.css">
 
 </head>
 
