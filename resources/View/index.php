@@ -16,7 +16,7 @@
   <?php
   require_once "oj-header.php" ?>
 
-  <main class="container mx-auto p-4 grid grid-cols-4 gap-4">
+  <main class="container mx-auto p-4 sm:grid sm:grid-cols-4 sm:gap-4">
     <div class="col-span-3">
       <div class="bg-gray-100 p-0 mb-2">
         <div class="container mx-auto bg-white shadow-lg rounded-lg border p-6">
@@ -80,7 +80,6 @@
       <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full mb-2">
         <div class="px-4 py-3" role="alert">
           <?php
-
           use PatitoOnlineJudgeModule\ContestList\ContestList;
 
           $contestListModule = new ContestList();
