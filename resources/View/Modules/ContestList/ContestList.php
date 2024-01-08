@@ -84,8 +84,14 @@ class ContestList
 
     private function loadContestData()
     {
-        global $MSG_Start, $MSG_TotalTime, $MSG_Running, $MSG_LeftTime;
-
+        $MSG_Public = "Publico";
+        $MSG_Private = "Privado";
+        $MSG_Running = "Corriendo";
+        $MSG_Start = "Inicio";
+        $MSG_TotalTime = "Falta";
+        $MSG_LeftTime = "Termina en";
+        $MSG_Ended = "Termino";
+        
         $connector = new DatabaseConnector();
         $pdo = $connector->getConnection();
 
