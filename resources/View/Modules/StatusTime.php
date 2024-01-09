@@ -8,14 +8,14 @@ function getStatusTime($event_start_time, $event_end_time) {
     if ($now > $end_time) {
         return "<span class=result-green>Termino el ".$event_end_time."</span>";
     } elseif ($now < $start_time) {
-        return "<id class=result-blue>Iniciara el ".$event_start_time."</id>
-                <id class='result-green'>
-                <br>" . formatTimeLength($now, $start_time, $end_time) . "</id>";
+        return "<span class=result-blue>Iniciara el ".$event_start_time."</span>
+                <span class='result-green'>
+                <br>" . formatTimeLength($now, $start_time, $end_time) . "</span>";
     } else {
-        return "<id class='result-red'> Corriendo </div>
+        return "<span class='result-red'> Corriendo </span>
         <br>
-        <id class=result-green> Termina el: " .$event_end_time ."<div>
-        ". formatTimeLength($now, $end_time, $start_time) . " </id>";
+        <span class=result-green> Termina el: " .$event_end_time ."<span>
+        ". formatTimeLength($now, $end_time, $start_time) . " </span>";
     }
 }
 

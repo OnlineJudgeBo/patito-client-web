@@ -13,7 +13,7 @@ class ContestRepository {
     }
 
     public function getContestById($cid) {
-        $stmt = $this->pdo->query("SELECT * FROM `contest` WHERE `contest_id` = :cid");
+        $stmt = $this->pdo->prepare("SELECT * FROM `contest` WHERE `contest_id` = :cid");
         $stmt->execute(['cid' => $cid]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -24,14 +24,26 @@ class ContestRepository {
     }
 
     public function getProblemsByContestId($cid) {
-        $stmt = $this->pdo->prepare("
-            SELECT cp.problem_id, p.title, p.source 
-            FROM `contest_problem` AS cp 
-            JOIN `problem` AS p ON cp.problem_id = p.problem_id 
-            WHERE cp.contest_id = :cid AND p.defunct = 'N'
-            ORDER BY cp.num
-        ");
-        $stmt->execute(['cid' => $cid]);
+        $stmt = $this->pdo->prepare("SELECT *
+            FROM (
+                SELECT problem.title AS title, problem.problem_id AS pid, source AS source, contest_problem.num AS pnum
+                FROM contest_problem, problem
+                WHERE contest_problem.problem_id=problem.problem_id
+                AND problem.defunct='N'
+                AND contest_problem.contest_id=:cid1
+                ) problem
+            LEFT JOIN (
+                SELECT problem_id pid1,count(1) accepted
+                FROM solution
+                WHERE result=4 AND contest_id= :cid2
+                GROUP BY pid1) p1 ON problem.pid=p1.pid1
+            LEFT JOIN (
+                SELECT problem_id pid2,count(1) submit
+                FROM solution WHERE contest_id=:cid3
+                GROUP BY pid2) p2 ON problem.pid=p2.pid2
+            ORDER BY pnum");
+
+        $stmt->execute(['cid1' => $cid, 'cid2' => $cid, 'cid3' => $cid]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

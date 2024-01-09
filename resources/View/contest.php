@@ -15,11 +15,11 @@
 
     <?php require_once "oj-header.php" ?>
     <main class="container mx-auto p-4">
-    <div class="flex flex-col items-center">
-        <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full">
-            <div class="flex flex-col space-y-1.5 p-6">
-                <h3 class="text-2xl font-semibold leading-none tracking-tight">Contest</h3>
-            </div>
+        <div class="flex flex-col items-center">
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Contest</h3>
+                </div>
                 <div class="flex justify-center">
                     Hora del servidor: <div class="nowdate"> </div>
                 </div>
@@ -45,8 +45,8 @@
                                     }
                                     echo '<tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ' . $css . '">';
                                     echo '<td class="p-4">' . $value["contest_id"] . '</td>';
-                                    echo '<td class="p-4 result-blue">' . $value["title"] . '</td>';
-                                    echo '<td class="p-4 result-green">' .getStatusTime($value["start_time"], $value["end_time"]). '</td>';
+                                    echo '<td class="p-4 result-blue"><a href="contest.php?cid=' . $value["contest_id"] . '">' . $value["title"] . '</td>';
+                                    echo '<td class="p-4 result-green"> ' . getStatusTime($value["start_time"], $value["end_time"]) . '</td>';
                                     if ($value["private"] == 0) {
                                         echo '<td class="p-4 result-blue">Publico</td>';
                                     } else {

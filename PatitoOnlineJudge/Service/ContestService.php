@@ -13,8 +13,14 @@ class ContestService
         $this->contestRepository = $contestRepository;
     }
 
-    public function getContestDetails($cid)
+    public function getContestProblems($cid)
     {
+        return $this->contestRepository->getProblemsByContestId($cid);
+    }
+
+    public function getContestById($cid)
+    {
+        return $this->contestRepository->getContestById($cid);
     }
 
     public function getAllContestDetails()
