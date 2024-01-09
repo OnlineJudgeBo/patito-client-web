@@ -19,12 +19,15 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $connector = new DatabaseConnector();
 $problemRepository = new ProblemRepository($connector);
 $problemService = new ProblemService($problemRepository);
+$problemController = new ProblemController($problemService);
 
 if (isset($_GET["cid"]) && isset($_GET["pid"])) {
     $cid = $_GET["cid"];
     $pid = $_GET["pid"];
-    $problemController = new ProblemController($problemService);
     $problemController->setProblemId($pid);
     $problemController->setContestId($cid);
-    $problemController->render();
+} elseif (isset($_GET["id"])) {
+    $pid = $_GET["id"];
+    $problemController->setProblemId($pid);
 }
+$problemController->render();

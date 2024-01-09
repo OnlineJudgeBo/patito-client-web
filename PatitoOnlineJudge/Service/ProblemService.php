@@ -13,6 +13,12 @@ class ProblemService
         $this->problemRepository = $problemRepository;
     }
 
+    public function getProblemById($pid)
+    {
+        return $this->problemRepository->getProblemById($pid);
+    }
+
+
     public function getProblemByContestId($cid, $pid)
     {
         return $this->problemRepository->getProblemByContestId($cid, $pid);

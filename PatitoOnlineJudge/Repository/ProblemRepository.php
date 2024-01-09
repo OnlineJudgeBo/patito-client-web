@@ -12,6 +12,13 @@ class ProblemRepository {
         $this->pdo = $connector->getConnection();
     }
 
+    public function getProblemById($pid) {
+        $stmt = $this->pdo->prepare("SELECT * FROM problem
+                                        WHERE problem_id = :pid");
+        $stmt->execute(['pid' => $pid]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getProblemByContestId($cid, $pid) {
         $stmt = $this->pdo->prepare("SELECT * FROM problem
                                         WHERE defunct = 'N' AND
