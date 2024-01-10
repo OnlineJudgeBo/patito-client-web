@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Repository;
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
+use PDO;
 
 class NewsRepository
 {
