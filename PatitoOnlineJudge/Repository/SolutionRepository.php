@@ -14,7 +14,11 @@ class SolutionRepository
         $connector = new DatabaseConnector();
         $pdo = $connector->getConnection();
 
-        $sql = "SELECT solution_id, problem_id, user_id, time, memory, in_date, result, language FROM solution WHERE problem_id > 0 AND contest_id IS NOT NULL ORDER BY in_date DESC LIMIT 10";
+        $sql = "SELECT solution_id, problem_id, user_id, time, memory, in_date, result, language 
+                FROM solution 
+                WHERE problem_id > 0 
+                AND contest_id IS NOT NULL 
+                ORDER BY in_date DESC LIMIT 10";
         $stmt = $pdo->query($sql);
         $this->view_last_runs = [];
 

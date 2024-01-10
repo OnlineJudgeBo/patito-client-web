@@ -18,7 +18,6 @@ class ProblemService
         return $this->problemRepository->getProblemById($pid);
     }
 
-
     public function getProblemByContestId($cid, $pid)
     {
         return $this->problemRepository->getProblemByContestId($cid, $pid);

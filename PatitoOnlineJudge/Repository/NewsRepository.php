@@ -13,6 +13,6 @@ class NewsRepository
         $sql = "SELECT * FROM `news` WHERE `defunct`!='Y' ORDER BY `importance` ASC,`time` DESC LIMIT 1";
         $stmt = $pdo->query($sql);
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
