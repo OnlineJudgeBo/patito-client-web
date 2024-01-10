@@ -36,41 +36,38 @@
                 }
             </style>
             <script>
-new DataTable('#ranklist', {
-    dom: '<frtp><Brtp>',
-    ajax: 'ranklist.php?api=true',
-    columns: [
-        {
-            data: null, // No hay datos de servidor para esta columna
-            searchable: false,
-            orderable: false,
-            className: 'dt-body-center',
-            render: function (data, type, row, meta) {
-                return meta.row + meta.settings._iDisplayStart + 1; // Genera el índice
-            }
-        },
-        {
-            data: 'user_id'
-        },
-        {
-            data: 'nick',
-        },
-        {
-            data: 'solved'
-        },
-        {
-            data: 'submit'
-        }
-    ],
-    language: {
-        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
-    },
-    responsive: true,
-    pageLength: 100,
-    pagingType: "full_numbers"
-});
-
-
+                new DataTable('#ranklist', {
+                    dom: '<frtp><Brtp>',
+                    ajax: 'ranklist.php?api=true',
+                    columns: [{
+                            data: null,
+                            searchable: false,
+                            orderable: false,
+                            className: 'dt-body-center',
+                            render: function(data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+                            data: 'user_id'
+                        },
+                        {
+                            data: 'nick',
+                        },
+                        {
+                            data: 'solved'
+                        },
+                        {
+                            data: 'submit'
+                        }
+                    ],
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+                    },
+                    responsive: true,
+                    pageLength: 100,
+                    pagingType: "full_numbers"
+                });
             </script>
         </div>
         </div>
