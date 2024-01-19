@@ -6,13 +6,17 @@ use PatitoOnlineJudge\Service\LoginService;
 
 class LoginController
 {
-    private $contestService;
+    private $loginService;
     public $view_title;
 
     public function __construct(LoginService $loginService)
     {
         $this->view_title = "Contests";
-        $this->contestService = $loginService;
+        $this->loginService = $loginService;
+    }
+
+    public function login($username, $password) {
+       $this->loginService->authenticateUser($username, $password);
     }
 
     public function render()
