@@ -5,25 +5,30 @@ namespace PatitoOnlineJudge\Repository;
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PDO;
 
-class ContestRepository {
+class ContestRepository
+{
     private $pdo;
 
-    public function __construct(DatabaseConnector $connector) {
+    public function __construct(DatabaseConnector $connector)
+    {
         $this->pdo = $connector->getConnection();
     }
 
-    public function getContestById($cid) {
+    public function getContestById($cid)
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM `contest` WHERE `contest_id` = :cid");
         $stmt->execute(['cid' => $cid]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAllContests() {
+    public function getAllContests()
+    {
         $stmt = $this->pdo->query("SELECT * FROM `contest` WHERE `defunct` = 'N' ORDER BY `contest_id` DESC LIMIT 50");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemsByContestId($cid) {
+    public function getProblemsByContestId($cid)
+    {
         $stmt = $this->pdo->prepare("SELECT *
             FROM (
                 SELECT problem.title AS title, problem.problem_id AS pid, source AS source, contest_problem.num AS pnum
@@ -45,5 +50,13 @@ class ContestRepository {
 
         $stmt->execute(['cid1' => $cid, 'cid2' => $cid, 'cid3' => $cid]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function isContestByIdPublic($cid)
+    {
+        if (($this->getContestById($cid)["private"]) == 0) {
+            return true;
+        }
+        return false;
     }
 }

@@ -25,3 +25,5 @@ if (isset($_GET["cid"])) {
     $contestController = new ContestController($contestService);
     $contestController->render();
 }
+
+

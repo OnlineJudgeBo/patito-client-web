@@ -57,6 +57,9 @@
                             </thead>
                             <tbody class="content-center">
                                 <?php
+                                if (!empty($error)) {
+                                    echo "<th colspan=6 class='result-red p-1 font-bold text-lg border-r'>$error</th>";
+                                }
                                 $letter = 65;
                                 $xtra_letter = "";
                                 foreach ($contestProblemList as $key => $value) {

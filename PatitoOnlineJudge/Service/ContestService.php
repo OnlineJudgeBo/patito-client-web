@@ -27,4 +27,8 @@ class ContestService
     {
         return $this->contestRepository->getAllContests();
     }
+
+    public function isContestByIdPublic($cid) {
+        return $this->contestRepository->isContestByIdPublic($cid);
+    }
 }
