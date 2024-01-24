@@ -58,6 +58,18 @@
                             <a href="#" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Estado
                             </a>
+                            <?php
+                        if (isset($_SESSION['administrator']) || isset($_SESSION['problem_master_editor'])) {
+                        ?>
+                            <a href="admin/problem_edit.php?id=<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                Editar
+                            </a>
+                            <a href="admin/quixplorer/index.php?action=list&dir=<?php echo $problem["problem_id"] ?>&order=name&srt=yes" target="_blank" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                TestData
+                            </a>
+                        <?php
+                        }
+                        ?>
                         </div>
                     </div>
                 </div>
@@ -88,7 +100,7 @@
                         <div>
                             <h3 class="text-xl font-bold tracking-tight text-black mb-1">Ejemplo Entrada</h3>
                             <div class="bg-gray-100 p-2 rounded">
-                                <pre class="text-gray-600 bg-gray-100 text-gray-800 p-4"><?php echo $problem["sample_input"];?></pre>
+                                <pre class="text-gray-600 bg-gray-100 text-gray-800 p-4"><?php echo $problem["sample_input"]; ?></pre>
                             </div>
                         </div>
 

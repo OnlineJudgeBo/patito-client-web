@@ -1,15 +1,11 @@
 <?php
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
-use PatitoOnlineJudge\Controller\ContestController;
-use PatitoOnlineJudge\Controller\ContestListProblemController;
 use PatitoOnlineJudge\Controller\ProblemController;
-use PatitoOnlineJudge\Repository\ContestRepository;
 use PatitoOnlineJudge\Repository\ProblemRepository;
-use PatitoOnlineJudge\Service\ContestService;
 use PatitoOnlineJudge\Service\ProblemService;
 
-@session_start();
+session_start();
 ini_set("display_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

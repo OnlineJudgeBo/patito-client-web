@@ -38,6 +38,11 @@
                     </div>
 
                 </div>
+                <?php
+                if (!empty($error)) {
+                    echo '<p class="text-red-500 text-xl italic">Error en el nombre de usuario o la contraseña</p>';
+                }
+                ?>
                 <div class="mt-10">
                     <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Iniciar</button>
                 </div>

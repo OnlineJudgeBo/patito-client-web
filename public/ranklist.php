@@ -8,7 +8,7 @@ use PatitoOnlineJudge\Repository\RankListRepository;
 use PatitoOnlineJudge\Service\ProblemService;
 use PatitoOnlineJudge\Service\RankListService;
 
-@session_start();
+session_start();
 ini_set("display_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

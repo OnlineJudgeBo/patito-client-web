@@ -5,7 +5,7 @@ use PatitoOnlineJudge\Controller\ProblemSetController;
 use PatitoOnlineJudge\Repository\ProblemRepository;
 use PatitoOnlineJudge\Service\ProblemService;
 
-@session_start();
+session_start();
 ini_set("display_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
