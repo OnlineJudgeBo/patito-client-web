@@ -9,9 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
 
-    <script src="/assets/highlight/highlight.min.js"></script>
+    <script src="./assets/highlight/highlight.min.js"></script>
 
-    <link rel="stylesheet" href="/assets/highlight/styles/default.css">
+    <link rel="stylesheet" href="./assets/highlight/styles/default.css">
 </head>
 
 <body class="flex flex-col h-full">
