@@ -31,6 +31,6 @@ class RankListController
     public function render()
     {
         $rankList = $this->rankListService->getRankListByDate($this->scope, $this->rank);
-        require_once __DIR__ . "/../../resources/View/ranklist.php";
+        require_once __DIR__ . "/../Presentation//ranklist.php";
     }
 }

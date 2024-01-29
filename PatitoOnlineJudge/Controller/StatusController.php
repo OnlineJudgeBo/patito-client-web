@@ -24,6 +24,6 @@ class StatusController
     public function render()
     {
         $statusViewList = $this->statusService->getStatusData($this->params);
-        require_once __DIR__ . "/../../resources/View/status.php";
+        require_once __DIR__ . "/../Presentation//status.php";
     }
 }

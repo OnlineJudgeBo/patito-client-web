@@ -23,6 +23,6 @@ class IndexController
         $view_news = $this->newsService->getLatestNews();
         $view_last_runs = $this->solutionService->getLastRuns();
 
-        require_once __DIR__ . "/../../resources/View/index.php";
+        require_once __DIR__ . "/../Presentation/index.php";
     }
 }

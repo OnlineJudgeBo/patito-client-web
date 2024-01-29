@@ -34,6 +34,6 @@ class ProblemController
         } else {
             $problem = $this->problemService->getProblemById($this->pid);
         }
-        require_once __DIR__ . "/../../resources/View/problem.php";
+        require_once __DIR__ . "/../Presentation//problem.php";
     }
 }

@@ -39,12 +39,12 @@ class ContestListProblemController
             $contestDetail = $this->contestService->getContestById($this->cid);
 
             $cid = $this->cid;
-            require_once __DIR__ . "/../../resources/View/contestProblemList.php";
+            require_once __DIR__ . "/../Presentation//contestProblemList.php";
         } else {
             $contestDetail = $this->contestService->getContestById($this->cid);
             $contestProblemList = array();
             $error = "Este contest es privado";
-            require_once __DIR__ . "/../../resources/View/contestProblemList.php";
+            require_once __DIR__ . "/../Presentation//contestProblemList.php";
         }
     }
 }

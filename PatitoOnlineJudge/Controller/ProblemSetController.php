@@ -31,6 +31,6 @@ class ProblemSetController
         $totalPages = ceil($totalProblems / $limit);
         $offset = ( intval($this->page)) * $limit;
         $problems = $this->problemService->getProblems($offset, $limit);
-        require_once __DIR__ . "/../../resources/View/problemset.php";
+        require_once __DIR__ . "/../Presentation//problemset.php";
     }
 }

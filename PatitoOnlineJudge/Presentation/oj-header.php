@@ -35,7 +35,7 @@
 
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 hidden sm:ml-6 sm:block">
         <div class="flex space-x-4">
-          <?php include __DIR__.'/../partials/user-session-menu.php'; ?>
+          <?php include __DIR__.'/partials/user-session-menu.php'; ?>
         </div>
       </div>
     </div>

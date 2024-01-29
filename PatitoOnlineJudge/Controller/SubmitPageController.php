@@ -10,13 +10,13 @@ class SubmitPageController
     private $pid;
     public $view_title;
 
-    public function __construct($submitPageService, $loginService, $cid, $pid)
+    public function __construct($submitPageService, $loginService, $pid, $cid)
     {
         $this->view_title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
         $this->submitPageService = $submitPageService;
         $this->loginService = $loginService;
-        $this->cid = $cid;
         $this->pid = $pid;
+        $this->cid = $cid;
     }
 
     public function render()
@@ -25,14 +25,6 @@ class SubmitPageController
         $id = $this->pid;
         $cid = $this->cid;
 
-        if (isset($_GET["id"])) {
-            $id = intval($_GET["id"]);
-        }
-
-        if (isset($_GET["cid"])) {
-            $cid = intval($_GET["cid"]);
-        }
-
-        require_once __DIR__ . "/../../resources/View/submitpage.php";
+        require_once __DIR__ . "/../Presentation/submitpage.php";
     }
 }

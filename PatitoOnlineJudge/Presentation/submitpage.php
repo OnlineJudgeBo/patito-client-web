@@ -78,7 +78,7 @@
                     <form id="frmSolution" action="submitpage.php" method="post" onclick=do_submit()>
                         <input type=hidden name="source" id="source">
                         <input id="cid" type='hidden' value='<?php echo $cid ?>' name="cid">
-                        <input id="pid" type='hidden' value='<?php echo $pid ?>' name="pid">
+                        <input id="pid" type='hidden' value='<?php echo $id ?>' name="pid">
                         <input id="Submit" type="button" class="mt-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value="Enviar codigo">
                     </form>
 

@@ -19,6 +19,6 @@ class ContestController
     {
         $contest_list = $this->contestService->getAllContestDetails();
 
-        require_once __DIR__ . "/../../resources/View/contest.php";
+        require_once __DIR__ . "/../Presentation//contest.php";
     }
 }
