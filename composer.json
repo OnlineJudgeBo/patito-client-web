@@ -3,7 +3,7 @@
     "autoload": {
         "psr-4": {
             "PatitoOnlineJudge\\": "PatitoOnlineJudge/",
-            "PatitoOnlineJudgeModule\\": "PatitoOnlineJudge/Presentation/Modules"
+            "PatitoOnlineJudgeModule\\": "PatitoOnlineJudge/Presentation/Views/Modules"
 
         },
         "files": ["Legacy/Include/const.inc.php", "Legacy/Include/en.php"]
