@@ -79,6 +79,7 @@
                         <input type=hidden name="source" id="source">
                         <input id="cid" type='hidden' value='<?php echo $cid ?>' name="cid">
                         <input id="pid" type='hidden' value='<?php echo $id ?>' name="pid">
+                        <input id="language_id" type='hidden' value='<?php echo $id ?>' name="language_id">
                         <input id="Submit" type="button" class="mt-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value="Enviar codigo">
                     </form>
 
@@ -134,6 +135,7 @@
 
         function do_submit() {
             document.getElementById("source").value = window.editor.getValue();
+            document.getElementById("language_id").value = document.getElementById("language").value;
             document.getElementById("frmSolution").target = "_self";
             document.getElementById("frmSolution").submit();
         }

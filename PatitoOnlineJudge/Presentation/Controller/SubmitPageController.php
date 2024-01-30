@@ -2,15 +2,18 @@
 
 namespace PatitoOnlineJudge\Presentation\Controller;
 
+use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISubmitPageService;
+
 class SubmitPageController
 {
     private $submitPageService;
     private $cid;
     private $pid;
     private $source;
+    private $language_id;
     public $view_title;
 
-    public function __construct($submitPageService)
+    public function __construct(ISubmitPageService $submitPageService)
     {
         $this->view_title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
         $this->submitPageService = $submitPageService;
@@ -33,16 +36,20 @@ class SubmitPageController
         $this->source = $source;
     }
 
+    public function addLanguage($language_id)
+    {
+        $this->language_id = $language_id;
+    }
+
+
     public function saveRequest()
     {
-        try {
-            if ($this->pid > 0 && $this->cid > 0 ) {
-                $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source);
-            } else {
-                $this->submitPageService->saveProblemRequest($this->pid, $this->source);
-            }
-        } catch (\Exception $e) {
+        if ($this->pid > 0 && $this->cid > 0) {
+            $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source, $this->language_id);
+        } else {
+            $this->submitPageService->saveProblemRequest($this->pid, $this->source, $this->language_id);
         }
+        header("Location: status.php");
     }
 
     public function render()

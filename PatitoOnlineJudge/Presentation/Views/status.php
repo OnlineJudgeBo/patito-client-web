@@ -40,18 +40,54 @@
                         if ($key % 2 == 0) {
                             $css = "oddrow";
                         }
-                        echo '<tr class="border-b transition-colors hover:bg-muted/50 ' . $css . '">';
-                        echo '<td class="p-4"><a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="problem.php?cid=2790&amp;pid=25">' . $value["solution_id"] . '</a> </td>';
-                        echo '<td class="p-4"><a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="problem.php?cid=2790&amp;pid=25">' . $value["user_id"] . '</a> </td>';
-                        echo '<td class="p-4">' . $value["problem_id"] . '</td>';
-                        echo '<td class="p-4">' . $language_name[$value["language"]] . '</td>';
-                        echo '<td class="p-4">' . '<div class="font-bold decoration-solid decoration-sky-500 result-' . $judge_color[$value["result"]] . '">' . $judge_result[$value["result"]] . '</div>' . '</td>';
-                        echo '<td class="p-4">' . '<div class="font-bold decoration-solid decoration-sky-500 result-' . $judge_color[$value["result"]] . '">' . $value["memory"] . '</div>' . '</td>';
-                        echo '<td class="p-4">' . '<div class="font-bold decoration-solid decoration-sky-500 result-' . $judge_color[$value["result"]] . '">' . $value["time"] . '</div>' . '</td>';
-                        echo '<td class="p-4">' . $value["in_date"] . '</td>';
-                    }
+
+                        if (!empty($value["contest_id"])) {
+                            $url = "problem.php?cid=" . $value['contest_id'] . "pid=" . $value['problem_id'];
+                            $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
+                        } else {
+                            $url = "problem.php?id=" . $value['problem_id'];
+                            $user_url = "userinfo.php?user=" . $value["user_id"];
+                        }
                     ?>
-                    </tr>
+                        <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
+                            <td class="p-4">
+                                <?php echo $value["solution_id"] ?>
+                            </td>
+                            <td class="p-4">
+                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
+                                    <?php echo $value["user_id"] ?>
+                                </a>
+                            </td>
+                            <td class="p-4">
+                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
+                                    <?php echo $value["problem_id"] ?>
+                                </a>
+                            </td>
+                            <td class="p-4">
+                                <?php echo $language_name[$value["language"]] ?>
+                            </td>
+                            <td class="p-4">
+                                <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                                    <?php echo $judge_result[$value["result"]] ?>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                                    <?php echo $value["memory"] ?>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                                    <?php echo $value["time"] ?>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <?php echo $value["in_date"] ?>
+                            </td>
+                        <?php
+                    }
+                        ?>
+                        </tr>
                 </tbody>
             </table>
         </div>

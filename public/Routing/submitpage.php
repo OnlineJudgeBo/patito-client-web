@@ -4,6 +4,7 @@ use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Application\Services\LoginService;
 use PatitoOnlineJudge\Core\Application\Services\SubmitPageService;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\LoginRepository;
+use PatitoOnlineJudge\Infraestructure\Database\Implementations\SourceCodeRepository;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\SubmitPageRepository;
 use PatitoOnlineJudge\Presentation\Controller\SubmitPageController;
 
@@ -14,7 +15,9 @@ $loginRepository = new LoginRepository($connector);
 $loginService = new LoginService($loginRepository);
 
 $submitPageRepository = new SubmitPageRepository($connector);
-$submitPageService = new SubmitPageService($submitPageRepository);
+$sourceCodeRepository = new SourceCodeRepository($connector);
+
+$submitPageService = new SubmitPageService($submitPageRepository, $sourceCodeRepository);
 $submitPageController = new SubmitPageController($submitPageService, $loginService);
 
 
@@ -25,16 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($_GET["cid"]) && intval($_GET["cid"]) > 0) {
         $submitPageController->addCid(intval($_GET["cid"]));
     }
+    $submitPageController->render();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_GET["id"]) && intval($_GET["id"]) > 0) {
-        $submitPageController->addPid(intval($_GET["id"]));
+    if (!empty($_POST["pid"]) && intval($_POST["pid"]) > 0) {
+        $submitPageController->addPid(intval($_POST["pid"]));
     }
-    if (!empty($_GET["cid"]) && intval($_GET["cid"]) > 0) {
-        $submitPageController->addCid(intval($_GET["cid"]));
+    if (!empty($_POST["cid"]) && intval($_POST["cid"]) > 0) {
+        $submitPageController->addCid(intval($_POST["cid"]));
     }
-
     $submitPageController->addSource($_POST["source"]);
+    $submitPageController->addLanguage($_POST["language_id"]);
     $submitPageController->saveRequest();
 }
-
-$submitPageController->render();

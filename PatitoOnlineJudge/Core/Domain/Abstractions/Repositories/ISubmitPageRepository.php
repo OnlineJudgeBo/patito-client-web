@@ -2,9 +2,11 @@
 
 namespace PatitoOnlineJudge\Core\Domain\Abstractions\Repositories;
 
+use PatitoOnlineJudge\Infraestructure\Database\EntityObjects\SolutionModel;
+
 interface ISubmitPageRepository
 {
-    public function saveContestRequest($pid, $cid, $source);
+    public function saveSolutionAndReturnId(SolutionModel $solutionModel);
 
-    public function saveProblemRequest($pid, $source);
+    public function saveContestSolution(SolutionModel $solutionModel);
 }
