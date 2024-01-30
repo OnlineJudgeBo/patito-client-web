@@ -13,20 +13,21 @@ error_reporting(E_ALL);
 
 $router = new Router();
 $authMiddleware = new AuthMiddleware();
+$prefix = "/oj";
 
-$router->get('/index.php', function () {
+$router->get($prefix. '/index.php', function () {
     require  __DIR__ . '/Routing/index.php';
 });
 
-$router->get('/', function () {
+$router->get($prefix. '/', function () {
     require  __DIR__ . '/Routing/index.php';
 });
 
-$router->get('/contest.php', function () {
+$router->get($prefix. '/contest.php', function () {
     require  __DIR__ . '/Routing/contest.php';
 });
 
-$router->get('/login.php', function () {
+$router->get($prefix. '/login.php', function () {
     require  __DIR__ . '/Routing/login.php';
 });
 
@@ -34,33 +35,33 @@ $router->post('/login.php', function () {
     require  __DIR__ . '/Routing/login.php';
 });
 
-$router->get('/logout.php', function () {
+$router->get($prefix. '/logout.php', function () {
     require  __DIR__ . '/Routing/logout.php';
 });
 
-$router->get('/problem.php', function () {
+$router->get($prefix. '/problem.php', function () {
     require  __DIR__ . '/Routing/problem.php';
 });
 
-$router->get('/problemset.php', function () {
+$router->get($prefix. '/problemset.php', function () {
     require  __DIR__ . '/Routing/problemset.php';
 });
 
-$router->get('/ranklist.php', function () {
+$router->get($prefix. '/ranklist.php', function () {
     require  __DIR__ . '/Routing/ranklist.php';
 });
 
-$router->get('/status.php', function () {
+$router->get($prefix. '/status.php', function () {
     require  __DIR__ . '/Routing/status.php';
 });
 
-$router->group('/submitpage.php', function ($router) use ($authMiddleware) {
-    $router->get('', function () use ($authMiddleware) {
+$router->group($prefix. '/submitpage.php', function ($router, $prefix) use ($authMiddleware) {
+    $router->get($prefix. '', function () use ($authMiddleware) {
         $authMiddleware->handle();
         require  __DIR__ . '/Routing/submitpage.php';
     });
 
-    $router->post('', function () use ($authMiddleware) {
+    $router->post($prefix. '', function () use ($authMiddleware) {
         $authMiddleware->handle();
         require  __DIR__ . '/Routing/submitpage.php';
     });
