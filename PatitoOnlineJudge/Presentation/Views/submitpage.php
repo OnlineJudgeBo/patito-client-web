@@ -21,7 +21,7 @@
                     Lenguaje:
                     <select id="language" name="language" onchange="setModelLanguage(this)">
                         <?php
-                        include(__DIR__ . "/../../Legacy/Include/const.inc.php");
+                        include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
                         $lang_count = count($language_ext);
                         if (isset($_GET['langmask'])) {
                             $langmask = $_GET['langmask'];
