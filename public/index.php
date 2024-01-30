@@ -55,7 +55,7 @@ $router->get($prefix. '/status.php', function () {
     require  __DIR__ . '/Routing/status.php';
 });
 
-$router->group($prefix. '/submitpage.php', function ($router, $prefix) use ($authMiddleware) {
+$router->group($prefix. '/submitpage.php', function ($router) use ($authMiddleware, $prefix) {
     $router->get($prefix. '', function () use ($authMiddleware) {
         $authMiddleware->handle();
         require  __DIR__ . '/Routing/submitpage.php';
