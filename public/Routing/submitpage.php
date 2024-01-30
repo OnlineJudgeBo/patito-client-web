@@ -1,11 +1,11 @@
 <?php
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
-use PatitoOnlineJudge\Controller\SubmitPageController;
-use PatitoOnlineJudge\Repository\LoginRepository;
-use PatitoOnlineJudge\Repository\SubmitPageRepository;
-use PatitoOnlineJudge\Service\LoginService;
-use PatitoOnlineJudge\Service\SubmitPageService;
+use PatitoOnlineJudge\Core\Application\Services\LoginService;
+use PatitoOnlineJudge\Core\Application\Services\SubmitPageService;
+use PatitoOnlineJudge\Infraestructure\Database\Implementations\LoginRepository;
+use PatitoOnlineJudge\Infraestructure\Database\Implementations\SubmitPageRepository;
+use PatitoOnlineJudge\Presentation\Controller\SubmitPageController;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 $connector = new DatabaseConnector();
