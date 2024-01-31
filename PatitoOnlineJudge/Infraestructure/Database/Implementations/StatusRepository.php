@@ -22,7 +22,7 @@ class StatusRepository implements IStatusRepository
         $language_visible = array(1,  1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
 
 
-        $sql = "SELECT *
+        $sql = "SELECT solution.*
         FROM solution
         INNER JOIN  problem ON problem.problem_id = solution.problem_id
         WHERE solution.problem_id > 0 ";
