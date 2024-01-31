@@ -31,7 +31,7 @@ $router->get($prefix. '/login.php', function () {
     require  __DIR__ . '/Routing/login.php';
 });
 
-$router->post('/login.php', function () {
+$router->post($prefix. '/login.php', function () {
     require  __DIR__ . '/Routing/login.php';
 });
 
