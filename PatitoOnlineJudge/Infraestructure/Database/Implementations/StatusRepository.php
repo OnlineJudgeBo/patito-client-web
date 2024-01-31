@@ -54,7 +54,7 @@ class StatusRepository implements IStatusRepository
             }
         }
 
-        $sql .= " ORDER BY `solution_id` DESC LIMIT 23";
+        $sql .= " ORDER BY solution.in_date DESC LIMIT 23";
         $stmt = $this->pdo->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
