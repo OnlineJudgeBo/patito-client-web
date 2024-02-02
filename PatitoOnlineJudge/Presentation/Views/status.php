@@ -60,7 +60,13 @@
                             </td>
                             <td class="p-4">
                                 <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
-                                    <?php echo $value["problem_id"] ?>
+                                    <?php 
+                                    if (isset($value["contest_id"])) {
+                                        echo $PID2[$value["num"]];
+                                    } else {
+                                        echo $value["problem_id"];
+                                    }
+                                    ?>
                                 </a>
                             </td>
                             <td class="p-4">

@@ -12,8 +12,13 @@
 </head>
 
 <body class="flex flex-col h-full">
-
-    <?php require_once "oj-header.php" ?>
+    <?php
+    if (isset($cid) && intval($cid) > 0) {
+        require "oj-header-contest.php";
+    } else {
+        require "oj-header.php";
+    }
+    ?>
     <?php require __DIR__ . "/Modules/StatusTime.php"; ?>
     <?php require __DIR__ . "/Modules/Utils.php"; ?>
     <main class="container mx-auto p-4">

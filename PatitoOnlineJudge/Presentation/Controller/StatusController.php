@@ -16,9 +16,9 @@ class StatusController
         $this->statusService = $statusService;
     }
 
-    public function setParams($params)
+    public function add_params($key, $param)
     {
-        $this->params = $params;
+        $this->params[$key] = $param;
     }
 
     public function render()

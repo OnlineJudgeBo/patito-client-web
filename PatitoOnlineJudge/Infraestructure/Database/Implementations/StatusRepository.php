@@ -21,15 +21,18 @@ class StatusRepository implements IStatusRepository
         $language_ext     = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
         $language_visible = array(1,  1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
 
-
         $sql = "SELECT solution.*
         FROM solution
         INNER JOIN  problem ON problem.problem_id = solution.problem_id
         WHERE solution.problem_id > 0 ";
 
-        if (true) {
+        if (isset($params['contest_id'])) {
+            $contest_id = intval($params['contest_id']);
+            $sql .= " AND `contest_id` = " . intval($contest_id);
+        } else {
             $sql .= " AND contest_id IS NULL";
         }
+
         if (isset($params['problem_id'])) {
             $problem_id = intval($params['problem_id']);
             $sql .= " AND `problem_id` = " . intval($problem_id);

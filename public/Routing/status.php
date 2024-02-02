@@ -11,4 +11,8 @@ $statusRepository = new StatusRepository($connector);
 $statusService = new StatusService($statusRepository);
 
 $statusController = new StatusController($statusService);
+
+if (isset($_GET["cid"])) {
+    $statusController->add_params("contest_id", $_GET["cid"]);
+}
 $statusController->render();
