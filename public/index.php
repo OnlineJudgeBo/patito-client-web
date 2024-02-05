@@ -71,5 +71,8 @@ $router->group($prefix. '/submitpage.php', function ($router) use ($authMiddlewa
     });
 });
 
+$router->get($prefix. '/contestrank.php', function () {
+    require  __DIR__ . '/Routing/contestrank.php';
+});
 
 $router->dispatch();
