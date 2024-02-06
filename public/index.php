@@ -75,4 +75,12 @@ $router->get($prefix. '/contestrank.php', function () {
     require  __DIR__ . '/Routing/contestrank.php';
 });
 
+$router->get($prefix. '/userinfo.php', function () {
+    require  __DIR__ . '/Routing/userinfo.php';
+});
+
+$router->get($prefix. '/showsource.php', function () {
+    require  __DIR__ . '/Routing/showsource.php';
+});
+
 $router->dispatch();
