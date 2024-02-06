@@ -61,10 +61,10 @@
                             <?php
                         if (isset($_SESSION['administrator']) || isset($_SESSION['problem_master_editor'])) {
                         ?>
-                            <a href="admin/problem_edit.php?id=<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="/admin/problem_edit.php?id=<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Editar
                             </a>
-                            <a href="admin/quixplorer/index.php?action=list&dir=<?php echo $problem["problem_id"] ?>&order=name&srt=yes" target="_blank" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="/admin/quixplorer/index.php?action=list&dir=<?php echo $problem["problem_id"] ?>&order=name&srt=yes" target="_blank" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 TestData
                             </a>
                         <?php

@@ -8,5 +8,5 @@ interface ISubmitPageRepository
 {
     public function saveSolutionAndReturnId(SolutionModel $solutionModel);
 
-    public function saveContestSolution(SolutionModel $solutionModel);
+    public function saveContestSolutionAndReturnId(SolutionModel $solutionModel);
 }

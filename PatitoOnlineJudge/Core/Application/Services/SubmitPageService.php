@@ -20,6 +20,16 @@ class SubmitPageService implements ISubmitPageService
 
     public function saveContestRequest($pid, $cid, $source, $language_id)
     {
+        $solutionModel = new SolutionModel();
+        $solutionModel->language = $language_id;
+        $solutionModel->code_length = strlen($source);
+        $solutionModel->problem_id = $pid;
+        $solutionModel->contest_id = $cid;
+        $solutionModel->user_id = $_SESSION["user_id"];
+        $solutionModel->ip = $_SERVER['REMOTE_ADDR'];
+        $solutionModel->num = $pid;
+        $solution_id = $this->submitPageRepository->saveContestSolutionAndReturnId($solutionModel);
+        $this->sourceCodeRepository->save($solution_id, $source);
     }
 
     public function saveProblemRequest($pid, $source, $language_id)

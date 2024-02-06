@@ -32,18 +32,19 @@ class SubmitPageRepository implements ISubmitPageRepository
         return $this->pdo->lastInsertId();
     }
 
-    public function saveContestSolution(SolutionModel $solutionModel)
+    public function saveContestSolutionAndReturnId(SolutionModel $solutionModel)
     {
-        /*$sql = "INSERT INTO solution (problem_id, user_id, in_date, language, ip, code_length, contest_id, num) 
+        $sql = "INSERT INTO solution (problem_id, user_id, in_date, language, ip, code_length, contest_id, num) 
         VALUES (:user_id, NOW(), :language, :ip, :len, :cid, :pid)";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $solutionModel->user_id, PDO::PARAM_INT);
         $stmt->bindParam(':language', $solutionModel->language, PDO::PARAM_STR);
-        $stmt->bindParam(':ip', $ip, PDO::PARAM_STR);
+        $stmt->bindParam(':ip', $solutionModel->ip, PDO::PARAM_STR);
         $stmt->bindParam(':len', $solutionModel->code_length, PDO::PARAM_INT);
         $stmt->bindParam(':cid', $solutionModel->contest_id, PDO::PARAM_INT);
         $stmt->bindParam(':pid', $solutionModel->problem_id, PDO::PARAM_INT);
-        $stmt->execute();*/
+        $stmt->execute();
+        return $this->pdo->lastInsertId();
     }
 }
