@@ -52,71 +52,71 @@
 
               <tbody>
                 <?php
-                    require __DIR__ . "/../../../Legacy/Include/const.inc.php";
-                    foreach ($view_last_runs as $key => $value) {
-                      $css = "evenrow";
-                      if ($key % 2 == 0) {
-                          $css = "oddrow";
-                      }
-
-                      if (!empty($value["contest_id"])) {
-                          $url = "problem.php?cid=" . $value['contest_id'] . "pid=" . $value['problem_id'];
-                          $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
-                      } else {
-                          $url = "problem.php?id=" . $value['problem_id'];
-                          $user_url = "userinfo.php?user=" . $value["user_id"];
-                      }
-                  ?>
-                      <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
-                          <td class="p-4">
-                              <?php
-                              if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
-                                $url = "showsource.php?id=".$value["solution_id"];
-                                ?>
-                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
-                                  <?php echo $value["solution_id"]; ?>
-                                </a>
-                                <?php
-                              } else {
-                                echo $value["solution_id"];
-                              }
-                              ?>
-                          </td>
-                          <td class="p-4">
-                              <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
-                                  <?php echo $value["user_id"] ?>
-                              </a>
-                          </td>
-                          <td class="p-4">
-                              <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
-                                  <?php echo $value["problem_id"] ?>
-                              </a>
-                          </td>
-                          <td class="p-4">
-                              <?php echo $language_name[$value["language"]] ?>
-                          </td>
-                          <td class="p-4">
-                              <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                                  <?php echo $judge_result[$value["result"]] ?>
-                              </div>
-                          </td>
-                          <td class="p-4">
-                              <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                                  <?php echo $value["memory"] ?>
-                              </div>
-                          </td>
-                          <td class="p-4">
-                              <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                                  <?php echo $value["time"] ?>
-                              </div>
-                          </td>
-                          <td class="p-4">
-                              <?php echo $value["in_date"] ?>
-                          </td>
-                      <?php
+                require __DIR__ . "/../../../Legacy/Include/const.inc.php";
+                foreach ($view_last_runs as $key => $value) {
+                  $css = "evenrow";
+                  if ($key % 2 == 0) {
+                    $css = "oddrow";
                   }
+
+                  if (!empty($value["contest_id"])) {
+                    $url = "problem.php?cid=" . $value['contest_id'] . "pid=" . $value['problem_id'];
+                    $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
+                  } else {
+                    $url = "problem.php?id=" . $value['problem_id'];
+                    $user_url = "userinfo.php?user=" . $value["user_id"];
+                  }
+                ?>
+                  <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
+                    <td class="p-4">
+                      <?php
+                      if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
+                        $url = "showsource.php?id=" . $value["solution_id"];
                       ?>
-                </tr>
+                        <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
+                          <?php echo $value["solution_id"]; ?>
+                        </a>
+                      <?php
+                      } else {
+                        echo $value["solution_id"];
+                      }
+                      ?>
+                    </td>
+                    <td class="p-4">
+                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
+                        <?php echo $value["user_id"] ?>
+                      </a>
+                    </td>
+                    <td class="p-4">
+                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
+                        <?php echo $value["problem_id"] ?>
+                      </a>
+                    </td>
+                    <td class="p-4">
+                      <?php echo $language_name[$value["language"]] ?>
+                    </td>
+                    <td class="p-4">
+                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                        <?php echo $judge_result[$value["result"]] ?>
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                        <?php echo $value["memory"] ?>
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                        <?php echo $value["time"] ?>
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <?php echo $value["in_date"] ?>
+                    </td>
+                  <?php
+                }
+                  ?>
+                  </tr>
               </tbody>
             </table>
           </div>
@@ -128,7 +128,9 @@
       <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full mb-2">
         <div class="px-4 py-3" role="alert">
           <?php
+
           use PatitoOnlineJudgeModule\ContestList\ContestList;
+
           $contestListModule = new ContestList();
           $contestListModule->render();
           ?>
