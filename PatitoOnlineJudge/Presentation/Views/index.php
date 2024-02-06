@@ -69,7 +69,17 @@
                   ?>
                       <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
                           <td class="p-4">
-                              <?php echo $value["solution_id"] ?>
+                              <?php
+
+                              if ($_SESSION["user_id"] == $value["user_id"] || $_SESSION["Administrator"] == 1) {
+                                $url = "showsource.php?id=".$value["solution_id"];
+                                ?>
+                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
+                                  <?php echo $value["solution_id"]; ?>
+                                </a>
+                                <?php
+                              }
+                              ?>
                           </td>
                           <td class="p-4">
                               <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
