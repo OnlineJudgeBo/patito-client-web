@@ -33,4 +33,8 @@ class AuthService implements IAuthService
     {
         return ctype_xdigit($passwordHash) && strlen($passwordHash) === 32;
     }
+
+    public function generateRandomPassword($user_id) {
+        return strtoupper(substr(MD5($user_id.rand(0,9999999)),0,16));
+    }
 }

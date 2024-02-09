@@ -11,59 +11,135 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="flex flex-col h-full">
     <?php require_once "oj-header.php" ?>
     <main class="container mx-auto p-4 grid grid-cols-0">
 
-        <div class="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-            <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
-                <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-            </div>
+        <div class="isolate bg-white px-6 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Inicio de session</h2>
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl py-0">Registro de Usuario</h2>
             </div>
-            <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
-                <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                    <div>
-                        <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">Nombre de Usuario</label>
-                        <div class="mt-2.5">
-                            <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
+
+            <div class="max-w-lg mx-auto mt-10 bg-white p-8 border border-gray-200 rounded-lg shadow-lg">
+                <form id="registrationForm" method="POST" action="registerpage.php">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                            Nombre
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" name="name" type="text" placeholder="Tu nombre">
                     </div>
-                    <div>
-                        <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Last name</label>
-                        <div class="mt-2.5">
-                            <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lastname">
+                            Apellidos
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="lastname" name="lastname" type="text" placeholder="Apellidos">
                     </div>
-                    <div class="sm:col-span-2">
-                        <label for="company" class="block text-sm font-semibold leading-6 text-gray-900">Company</label>
-                        <div class="mt-2.5">
-                            <input type="text" name="company" id="company" autocomplete="organization" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="nickname">
+                            Nombre de usuario (nickname)
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="nickname" name="nickname" type="text" placeholder="Tu nombre de usuario (nickname)">
                     </div>
-                    <div class="sm:col-span-2">
-                        <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Email</label>
-                        <div class="mt-2.5">
-                            <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            Correo Electrónico
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" name="email" id="email" type="email" placeholder="tucorreo@ejemplo.com">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            Confirma tu Correo Electrónico
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" name="email2" id="email2" type="email2" placeholder="tucorreo@ejemplo.com">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password" autocomplete="new-password">
+                            Contraseña
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="password" name="password" type="password">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                            Confirma tu Contraseña
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="password2" name="password2" type="password">
                     </div>
 
+                    <div class="flex items-center justify-between">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out" type="submit">
+                            Registrarse
+                        </button>
+                    </div>
+                </form>
+                <div class="mt-10 flex flex-col items-center">
+                    <a href="lostpassword.php" class="mt-4 text-sm text-indigo-600 hover:underline" rel="noopener noreferrer">Recuperar clave</a>
+                </div>
+            </div>
 
-                </div>
-                <div class="mt-10">
-                    <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Let's talk</button>
-                </div>
-            </form>
         </div>
-
-
     </main>
-
     <?php require_once "oj-footer.php" ?>
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
+            let email = document.getElementById('email').value;
+            let confirmEmail = document.getElementById('email2').value;
+            let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('password2').value;
+
+            if (email !== confirmEmail) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Los correos electrónicos no coinciden. Por favor, verifica e intenta nuevamente.',
+                });
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.',
+                });
+                return false;
+            }
+
+            let formData = new FormData(this);
+            fetch('registerpage.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    console.log(response)
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Registro Exitoso',
+                            text: 'Usuario registrado correctamente. Por favor, inicie sesión.',
+                        });
+                        window.location.href = "login.php";
+                    } else {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data,
+                    });
+
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
 </body>
 
 </html>

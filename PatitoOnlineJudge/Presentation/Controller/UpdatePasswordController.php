@@ -4,7 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
 
-class LoginController
+class UpdatePasswordController
 {
     private $loginService;
     public $view_title;
@@ -17,19 +17,16 @@ class LoginController
         $this->error = "";
     }
 
-    public function login($username, $password)
+    public function showPasswordPage($data)
     {
-        try {
-            $this->loginService->authenticateUser($username, $password);
-            header('Location: index.php');
-        } catch (\Exception $e) {
-            $this->error = $e->getMessage();
-        }
+            $parts = parse_url($data);
+            parse_str($parts['query'], $query);
+            $token = $query['token'];
+            $this->loginService->verifyToken($token);
     }
 
     public function render()
     {
-        extract(["error" => $this->error]);
-        require_once __DIR__ . "/../Views//login.php";
+        require_once __DIR__ . "/../Views/updatepassword.php";
     }
 }

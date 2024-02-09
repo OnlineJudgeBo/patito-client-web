@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 
 $router = new Router();
 $authMiddleware = new AuthMiddleware();
-$prefix = "/oj";
+$prefix = "";
 
 $router->get($prefix. '/index.php', function () {
     require  __DIR__ . '/Routing/index.php';
@@ -79,8 +79,34 @@ $router->get($prefix. '/userinfo.php', function () {
     require  __DIR__ . '/Routing/userinfo.php';
 });
 
-$router->get($prefix. '/showsource.php', function () {
+$router->get($prefix. '/showsource.php', function () use ($authMiddleware) {
+    $authMiddleware->handle();
     require  __DIR__ . '/Routing/showsource.php';
 });
+
+$router->get($prefix. '/registerpage.php', function () {
+    require  __DIR__ . '/Routing/registerpage.php';
+});
+
+$router->post($prefix. '/registerpage.php', function () {
+    require  __DIR__ . '/Routing/registerpage.php';
+});
+
+$router->get($prefix. '/lostpassword.php', function () {
+    require  __DIR__ . '/Routing/lostpassword.php';
+});
+
+$router->post($prefix. '/lostpassword.php', function () {
+    require  __DIR__ . '/Routing/lostpassword.php';
+});
+
+$router->get($prefix. '/recoverypassword.php', function () {
+    require  __DIR__ . '/Routing/recoverypassword.php';
+});
+
+$router->get($prefix. '/updatepassword.php', function () {
+    require  __DIR__ . '/Routing/updatepassword.php';
+});
+
 
 $router->dispatch();

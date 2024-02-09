@@ -4,19 +4,22 @@ use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Application\Services\LoginService;
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\LoginRepository;
-use PatitoOnlineJudge\Presentation\Controller\LoginController;
+use PatitoOnlineJudge\Infraestructure\Presentation\DataObjectTransfer\UserDataObjectTransfer;
+use PatitoOnlineJudge\Presentation\Controller\RegisterController;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $connector = new DatabaseConnector();
 $loginRepository = new LoginRepository($connector);
+
 $userValidator = new UserValidator($loginRepository);
 
 $loginService = new LoginService($loginRepository, $userValidator);
-$loginController = new LoginController($loginService);
+$registerController = new RegisterController($loginService);
 
-if (isset($_POST["username"]) && isset($_POST["password"])) {
-    $loginController->login($_POST["username"], $_POST["password"]);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $registerController->userRegister($_POST);
+    
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $registerController->render();
 }
-
-$loginController->render();

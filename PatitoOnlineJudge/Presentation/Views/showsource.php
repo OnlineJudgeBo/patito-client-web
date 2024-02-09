@@ -9,10 +9,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="./assets/highlight/highlight.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/base16-ros-pine.min.css">
+    <link rel="stylesheet" href="./assets/highlight/styles/windows-95.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-
-    <link rel="stylesheet" href="./assets/highlight/styles/default.css">
 
     <link rel="stylesheet" href="./assets/base.css">
     <style>
@@ -43,13 +41,10 @@
             border-right: 1px solid #CCC;
             vertical-align: top;
             padding-right: 5px;
-
-            /* your custom style here */
         }
 
-        /* for block of code */
-        .hljs-ln-code {
-            padding-left: 10px;
+        .hljs-ln td {
+            padding: 11;
         }
     </style>
 
@@ -65,7 +60,7 @@
                 <div class="p-1">
                     <div class="relative w-full h-full">
                         <pre ><code class="code"><?php echo htmlspecialchars($sourceDetail["source"]); ?>
-                    
+
 <?php
 echo "**************************************************************\n";
 include(__DIR__ . "/../../../Legacy/Include/const.inc.php");

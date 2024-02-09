@@ -33,7 +33,7 @@
                     <div class="sm:col-span-2">
                         <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Contraseña</label>
                         <div class="mt-2.5">
-                            <input type="password" name="password" id="password" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <input type="password" name="password" id="password" autocomplete="current-password" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
                     </div>
 
@@ -47,8 +47,10 @@
                     <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Iniciar</button>
                 </div>
             </form>
+            <div class="mt-10 flex flex-col items-center">
+                <a href="lostpassword.php" class="mt-4 text-sm text-indigo-600 hover:underline" rel="noopener noreferrer">Recuperar clave</a>
+            </div>
         </div>
-
 
     </main>
 

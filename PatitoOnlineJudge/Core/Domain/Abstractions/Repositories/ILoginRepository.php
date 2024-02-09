@@ -2,7 +2,10 @@
 
 namespace PatitoOnlineJudge\Core\Domain\Abstractions\Repositories;
 
-interface ILoginRepository {
+use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
+
+interface ILoginRepository
+{
 
     public function getUser($username);
 
@@ -11,4 +14,14 @@ interface ILoginRepository {
     public function updateUserLastLogin($username, $accesstime);
 
     public function logLoginAttempt($username);
+
+    public function registerUser(UserDomainObject $user);
+
+    public function existsByUserId($username);
+
+    public function existsByEmail($email);
+
+    public function resetRecoveryPassword($email, $passwod);
+
+    public function verifyTokenRecovey($token);
 }
