@@ -116,5 +116,9 @@
     <?php require_once "oj-footer.php" ?>
 
 </body>
-
+<script>
+    setTimeout(function() {
+    window.location.reload();
+}, 2000);
+</script>
 </html>
