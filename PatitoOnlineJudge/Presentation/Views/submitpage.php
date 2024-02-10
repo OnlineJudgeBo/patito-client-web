@@ -94,7 +94,6 @@
     <script>
         function setModelLanguage(element) {
             var currentValue = element.value;
-            alert(currentValue)
             const model = editor.getModel();
             if (currentValue == 0 || currentValue == 1 || currentValue == 16) {
                 monaco.editor.setModelLanguage(model, 'c++');
