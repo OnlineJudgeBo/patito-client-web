@@ -3,6 +3,7 @@
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Application\Services\LoginService;
 use PatitoOnlineJudge\Core\Application\Services\SubmitPageService;
+use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\LoginRepository;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\SourceCodeRepository;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\SubmitPageRepository;
@@ -10,9 +11,10 @@ use PatitoOnlineJudge\Presentation\Controller\SubmitPageController;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 $connector = new DatabaseConnector();
+$userValidator = new UserValidator($loginRepository);
 
 $loginRepository = new LoginRepository($connector);
-$loginService = new LoginService($loginRepository);
+$loginService = new LoginService($loginRepository, $userValidator);
 
 $submitPageRepository = new SubmitPageRepository($connector);
 $sourceCodeRepository = new SourceCodeRepository($connector);

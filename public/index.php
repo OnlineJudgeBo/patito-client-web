@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 
 $router = new Router();
 $authMiddleware = new AuthMiddleware();
-$prefix = "/oj";
+$prefix = "";
 
 $router->get($prefix. '/index.php', function () {
     require  __DIR__ . '/Routing/index.php';
