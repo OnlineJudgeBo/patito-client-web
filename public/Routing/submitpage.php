@@ -11,9 +11,10 @@ use PatitoOnlineJudge\Presentation\Controller\SubmitPageController;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 $connector = new DatabaseConnector();
-$userValidator = new UserValidator($loginRepository);
 
 $loginRepository = new LoginRepository($connector);
+$userValidator = new UserValidator($loginRepository);
+
 $loginService = new LoginService($loginRepository, $userValidator);
 
 $submitPageRepository = new SubmitPageRepository($connector);
