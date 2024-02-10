@@ -30,13 +30,13 @@
         </div>
       </div>
 
-      <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full" data-v0-t="card">
+      <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full lg:block hidden">
         <div class="flex flex-col space-y-1.5 p-6">
-          <h3 class="text-2xl font-semibold leading-none tracking-tight">Ultimos envios</h3>
+          <h3 class="text-2xl font-semibold leading-none tracking-tight">Últimos envíos</h3>
         </div>
-        <div class="p-2">
-          <div class="relative w-full overflow-auto">
-            <table class="border-collapse  border-slate-500 hover:table-fixed md:table-fixed hover:table-fixed">
+        <div class="flex flex-1">
+          <div class="w-full overflow-auto">
+            <table class="w-full border-collapse border-slate-500">
               <thead>
                 <tr class="border-b transition-colors hover:bg-muted/50">
                   <th class="p-4 font-semibold">RunID</th>
@@ -124,7 +124,7 @@
       </div>
     </div>
 
-    <div class="col-span-1">
+    <div class="col-span-1 sm:col-span-3">
       <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full mb-2">
         <div class="px-4 py-3" role="alert">
           <?php
