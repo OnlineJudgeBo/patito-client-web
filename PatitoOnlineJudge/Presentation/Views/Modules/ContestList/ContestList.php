@@ -91,7 +91,7 @@ class ContestList
         $MSG_TotalTime = "Falta";
         $MSG_LeftTime = "Termina en";
         $MSG_Ended = "Termino";
-        
+
         $connector = new DatabaseConnector();
         $pdo = $connector->getConnection();
 
@@ -106,7 +106,7 @@ class ContestList
             $now        = time();
             $length     = $end_time - $start_time;
             $left       = $end_time - $now;
-    
+
             // past
             if ($now > $end_time) {
                 continue;
