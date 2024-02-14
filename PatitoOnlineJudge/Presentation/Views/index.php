@@ -124,7 +124,7 @@
       </div>
     </div>
 
-    <div class="col-span-1 sm:col-span-3">
+    <div class="col-span-1">
       <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full mb-2">
         <div class="px-4 py-3" role="alert">
           <?php

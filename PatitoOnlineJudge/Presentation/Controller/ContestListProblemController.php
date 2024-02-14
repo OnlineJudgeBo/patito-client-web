@@ -38,6 +38,10 @@ class ContestListProblemController
         if ($this->userHasAccess()) {
             $contestProblemList = $this->contestService->getContestProblems($this->cid);
             $contestDetail = $this->contestService->getContestById($this->cid);
+            $resolveBy = $this->contestService->getAcProblemsByIdContest($this->cid);
+            if (isset($_SESSION["user_id"])) {
+                $user_id = $_SESSION["user_id"];
+            }
 
             $cid = $this->cid;
             require_once __DIR__ . "/../Views/contestProblemList.php";

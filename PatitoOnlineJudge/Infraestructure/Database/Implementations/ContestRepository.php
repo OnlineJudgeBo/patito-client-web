@@ -60,4 +60,38 @@ class ContestRepository implements IContestRepository
         }
         return false;
     }
+
+    public function getAcProblemsByIdContest($cid)
+    {
+        $stmt = $this->pdo->prepare("SELECT user_id, contest_id, num
+            FROM solution
+            WHERE contest_id =:contest_id
+            AND result = 4");
+        $stmt->execute([':contest_id' => $cid]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getProblemTitleByNumber($cid, $num)
+    {
+        $stmt = $this->pdo->prepare("SELECT problem.title AS title
+        FROM contest_problem, problem
+        WHERE contest_problem.problem_id = problem.problem_id
+        AND contest_problem.contest_id = :cid
+        AND contest_problem.num = :num");
+        $stmt->execute(['cid' => $cid, 'num' => $num]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result["title"];
+    }
+
+    public function getProblemIdByNum($cid, $num)
+    {
+        $stmt = $this->pdo->prepare("SELECT problem.problem_id AS problem_id
+        FROM contest_problem, problem
+        WHERE contest_problem.problem_id = problem.problem_id
+        AND contest_problem.contest_id = :cid
+        AND contest_problem.num = :num");
+        $stmt->execute(['cid' => $cid, 'num' => $num]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result["problem_id"];
+    }
 }

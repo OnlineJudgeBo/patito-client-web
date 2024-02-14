@@ -1,9 +1,11 @@
 <?php
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
+use PatitoOnlineJudge\Core\Application\Services\ContestService;
 use PatitoOnlineJudge\Core\Application\Services\LoginService;
 use PatitoOnlineJudge\Core\Application\Services\SubmitPageService;
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
+use PatitoOnlineJudge\Infraestructure\Database\Implementations\ContestRepository;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\LoginRepository;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\SourceCodeRepository;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\SubmitPageRepository;
@@ -20,9 +22,13 @@ $loginService = new LoginService($loginRepository, $userValidator);
 $submitPageRepository = new SubmitPageRepository($connector);
 $sourceCodeRepository = new SourceCodeRepository($connector);
 
-$submitPageService = new SubmitPageService($submitPageRepository, $sourceCodeRepository);
+$contestRepository = new ContestRepository($connector);
+$contestService = new ContestService($contestRepository);
+
+$submitPageService = new SubmitPageService($submitPageRepository, $sourceCodeRepository, $contestService);
 $submitPageController = new SubmitPageController($submitPageService, $loginService);
 
+$submitPageController->addContestService($contestService);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($_GET["id"]) && intval($_GET["id"]) > 0) {
@@ -30,13 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     if (!empty($_GET["cid"]) && intval($_GET["cid"]) > 0) {
         $submitPageController->addCid(intval($_GET["cid"]));
+        $submitPageController->addPid(intval($_GET["pid"]));
     }
     $submitPageController->render();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST["pid"]) && intval($_POST["pid"]) > 0) {
+
+    if (isset($_POST["pid"])) {
         $submitPageController->addPid(intval($_POST["pid"]));
     }
-    if (!empty($_POST["cid"]) && intval($_POST["cid"]) > 0) {
+
+    if (isset($_POST["cid"])) {
         $submitPageController->addCid(intval($_POST["cid"]));
     }
     $submitPageController->addSource($_POST["source"]);

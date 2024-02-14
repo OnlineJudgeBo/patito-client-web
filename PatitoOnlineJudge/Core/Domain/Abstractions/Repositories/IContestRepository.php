@@ -11,4 +11,10 @@ interface IContestRepository
     public function getProblemsByContestId($cid);
 
     public function isContestByIdPublic($cid);
+
+    public function getAcProblemsByIdContest($cid);
+
+    public function getProblemTitleByNumber($cid, $num);
+
+    public function getProblemIdByNum($cid, $num);
 }

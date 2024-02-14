@@ -11,4 +11,10 @@ interface IContestService
     public function getAllContestDetails();
 
     public function isContestByIdPublic($cid);
+
+    public function getAcProblemsByIdContest($cid);
+
+    public function getProblemTitleByNumber($cid, $num);
+
+    public function getProblemIdByNum($cid, $pid);
 }

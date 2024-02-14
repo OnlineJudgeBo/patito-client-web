@@ -2,6 +2,7 @@
 
 namespace PatitoOnlineJudge\Presentation\Controller;
 
+use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISubmitPageService;
 
 class SubmitPageController
@@ -12,6 +13,7 @@ class SubmitPageController
     private $source;
     private $language_id;
     public $view_title;
+    public $contestService;
 
     public function __construct(ISubmitPageService $submitPageService)
     {
@@ -41,23 +43,34 @@ class SubmitPageController
         $this->language_id = $language_id;
     }
 
+    public function addContestService(IContestService $contestService)
+    {
+        $this->contestService = $contestService;
+    }
 
     public function saveRequest()
     {
-        if ($this->pid > 0 && $this->cid > 0) {
+        if ($this->cid > 0) {
             $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source, $this->language_id);
+            header("Location: status.php?cid=".$this->cid);
         } else {
             $this->submitPageService->saveProblemRequest($this->pid, $this->source, $this->language_id);
+            header("Location: status.php");
         }
-        header("Location: status.php");
+
     }
 
     public function render()
     {
         $OJ_LANGMASK = 32692;
-        $id = $this->pid;
-        $cid = $this->cid;
-
+        $pid = $this->pid;
+        if (!empty($this->cid)) {
+            $cid = $this->cid;
+            $id = $this->pid;
+            $problemName = $this->contestService->getProblemTitleByNumber($cid, $pid);
+            $PID = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ");
+            $problemName = $PID[$pid] . " --> " . $problemName;
+        }
         require_once __DIR__ . "/../Views/submitpage.php";
     }
 }

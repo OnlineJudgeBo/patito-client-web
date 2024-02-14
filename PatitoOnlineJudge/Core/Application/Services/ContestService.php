@@ -29,7 +29,28 @@ class ContestService implements IContestService
         return $this->contestRepository->getAllContests();
     }
 
-    public function isContestByIdPublic($cid) {
+    public function isContestByIdPublic($cid)
+    {
         return $this->contestRepository->isContestByIdPublic($cid);
+    }
+
+    public function getAcProblemsByIdContest($cid)
+    {
+        $data = $this->contestRepository->getAcProblemsByIdContest($cid);
+        $result = array();
+        foreach ($data as $value) {
+            $result[$value["user_id"]][] = $value["num"];
+        }
+        return $result;
+    }
+
+    public function getProblemTitleByNumber($cid, $num)
+    {
+        return $this->contestRepository->getProblemTitleByNumber($cid, $num);
+    }
+
+    public function getProblemIdByNum($cid, $pid)
+    {
+        return $this->contestRepository->getProblemIdByNum($cid, $pid);
     }
 }

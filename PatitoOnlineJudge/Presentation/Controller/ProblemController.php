@@ -30,6 +30,8 @@ class ProblemController
     public function render()
     {
         if (intval($this->pid) >= 0 && intval($this->cid) > 0) {
+            $num = $this->pid;
+            $cid = $this->cid;
             $problem = $this->problemService->getProblemByContestId($this->cid, $this->pid);
         } else {
             $problem = $this->problemService->getProblemById($this->pid);

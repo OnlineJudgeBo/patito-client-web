@@ -73,7 +73,11 @@
                                         $css = "evenrow";
                                     }
                                     echo '<tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ' . $css . '">';
-                                    echo '<td class="p-1 text-center align-middle">N</td>';
+                                    echo '<td class="p-1 text-center align-middle">';
+                                    if (isset($user_id) && in_array($value["pnum"], $resolveBy[$user_id])) {
+                                        echo "Y";
+                                    }
+                                    echo "</td>";
                                     echo '<td class="p-1 text-center align-middle">' . $value["pid"] . " " . ' ' . chr($letter) . " " . $xtra_letter . '</td>';
                                     $problemUrl = sprintf("problem.php?cid=%d&pid=%d", $cid, $value["pnum"]);
                                     echo '<td class="p-1 text-center align-middle result-blue">
