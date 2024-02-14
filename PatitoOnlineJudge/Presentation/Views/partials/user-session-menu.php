@@ -5,6 +5,9 @@ if (isset($_SESSION['user_id'])) {
     <a href="modifypage.php" class="<?php echo $className; ?>">Editar Usuario</a>
     <a href="logout.php" class="<?php echo $className; ?>">Salir</a>
 <?php
+   if (isset($_SESSION["administrator"]) && $_SESSION["administrator"] == "administrator") {
+    echo "<a href='/admin' class='".$className."' target='_blank' >Administrar</a>";
+   }
 } else {
 ?>
     <a href="login.php" class="<?php echo $className; ?>">Iniciar sesión</a>
