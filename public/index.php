@@ -108,5 +108,8 @@ $router->get($prefix. '/updatepassword.php', function () {
     require  __DIR__ . '/Routing/updatepassword.php';
 });
 
+$router->get($prefix. '/faqs.php', function () {
+    require  __DIR__ . '/Routing/faqs.php';
+});
 
 $router->dispatch();
