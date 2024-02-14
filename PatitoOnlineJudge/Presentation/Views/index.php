@@ -23,7 +23,7 @@
 
           <div class="my-1">
             <h2 class="text-lg font-semibold">¿Nuevo aquí? ¡Bienvenido!</h2>
-            <p>Se encuentran disponibles una <span class="text-blue-600 underline">guía rápida</span>, una
+            <p>Se encuentran disponibles una <a href="https://aquicasual.me/es/online-judge/jv-umsa-bo/guia-de-inicio" target="_blank"><span class="text-blue-600 underline">guía rápida</span> </a>, una
               <span class="text-blue-600 underline">guía en video</span>.
             </p>
           </div>
