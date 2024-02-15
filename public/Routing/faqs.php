@@ -2,6 +2,7 @@
 
 use PatitoOnlineJudge\Presentation\Controller\FaqController;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-$faqController = new FaqController();
+require_once __DIR__ . '/container.php';
+
+$faqController = $container->get(FaqController::class);
 $faqController->render();

@@ -11,10 +11,13 @@ class ContestListProblemController
     public $viewTitle;
     public $cid;
 
-    public function __construct(IContestService $contestService, $cid)
+    public function __construct(IContestService $contestService)
     {
         $this->viewTitle = "Lista de problemas";
         $this->contestService = $contestService;
+    }
+    
+    public function addCid($cid) {
         $this->cid = $cid;
     }
 

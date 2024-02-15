@@ -1,16 +1,10 @@
 <?php
 
-use PatitoOnlineJudge\Config\DatabaseConnector;
-use PatitoOnlineJudge\Core\Application\Services\StatusService;
-use PatitoOnlineJudge\Infraestructure\Database\Implementations\StatusRepository;
 use PatitoOnlineJudge\Presentation\Controller\StatusController;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-$connector = new DatabaseConnector();
-$statusRepository = new StatusRepository($connector);
-$statusService = new StatusService($statusRepository);
+require_once __DIR__ . '/container.php';
 
-$statusController = new StatusController($statusService);
+$statusController = $container->get(StatusController::class);
 
 if (isset($_GET["cid"])) {
     $statusController->add_params("contest_id", $_GET["cid"]);

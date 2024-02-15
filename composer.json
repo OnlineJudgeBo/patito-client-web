@@ -14,5 +14,7 @@
             "email": "samuel.loza26@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php-di/php-di": "^7.0"
+    }
 }

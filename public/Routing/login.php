@@ -1,19 +1,10 @@
 <?php
 
-use PatitoOnlineJudge\Config\DatabaseConnector;
-use PatitoOnlineJudge\Core\Application\Services\LoginService;
-use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
-use PatitoOnlineJudge\Infraestructure\Database\Implementations\LoginRepository;
 use PatitoOnlineJudge\Presentation\Controller\LoginController;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/container.php';
 
-$connector = new DatabaseConnector();
-$loginRepository = new LoginRepository($connector);
-$userValidator = new UserValidator($loginRepository);
-
-$loginService = new LoginService($loginRepository, $userValidator);
-$loginController = new LoginController($loginService);
+$constListProblemController = $container->get(LoginController::class);
 
 if (isset($_POST["username"]) && isset($_POST["password"])) {
     $loginController->login($_POST["username"], $_POST["password"]);

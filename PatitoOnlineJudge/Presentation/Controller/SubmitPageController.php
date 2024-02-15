@@ -63,7 +63,13 @@ class SubmitPageController
     public function render()
     {
         $OJ_LANGMASK = 32692;
+        $id = "";
+        $cid = "";
+        $pid = "";
+        $language_id = "";
+        $problemName = "";
         $pid = $this->pid;
+        $id = $this->pid;
         if (!empty($this->cid)) {
             $cid = $this->cid;
             $id = $this->pid;
