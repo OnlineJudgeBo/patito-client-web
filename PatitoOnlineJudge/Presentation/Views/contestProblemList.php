@@ -74,7 +74,7 @@
                                     }
                                     echo '<tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ' . $css . '">';
                                     echo '<td class="p-1 text-center align-middle">';
-                                    if (isset($user_id) && in_array($value["pnum"], $resolveBy[$user_id])) {
+                                    if (isset($user_id) && isset($resolveBy[$user_id]) && in_array($value["pnum"], $resolveBy[$user_id])) {
                                         echo "Y";
                                     }
                                     echo "</td>";
