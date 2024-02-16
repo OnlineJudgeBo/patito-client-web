@@ -18,7 +18,7 @@ class LoginRepository implements ILoginRepository
 
     public function getUser($username)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `user_id` = :username");
+        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `user_id` = :username AND is_deleted = 0");
         $stmt->execute([':username' => $username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -99,7 +99,7 @@ class LoginRepository implements ILoginRepository
         $stmt = $this->pdo->prepare("SELECT *
                                     FROM users
                                     WHERE reset_password_token = :token
-                                    AND NOW() <= reset_password_expires;");
+                                    AND NOW() <= reset_password_expires");
         $stmt->execute([':token' => $token]);
         return $stmt->fetchColumn() > 0;
     }
