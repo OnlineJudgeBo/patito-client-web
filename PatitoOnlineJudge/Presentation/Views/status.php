@@ -27,28 +27,28 @@
             <table class="border-b transition-colors hover:bg-muted/50 w-full" id="status-table">
                 <thead>
                     <tr class="border-b transition-colors hover:bg-muted/50">
-                        <th class="p-4 font-semibold">RunID</th>
-                        <th class="p-4 font-semibold">Usuario</th>
-                        <th class="p-4 font-semibold">Problema</th>
-                        <th class="p-4 font-semibold">Lenguaje</th>
-                        <th class="p-4 font-semibold">Resultado</th>
-                        <th class="p-4 font-semibold">Memoria</th>
-                        <th class="p-4 font-semibold">Tiempo</th>
-                        <th class="p-4 font-semibold">Hora de Envio</th>
+                        <th class="p-2 font-semibold">RunID</th>
+                        <th class="p-2 font-semibold">Usuario</th>
+                        <th class="p-2 font-semibold">Problema</th>
+                        <th class="p-2 font-semibold">Lenguaje</th>
+                        <th class="p-2 font-semibold">Resultado</th>
+                        <th class="p-2 font-semibold">Memoria</th>
+                        <th class="p-2 font-semibold">Tiempo</th>
+                        <th class="p-2 font-semibold">Hora de Envio</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <?php
                     require __DIR__ . "/../../../Legacy/Include/const.inc.php";
+                    $showSource = "";
                     foreach ($statusViewList as $key => $value) {
                         $css = "evenrow";
                         if ($key % 2 == 0) {
                             $css = "oddrow";
                         }
-
                         if (!empty($value["contest_id"])) {
-                            $url = "problem.php?cid=" . $value['contest_id'] . "pid=" . $value['problem_id'];
+                            $url = "problem.php?cid=" . $value['contest_id'] . "&pid=" . $value['num'];
                             $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
                         } else {
                             $url = "problem.php?id=" . $value['problem_id'];
@@ -59,15 +59,9 @@
                             <td class="p-4">
                                 <?php
                                 if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
-                                    $url = "showsource.php?id=" . $value["solution_id"];
-                                ?>
-                                    <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
-                                        <?php echo $value["solution_id"]; ?>
-                                    </a>
-                                <?php
-                                } else {
-                                    echo $value["solution_id"];
+                                    $showSource = "showsource.php?id=" . $value["solution_id"];
                                 }
+                                echo $value["solution_id"];
                                 ?>
                             </td>
                             <td class="p-4">
@@ -87,14 +81,16 @@
                                 </a>
                             </td>
                             <td class="p-4">
-                                <?php echo $language_name[$value["language"]] ?>
+                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $showSource ?>">
+                                    <?php echo $language_name[$value["language"]]; ?>
+                                </a>
                             </td>
                             <td class="p-4">
                                 <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
                                     <?php
                                     if ($value["result"] <= 3) {
                                         echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
-                                    } else if ($value["result"] == 4 ) {
+                                    } elseif ($value["result"] == 4) {
                                         echo  $judge_result[$value["result"]];
                                     } else {
                                         echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);

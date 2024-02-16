@@ -44,14 +44,14 @@
                             <table class="w-full text-sm text-left text-gray-900 dark:text-gray-100">
                                 <thead class="text-xs uppercase bg-gradient-to-r from-cyan-500 to-blue-700 text-gray-100">
                                     <tr>
-                                        <th scope="col" class="py-3 px-6">RANK</th>
-                                        <th scope="col" class="py-3 px-6">NOMBRE</th>
-                                        <th scope="col" class="py-3 px-6">USUARIO</th>
-                                        <th scope="col" class="py-3 px-6">RESUELTOS</th>
-                                        <th scope="col" class="py-3 px-6">PENALIDAD</th>
+                                        <th scope="col" class="py-3">RANK</th>
+                                        <th scope="col" class="py-3 px-1">NOMBRE</th>
+                                        <th scope="col" class="py-3 px-1">USUARIO</th>
+                                        <th scope="col" class="py-3 px-1">RESUELTOS</th>
+                                        <th scope="col" class="py-3 px-1">PENALIDAD</th>
                                         <?php
                                         foreach ($problems as $key => $value) {
-                                            echo "<th scope='col' class='py-3 px-6'>$PID2[$key]</th>";
+                                            echo "<th scope='col' class='py-3 px-0'>$PID2[$key]</th>";
                                         }
                                         ?>
                                     </tr>
