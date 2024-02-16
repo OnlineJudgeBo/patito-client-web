@@ -94,8 +94,10 @@
                                     <?php
                                     if ($value["result"] <= 3) {
                                         echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
-                                    } else {
+                                    } else if ($value["result"] == 4 ) {
                                         echo  $judge_result[$value["result"]];
+                                    } else {
+                                        echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
                                     }
                                     ?>
                                 </div>

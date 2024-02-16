@@ -120,6 +120,10 @@ $router->post($prefix . '/updatepassword.php', function () {
     require  __DIR__ . '/Routing/updatepassword.php';
 });
 
+$router->get($prefix . '/showError.php', function () {
+    require  __DIR__ . '/Routing/showError.php';
+});
+
 $router->get($prefix . '/faqs.php', function () {
     require  __DIR__ . '/Routing/faqs.php';
 });
