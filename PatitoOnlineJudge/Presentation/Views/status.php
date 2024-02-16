@@ -24,7 +24,7 @@
     <main class="container mx-auto p-4 grid grid-cols-0">
         <div class="relative w-full overflow-auto">
 
-            <table class="border-b transition-colors hover:bg-muted/50 w-full">
+            <table class="border-b transition-colors hover:bg-muted/50 w-full" id="status-table">
                 <thead>
                     <tr class="border-b transition-colors hover:bg-muted/50">
                         <th class="p-4 font-semibold">RunID</th>
@@ -91,7 +91,13 @@
                             </td>
                             <td class="p-4">
                                 <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                                    <?php echo $judge_result[$value["result"]] ?>
+                                    <?php
+                                    if ($value["result"] <= 3) {
+                                        echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
+                                    } else {
+                                        echo  $judge_result[$value["result"]];
+                                    }
+                                    ?>
                                 </div>
                             </td>
                             <td class="p-4">
@@ -118,11 +124,20 @@
         </div>
 
     </main>
-
     <?php require_once "oj-footer.php" ?>
-
 </body>
 <script>
-
+    function reloadPage() {
+        var celdasPending = document.querySelectorAll('#status-table .pending');
+        if (celdasPending.length >= 1) {
+            setTimeout(function() {
+                window.location.reload();
+            }, 3000);
+        } else {
+            setTimeout(reloadPage, 2000);
+        }
+    }
+    reloadPage();
 </script>
+
 </html>
