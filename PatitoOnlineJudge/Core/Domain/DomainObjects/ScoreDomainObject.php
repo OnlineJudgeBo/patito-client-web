@@ -74,18 +74,19 @@ class ScoreDomainObject
     public function s_cmp($A, $B)
     {
         if ($A->solved != $B->solved) {
-            return $A->solved < $B->solved;
+            return $B->solved <=> $A->solved;
         } else {
-            return $A->time > $B->time;
+            return $A->time <=> $B->time;
         }
     }
+    
 
     public function points_cmp($A, $B)
     {
         if ($A->points != $B->points) {
-            return $A->points < $B->points;
+            return $B->points <=> $A->points;
         } else {
-            return $A->time > $B->time;
+            return $A->time <=> $B->time;
         }
     }
 }

@@ -3,6 +3,7 @@
 use DI\ContainerBuilder;
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
+    IContestRankService,
     IContestService,
     ILoginService,
     INewsService,
@@ -15,6 +16,7 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     ISubmitPageService
 };
 use PatitoOnlineJudge\Core\Application\Services\{
+    ContestRankService,
     ContestService,
     LoginService,
     NewsService,
@@ -57,6 +59,7 @@ use PatitoOnlineJudge\Infraestructure\Database\Implementations\{
     UserStaticRepository,
     SourceCodeRepository
 };
+use PatitoOnlineJudge\Presentation\Controller\ContestRankController;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -82,6 +85,7 @@ $builder->addDefinitions([
 
     // Servicios
     IContestService::class => \DI\create(ContestService::class)->constructor(\DI\get(ContestRepository::class)),
+    IContestRankService::class => \DI\create(ContestRankService::class)->constructor(\DI\get(ContestRankRepository::class)),
     ILoginService::class => \DI\create(LoginService::class)->constructor(\DI\get(LoginRepository::class), \DI\get(UserValidator::class)),
     INewsService::class => \DI\create(NewsService::class)->constructor(\DI\get(NewsRepository::class)),
     IProblemService::class => \DI\create(ProblemService::class)->constructor(\DI\get(ProblemRepository::class)),
@@ -92,6 +96,7 @@ $builder->addDefinitions([
     IStatusService::class => \DI\create(StatusService::class)->constructor(\DI\get(StatusRepository::class)),
     ISubmitPageService::class => \DI\create(SubmitPageService::class)->constructor(\DI\get(SubmitPageRepository::class), \DI\get(SourceCodeRepository::class), \DI\get(ContestService::class)),
 
+    
     // Validator
     UserValidator::class => \DI\autowire()->constructor(\DI\get(ILoginRepository::class)),
 ]);
