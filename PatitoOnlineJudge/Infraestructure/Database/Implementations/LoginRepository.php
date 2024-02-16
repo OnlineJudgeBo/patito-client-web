@@ -103,4 +103,13 @@ class LoginRepository implements ILoginRepository
         $stmt->execute([':token' => $token]);
         return $stmt->fetchColumn() > 0;
     }
+
+    public function updatePasswordByToken($password, $token) {
+        $sql=" UPDATE users SET reset_password_token = NULL,
+                password = :password,
+                reset_password_expires = NULL
+                WHERE reset_password_token =:token";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['password' => $password, 'token' => $token]);
+    }
 }

@@ -14,7 +14,6 @@ class MailService implements IMailService
 
     public function __construct()
     {
-
         $this->mailer = new PHPMailer();
     }
 
@@ -28,9 +27,9 @@ class MailService implements IMailService
         $this->mailer->Port = 465;
         $this->mailer->Username = "acm.icpc.umsa@gmail.com";
         $this->mailer->Password = "qmrtolnhjblhijau";
-        $this->mailer->AddAddress("starsaminf@gmail.com");
+        $this->mailer->AddAddress($email);
         $this->mailer->Subject = "Juez Virtual";
-        $this->mailer->Body = "Tu contraseña de reinicio es : <a href='http://localhost:8080/updatepassword.php?token=" . urlencode($encodePassword) . "'>Cambiar clave</a>";
+        $this->mailer->Body = "Para reiniciar su contraseña, haga clic en el siguiente link <br> : <a href='https://jv.umsa.bo/oj/updatepassword.php?token=" . urlencode($encodePassword) . "'>Cambiar clave</a>";
         $this->mailer->Send();
     }
 }

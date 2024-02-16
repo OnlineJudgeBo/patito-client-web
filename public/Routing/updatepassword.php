@@ -11,7 +11,8 @@ try {
         $updatePasswordController->showPasswordPage($_SERVER['REQUEST_URI']);
         $updatePasswordController->render();
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        die("Ocurrio un error, por favor contacte al administrador. Gracias");
+        $updatePasswordController->updatePasswordByToken($_POST);
+        header("Location: ./login.php");
     }
 } catch (\Exception $e) {
     echo $e->getMessage();

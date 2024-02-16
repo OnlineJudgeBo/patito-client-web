@@ -23,6 +23,7 @@
                 <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Cambio de Contraseña</h2>
             </div>
             <form action="updatepassword.php" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20" id="updatePasswordForm">
+                <input name="token" type="hidden" value="<?php echo $token ?>">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="password" autocomplete="new-password">
                         Contraseña
@@ -48,50 +49,18 @@
 </body>
 <script>
     document.getElementById('updatePasswordForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
+        
         let password = document.getElementById('password').value;
         let confirmPassword = document.getElementById('password2').value;
-
+        
         if (password !== confirmPassword) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.',
             });
-            return false;
+            event.preventDefault();
         }
-
-        var form = event;
-        let formData = new FormData(this);
-        fetch('updatepassword.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                console.log(response)
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Registro Exitoso',
-                        text: 'Usuario registrado correctamente. Por favor, inicie sesión.',
-                    });
-                    //window.location.href = "login.php";
-                } else {
-                    return response.json();
-                }
-            })
-            .then(data => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data,
-                });
-                form.preventDefault();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
     });
 </script>
 

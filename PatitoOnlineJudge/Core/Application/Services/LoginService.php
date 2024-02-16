@@ -41,6 +41,12 @@ class LoginService implements ILoginService
         $this->loginRepository->registerUser($user);
     }
 
+    public function updatePasswordByToken($password, $token) {
+        $authService = new AuthService();
+        $passwordHash = $authService->generatePasswordHash($password);
+        $this->loginRepository->updatePasswordByToken($passwordHash, $token);
+    }
+
     public function userRecoveryPassword($email)
     {
         $authService = new AuthService();

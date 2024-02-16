@@ -47,8 +47,8 @@
         var form = this;
         Swal.fire({
             icon: 'success',
-            title: 'Registro Exitoso',
-            text: 'Si el correo electrónico proporcionado es correcto, se ha enviado un código de confirmación a su cuenta de correo.',
+            title: '',
+            text: 'Si el correo electrónico proporcionado es correcto, se ha enviado un código de confirmación a su cuenta de correo (cierre esta pestaña para continuar).',
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
