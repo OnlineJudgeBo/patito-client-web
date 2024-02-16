@@ -88,7 +88,7 @@ $builder->addDefinitions([
     ILoginService::class => \DI\create(LoginService::class)->constructor(\DI\get(LoginRepository::class), \DI\get(UserValidator::class)),
     INewsService::class => \DI\create(NewsService::class)->constructor(\DI\get(NewsRepository::class)),
     IProblemService::class => \DI\create(ProblemService::class)->constructor(\DI\get(ProblemRepository::class)),
-    IProblemStatusService::class => \DI\create(ProblemStatusService::class)->constructor(\DI\get(ProblemStatusRepository::class)),
+    IProblemStatusService::class => \DI\create(ProblemStatusService::class)->constructor(\DI\get(ProblemStatusRepository::class), \DI\get(UserStaticRepository::class)),
     IRankListService::class => \DI\create(RankListService::class)->constructor(\DI\get(RankListRepository::class)),
     IShowSourceService::class => \DI\create(ShowSourceService::class)->constructor(\DI\get(ShowSourceRepository::class)),
     ISolutionService::class => \DI\create(SolutionService::class)->constructor(\DI\get(SolutionRepository::class)),

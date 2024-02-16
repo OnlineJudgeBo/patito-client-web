@@ -14,7 +14,7 @@
             margin-top: -128px !important;
             background-color: transparent !important;
         }
-    </style>    
+    </style>
 </head>
 
 <body class="flex flex-col h-full">
