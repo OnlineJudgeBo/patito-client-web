@@ -32,8 +32,8 @@ class ProblemRepository implements IProblemRepository {
     }
 
     public function getProblemsCount() {
-        $sql = "SELECT COUNT(problem_id) as total 
-                FROM problem 
+        $sql = "SELECT COUNT(problem_id) as total
+                FROM problem
                 WHERE defunct='N'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

@@ -29,17 +29,20 @@ class ContestRankController
         $contest = $this->contestService->getContestById($this->cid);
         $problems = $this->contestService->getContestProblems($this->cid);
         require __DIR__ . "/../../../Legacy/Include/const.inc.php";
-        
+
         $start_time = strtotime($contest["start_time"]);
         $end_time = strtotime($contest["end_time"]);
         $obi = 0;
-        $contestRank = $this->contestRankService->getContestRankListById($this->cid,$start_time, $end_time);
+        $contestRank = $this->contestRankService->getContestRankListById($this->cid, $start_time, $end_time);
         $first_blood = $this->contestRankService->getFirstBlood($this->cid);
-        $sec2str = function($sec) {
-            return sprintf("%02d:%02d:%02d",$sec/3600,$sec%3600/60,$sec%60);
+        $sec2str = function ($sec) {
+            return sprintf("%02d:%02d:%02d", $sec / 3600, $sec % 3600 / 60, $sec % 60);
         };
 
-        require_once __DIR__ . "/../Views/contestRank.php";
+        if (isset($this->cid)) {
+            $cid = $this->cid;
+        }
 
+        require_once __DIR__ . "/../Views/contestRank.php";
     }
 }

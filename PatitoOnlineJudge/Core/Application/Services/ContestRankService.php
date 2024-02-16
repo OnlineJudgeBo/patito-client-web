@@ -4,7 +4,6 @@ namespace PatitoOnlineJudge\Core\Application\Services;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IContestRankRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestRankService;
-use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 use PatitoOnlineJudge\Core\Domain\DomainObjects\ScoreDomainObject;
 
 class ContestRankService implements IContestRankService

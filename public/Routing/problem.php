@@ -1,4 +1,5 @@
 <?php
+
 use PatitoOnlineJudge\Presentation\Controller\ProblemController;
 
 require_once __DIR__ . '/container.php';

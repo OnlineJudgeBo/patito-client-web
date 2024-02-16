@@ -59,7 +59,6 @@ use PatitoOnlineJudge\Infraestructure\Database\Implementations\{
     UserStaticRepository,
     SourceCodeRepository
 };
-use PatitoOnlineJudge\Presentation\Controller\ContestRankController;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 

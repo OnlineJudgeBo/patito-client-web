@@ -24,6 +24,9 @@ class StatusController
     public function render()
     {
         $statusViewList = $this->statusService->getStatusData($this->params);
-        require_once __DIR__ . "/../Views//status.php";
+        if (isset($this->params["contest_id"])) {
+            $cid = $this->params["contest_id"];
+        }
+        require_once __DIR__ . "/../Views/status.php";
     }
 }

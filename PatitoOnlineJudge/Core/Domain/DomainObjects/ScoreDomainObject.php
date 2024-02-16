@@ -79,7 +79,6 @@ class ScoreDomainObject
             return $A->time <=> $B->time;
         }
     }
-    
 
     public function points_cmp($A, $B)
     {

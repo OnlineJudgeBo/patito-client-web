@@ -14,7 +14,13 @@
 </head>
 
 <body class="flex flex-col h-full">
-    <?php require_once "oj-header.php" ?>
+    <?php
+    if (isset($cid) && intval($cid) > 0) {
+        require_once "oj-header-contest.php";
+    } else {
+        require_once "oj-header.php";
+    }
+    ?>
     <main class="container mx-auto p-4 grid grid-cols-0">
         <div class="relative w-full overflow-auto">
 

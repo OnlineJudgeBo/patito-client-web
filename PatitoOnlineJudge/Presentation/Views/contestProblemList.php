@@ -52,7 +52,7 @@
                         <table class="border-b transition-colors hover:bg-muted/50 w-full">
                             <thead class="bg-gray-900 text-white">
                                 <tr class="shadow-lg">
-                                    <th class="p-1 font-bold text-lg border-r">Resuelto?</th>
+                                    <th class="p-1 font-bold text-lg border-r"></th>
                                     <th class="p-1 font-bold text-lg border-r">Problema</th>
                                     <th class="p-1 font-bold text-lg border-r">Nombre</th>
                                     <th class="p-1 font-bold text-lg border-r">Setter</th>
