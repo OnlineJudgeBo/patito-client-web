@@ -53,7 +53,7 @@ class ExcelService implements IExcelService
         header("Content-Type: text/html;charset=UTF-8");
         header("Content-Transfer-Encoding: binary");
         header("Content-Type: application/force-download");
-        header('Content-Disposition: attachment; filename='.$this->fileName.'xlsx');
+        header('Content-Disposition: attachment; filename='.$this->fileName.'.xlsx');
         $this->xlsxWriter->writeToStdOut();
     }
 }
