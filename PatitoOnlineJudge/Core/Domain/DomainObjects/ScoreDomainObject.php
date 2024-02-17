@@ -10,6 +10,7 @@ class ScoreDomainObject
     public $p_ac_sec;
     public $user_id;
     public $nick;
+    public $lastname;
     public $pass_rate;
     public $points;
 

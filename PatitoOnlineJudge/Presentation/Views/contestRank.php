@@ -19,7 +19,7 @@
     } else {
         require_once "oj-header.php";
     }
-?>
+    ?>
     <?php require __DIR__ . "/Modules/Utils.php"; ?>
     <main class="w-full">
         <div class="flex flex-col items-center">
@@ -40,18 +40,29 @@
                         <?php require __DIR__ . "/Modules/ServerTime.php"; ?>
                         <?php require __DIR__ . "/Modules/StatusTime.php"; ?>
 
+                        <?php
+                        if (isset($cid) && intval($cid) > 0 && isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
+                        ?>
+                            <div class="text-center mb-5">
+                                <a href="./contestrankExcel.php?cid=<?php echo $cid ?>" class="text-blue-500 hover:underline">
+                                    <span class="w-full">Descargar Excel</span>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                        ?>
                         <div class="overflow-x-auto relative shadow-lg rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-900 dark:text-gray-100">
+                            <table class="w-full text-sm text-left text-gray-900 dark:text-gray-100 dark:bg-white">
                                 <thead class="text-xs uppercase bg-gradient-to-r from-cyan-500 to-blue-700 text-gray-100">
                                     <tr>
-                                        <th scope="col" class="py-3">RANK</th>
-                                        <th scope="col" class="py-3 px-1">NOMBRE</th>
-                                        <th scope="col" class="py-3 px-1">USUARIO</th>
-                                        <th scope="col" class="py-3 px-1">RESUELTOS</th>
-                                        <th scope="col" class="py-3 px-1">PENALIDAD</th>
+                                        <th scope="col">#</th>
+                                        <th scope="col">NOMBRE</th>
+                                        <th scope="col">USUARIO</th>
+                                        <th scope="col">RESUELTOS</th>
+                                        <!-- <th scope="col">PENALIDAD</th> -->
                                         <?php
                                         foreach ($problems as $key => $value) {
-                                            echo "<th scope='col' class='py-3 px-0'>$PID2[$key]</th>";
+                                            echo "<th scope='col' class='py-3 px-2'>$PID2[$key]</th>";
                                         }
                                         ?>
                                     </tr>
@@ -59,13 +70,19 @@
                                 <tbody>
                                     <?php
                                     foreach ($contestRank as $index => $row) {
+                                        $css = "oddrow";
+                                        if ($index % 2 == 0) {
+                                            $css = "evenrow";
+                                        }
                                     ?>
-                                        <tr class="border-b bg-white dark:bg-gray-800 hover:bg-gray-100">
-                                            <td class="py-4 px-6 font-medium text-gray-900 dark:text-white"><?php echo ($index + 1) ?></td>
-                                            <td class="py-4 px-6"><?php echo $row->nick ?></td>
-                                            <td class="py-4 px-6"><?php echo $row->user_id ?></td>
-                                            <td class="py-4 px-6"><?php echo $row->solved ?></td>
-                                            <td class="py-4 px-6"><?php echo $sec2str($row->time) ?></td>
+                                        <tr class="border-b dark:bg-gray-800 hover:bg-gray-100 <?php echo $css ?>">
+                                            <td><?php echo ($index + 1) ?></td>
+                                            <td class="px-2"><?php echo $row->nick ?></td>
+                                            <td class="px-2"><?php echo $row->user_id ?></td>
+                                            <td class="px-2"><?php echo $row->solved ?></td>
+                                            <!--
+                                            <td class="px-2"><?php echo $sec2str($row->time) ?></td>
+                                            -->
 
                                         <?php
                                         for ($j = 0; $j < count($problems); $j++) {
@@ -124,12 +141,9 @@
                                     }
                                         ?>
                                         </tr>
-
                                 </tbody>
                             </table>
                         </div>
-
-
                     </div>
                 </div>
             </div>

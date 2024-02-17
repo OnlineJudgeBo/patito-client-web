@@ -37,6 +37,7 @@ class ContestRankService implements IContestRankService
 
                 $U[$user_cnt]->user_id = $row['user_id'];
                 $U[$user_cnt]->nick = $row['nick'];
+                $U[$user_cnt]->lastname = $row['lastname'];
 
                 $user_name = $n_user;
             }

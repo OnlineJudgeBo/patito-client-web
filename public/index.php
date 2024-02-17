@@ -79,6 +79,10 @@ $router->group($prefix . '/submitpage.php', function ($router) use ($authMiddlew
     });
 });
 
+$router->get($prefix . '/contestrankExcel.php', function () {
+    require  __DIR__ . '/Routing/contestrankExcel.php';
+});
+
 $router->get($prefix . '/contestrank.php', function () {
     require  __DIR__ . '/Routing/contestrank.php';
 });

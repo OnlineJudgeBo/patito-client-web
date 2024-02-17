@@ -5,6 +5,7 @@ use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     IContestRankService,
     IContestService,
+    IExcelService,
     ILoginService,
     INewsService,
     IProblemService,
@@ -18,6 +19,7 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
 use PatitoOnlineJudge\Core\Application\Services\{
     ContestRankService,
     ContestService,
+    ExcelService,
     LoginService,
     NewsService,
     ProblemService,
@@ -94,6 +96,8 @@ $builder->addDefinitions([
     ISolutionService::class => \DI\create(SolutionService::class)->constructor(\DI\get(SolutionRepository::class)),
     IStatusService::class => \DI\create(StatusService::class)->constructor(\DI\get(StatusRepository::class)),
     ISubmitPageService::class => \DI\create(SubmitPageService::class)->constructor(\DI\get(SubmitPageRepository::class), \DI\get(SourceCodeRepository::class), \DI\get(ContestService::class)),
+    IExcelService::class => \DI\create(ExcelService::class)->constructor(),
+
 
     
     // Validator
