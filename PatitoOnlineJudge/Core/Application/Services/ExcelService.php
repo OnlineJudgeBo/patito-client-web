@@ -9,6 +9,7 @@ require __DIR__."/../../../Infraestructure/ExcelWriter/xlsxwriter.class.php";
 class ExcelService implements IExcelService
 {
     private $xlsxWriter;
+    private $fileName;
 
     public function __construct()
     {
@@ -20,6 +21,11 @@ class ExcelService implements IExcelService
         $this->xlsxWriter->setCompany('Reporte Juez Virtual <samuel.loza26@gmail.com>');
         $this->xlsxWriter->setKeywords($keywords);
         $this->xlsxWriter->setDescription('Reporte Juez Virtual <samuel.loza26@gmail.com>');
+    }
+
+    public function addFileName($fileName)
+    {
+        $this->fileName = preg_replace('/[^\w\-.]/', '', $fileName);;
     }
 
     public function addSheet($sheetName, $data)
@@ -47,7 +53,7 @@ class ExcelService implements IExcelService
         header("Content-Type: text/html;charset=UTF-8");
         header("Content-Transfer-Encoding: binary");
         header("Content-Type: application/force-download");
-        header('Content-Disposition: attachment; filename=notas.xlsx');
+        header('Content-Disposition: attachment; filename='.$$this->fileName.'xlsx');
         $this->xlsxWriter->writeToStdOut();
     }
 }

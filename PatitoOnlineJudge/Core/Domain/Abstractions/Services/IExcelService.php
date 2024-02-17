@@ -4,6 +4,8 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Services;
 
 interface IExcelService
 {
+    public function addFileName($fileName);
+    
     public function addHeader($sheetName, $head, $style);
 
     public function addSheet($sheetName, $data);

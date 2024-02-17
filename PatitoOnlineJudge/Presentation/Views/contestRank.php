@@ -45,7 +45,7 @@
                         ?>
                             <div class="text-center mb-5">
                                 <a href="./contestrankExcel.php?cid=<?php echo $cid ?>" class="text-blue-500 hover:underline">
-                                    <span class="w-full">Descargar Excel</span>
+                                    <span class="w-full">Descargar Reporte</span>
                                 </a>
                             </div>
                         <?php

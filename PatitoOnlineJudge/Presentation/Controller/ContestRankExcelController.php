@@ -47,7 +47,7 @@ class ContestRankExcelController
         $title = strip_tags($this->closetags($contest["title"]));
 
         $titleHeader = array($contest_id."   ". $title);
-
+        $this->excelService->addFileName($contest_id."   ". $title);
         $formatoTitulo = array('font-size' => 12, 'font-style' => 'bold', 'align' => 'center', 'halign' => 'center');
         $formatoBody = array('font-size' => 11, 'align' => 'center', 'halign' => 'center');
 
