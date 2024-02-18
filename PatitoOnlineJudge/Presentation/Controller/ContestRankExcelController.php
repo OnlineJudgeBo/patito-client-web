@@ -46,8 +46,8 @@ class ContestRankExcelController
         $contest_id = $contest["contest_id"];
         $title = strip_tags($this->closetags($contest["title"]));
 
-        $titleHeader = array($contest_id."   ". $title);
-        $this->excelService->addFileName($contest_id."   ". $title);
+        $titleHeader = array($contest_id . "   " . $title);
+        $this->excelService->addFileName($contest_id . "   " . $title);
         $formatoTitulo = array('font-size' => 12, 'font-style' => 'bold', 'align' => 'center', 'halign' => 'center');
         $formatoBody = array('font-size' => 11, 'align' => 'center', 'halign' => 'center');
 
@@ -90,24 +90,25 @@ class ContestRankExcelController
             array_push($data, $row->solved);
             //array_push($data, $sec2str($row->time));
 
-            
+
             for ($j = 0; $j < count($problems); $j++) {
+                $element = "";
                 if (isset($row)) {
                     if (
                         isset($row->p_ac_sec[$j]) &&
                         $row->p_ac_sec[$j] > 0
                     ) {
-                        array_push($data, $sec2str($row->p_ac_sec[$j]));
+                        $element = $sec2str($row->p_ac_sec[$j]);
                     }
                     if ($obi == 1) {
                         if ($row->pass_rate[$j] > 0) {
-                            array_push($data, " (" . intval($row->pass_rate[$j]) . "%)");
+                            $element = $element . " " . " (" . intval($row->pass_rate[$j]) . "%)";
                         } else {
                             if (
                                 isset($row->p_wa_num[$j]) &&
                                 $row->p_wa_num[$j] > 0
                             ) {
-                                array_push($data, "(-" . $row->p_wa_num[$j] . ")");
+                                $element = $element . " " . "(-" . $row->p_wa_num[$j] . ")";
                             }
                         }
                     } else {
@@ -115,10 +116,11 @@ class ContestRankExcelController
                             isset($row->p_wa_num[$j]) &&
                             $row->p_wa_num[$j] > 0
                         ) {
-                            array_push($data, "(-" . $row->p_wa_num[$j] . ")");
+                            $element = $element . " " . "(-" . $row->p_wa_num[$j] . ")";
                         }
                     }
                 }
+                array_push($data, $element);
             }
             $this->excelService->addRow("Hoja 1", $data, $stylesB);
         }
@@ -146,5 +148,5 @@ class ContestRankExcelController
             }
         }
         return $html;
-    }    
+    }
 }
