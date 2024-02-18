@@ -165,35 +165,24 @@
       </div>
     </div>
 
-    <div class="font-sans bg-gray-100 flex items-center justify-center h-screen">
-      <div x-data="{ showPrivacyPolicy: true }">
-        <button @click="showPrivacyPolicy = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Tips del día </button>
-
-        <div x-show="showPrivacyPolicy" class="fixed z-10 inset-0 flex items-center justify-center">
-          <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-          <div class="relative bg-white rounded-lg overflow-hidden shadow-xl max-w-screen-md w-full m-4" x-transition:enter="transition ease-out duration-300 transform opacity-0 scale-95" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200 transform opacity-100 scale-100" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" x-cloak>
-
-            <div class="px-6 py-4">
-              <h3 class="text-lg leading-6 font-medium text-gray-900"> Tips del día </h3>
-            </div>
-            <div class="prose max-w-screen-md p-6 overflow-y-auto" style="max-height: 70vh; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.375rem; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);">
-              <h2 class="text-2xl font-bold mb-4">Tu respuesta es <strong>wrong answer</strong>?</h2>
-              <div class="text-center mx-auto mb-4" id="miModal">
-    <p>¿Te gustaría tener una pista para ver en donde esta el error?</p>
-    <p>Haz clic en wrong answer, Runtime error o Compilation error</p>
-    <div class="flex justify-center">
-        <iframe src="https://giphy.com/embed/rCCiQ5R65O3vrIoFVN" width="280" height="205" frameBorder="0" allowFullScreen></iframe>
-    </div>
-    <!-- Botón de cierre -->
-</div>
-
-
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 flex align-items justify-end p-4 gap-4 flex-row">
-              
-              <button  id="miModal" type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400  sm:w-auto sm:text-sm"> Cerrar</button>
+    <div id="privacyPolicyModal" class="fixed z-10 inset-0 flex items-center justify-center" style="display:none;">
+      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+      <div class="relative bg-white rounded-lg overflow-hidden shadow-xl max-w-screen-md w-full m-4">
+        <div class="px-6 py-4">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Tips del día</h3>
+        </div>
+        <div class="prose max-w-screen-md p-6 overflow-y-auto" style="max-height: 70vh; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.375rem; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);">
+          <h2 class="text-2xl font-bold mb-4">Tu respuesta es <strong>wrong answer</strong>?</h2>
+          <div class="text-center mx-auto mb-4">
+            <p>¿Te gustaría tener una pista para ver en donde esta el error?</p>
+            <p>Haz clic en wrong answer, Runtime error o Compilation error</p>
+            <div class="flex justify-center">
+              <iframe src="https://giphy.com/embed/rCCiQ5R65O3vrIoFVN" width="280" height="205" frameBorder="0" allowFullScreen></iframe>
             </div>
           </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-end p-4 gap-4 flex-row">
+          <button onclick="showPrivacyPolicy(false)" type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white">Cerrar</button>
         </div>
       </div>
     </div>
@@ -204,11 +193,10 @@
 
 </body>
 <script>
-  window.onclick = function(event) {
-    var modal = document.getElementById("miModal");
-    if (event.target == modal) {
-        modal.classList.add("hidden"); // Oculta el modal si se hace clic fuera de él
-    }
-}
+  showPrivacyPolicy(true);
+  function showPrivacyPolicy(show) {
+    var modal = document.getElementById('privacyPolicyModal');
+    modal.style.display = show ? 'flex' : 'none';
+  }
 </script>
 </html>
