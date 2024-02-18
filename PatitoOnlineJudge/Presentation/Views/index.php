@@ -55,75 +55,75 @@
                 require __DIR__ . "/../../../Legacy/Include/const.inc.php";
                 $showSource = "";
                 foreach ($view_last_runs as $key => $value) {
-                    $css = "evenrow";
-                    if ($key % 2 == 0) {
-                        $css = "oddrow";
-                    }
-                    if (!empty($value["contest_id"])) {
-                        $url = "problem.php?cid=" . $value['contest_id'] . "&pid=" . $value['num'];
-                        $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
-                    } else {
-                        $url = "problem.php?id=" . $value['problem_id'];
-                        $user_url = "userinfo.php?user=" . $value["user_id"];
-                    }
+                  $css = "evenrow";
+                  if ($key % 2 == 0) {
+                    $css = "oddrow";
+                  }
+                  if (!empty($value["contest_id"])) {
+                    $url = "problem.php?cid=" . $value['contest_id'] . "&pid=" . $value['num'];
+                    $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
+                  } else {
+                    $url = "problem.php?id=" . $value['problem_id'];
+                    $user_url = "userinfo.php?user=" . $value["user_id"];
+                  }
                 ?>
-                    <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
-                        <td class="p-4">
-                            <?php
-                            if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
-                                $showSource = "showsource.php?id=" . $value["solution_id"];
-                            }
-                            echo $value["solution_id"];
-                            ?>
-                        </td>
-                        <td class="p-4">
-                            <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
-                                <?php echo $value["user_id"] ?>
-                            </a>
-                        </td>
-                        <td class="p-4">
-                            <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
-                                <?php
-                                if (isset($value["contest_id"])) {
-                                    echo $PID2[$value["num"]];
-                                } else {
-                                    echo $value["problem_id"];
-                                }
-                                ?>
-                            </a>
-                        </td>
-                        <td class="p-4">
-                            <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $showSource ?>">
-                                <?php echo $language_name[$value["language"]]; ?>
-                            </a>
-                        </td>
-                        <td class="p-4">
-                            <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                                <?php
-                                if ($value["result"] <= 3) {
-                                    echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
-                                } elseif ($value["result"] == 4) {
-                                    echo  $judge_result[$value["result"]];
-                                } else {
-                                    echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
-                                }
-                                ?>
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                                <?php echo $value["memory"] ?>
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                                <?php echo $value["time"] ?>
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <?php echo $value["in_date"] ?>
-                        </td>
-                    <?php
+                  <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
+                    <td class="p-4">
+                      <?php
+                      if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
+                        $showSource = "showsource.php?id=" . $value["solution_id"];
+                      }
+                      echo $value["solution_id"];
+                      ?>
+                    </td>
+                    <td class="p-4">
+                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
+                        <?php echo $value["user_id"] ?>
+                      </a>
+                    </td>
+                    <td class="p-4">
+                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
+                        <?php
+                        if (isset($value["contest_id"])) {
+                          echo $PID2[$value["num"]];
+                        } else {
+                          echo $value["problem_id"];
+                        }
+                        ?>
+                      </a>
+                    </td>
+                    <td class="p-4">
+                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $showSource ?>">
+                        <?php echo $language_name[$value["language"]]; ?>
+                      </a>
+                    </td>
+                    <td class="p-4">
+                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                        <?php
+                        if ($value["result"] <= 3) {
+                          echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
+                        } elseif ($value["result"] == 4) {
+                          echo  $judge_result[$value["result"]];
+                        } else {
+                          echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
+                        }
+                        ?>
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                        <?php echo $value["memory"] ?>
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                        <?php echo $value["time"] ?>
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <?php echo $value["in_date"] ?>
+                    </td>
+                  <?php
                 }
                   ?>
                   </tr>
@@ -164,6 +164,38 @@
         </div>
       </div>
     </div>
+
+    <div class="font-sans bg-gray-100 flex items-center justify-center h-screen">
+      <div x-data="{ showPrivacyPolicy: true }">
+        <button @click="showPrivacyPolicy = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Tips del día </button>
+
+        <div x-show="showPrivacyPolicy" class="fixed z-10 inset-0 flex items-center justify-center">
+          <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+          <div class="relative bg-white rounded-lg overflow-hidden shadow-xl max-w-screen-md w-full m-4" x-transition:enter="transition ease-out duration-300 transform opacity-0 scale-95" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200 transform opacity-100 scale-100" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" x-cloak>
+
+            <div class="px-6 py-4">
+              <h3 class="text-lg leading-6 font-medium text-gray-900"> Tips del día </h3>
+            </div>
+            <div class="prose max-w-screen-md p-6 overflow-y-auto" style="max-height: 70vh; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.375rem; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);">
+              <h2 class="text-2xl font-bold mb-4">Tu respuesta es <strong>wrong answer</strong>?</h2>
+              <div class="text-center mx-auto mb-4">
+                <p>¿Te gustaría tener una pista para ver en donde esta el error?</p>
+                <p>Haz clic en wrong answer, Runtime error o Compilation error</p>
+                <div class="flex justify-center">
+                  <iframe src="https://giphy.com/embed/rCCiQ5R65O3vrIoFVN" width="280" height="205" frameBorder="0" allowFullScreen></iframe>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 flex align-items justify-end p-4 gap-4 flex-row">
+              <button @click="showPrivacyPolicy = false" type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400  sm:w-auto sm:text-sm"> Accept </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <?php require_once "oj-footer.php" ?>
