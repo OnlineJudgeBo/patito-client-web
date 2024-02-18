@@ -185,13 +185,13 @@
         <iframe src="https://giphy.com/embed/rCCiQ5R65O3vrIoFVN" width="280" height="205" frameBorder="0" allowFullScreen></iframe>
     </div>
     <!-- Botón de cierre -->
-    <button id="cerrarModal" class="mt-4">Cerrar</button>
 </div>
 
 
             </div>
             <div class="bg-gray-50 px-4 py-3 sm:px-6 flex align-items justify-end p-4 gap-4 flex-row">
-              <button @click="showPrivacyPolicy = false" type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400  sm:w-auto sm:text-sm"> Accept </button>
+              
+              <button  id="miModal" type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400  sm:w-auto sm:text-sm"> Cerrar</button>
             </div>
           </div>
         </div>
