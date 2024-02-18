@@ -178,13 +178,15 @@
             </div>
             <div class="prose max-w-screen-md p-6 overflow-y-auto" style="max-height: 70vh; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.375rem; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);">
               <h2 class="text-2xl font-bold mb-4">Tu respuesta es <strong>wrong answer</strong>?</h2>
-              <div class="text-center mx-auto mb-4">
-                <p>¿Te gustaría tener una pista para ver en donde esta el error?</p>
-                <p>Haz clic en wrong answer, Runtime error o Compilation error</p>
-                <div class="flex justify-center">
-                  <iframe src="https://giphy.com/embed/rCCiQ5R65O3vrIoFVN" width="280" height="205" frameBorder="0" allowFullScreen></iframe>
-                </div>
-              </div>
+              <div class="text-center mx-auto mb-4" id="miModal">
+    <p>¿Te gustaría tener una pista para ver en donde esta el error?</p>
+    <p>Haz clic en wrong answer, Runtime error o Compilation error</p>
+    <div class="flex justify-center">
+        <iframe src="https://giphy.com/embed/rCCiQ5R65O3vrIoFVN" width="280" height="205" frameBorder="0" allowFullScreen></iframe>
+    </div>
+    <!-- Botón de cierre -->
+    <button id="cerrarModal" class="mt-4">Cerrar</button>
+</div>
 
 
             </div>
@@ -201,5 +203,12 @@
   <?php require_once "oj-footer.php" ?>
 
 </body>
-
+<script>
+  window.onclick = function(event) {
+    var modal = document.getElementById("miModal");
+    if (event.target == modal) {
+        modal.classList.add("hidden"); // Oculta el modal si se hace clic fuera de él
+    }
+}
+</script>
 </html>
