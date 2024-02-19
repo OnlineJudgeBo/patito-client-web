@@ -165,38 +165,9 @@
       </div>
     </div>
 
-    <div id="privacyPolicyModal" class="fixed z-10 inset-0 flex items-center justify-center" style="display:none;">
-      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-      <div class="relative bg-white rounded-lg overflow-hidden shadow-xl max-w-screen-md w-full m-4">
-        <div class="px-6 py-4">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">Tips del día</h3>
-        </div>
-        <div class="prose max-w-screen-md p-6 overflow-y-auto" style="max-height: 70vh; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 0.375rem; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);">
-          <h2 class="text-2xl font-bold mb-4">Tu respuesta es <strong>wrong answer</strong>?</h2>
-          <div class="text-center mx-auto mb-4">
-            <p>¿Te gustaría tener una pista para ver en donde esta el error?</p>
-            <p>Haz clic en wrong answer, Runtime error o Compilation error</p>
-            <div class="flex justify-center">
-              <iframe src="https://giphy.com/embed/rCCiQ5R65O3vrIoFVN" width="280" height="205" frameBorder="0" allowFullScreen></iframe>
-            </div>
-          </div>
-        </div>
-        <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-end p-4 gap-4 flex-row">
-          <button onclick="showPrivacyPolicy(false)" type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white">Cerrar</button>
-        </div>
-      </div>
-    </div>
-
   </main>
 
   <?php require_once "oj-footer.php" ?>
 
 </body>
-<script>
-  showPrivacyPolicy(true);
-  function showPrivacyPolicy(show) {
-    var modal = document.getElementById('privacyPolicyModal');
-    modal.style.display = show ? 'flex' : 'none';
-  }
-</script>
 </html>
