@@ -7,12 +7,12 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISolutionService;
 class ResultAnswerController
 {
     private $solutionService;
-    public $view_title;
+    public $title;
     private $solution_id;
 
     public function __construct(ISolutionService $solutionService)
     {
-        $this->view_title = "Contests";
+        $this->title = "Contests";
         $this->solutionService = $solutionService;
     }
 
@@ -23,7 +23,7 @@ class ResultAnswerController
 
     public function render()
     {
-
+        $title = $this->title;
         $solution_id = $this->solution_id;
         $result = $this->solutionService->getErrorResult($solution_id);
         if (empty($result["error"])) {

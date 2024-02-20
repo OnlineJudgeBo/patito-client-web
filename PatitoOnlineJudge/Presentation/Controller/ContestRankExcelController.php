@@ -10,13 +10,13 @@ class ContestRankExcelController
 {
     private $contestRankService;
     private $contestService;
-    public $view_title;
+    public $title;
     public $excelService;
     private $cid;
 
     public function __construct(IContestRankService $contestRankService, IContestService $contestService, IExcelService $excelService)
     {
-        $this->view_title = "Contests";
+        $this->title = "Contests";
         $this->contestRankService = $contestRankService;
         $this->contestService = $contestService;
         $this->excelService = $excelService;
@@ -29,6 +29,7 @@ class ContestRankExcelController
 
     public function render()
     {
+        $title = $this->title;
         $problems = $this->contestService->getContestProblems($this->cid);
         $contest = $this->contestService->getContestById($this->cid);
         $start_time = strtotime($contest["start_time"]);

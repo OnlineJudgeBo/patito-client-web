@@ -11,11 +11,11 @@ class IndexController
     private $newsService;
     private $solutionService;
     private $statusService;
-    public $view_title;
+    public $title;
 
     public function __construct(INewsService $newsService, ISolutionService $solutionService, IStatusService $statusService)
     {
-        $this->view_title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
+        $this->title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
         $this->newsService = $newsService;
         $this->solutionService = $solutionService;
         $this->statusService = $statusService;
@@ -23,6 +23,7 @@ class IndexController
 
     public function render()
     {
+        $title = $this->title;
         $view_news = $this->newsService->getLatestNews();
         $view_last_runs = $this->statusService->getStatusData("");
 

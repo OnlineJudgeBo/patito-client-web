@@ -9,12 +9,12 @@ class ContestRankController
 {
     private $contestRankService;
     private $contestService;
-    public $view_title;
+    public $title;
     private $cid;
 
     public function __construct(IContestRankService $contestRankService, IContestService $contestService)
     {
-        $this->view_title = "Contests";
+        $this->title = "Contests";
         $this->contestRankService = $contestRankService;
         $this->contestService = $contestService;
     }
@@ -26,6 +26,7 @@ class ContestRankController
 
     public function render()
     {
+        $title = $this->title;
         $contest = $this->contestService->getContestById($this->cid);
         $problems = $this->contestService->getContestProblems($this->cid);
         require __DIR__ . "/../../../Legacy/Include/const.inc.php";

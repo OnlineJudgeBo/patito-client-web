@@ -7,12 +7,12 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IShowSourceService;
 class ShowSourceController
 {
     private $showSourceService;
-    public $view_title;
+    public $title;
     public $solution_id;
 
     public function __construct(IShowSourceService $showSourceService)
     {
-        $this->view_title = "Envios";
+        $this->title = "Envios";
         $this->showSourceService = $showSourceService;
     }
 
@@ -23,6 +23,7 @@ class ShowSourceController
 
     public function render()
     {
+        $title = $this->title;
         $sourceDetail = $this->showSourceService->showCode($this->solution_id);
         require_once __DIR__ . "/../Views/showsource.php";
     }

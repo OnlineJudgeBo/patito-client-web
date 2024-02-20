@@ -8,12 +8,12 @@ use PatitoOnlineJudge\Service\ContestService;
 class ContestListProblemController
 {
     private $contestService;
-    public $viewTitle;
+    public $title;
     public $cid;
 
     public function __construct(IContestService $contestService)
     {
-        $this->viewTitle = "Lista de problemas";
+        $this->title = "Lista de problemas";
         $this->contestService = $contestService;
     }
     
@@ -38,6 +38,7 @@ class ContestListProblemController
 
     public function render()
     {
+        $title = $this->title;
         if ($this->userHasAccess()) {
             $contestProblemList = $this->contestService->getContestProblems($this->cid);
             $contestDetail = $this->contestService->getContestById($this->cid);

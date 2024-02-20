@@ -7,13 +7,13 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemService;
 class ProblemController
 {
     private $problemService;
-    public $view_title;
+    public $title;
     private $cid;
     private $pid;
 
     public function __construct(IProblemService $problemService)
     {
-        $this->view_title = "Problema";
+        $this->title = "Problema";
         $this->problemService = $problemService;
     }
 
@@ -29,6 +29,7 @@ class ProblemController
 
     public function render()
     {
+        $title = $this->title;
         if (intval($this->pid) >= 0 && intval($this->cid) > 0) {
             $num = $this->pid;
             $cid = $this->cid;

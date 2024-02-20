@@ -8,12 +8,12 @@ use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 class RegisterController
 {
     private $loginService;
-    public $view_title;
+    public $title;
     public $error;
 
     public function __construct(ILoginService $loginService)
     {
-        $this->view_title = "Contests";
+        $this->title = "Contests";
         $this->loginService = $loginService;
         $this->error = "";
     }
@@ -49,6 +49,7 @@ class RegisterController
 
     public function render()
     {
+        $title = $this->title;
         require_once __DIR__ . "/../Views/register.php";
     }
 }

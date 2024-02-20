@@ -9,12 +9,12 @@ class ProblemStatusController
 {
     private $problemStatusService;
     private $problemService;
-    public $view_title;
+    public $title;
     public $problem_id;
 
     public function __construct(IProblemStatusService $problemStatusService, IProblemService $problemService)
     {
-        $this->view_title = "Envios";
+        $this->title = "Envios";
         $this->problemStatusService = $problemStatusService;
         $this->problemService = $problemService;
 
@@ -27,6 +27,7 @@ class ProblemStatusController
 
     public function render()
     {
+        $title = $this->title;
         $userStatics = $this->problemStatusService->getUserStatics($this->problem_id);
         $topUsersByProblem = $this->problemStatusService->getTopUsersByProblem($this->problem_id);
         $problem = $this->problemService->getProblemById($this->problem_id);

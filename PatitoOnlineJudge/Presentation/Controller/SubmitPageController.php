@@ -12,12 +12,12 @@ class SubmitPageController
     private $pid;
     private $source;
     private $language_id;
-    public $view_title;
+    public $title;
     public $contestService;
 
     public function __construct(ISubmitPageService $submitPageService)
     {
-        $this->view_title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
+        $this->title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
         $this->submitPageService = $submitPageService;
         $this->cid = 0;
         $this->pid = 0;
@@ -62,6 +62,7 @@ class SubmitPageController
 
     public function render()
     {
+        $title = $this->title;
         $OJ_LANGMASK = 32692;
         $id = "";
         $cid = "";

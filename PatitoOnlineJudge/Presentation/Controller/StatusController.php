@@ -7,12 +7,12 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IStatusService;
 class StatusController
 {
     private $statusService;
-    public $view_title;
+    public $title;
     public $params;
 
     public function __construct(IStatusService $statusService)
     {
-        $this->view_title = "Envios";
+        $this->title = "Envios";
         $this->statusService = $statusService;
     }
 
@@ -23,6 +23,7 @@ class StatusController
 
     public function render()
     {
+        $title = $this->title;
         $statusViewList = $this->statusService->getStatusData($this->params);
         if (isset($this->params["contest_id"])) {
             $cid = $this->params["contest_id"];
