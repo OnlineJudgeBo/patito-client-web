@@ -8,128 +8,154 @@ use PatitoOnlineJudge\Presentation\Middleware\AuthMiddleware;
 require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
-session_start();
+/*session_start();
 ini_set("display_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+*/
+try {
+    $router = new Router();
+    $authMiddleware = new AuthMiddleware();
+    $prefix = "/oj";
 
-$router = new Router();
-$authMiddleware = new AuthMiddleware();
-$prefix = "/oj";
+    $databaseConnector = new DatabaseConnector();
+    $logRepository = new LogRepository($databaseConnector);
+    $logService = new LogService($logRepository);
+    $logService->addRecordHistory();
 
-$databaseConnector = new DatabaseConnector();
-$logRepository = new LogRepository($databaseConnector);
-$logService = new LogService($logRepository);
-$logService->addRecordHistory();
-
-$router->get($prefix . '/index.php', function () {
-    require  __DIR__ . '/Routing/index.php';
-});
-
-$router->get($prefix . '/', function () {
-    require  __DIR__ . '/Routing/index.php';
-});
-
-$router->get($prefix . '/contest.php', function () {
-    require  __DIR__ . '/Routing/contest.php';
-});
-
-$router->get($prefix . '/login.php', function () {
-    require  __DIR__ . '/Routing/login.php';
-});
-
-$router->post($prefix . '/login.php', function () {
-    require  __DIR__ . '/Routing/login.php';
-});
-
-$router->get($prefix . '/logout.php', function () {
-    require  __DIR__ . '/Routing/logout.php';
-});
-
-$router->get($prefix . '/problem.php', function () {
-    require  __DIR__ . '/Routing/problem.php';
-});
-
-$router->get($prefix . '/problemset.php', function () {
-    require  __DIR__ . '/Routing/problemset.php';
-});
-
-$router->get($prefix . '/ranklist.php', function () {
-    require  __DIR__ . '/Routing/ranklist.php';
-});
-
-$router->get($prefix . '/status.php', function () {
-    require  __DIR__ . '/Routing/status.php';
-});
-
-$router->get($prefix . '/problemstatus.php', function () {
-    require  __DIR__ . '/Routing/problemstatus.php';
-});
-
-$router->group($prefix . '/submitpage.php', function ($router) use ($authMiddleware) {
-    $router->get('', function () use ($authMiddleware) {
-        $authMiddleware->handle();
-        require  __DIR__ . '/Routing/submitpage.php';
+    $router->get($prefix . '/index.php', function () {
+        require  __DIR__ . '/Routing/index.php';
     });
 
-    $router->post('', function () use ($authMiddleware) {
-        $authMiddleware->handle();
-        require  __DIR__ . '/Routing/submitpage.php';
+    $router->get($prefix . '/', function () {
+        require  __DIR__ . '/Routing/index.php';
     });
-});
 
-$router->get($prefix . '/contestrankExcel.php', function () {
-    require  __DIR__ . '/Routing/contestrankExcel.php';
-});
+    $router->get($prefix . '/contest.php', function () {
+        require  __DIR__ . '/Routing/contest.php';
+    });
 
-$router->get($prefix . '/contestrank.php', function () {
-    require  __DIR__ . '/Routing/contestrank.php';
-});
+    $router->get($prefix . '/login.php', function () {
+        require  __DIR__ . '/Routing/login.php';
+    });
 
-$router->get($prefix . '/userinfo.php', function () {
-    require  __DIR__ . '/Routing/userinfo.php';
-});
+    $router->post($prefix . '/login.php', function () {
+        require  __DIR__ . '/Routing/login.php';
+    });
 
-$router->get($prefix . '/showsource.php', function () use ($authMiddleware) {
-    $authMiddleware->handle();
-    require  __DIR__ . '/Routing/showsource.php';
-});
+    $router->get($prefix . '/logout.php', function () {
+        require  __DIR__ . '/Routing/logout.php';
+    });
 
-$router->get($prefix . '/registerpage.php', function () {
-    require  __DIR__ . '/Routing/registerpage.php';
-});
+    $router->get($prefix . '/problem.php', function () {
+        require  __DIR__ . '/Routing/problem.php';
+    });
 
-$router->post($prefix . '/registerpage.php', function () {
-    require  __DIR__ . '/Routing/registerpage.php';
-});
+    $router->get($prefix . '/problemset.php', function () {
+        require  __DIR__ . '/Routing/problemset.php';
+    });
 
-$router->get($prefix . '/lostpassword.php', function () {
-    require  __DIR__ . '/Routing/lostpassword.php';
-});
+    $router->get($prefix . '/ranklist.php', function () {
+        require  __DIR__ . '/Routing/ranklist.php';
+    });
 
-$router->post($prefix . '/lostpassword.php', function () {
-    require  __DIR__ . '/Routing/lostpassword.php';
-});
+    $router->get($prefix . '/status.php', function () {
+        require  __DIR__ . '/Routing/status.php';
+    });
 
-$router->get($prefix . '/recoverypassword.php', function () {
-    require  __DIR__ . '/Routing/recoverypassword.php';
-});
+    $router->get($prefix . '/problemstatus.php', function () {
+        require  __DIR__ . '/Routing/problemstatus.php';
+    });
 
-$router->get($prefix . '/updatepassword.php', function () {
-    require  __DIR__ . '/Routing/updatepassword.php';
-});
+    $router->group($prefix . '/submitpage.php', function ($router) use ($authMiddleware) {
+        $router->get('', function () use ($authMiddleware) {
+            $authMiddleware->handle();
+            require  __DIR__ . '/Routing/submitpage.php';
+        });
 
-$router->post($prefix . '/updatepassword.php', function () {
-    require  __DIR__ . '/Routing/updatepassword.php';
-});
+        $router->post('', function () use ($authMiddleware) {
+            $authMiddleware->handle();
+            require  __DIR__ . '/Routing/submitpage.php';
+        });
+    });
 
-$router->get($prefix . '/showError.php', function () {
-    require  __DIR__ . '/Routing/showError.php';
-});
+    $router->get($prefix . '/contestrankExcel.php', function () {
+        require  __DIR__ . '/Routing/contestrankExcel.php';
+    });
 
-$router->get($prefix . '/faqs.php', function () {
-    require  __DIR__ . '/Routing/faqs.php';
-});
+    $router->get($prefix . '/contestrank.php', function () {
+        require  __DIR__ . '/Routing/contestrank.php';
+    });
 
-$router->dispatch();
+    $router->get($prefix . '/userinfo.php', function () {
+        require  __DIR__ . '/Routing/userinfo.php';
+    });
+
+    $router->get($prefix . '/showsource.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+        require  __DIR__ . '/Routing/showsource.php';
+    });
+
+    $router->get($prefix . '/registerpage.php', function () {
+        require  __DIR__ . '/Routing/registerpage.php';
+    });
+
+    $router->post($prefix . '/registerpage.php', function () {
+        require  __DIR__ . '/Routing/registerpage.php';
+    });
+
+    $router->get($prefix . '/lostpassword.php', function () {
+        require  __DIR__ . '/Routing/lostpassword.php';
+    });
+
+    $router->post($prefix . '/lostpassword.php', function () {
+        require  __DIR__ . '/Routing/lostpassword.php';
+    });
+
+    $router->get($prefix . '/recoverypassword.php', function () {
+        require  __DIR__ . '/Routing/recoverypassword.php';
+    });
+
+    $router->get($prefix . '/updatepassword.php', function () {
+        require  __DIR__ . '/Routing/updatepassword.php';
+    });
+
+    $router->post($prefix . '/updatepassword.php', function () {
+        require  __DIR__ . '/Routing/updatepassword.php';
+    });
+
+    $router->get($prefix . '/showError.php', function () {
+        require  __DIR__ . '/Routing/showError.php';
+    });
+
+    $router->get($prefix . '/faqs.php', function () {
+        require  __DIR__ . '/Routing/faqs.php';
+    });
+
+    $router->dispatch();
+} catch (\Exception $e) {
+    $error = error_get_last();
+    if ($error) {
+        ob_start();
+        $errorString = ob_get_clean();
+    } else {
+        $errorString = "No hay errores.";
+    }
+
+    ob_start();
+    debug_print_backtrace();
+    $backtraceString = ob_get_clean();
+
+    $messageToSend = "Error: " . $errorString . "\nBacktrace:\n" . $backtraceString. "\Message:\n".$e->getMessage();
+    $botToken = "6489308644:AAH9mEGOGFtZH6VEG-1llCAikEETaDf0J1I";
+    $chatId = "67317765";
+
+    $url = "https://api.telegram.org/bot" . $botToken . "/sendMessage?chat_id=" . $chatId . "&text=" . urlencode($messageToSend);
+    file_get_contents($url);
+
+    echo "<pre>";
+    print_r("Disculpe, hemos detectado un error interno. Por favor, regrese a la pantalla anterior.<br>Lo solucionaremos pronto, agradecemos su comprensión y paciencia. Gracias.");
+    echo "</pre>";
+    exit();
+}
