@@ -8,9 +8,80 @@
     <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.tailwindcss.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/2.3.0/css/searchPanes.dataTables.css">
+    <script src="https://cdn.datatables.net/searchpanes/2.3.0/js/dataTables.searchPanes.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.3.0/js/searchPanes.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.css">
+    <script src="https://cdn.datatables.net/select/2.0.0/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.0/js/select.dataTables.js"></script>
+    <style>
+        .dt-paging.paging_full_numbers {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        div.dt-container .dt-paging .dt-paging-button {
+            box-sizing: border-box;
+            display: inline-block;
+            min-width: 1.5em;
+            padding: 0.5em 1em;
+            margin-left: 2px;
+            text-align: center;
+            text-decoration: none !important;
+            cursor: pointer;
+            color: inherit !important;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            background: transparent;
+        }
+
+        div.dt-container .dt-paging .dt-paging-button.current,
+        div.dt-container .dt-paging .dt-paging-button.current:hover {
+            color: inherit !important;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        div.dt-container .dt-paging .dt-paging-button.disabled,
+        div.dt-container .dt-paging .dt-paging-button.disabled:hover,
+        div.dt-container .dt-paging .dt-paging-button.disabled:active {
+            cursor: default;
+            color: rgba(0, 0, 0, 0.5) !important;
+            border: 1px solid transparent;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        div.dt-container .dt-paging .dt-paging-button:hover {
+            color: white !important;
+            border: 1px solid #111;
+            background-color: #111;
+        }
+
+        div.dt-container .dt-paging .dt-paging-button:active {
+            outline: none;
+            background-color: #0c0c0c;
+            box-shadow: inset 0 0 3px #111;
+        }
+
+        div.dt-container .dt-paging .ellipsis {
+            padding: 0 1em;
+        }
+
+        table.dataTable>tbody>tr.selected>* {
+            box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.9);
+            box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-selected), 0.9);
+            color: rgb(255, 255, 255);
+            color: rgb(var(--dt-row-selected-text));
+        }
+        .dtsp-searchPane a {
+        pointer-events: none;
+        color: inherit;
+    }
+    </style>
 </head>
 
 <body class="flex flex-col h-full">
@@ -136,6 +207,109 @@
         }
     }
     reloadPage();
-</script>
 
+    let table = new DataTable('#status-table', {
+        pageLength: 100,
+        dom: 'Prtip',
+        searchPanes: {
+            cascadePanes: true,
+            viewTotal: true,
+        },
+        select: false,
+        columns: [{
+                title: "RunID",
+                searchPanes: {
+                    show: false
+                }
+            },
+            {
+                title: "Usuario",
+                searchPanes: {
+                    show: true
+                }
+            },
+            {
+                title: "Problema",
+                searchPanes: {
+                    show: true
+                }
+            },
+            {
+                title: "Lenguaje",
+                searchPanes: {
+                    show: true
+                }
+            },
+            {
+                title: "Resultado",
+                searchPanes: {
+                    show: true
+                }
+            },
+            {
+                title: "Memoria",
+                searchPanes: {
+                    show: false
+                }
+            },
+            {
+                title: "Tiempo",
+                searchPanes: {
+                    show: false
+                }
+            },
+            {
+                title: "Hora de Envio",
+                searchPanes: {
+                    show: false
+                }
+            }
+        ],
+        language: {
+            url: "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json",
+            searchPanes: {
+                count: "{total}",
+                countFiltered: "{shown} ({total})",
+                emptyPanes: "No hay paneles de búsqueda",
+                clearMessage: "Limpiar todo",
+                collapse: {
+                    0: "Paneles de búsqueda",
+                    _: "Paneles de búsqueda (%d)"
+                },
+                title: {
+                    _: "Filtros Activos - %d",
+                    0: "",
+                    1: ""
+                }
+            }
+        }
+    });
+
+    table.on('init.dt', function() {
+        $('.dtsp-collapseAll').click();
+        $('.dtsp-paneButton.dtsp-nameButton.dtsp-disabledButton').removeClass('dtsp-paneButton dtsp-nameButton dtsp-disabledButton');
+        $('.dtsp-paneButton.dtsp-countButton').removeClass('dtsp-paneButton dtsp-countButton');
+        $('.dtsp-collapseAll').text('Ocultar Filtros');
+        $('.dtsp-showAll').text('Mostrar Filtros');
+        $('.dtsp-titleRow').addClass('flex flex-row items-center');
+        $('.dtsp-titleRow > button').addClass('text-black py-2 px-4 mr-2 mb-2 transition ease-in-out duration-150 shadow-md').each(function() {
+            if ($(this).is('.dtsp-disabledButton, :disabled')) {
+                $(this).addClass('bg-gray-300 border-gray-400 text-gray-500 cursor-not-allowed');
+            } else {
+                $(this).addClass('bg-blue-200 hover:bg-blue-300 focus:bg-blue-300 border-blue-300 hover:shadow-lg focus:shadow-lg');
+
+                $(this).on('focus', function() {
+                    $(this).addClass('ring ring-blue-300 ring-offset-2 ring-opacity-50');
+                }).on('blur', function() {
+                    $(this).removeClass('ring ring-blue-300 ring-offset-2 ring-opacity-50');
+                });
+            }
+        });
+
+    })
+
+    $('.dtsp-searchPane').on('click', 'a', function(e) {
+        e.preventDefault();
+    });
+</script>
 </html>

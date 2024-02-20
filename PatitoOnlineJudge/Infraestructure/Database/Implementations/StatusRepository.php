@@ -7,7 +7,7 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IStatusRepository;
 use PDO;
 
 class StatusRepository implements IStatusRepository
-{    
+{
     private $pdo;
 
     public function __construct(DatabaseConnector $connector)
@@ -19,7 +19,7 @@ class StatusRepository implements IStatusRepository
     {
         $language_name    = array("C", "C++", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.7", "Go", "Python3.12");
         $language_ext     = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
-        $language_visible = array(1,  1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
+        $language_visible = array(0,  1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1);
 
         $sql = "SELECT solution.*
         FROM solution
@@ -57,7 +57,11 @@ class StatusRepository implements IStatusRepository
             }
         }
 
-        $sql .= " ORDER BY solution.in_date DESC LIMIT 23";
+        if (isset($params['contest_id'])) {
+            $sql .= " ORDER BY solution.in_date";
+        } else {
+            $sql .= " ORDER BY solution.in_date DESC LIMIT 200";
+        }
         $stmt = $this->pdo->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

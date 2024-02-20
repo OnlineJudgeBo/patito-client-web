@@ -26,6 +26,9 @@ class ResultAnswerController
 
         $solution_id = $this->solution_id;
         $result = $this->solutionService->getErrorResult($solution_id);
+        if (empty($result["error"])) {
+            $result["error"] = "";
+        }
         require_once __DIR__ . "/../Views/resultAnswer.php";
     }
 }
