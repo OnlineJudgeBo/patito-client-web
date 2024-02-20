@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="es" class="h-full">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juez Virtual Patito</title>
+    <title><?php echo $title ?></title>
     <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">

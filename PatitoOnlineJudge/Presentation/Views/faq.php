@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="es" class="h-full">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juez Virtual Patito</title>
+    <title><?php echo $title ?></title>
     <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
@@ -23,21 +23,40 @@
                 Bienvenido a la sección de Preguntas Frecuentes (FAQ) de nuestro Juez Online. Aquí encontrarás información detallada sobre los distintos estados de respuesta que podrás encontrarte al enviar tus soluciones de programación. Si tienes alguna duda sobre qué significa cada estado, este es el lugar indicado para aclararla.
             </p>
             <ul class="list-disc space-y-2 pl-5">
+                <li><a href="#compiladores" class="text-blue-600 hover:text-blue-800">Versiones de Compiladores</a></li>
                 <li><a href="#ejemplo-envio-solucion" class="text-blue-600 hover:text-blue-800">Ejemplo de Envío de Solución</a></li>
                 <li><a href="#respuestas-del-juez" class="text-blue-600 hover:text-blue-800">Respuestas del Juez</a></li>
             </ul>
         </section>
 
-<hr>
+        <hr>
         <section id="ejemplo-envio-solucion" class="max-w-6xl mx-auto px-5 py-10">
-    <h2 class="text-2xl font-bold text-center mb-5">Ejemplo de la Solución para el Problema A + B</h2>
-    
-    <!-- Contenedor de la grilla -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Tarjeta de Solución usando C -->
-        <div class="bg-white shadow-md rounded p-4">
-            <h2 class="text-lg font-bold mb-2">Solución usando C</h2>
-            <pre class="bg-gray-100 p-3 overflow-auto">
+            <h2 class="text-2xl font-bold text-center mb-5">Versiones de Compiladores</h2>
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <ul class="divide-y divide-gray-200">
+                    <li class="py-4 flex justify-between items-center">
+                        <span class="text-gray-600">Compilador de C++</span>
+                        <span class="font-medium text-green-500">G++ 6.3.0</span>
+                    </li>
+                    <li class="py-4 flex justify-between items-center">
+                        <span class="text-gray-600">Compilador de Java</span>
+                        <span class="font-medium text-green-500">JDK 1.8.0_201</span>
+                    </li>
+                    <li class="py-4 flex justify-between items-center">
+                        <span class="text-gray-600">Compilador de Python</span>
+                        <span class="font-medium text-green-500">Python 3.12.0a1</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="ejemplo-envio-solucion" class="max-w-6xl mx-auto px-5 py-10">
+            <h2 class="text-2xl font-bold text-center mb-5">Ejemplo de la Solución para el Problema A + B</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white shadow-md rounded p-4">
+                    <h2 class="text-lg font-bold mb-2">Solución usando C</h2>
+                    <pre class="bg-gray-100 p-3 overflow-auto">
 #include <iostream>
 using namespace std;
 int main(){
@@ -47,12 +66,11 @@ int main(){
   return 0;
 }
             </pre>
-        </div>
+                </div>
 
-        <!-- Tarjeta de Solución usando C++ -->
-        <div class="bg-white shadow-md rounded p-4">
-            <h2 class="text-lg font-bold mb-2">Solución usando C++</h2>
-            <pre class="bg-gray-100 p-3 overflow-auto">
+                <div class="bg-white shadow-md rounded p-4">
+                    <h2 class="text-lg font-bold mb-2">Solución usando C++</h2>
+                    <pre class="bg-gray-100 p-3 overflow-auto">
 #include <stdio.h>
 int main(){
   int a,b;
@@ -61,12 +79,11 @@ int main(){
   return 0;
 }
             </pre>
-        </div>
+                </div>
 
-        <!-- Tarjeta de Solución usando Java -->
-        <div class="bg-white shadow-md rounded p-4">
-            <h2 class="text-lg font-bold mb-2">Solución usando Java</h2>
-            <pre class="bg-gray-100 p-3 overflow-auto">
+                <div class="bg-white shadow-md rounded p-4">
+                    <h2 class="text-lg font-bold mb-2">Solución usando Java</h2>
+                    <pre class="bg-gray-100 p-3 overflow-auto">
 import java.util.*;
 public class Main{
   public static void main(String args[]){
@@ -79,22 +96,20 @@ public class Main{
   }
 }
             </pre>
-        </div>
+                </div>
 
-        <!-- Tarjeta de Solución usando Python -->
-        <div class="bg-white shadow-md rounded p-4">
-            <h2 class="text-lg font-bold mb-2">Solución usando Python</h2>
-            <pre class="bg-gray-100 p-3 overflow-auto">
+                <div class="bg-white shadow-md rounded p-4">
+                    <h2 class="text-lg font-bold mb-2">Solución usando Python</h2>
+                    <pre class="bg-gray-100 p-3 overflow-auto">
 print("Hola mundo!")
             </pre>
-        </div>
-    </div>
-</section>
-<hr>
-
+                </div>
+            </div>
+        </section>
+        <hr>
 
         <section class="max-w-6xl mx-auto px-5 py-10">
-        <h2 class="text-2xl font-bold text-center mb-5">El juez proporcionará las siguientes respuestas</h2>
+            <h2 class="text-2xl font-bold text-center mb-5">El juez proporcionará las siguientes respuestas</h2>
             <article>
                 <div class="mb-8 p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
                     <h2 class="text-xl font-semibold mb-2 text-blue-700">¿Qué significa el estado "Pending"?</h2>
@@ -192,12 +207,8 @@ print("Hola mundo!")
             </article>
         </section>
 
-
-
     </main>
-
     <?php require_once "oj-footer.php" ?>
-
 </body>
 
 </html>
