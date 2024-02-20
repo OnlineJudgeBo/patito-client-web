@@ -8,12 +8,12 @@ use PatitoOnlineJudge\Presentation\Middleware\AuthMiddleware;
 require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
-/*session_start();
+session_start();
 ini_set("display_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-*/
+
 try {
     $router = new Router();
     $authMiddleware = new AuthMiddleware();
