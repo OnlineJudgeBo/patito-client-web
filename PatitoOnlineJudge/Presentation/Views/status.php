@@ -136,12 +136,12 @@
                                 ?>
                             </td>
                             <td class="p-4">
-                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
+                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" target='_blank' href="<?php echo $user_url ?>">
                                     <?php echo $value["user_id"] ?>
                                 </a>
                             </td>
                             <td class="p-4">
-                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
+                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" target='_blank' href="<?php echo $url ?>">
                                     <?php
                                     if (isset($value["contest_id"])) {
                                         echo $PID2[$value["num"]];
@@ -152,7 +152,7 @@
                                 </a>
                             </td>
                             <td class="p-4">
-                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $showSource ?>">
+                                <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" target='_blank' href="<?php echo $showSource ?>">
                                     <?php echo $language_name[$value["language"]]; ?>
                                 </a>
                             </td>
