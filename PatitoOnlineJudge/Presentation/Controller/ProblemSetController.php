@@ -32,6 +32,12 @@ class ProblemSetController
         $totalPages = ceil($totalProblems / $limit);
         $offset = ( intval($this->page)) * $limit;
         $problems = $this->problemService->getProblems($offset, $limit);
-        require_once __DIR__ . "/../Views//problemset.php";
+        
+        $user_id = "";
+        if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] > 0) {
+            $user_id = $_SESSION["user_id"];
+        }
+
+        require_once __DIR__ . "/../Views/problemset.php";
     }
 }

@@ -52,4 +52,29 @@ class ProblemRepository implements IProblemRepository {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getProblemsByUser($offset, $limit, $userId) {
+        $sql = "SELECT
+                    problem.problem_id,
+                    problem.title,
+                    problem.source,
+                    problem.submit,
+                    problem.accepted,
+                    problem.tags,
+                    (SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result = 4 AND solution.user_id = :userid1) AS ac,
+                    (SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result != 4 AND solution.user_id =:userid2) AS wa
+                FROM
+                    problem
+                WHERE
+                    problem.defunct = 'N'
+                ORDER BY problem.accepted DESC
+                LIMIT :limit OFFSET :offset";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->bindParam(":userid1", $userId, PDO::PARAM_STR);
+        $stmt->bindParam(":userid2", $userId, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

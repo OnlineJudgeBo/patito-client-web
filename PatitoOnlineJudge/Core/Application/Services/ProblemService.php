@@ -9,10 +9,16 @@ use PatitoOnlineJudge\Infraestructure\Database\Implementations\ProblemRepository
 class ProblemService implements IProblemService
 {
     private $problemRepository;
+    private $userId;
 
     public function __construct(IProblemRepository $problemRepository)
     {
         $this->problemRepository = $problemRepository;
+    }
+
+    public function addUserid($userId)
+    {
+        $this->userId = $userId;
     }
 
     public function getProblemById($pid)
@@ -32,6 +38,9 @@ class ProblemService implements IProblemService
 
     public function getProblems($offset, $limit)
     {
-        return $this->problemRepository->getProblems($offset, $limit);
+        if (empty($this->userId)) {
+            return $this->problemRepository->getProblems($offset, $limit);
+        }
+        return $this->problemRepository->getProblemsByUser($offset, $limit, $this->userId);
     }
 }

@@ -209,7 +209,7 @@
     reloadPage();
 
     let table = new DataTable('#status-table', {
-        "ordering": false,
+        "order": [],
         pageLength: 100,
         dom: 'Prtip',
         searchPanes: {

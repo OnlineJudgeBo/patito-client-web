@@ -11,4 +11,6 @@ interface IProblemRepository {
     public function getProblemsCount();
 
     public function getProblems($offset, $limit);
+
+    public function getProblemsByUser($offset, $limit, $userId);
 }

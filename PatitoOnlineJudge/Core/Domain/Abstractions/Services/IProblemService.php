@@ -6,6 +6,8 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Services;
 interface IProblemService
 {
 
+    public function addUserid($userId);
+
     public function getProblemById($pid);
 
     public function getProblemByContestId($cid, $pid);
