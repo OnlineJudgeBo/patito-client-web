@@ -1,6 +1,5 @@
 # New patito
 
-
 After many years...  in that time I learned many things, and I decided to change the structure of the Patito.
 
 I think that structure is easier than old Patito
