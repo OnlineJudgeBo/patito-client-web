@@ -105,7 +105,11 @@
                         } elseif ($value["result"] == 4) {
                           echo  $judge_result[$value["result"]];
                         } else {
-                          echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
+                          if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
+                            echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
+                          } else {
+                            echo $judge_result[$value["result"]];
+                          }
                         }
                         ?>
                       </div>
@@ -170,4 +174,5 @@
   <?php require_once "oj-footer.php" ?>
 
 </body>
+
 </html>
