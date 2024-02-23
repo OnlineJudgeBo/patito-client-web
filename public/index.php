@@ -9,11 +9,12 @@ require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
-ini_set("display_errors", "ON");
+/*
+ini_set("dispay_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+*/
 try {
     $router = new Router();
     $authMiddleware = new AuthMiddleware();
@@ -134,7 +135,7 @@ try {
     });
 
     $router->dispatch();
-} catch (\Exception $e) {
+} catch (\Throwable $e) {
     $error = error_get_last();
     if ($error) {
         ob_start();
