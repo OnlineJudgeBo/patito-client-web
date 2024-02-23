@@ -25,7 +25,7 @@ class IndexController
     {
         $title = $this->title;
         $view_news = $this->newsService->getLatestNews();
-        $view_last_runs = $this->statusService->getStatusData("");
+        $view_last_runs = $this->statusService->getStatusData(["limit" => 50]);
 
         require_once __DIR__ . "/../Views/index.php";
     }

@@ -16,7 +16,12 @@ class StatusService implements IStatusService
 
     public function getStatusData($params)
     {
-        $limit = 200;
+        if (isset($params["limit"])) {
+            $limit = $params["limit"];
+        } else {
+            $limit = 500;
+        }
+
         if (isset($params["user_id"])) {
             $limit = 100000;
         }
