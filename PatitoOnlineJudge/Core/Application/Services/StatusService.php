@@ -16,6 +16,10 @@ class StatusService implements IStatusService
 
     public function getStatusData($params)
     {
-        return $this->statusRepository->getStatusData($params);
+        $limit = 200;
+        if (isset($params["user_id"])) {
+            $limit = 100000;
+        }
+        return $this->statusRepository->getStatusData($params, $limit);
     }
 }

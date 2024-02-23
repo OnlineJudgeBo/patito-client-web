@@ -64,7 +64,7 @@
                     $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
                   } else {
                     $url = "problem.php?id=" . $value['problem_id'];
-                    $user_url = "userinfo.php?user=" . $value["user_id"];
+                    $user_url = "status.php?user_id=" . $value["user_id"];
                   }
                 ?>
                   <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
