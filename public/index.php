@@ -9,12 +9,11 @@ require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
-/*
-ini_set("dispay_errors", "ON");
+
+/*ini_set("dispay_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
+error_reporting(E_ALL);*/
 try {
     $router = new Router();
     $authMiddleware = new AuthMiddleware();
@@ -139,16 +138,25 @@ try {
     $error = error_get_last();
     if ($error) {
         ob_start();
+        echo "Error Type: " . $error['type'] . "\n";
+        echo "Error Message: " . $error['message'] . "\n";
+        echo "Error File: " . $error['file'] . "\n";
+        echo "Error Line: " . $error['line'] . "\n";
         $errorString = ob_get_clean();
     } else {
         $errorString = "No hay errores.";
     }
-
+    
     ob_start();
     debug_print_backtrace();
     $backtraceString = ob_get_clean();
-
-    $messageToSend = "Error: " . $errorString . "\nBacktrace:\n" . $backtraceString. "\Message:\n".$e->getMessage();
+    
+    ob_start();
+    print_r($_SESSION);
+    $sessionDataString = ob_get_clean();
+    
+    $messageToSend = "Error: " . $errorString . "\nBacktrace:\n" . $backtraceString . "\nSession Data:\n" . $sessionDataString . "\nMessage:\n" . (isset($e) ? $e->getMessage() : "No Exception Message");
+    
     $botToken = "6489308644:AAH9mEGOGFtZH6VEG-1llCAikEETaDf0J1I";
     $chatId = "67317765";
 
