@@ -146,21 +146,41 @@ try {
     } else {
         $errorString = "No hay errores.";
     }
-    
+
+    ob_start();
+    print_r($e);
+    $backtrace = ob_get_clean();
+
     ob_start();
     debug_print_backtrace();
     $backtraceString = ob_get_clean();
-    
+
     ob_start();
-    print_r($_SESSION);
+    print_r(json_encode($_SESSION, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     $sessionDataString = ob_get_clean();
-    
-    $messageToSend = "Error: " . $errorString . "\nBacktrace:\n" . $backtraceString . "\nSession Data:\n" . $sessionDataString . "\nMessage:\n" . (isset($e) ? $e->getMessage() : "No Exception Message");
-    
+
+    $urlActual = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+    $metodoHttp = $_SERVER['REQUEST_METHOD'];
+    $ipCliente = $_SERVER['REMOTE_ADDR'];
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+    $messageToSend = "Error: " . $errorString .
+        "\nBacktrace:\n" . $backtraceString .
+        "\nSession Data:\n" . $sessionDataString .
+        "\nURL Actual: " . $urlActual .
+        "\nMétodo HTTP: " . $metodoHttp .
+        "\nIP Cliente: " . $ipCliente .
+        "\nUser Agent: " . $userAgent .
+        "\nMessage:\n" . (isset($e) ? $e->getMessage() : "No Exception Message");
+
     $botToken = "6489308644:AAH9mEGOGFtZH6VEG-1llCAikEETaDf0J1I";
     $chatId = "67317765";
 
     $url = "https://api.telegram.org/bot" . $botToken . "/sendMessage?chat_id=" . $chatId . "&text=" . urlencode($messageToSend);
+    file_get_contents($url);
+
+    $url = "https://api.telegram.org/bot" . $botToken . "/sendMessage?chat_id=" . $chatId . "&text=" . urlencode("\nBacktrace Files:\n" . $backtrace);
     file_get_contents($url);
 
     echo "<pre>";
