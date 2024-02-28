@@ -5,7 +5,7 @@ if (isset($_SESSION['user_id'])) {
     <a href="modifypage.php" class="<?php echo $className; ?>">Editar Usuario</a>
     <a href="logout.php" class="<?php echo $className; ?>">Salir</a>
 <?php
-   if (isset($_SESSION["administrator"]) && $_SESSION["administrator"] == "administrator") {
+   if (isset($_SESSION["administrator"]) && $_SESSION["administrator"] == "administrator" || isset($_SESSION["contest_creator"])) {
     echo "<a href='/admin' class='".$className."' target='_blank' >Administrar</a>";
    }
 } else {
