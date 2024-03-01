@@ -88,8 +88,9 @@
                                         for ($j = 0; $j < count($problems); $j++) {
                                             $backgroundColor = "";
                                             if (
-                                                isset($row->p_ac_sec[$j]) &&
-                                                $row->p_ac_sec[$j] > 0
+                                                isset($row->p_ac_sec[$j]) 
+                                                //FIX ME&&
+                                                //$row->p_ac_sec[$j] > 0
                                             ) {
                                                 $colorIntensity = 0x33 + $row->p_wa_num[$j] * 32;
                                                 $colorIntensity = $colorIntensity > 0xaa ? 0xaa : $colorIntensity;
@@ -111,8 +112,9 @@
                                             echo "<td class=well style='padding:1px;background-color:#$backgroundColor'>";
                                             if (isset($row)) {
                                                 if (
-                                                    isset($row->p_ac_sec[$j]) &&
-                                                    $row->p_ac_sec[$j] > 0
+                                                    isset($row->p_ac_sec[$j]) 
+                                                    //&&
+                                                    //$row->p_ac_sec[$j] > 0
                                                 ) {
                                                     echo $sec2str($row->p_ac_sec[$j]);
                                                 }
