@@ -40,13 +40,13 @@ class ContestListProblemController
     {
         $title = $this->title;
         if ($this->userHasAccess()) {
-            if ($this->contestService->isContestActive($this->cid)) {
+            /*if ($this->contestService->isContestActive($this->cid)) {
                 $contestDetail = $this->contestService->getContestById($this->cid);
                 $contestProblemList = array();
                 $error = "Este concurso no ha iniciado o ya finalizó.";
                 require_once __DIR__ . "/../Views/error.php";
                 exit();
-            }
+            }*/
             $contestProblemList = $this->contestService->getContestProblems($this->cid);
             $contestDetail = $this->contestService->getContestById($this->cid);
             $resolveBy = $this->contestService->getAcProblemsByIdContest($this->cid);
