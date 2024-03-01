@@ -17,7 +17,7 @@ class StatusRepository implements IStatusRepository
 
     public function getStatusData($params, $limit)
     {
-        $language_ext     = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
+        $language_ext = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
 
         $sql = "SELECT solution.*
         FROM solution
@@ -56,7 +56,7 @@ class StatusRepository implements IStatusRepository
         }
 
         if (isset($params['contest_id'])) {
-            $sql .= " ORDER BY solution.in_date";
+            $sql .= " ORDER BY solution.in_date DESC";
         } elseif ($limit != -1) {
             $sql .= " ORDER BY solution.in_date DESC LIMIT " . $limit;
         } else {
