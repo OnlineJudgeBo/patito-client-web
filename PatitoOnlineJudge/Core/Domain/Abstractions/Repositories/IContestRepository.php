@@ -4,6 +4,8 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Repositories;
 
 interface IContestRepository
 {
+    public function isContestActive($cid);
+
     public function getContestById($cid);
 
     public function getAllContests();

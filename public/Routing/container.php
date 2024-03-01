@@ -98,8 +98,6 @@ $builder->addDefinitions([
     ISubmitPageService::class => \DI\create(SubmitPageService::class)->constructor(\DI\get(SubmitPageRepository::class), \DI\get(SourceCodeRepository::class), \DI\get(ContestService::class)),
     IExcelService::class => \DI\create(ExcelService::class)->constructor(),
 
-
-    
     // Validator
     UserValidator::class => \DI\autowire()->constructor(\DI\get(ILoginRepository::class)),
 ]);
