@@ -2,19 +2,22 @@
 
 namespace PatitoOnlineJudge\Presentation\Controller;
 
+use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemService;
 
 class ProblemController
 {
-    private $problemService;
+    private IProblemService $problemService;
+    private IContestService $contestService;
     public $title;
     private $cid;
     private $pid;
 
-    public function __construct(IProblemService $problemService)
+    public function __construct(IProblemService $problemService, IContestService $contestService)
     {
         $this->title = "Problema";
         $this->problemService = $problemService;
+        $this->contestService = $contestService;
     }
 
     public function setProblemId($pid)
@@ -30,10 +33,12 @@ class ProblemController
     public function render()
     {
         $title = $this->title;
+        $isContestActive = true;
         if (intval($this->pid) >= 0 && intval($this->cid) > 0) {
             $num = $this->pid;
             $cid = $this->cid;
             $problem = $this->problemService->getProblemByContestId($this->cid, $this->pid);
+            $isContestActive = $this->contestService->isContestActive($this->cid);
         } else {
             $problem = $this->problemService->getProblemById($this->pid);
         }

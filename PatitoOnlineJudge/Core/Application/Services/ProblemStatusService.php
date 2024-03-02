@@ -17,16 +17,16 @@ class ProblemStatusService implements IProblemStatusService
         $this->userStaticRepository = $userStaticRepository;
     }
 
-    public function getUserStatics($params)
+    public function getUserStatics($problemId)
     {
-        $totalsubmits = $this->userStaticRepository->getTotalUserSubmitByProblem(1000);
-        $totalac = $this->userStaticRepository->getTotalUserAcByProblem(1000);
-        $totalpe = $this->userStaticRepository->getTotalUserPeByProblem(1000);
-        $totalwa = $this->userStaticRepository->getTotalUserWaByProblem(1000);
-        $totaltle = $this->userStaticRepository->getTotalUserTleByProblem(1000);
-        $totalole = $this->userStaticRepository->getTotalUserOleByProblem(1000);
-        $totalre = $this->userStaticRepository->getTotalUserReByProblem(1000);
-        $totalce = $this->userStaticRepository->getTotalUserCeByProblem(1000);
+        $totalsubmits = $this->userStaticRepository->getTotalUserSubmitByProblem($problemId);
+        $totalac = $this->userStaticRepository->getTotalUserAcByProblem($problemId);
+        $totalpe = $this->userStaticRepository->getTotalUserPeByProblem($problemId);
+        $totalwa = $this->userStaticRepository->getTotalUserWaByProblem($problemId);
+        $totaltle = $this->userStaticRepository->getTotalUserTleByProblem($problemId);
+        $totalole = $this->userStaticRepository->getTotalUserOleByProblem($problemId);
+        $totalre = $this->userStaticRepository->getTotalUserReByProblem($problemId);
+        $totalce = $this->userStaticRepository->getTotalUserCeByProblem($problemId);
 
         return  [
             'total_submits' => $totalsubmits,

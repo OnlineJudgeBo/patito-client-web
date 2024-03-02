@@ -58,6 +58,9 @@
                         </div>
 
                         <div class="flex justify-center gap-4">
+                            <?php 
+                            if ($isContestActive) {
+                            ?>
                             <a href="submitpage.php?<?php
                                                     if (isset($cid)) {
                                                         echo "cid=" . $cid . "&pid=" . $num;
@@ -67,6 +70,9 @@
                                                     ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Enviar
                             </a>
+                            <?php 
+                            }
+                            ?>
                             <a href="problemstatus.php?id=<?php echo $problem["problem_id"] ?>" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Estado
                             </a>
