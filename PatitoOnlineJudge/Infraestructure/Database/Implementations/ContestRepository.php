@@ -30,7 +30,7 @@ class ContestRepository implements IContestRepository
         ]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result["result"] > 0;
+        return intval($result["result"]) > 0;
     }
 
     public function getContestById($cid)
