@@ -77,8 +77,8 @@
                                     ?>
                                         <tr class="border-b dark:bg-gray-800 hover:bg-gray-100 <?php echo $css ?>">
                                             <td><?php echo ($index + 1) ?></td>
-                                            <td class="px-2"><?php echo $row->nick ?></td>
-                                            <td class="px-2"><?php echo $row->user_id ?></td>
+                                            <td class="px-2"><?php echo htmlspecialchars($row->nick) ?></td>
+                                            <td class="px-2"><?php echo htmlspecialchars($row->user_id) ?></td>
                                             <td class="px-2"><?php echo $row->solved ?></td>
                                             <!--
                                             <td class="px-2"><?php echo $sec2str($row->time) ?></td>
