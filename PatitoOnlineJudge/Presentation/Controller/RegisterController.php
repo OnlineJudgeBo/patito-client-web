@@ -41,7 +41,7 @@ class RegisterController
             header('Content-Type: application/json; charset=utf-8');
             header("HTTP/1.1 201 Created");
         } catch (\Exception $e) {
-            echo json_encode($e->getMessage());
+            echo $e->getMessage();
             header('Content-Type: application/json; charset=utf-8');
             header("HTTP/1.1 400 Bad Request");
         }
