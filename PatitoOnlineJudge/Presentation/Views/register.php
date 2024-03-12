@@ -118,7 +118,7 @@
                     if (response.ok) {
                         Swal.fire({
                             icon: 'success',
-                            timer: 5000,
+                            timer: 3000,
                             timerProgressBar: true,
                             onBeforeOpen: () => {
                                 Swal.showLoading();
