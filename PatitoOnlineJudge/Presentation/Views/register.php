@@ -148,7 +148,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: error,
+                        text: decodeURIComponent(error),
                     });
                 });
         });
