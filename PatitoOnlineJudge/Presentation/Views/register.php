@@ -118,10 +118,17 @@
                     if (response.ok) {
                         Swal.fire({
                             icon: 'success',
+                            timer: 5000,
+                            timerProgressBar: true,
+                            onBeforeOpen: () => {
+                                Swal.showLoading();
+                            },
+                            onClose: () => {
+                                window.location.href = "login.php";
+                            },
                             title: 'Registro Exitoso',
                             text: 'Usuario registrado correctamente. Por favor, inicie sesión.',
                         });
-                        window.location.href = "login.php";
                     } else {
                         return response.json();
                     }
