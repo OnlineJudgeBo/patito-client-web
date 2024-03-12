@@ -52,7 +52,7 @@
                         }
                         ?>
                         <div class="overflow-x-auto relative shadow-lg rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-900 dark:text-gray-100 dark:bg-white">
+                            <table class="w-full text-sm text-left text-gray-900">
                                 <thead class="text-xs uppercase bg-gradient-to-r from-cyan-500 to-blue-700 text-gray-100">
                                     <tr>
                                         <th scope="col">#</th>
@@ -75,7 +75,7 @@
                                             $css = "evenrow";
                                         }
                                     ?>
-                                        <tr class="border-b dark:bg-gray-800 hover:bg-gray-100 <?php echo $css ?>">
+                                        <tr class="border-b hover:bg-gray-100 <?php echo $css ?>">
                                             <td><?php echo ($index + 1) ?></td>
                                             <td class="px-2"><?php echo htmlspecialchars($row->nick) ?></td>
                                             <td class="px-2"><?php echo htmlspecialchars($row->user_id) ?></td>
