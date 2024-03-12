@@ -83,55 +83,48 @@
     </main>
     <?php require_once "oj-footer.php" ?>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('registrationForm').addEventListener('submit', function(event) {
-                event.preventDefault();
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-                let email = document.getElementById('email').value.trim();
-                let confirmEmail = document.getElementById('email2').value.trim();
-                let password = document.getElementById('password').value.trim();
-                let confirmPassword = document.getElementById('password2').value.trim();
+            let email = document.getElementById('email').value;
+            let confirmEmail = document.getElementById('email2').value;
+            let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('password2').value;
 
-                if (email === '' || confirmEmail === '' || password === '' || confirmPassword === '') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Por favor, completa todos los campos.',
-                    });
-                    return;
-                }
+            if (email === '' || confirmEmail === '' || password === '' || confirmPassword === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Por favor, completa todos los campos del formulario.',
+                });
+                return false;
+            }
 
-                if (email !== confirmEmail) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Los correos electrónicos no coinciden. Por favor, verifica e intenta nuevamente.',
-                    });
-                    return;
-                }
+            if (email !== confirmEmail) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Los correos electrónicos no coinciden. Por favor, verifica e intenta nuevamente.',
+                });
+                return false;
+            }
 
-                if (password !== confirmPassword) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.',
-                    });
-                    return;
-                }
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.',
+                });
+                return false;
+            }
 
-                let formData = new FormData(this);
-                fetch('registerpage.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        } else {
-                            throw new Error('Error en el servidor.');
-                        }
-                    })
-                    .then(data => {
+            let formData = new FormData(this);
+            fetch('registerpage.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
                         Swal.fire({
                             icon: 'success',
                             timer: 3000,
@@ -145,18 +138,21 @@
                             title: 'Registro Exitoso',
                             text: 'Usuario registrado correctamente. Por favor, inicie sesión.',
                         });
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: error.message,
-                        });
+                    } else {
+                        return response.text().then(text => {
+                            throw new Error(text)
+                        })
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error,
                     });
-            });
+                });
         });
     </script>
-
 </body>
 
 </html>
