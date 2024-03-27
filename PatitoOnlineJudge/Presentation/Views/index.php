@@ -8,7 +8,24 @@
   <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./assets/base.css">
+  <script>
+    function getTokens(tokenName) {
+      return document.cookie.split('; ').reduce((r, c) => {
+        const [key, value] = c.split('=');
+        return key === tokenName ? decodeURIComponent(value) : r;
+      }, null);
+    }
 
+    let accessToken = getTokens("accessToken");
+    let refreshToken = getTokens("refreshToken");
+
+    if (accessToken !== null) {
+      localStorage.setItem('accessToken', accessToken);
+    }
+    if (refreshToken !== null) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+  </script>
 </head>
 
 <body class="flex flex-col h-full">
