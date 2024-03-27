@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Core\Application\Services;
 
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ILoginRepository;
+use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IJwtService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
 use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 
@@ -11,10 +12,15 @@ class LoginService implements ILoginService
 {
     protected $loginRepository;
     protected $userValidator;
+    protected $jwtService;
 
-    public function __construct(ILoginRepository $loginRepository, UserValidator $userValidator)
+    public function __construct(
+        ILoginRepository $loginRepository,
+        IJwtService $jwtService,
+        UserValidator $userValidator)
     {
         $this->loginRepository = $loginRepository;
+        $this->jwtService = $jwtService;
         $this->userValidator = $userValidator;
     }
 
@@ -28,6 +34,9 @@ class LoginService implements ILoginService
                 $this->loginRepository->updateUserLastLogin($user['user_id'], $user["accesstime"]);
                 $this->loginRepository->logLoginAttempt($user['user_id']);
                 $this->startUserSession($user);
+                $tokens = $this->jwtService->generateTokens($user['user_id']);
+                setcookie('accessToken', $tokens["accessToken"], 0, '/', '', true, false);
+                setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', true, false);
                 return $user;
             }
         }

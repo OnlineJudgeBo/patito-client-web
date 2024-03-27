@@ -14,12 +14,14 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     IShowSourceService,
     ISolutionService,
     IStatusService,
-    ISubmitPageService
+    ISubmitPageService,
+    IJwtService
 };
 use PatitoOnlineJudge\Core\Application\Services\{
     ContestRankService,
     ContestService,
     ExcelService,
+    JwtService,
     LoginService,
     NewsService,
     ProblemService,
@@ -87,7 +89,7 @@ $builder->addDefinitions([
     // Servicios
     IContestService::class => \DI\create(ContestService::class)->constructor(\DI\get(ContestRepository::class)),
     IContestRankService::class => \DI\create(ContestRankService::class)->constructor(\DI\get(ContestRankRepository::class)),
-    ILoginService::class => \DI\create(LoginService::class)->constructor(\DI\get(LoginRepository::class), \DI\get(UserValidator::class)),
+    ILoginService::class => \DI\create(LoginService::class)->constructor(\DI\get(LoginRepository::class), \DI\get(JwtService::class), \DI\get(UserValidator::class)),
     INewsService::class => \DI\create(NewsService::class)->constructor(\DI\get(NewsRepository::class)),
     IProblemService::class => \DI\create(ProblemService::class)->constructor(\DI\get(ProblemRepository::class)),
     IProblemStatusService::class => \DI\create(ProblemStatusService::class)->constructor(\DI\get(ProblemStatusRepository::class), \DI\get(UserStaticRepository::class)),

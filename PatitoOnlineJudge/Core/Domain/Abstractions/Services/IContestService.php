@@ -4,6 +4,8 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Services;
 
 interface IContestService
 {
+    public function isContestActive($cid);
+
     public function getContestProblems($cid);
 
     public function getContestById($cid);
