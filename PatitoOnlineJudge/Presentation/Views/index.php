@@ -9,23 +9,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./assets/base.css">
   <script>
-    function getTokens(tokenName) {
-      return document.cookie.split('; ').reduce((r, c) => {
-        const [key, value] = c.split('=');
-        return key === tokenName ? decodeURIComponent(value) : r;
-      }, null);
-    }
+  ['accessToken', 'refreshToken'].forEach(t=>{let v=document.cookie.split('; ').find(c=>c.startsWith(t+'='))?.split('=')[1];if(v)localStorage.setItem(t,v);});
+</script>
 
-    let accessToken = getTokens("accessToken");
-    let refreshToken = getTokens("refreshToken");
-
-    if (accessToken !== null) {
-      localStorage.setItem('accessToken', accessToken);
-    }
-    if (refreshToken !== null) {
-      localStorage.setItem('refreshToken', refreshToken);
-    }
-  </script>
 </head>
 
 <body class="flex flex-col h-full">
