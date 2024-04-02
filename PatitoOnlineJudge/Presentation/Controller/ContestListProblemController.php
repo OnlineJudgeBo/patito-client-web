@@ -26,6 +26,7 @@ class ContestListProblemController
         if (
             isset($_SESSION['administrator']) || isset($_SESSION["m$this->cid"])
             || isset($_SESSION["contest_creator"])
+            || isset($_SESSION["c$this->cid"])
         ) {
             return true;
         }
