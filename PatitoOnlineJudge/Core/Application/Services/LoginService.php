@@ -58,7 +58,9 @@ class LoginService implements ILoginService
 
     public function userRecoveryPassword($email)
     {
-        if ($this->loginRepository->getUserByEmail($email) > 1) {
+        $user = $this->loginRepository->getUserByEmail($email);
+
+        if (count($user) > 2) {
             throw new \Exception("Se han encontrado múltiples registros asociados a su correo electrónico. 
                                 Por favor, póngase en contacto con el administrador para resolver este problema.");
         }
@@ -69,7 +71,7 @@ class LoginService implements ILoginService
             $this->loginRepository->resetRecoveryPassword($email, $encodePassword);
             
             $mail = new MailService();
-            $mail->sendRecoveryPasswordEmail($email, $encodePassword);
+            $mail->sendRecoveryPasswordEmail($email, $encodePassword, $user);
         } else {
             throw new \Exception("El correo electrónico no tiene cuenta en el Juez Virtual");
         }
