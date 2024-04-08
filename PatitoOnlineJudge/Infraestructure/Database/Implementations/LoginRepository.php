@@ -25,8 +25,8 @@ class LoginRepository implements ILoginRepository
 
     public function getUserByEmail($email)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `mail` = :mail AND is_deleted = 0");
-        $stmt->execute([':mail' => $email]);
+        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email AND is_deleted = 0");
+        $stmt->execute([':email' => $email]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
