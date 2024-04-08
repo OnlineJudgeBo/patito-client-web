@@ -29,18 +29,18 @@ class MailService implements IMailService
         $this->mailer->Password = "qmrtolnhjblhijau";
         $this->mailer->AddAddress($email);
         $this->mailer->Subject = "Juez Virtual";
-        $this->mailer->Body = $this->buildMessage($encodePassword, $userId);
+        $this->mailer->Body = $this->buildMessage($encodePassword, current($userId));
         $this->mailer->Send();
     }
 
-    private function buildMessage($encodePassword, $userId)
+    private function buildMessage($encodePassword, $user)
     {
         $sms = "Hola,<br>
         Solicitaste restablecer tu contraseña. A continuación se te enviará el nombre de usuario de tu cuenta:
         <table>
             <tr>
                 <td>Nombre de usuario:</td>
-                <td>{$userId}</td>
+                <td>{$user["user_id"]}</td>
             </tr>
         </table>
         <br>
