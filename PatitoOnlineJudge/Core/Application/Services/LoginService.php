@@ -58,12 +58,16 @@ class LoginService implements ILoginService
 
     public function userRecoveryPassword($email)
     {
-        $authService = new AuthService();
-        $encodePassword = $authService->generatePasswordHash($email);
-        $this->loginRepository->resetRecoveryPassword($email, $encodePassword);
-
-        $mail = new MailService();
-        $mail->sendRecoveryPasswordEmail($email, $encodePassword);
+        if ($this->loginRepository->existsByEmail($email)) {
+            $authService = new AuthService();
+            $encodePassword = $authService->generatePasswordHash($email);
+            $this->loginRepository->resetRecoveryPassword($email, $encodePassword);
+            
+            $mail = new MailService();
+            $mail->sendRecoveryPasswordEmail($email, $encodePassword);
+        } else {
+            throw new \Exception("El correo electrónico no tiene cuenta en el Juez Virtual");
+        }
     }
 
     private function startUserSession($user)
