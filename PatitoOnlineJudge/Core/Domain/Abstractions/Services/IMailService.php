@@ -5,6 +5,6 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Services;
 interface IMailService
 {
 
-    public function sendRecoveryPasswordEmail($email, $token);
+    public function sendRecoveryPasswordEmail($email, $token, $userId);
 
 }

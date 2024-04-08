@@ -58,6 +58,11 @@ class LoginService implements ILoginService
 
     public function userRecoveryPassword($email)
     {
+        if ($this->loginRepository->getUserByEmail($email) > 1) {
+            throw new \Exception("Se han encontrado múltiples registros asociados a su correo electrónico. 
+                                Por favor, póngase en contacto con el administrador para resolver este problema.");
+        }
+
         if ($this->loginRepository->existsByEmail($email)) {
             $authService = new AuthService();
             $encodePassword = $authService->generatePasswordHash($email);

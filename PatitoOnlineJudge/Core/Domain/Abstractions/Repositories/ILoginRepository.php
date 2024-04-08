@@ -8,6 +8,8 @@ interface ILoginRepository
 {
 
     public function getUser($username);
+    
+    public function getUserByEmail($email);
 
     public function getPrivilege($username);
 
