@@ -18,9 +18,9 @@ class ScoreDomainObject
     {
         $this->solved = 0;
         $this->time = 0;
-        $this->p_wa_num  = array(0);
-        $this->p_ac_sec  = array(0);
-        $this->pass_rate = array(0);
+        $this->p_wa_num  = array();
+        $this->p_ac_sec  = array();
+        $this->pass_rate = array();
         $this->points    = 0;
     }
 
@@ -67,7 +67,7 @@ class ScoreDomainObject
             foreach ($this->p_ac_sec as $index => $value) {
                 $this->time += $value;
             }
-            //                        $this->time += $sec ;//+ $this->p_wa_num[$pid];//*1200;
+            //$this->time += $sec ;//+ $this->p_wa_num[$pid];//*1200;
         }
     }
 
