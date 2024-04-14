@@ -133,6 +133,10 @@ try {
         require  __DIR__ . '/Routing/faqs.php';
     });
 
+    $router->get($prefix . '/spi', function () {
+        require  __DIR__ . '/Routing/spi.php';
+    });
+
     $router->dispatch();
 } catch (\Throwable $e) {
     $error = error_get_last();
