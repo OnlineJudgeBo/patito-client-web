@@ -133,7 +133,7 @@ try {
         require  __DIR__ . '/Routing/faqs.php';
     });
 
-    $router->get($prefix . '/spi', function () {
+    $router->get($prefix . '/spi.php', function () {
         require  __DIR__ . '/Routing/spi.php';
     });
 
