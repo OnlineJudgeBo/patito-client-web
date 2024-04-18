@@ -36,6 +36,6 @@ class Router
             return;
         }
 
-        echo "404 Not Found";
+        echo file_get_contents("../404.php");
     }
 }
