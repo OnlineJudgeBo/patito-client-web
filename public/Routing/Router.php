@@ -36,6 +36,6 @@ class Router
             return;
         }
 
-        echo file_get_contents("../404.php");
+        header('Location: https://jv.umsa.bo/404.php');
     }
 }

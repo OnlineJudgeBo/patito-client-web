@@ -29,16 +29,21 @@ header("HTTP/1.0 404 Not Found");
     <meta charset="UTF-8">
     <title>Página no encontrada</title>
     <style>
+        body {
+            background-color: black;
+            color: green;
+        }
         pre {
             font-size: 12px;
             font-family: monospace;
+            color: green;
         }
         .center {
             text-align: center;
             margin-top: 50px;
         }
         a {
-            color: #007BFF;
+            color: green;
             text-decoration: none;
         }
         a:hover {
@@ -49,7 +54,7 @@ header("HTTP/1.0 404 Not Found");
 <body>
     <div class="center">
         <pre><?php echo $asciiArt; ?></pre>
-        <p>Lo sentimos, la página que buscas no se encuentra. Parece que algo salió mal en la matriz.</p>
+        <p>Lo sentimos, la página que buscas no se encuentra.</p>
         <p><a href="https://jv.umsa.bo">Vuelve a jv.umsa.bo</a></p>
     </div>
 </body>
