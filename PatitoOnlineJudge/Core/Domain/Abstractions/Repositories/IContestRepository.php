@@ -21,4 +21,6 @@ interface IContestRepository
     public function getProblemIdByNum($cid, $num);
 
     public function getLanguagesAvailable($cid);
+
+    public function getAllLanguages();
 }
