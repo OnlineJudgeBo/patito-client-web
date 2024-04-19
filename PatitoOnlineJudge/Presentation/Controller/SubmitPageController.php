@@ -71,6 +71,7 @@ class SubmitPageController
         $problemName = "";
         $pid = $this->pid;
         $id = $this->pid;
+        $languagesAvailable = $this->contestService->languagesAvailable($this->cid);
         if (!empty($this->cid)) {
             $cid = $this->cid;
             $id = $this->pid;

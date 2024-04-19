@@ -13,6 +13,8 @@ interface ILoginRepository
 
     public function getPrivilege($username);
 
+    public function getAdminPrivilege($username);
+
     public function updateUserLastLogin($username, $accesstime);
 
     public function logLoginAttempt($username);

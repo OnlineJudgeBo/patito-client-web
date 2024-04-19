@@ -29,22 +29,22 @@ class RankListRepository implements IRankListRepository
         } else {
             $s = '2013-01-01';
         }
-        $sql = "SELECT users.user_id,nick, s.solved, t.submit
-                FROM users
+        $sql = "SELECT user_profiles.user_id, nick, s.solved, t.submit
+                FROM user_profiles
                 RIGHT JOIN (
                     SELECT count(DISTINCT problem_id) solved ,user_id
                     FROM solution WHERE in_date > str_to_date('$s','%Y-%m-%d')
                     AND result = 4
                     GROUP BY user_id
                     ORDER BY solved DESC LIMIT " . strval($rank) . ",$page_size
-                ) s ON users.user_id=s.user_id
+                ) s ON user_profiles.user_id=s.user_id
                 LEFT JOIN (
                     SELECT count( problem_id) submit ,user_id
                     from solution
                     where in_date > str_to_date('$s','%Y-%m-%d')
                     group by user_id order by submit desc limit " . strval($rank) . "," . ($page_size * 2) . ") t
-                    ON users.user_id=t.user_id
-                ORDER BY s.solved DESC,t.submit,reg_time  LIMIT  0,50000";
+                    ON user_profiles.user_id=t.user_id
+                ORDER BY s.solved DESC, t.submit  LIMIT  0,50000";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

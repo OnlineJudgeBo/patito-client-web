@@ -58,4 +58,9 @@ class ContestService implements IContestService
     {
         return $this->contestRepository->getProblemIdByNum($cid, $pid);
     }
+
+    public function languagesAvailable($cid)
+    {
+        return $this->contestRepository->getLanguagesAvailable($cid);
+    }
 }

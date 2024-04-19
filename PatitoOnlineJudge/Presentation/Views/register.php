@@ -137,6 +137,11 @@
                             },
                             title: 'Registro Exitoso',
                             text: 'Usuario registrado correctamente. Por favor, inicie sesión.',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didClose: () => {
+                                window.location.href = "login.php";
+                            }
                         });
                     } else {
                         return response.text().then(text => {

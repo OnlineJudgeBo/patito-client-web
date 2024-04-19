@@ -19,4 +19,6 @@ interface IContestService
     public function getProblemTitleByNumber($cid, $num);
 
     public function getProblemIdByNum($cid, $pid);
+
+    public function languagesAvailable($cid);
 }

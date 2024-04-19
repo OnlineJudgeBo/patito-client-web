@@ -59,7 +59,7 @@ class ContestRankService implements IContestRankService
                 }
             }
         }
-
+        
         $scoreDomainObject = new ScoreDomainObject();
         if ($obi == 1) {
             usort($U, [$scoreDomainObject, "points_cmp"]);

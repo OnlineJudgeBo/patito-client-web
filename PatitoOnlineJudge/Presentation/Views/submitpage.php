@@ -22,25 +22,8 @@
                     <select id="language" name="language" onchange="setModelLanguage(this)">
                         <?php
                         include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
-                        $lang_count = count($language_ext);
-                        if (isset($_GET['langmask'])) {
-                            $langmask = $_GET['langmask'];
-                        } else {
-                            $langmask = $OJ_LANGMASK;
-                        }
-
-                        $lang = (~((int)$langmask)) & ((1 << ($lang_count)) - 1);
-
-                        if (isset($_SESSION['lastlang'])) {
-                            $lastlang = $_SESSION['lastlang'];
-                        } else {
-                            $lastlang = 0;
-                        }
-
-                        for ($i = 0; $i < $lang_count; $i++) {
-                            if ($lang & (1 << $i) && $language_visible[$i] == 1) {
-                                echo "<option value=$i " . ($lastlang == $i ? "selected" : "") . ">" . $language_name[$i] . "</option>";
-                            }
+                        foreach ($languagesAvailable as $key => $value) {
+                            echo "<option value=".$value['language_id'] .">" . $language_name[$value['language_id']] . "</option>";
                         }
                         ?>
                     </select>

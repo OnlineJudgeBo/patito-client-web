@@ -6,7 +6,7 @@ if (isset($_SESSION['user_id'])) {
     <a href="logout.php" class="<?php echo $className; ?>">Salir</a>
 <?php
    if (isset($_SESSION["administrator"]) && $_SESSION["administrator"] == "administrator" || isset($_SESSION["contest_creator"])) {
-    echo "<a href='/admin' class='".$className."' target='_blank' >Administrar</a>";
+    echo "<a href='http://localhost:5173/admin/' class='".$className."' target='_blank' >Administrar</a>";
    }
 } else {
 ?>
