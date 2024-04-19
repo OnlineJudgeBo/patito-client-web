@@ -61,6 +61,10 @@ class ContestService implements IContestService
 
     public function languagesAvailable($cid)
     {
-        return $this->contestRepository->getLanguagesAvailable($cid);
+        if ($cid > 0) {
+            return $this->contestRepository->getLanguagesAvailable($cid);
+        } else {
+            return $this->contestRepository->getAllLanguages();
+        }
     }
 }
