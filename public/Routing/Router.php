@@ -36,6 +36,6 @@ class Router
             return;
         }
 
-        echo "404 Not Found";
+        header('Location: https://jv.umsa.bo/404.php');
     }
 }
