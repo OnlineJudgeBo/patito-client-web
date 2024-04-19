@@ -141,4 +141,10 @@ class ContestRepository implements IContestRepository
         $stmt->execute([':contest_id' => $cid]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getAllLanguages() {
+        $stmt = $this->pdo->prepare("SELECT language_id
+            FROM programing_language");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }    
 }
