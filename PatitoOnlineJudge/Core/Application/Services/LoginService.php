@@ -85,7 +85,7 @@ class LoginService implements ILoginService
         }
 
         foreach ($this->loginRepository->getAdminPrivilege($user['user_id']) as $rightstr) {
-            $_SESSION[$rightstr["role_name"]] = true;
+            $_SESSION[$rightstr["role_name"]] = $rightstr["role_name"];
         }
     }
 
