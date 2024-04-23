@@ -24,9 +24,10 @@ class ContestListProblemController
     private function userHasAccess()
     {
         if (
-            isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
-            isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"      ||
+            
+            (isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador") ||
+            (isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente")       ||
+            (isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar")      ||
             isset($_SESSION["c$this->cid"])
         ) {
             return true;
