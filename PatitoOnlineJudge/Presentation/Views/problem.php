@@ -77,7 +77,11 @@
                                 Estado
                             </a>
                             <?php
-                            if (isset($_SESSION['administrator']) || isset($_SESSION['problem_master_editor'])) {
+                            if (
+                                isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
+                                isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
+                                isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar" 
+                            ) {
                             ?>
                                 <a href="/admin/problem_edit.php?id=<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                     Editar

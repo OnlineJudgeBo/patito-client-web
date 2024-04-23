@@ -47,7 +47,12 @@
                     </div>
                 </div>
                 <?php
-                if (isset($cid) && intval($cid) > 0 && isset($_SESSION["administrator"]) && $_SESSION["administrator"] == 1) {
+                if (isset($cid) && intval($cid) > 0 &&
+                    (
+                        isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
+                        isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
+                        isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar")
+                ) {
                 ?>
                     <div class="text-center mb-5">
                         <a href="./contestrankExcel.php?cid=<?php echo $cid ?>" class="text-blue-500 hover:underline">
