@@ -59,6 +59,7 @@ class ContestRepository implements IContestRepository
                 contest_problem, problem
             WHERE
                 contest_problem.problem_id = problem.problem_id
+                AND problem.defunct = 'N'
                 AND contest_problem.contest_id = :cid1
         ) problem
         LEFT JOIN (
