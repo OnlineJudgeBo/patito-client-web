@@ -68,7 +68,7 @@ class LoginService implements ILoginService
         if ($this->loginRepository->existsByEmail($email)) {
             $authService = new AuthService();
             $encodePassword = $authService->generatePasswordHash($email);
-            $this->loginRepository->resetRecoveryPassword($email, $encodePassword);
+            $this->loginRepository->resetRecoveryPassword($user[0]["user_id"], $encodePassword);
             
             $mail = new MailService();
             $mail->sendRecoveryPasswordEmail($email, $encodePassword, $user);

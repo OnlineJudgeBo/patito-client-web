@@ -123,12 +123,12 @@ class LoginRepository implements ILoginRepository
         return $stmt->fetchColumn() > 0;
     }
 
-    public function resetRecoveryPassword($email, $password) {
+    public function resetRecoveryPassword($user_id, $password) {
         $sql=" UPDATE users SET reset_password_token =:reset_password_token,
                 reset_password_expires = ADDTIME(NOW(), '01:00:00')
-                WHERE email =:email";
+                WHERE user_id =:user_id";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['reset_password_token' => $password, 'email' => $email]);
+        $stmt->execute(['reset_password_token' => $password, 'user_id' => $user_id]);
     }
 
     public function verifyTokenRecovey($token) {
