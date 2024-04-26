@@ -9,7 +9,7 @@ class JwtAuth
     {
         $claveSecreta = "esta_es_mi_super_clave_secreta_zsx";
         $actualTime = time();
-        $expirationTime = $actualTime + (60 * 60) * 2;
+        $expirationTime = $actualTime + (60 * 60) * 10; //10h
         $expirationTimeRefresh = $actualTime + (60 * 60 * 24 * 30);
 
         $payloadAccessToken = [
