@@ -54,7 +54,7 @@
                             }
                         });
                         require(['vs/editor/editor.main'], function() {
-                            let code_escaped = "Pegue aqui el codigo";
+                            let code_escaped = "";
 
                             editor = monaco.editor.create(document.getElementById('sourceView'), {
                                 value: code_escaped.split('\\n').join('\n'),

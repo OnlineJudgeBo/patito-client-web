@@ -15,7 +15,7 @@ class JwtService implements IJwtService
         $this->jwtAuth = new \JwtAuth();
     }
 
-    public function generateTokens($userId) {
-        return $this->jwtAuth->generateTokens($userId);
+    public function generateTokens($userId, $userRoles) {
+        return $this->jwtAuth->generateTokens($userId, $userRoles);
     }
 }

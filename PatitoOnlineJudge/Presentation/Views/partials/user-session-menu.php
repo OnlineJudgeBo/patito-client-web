@@ -7,8 +7,8 @@ if (isset($_SESSION['user_id'])) {
     <?php
     if (
         isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
-        isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"  ||
-        isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar" ||
+        isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
+        isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"      ||
         isset($_SESSION["contest_creator"])) {
         echo "<a href='https://jv.umsa.bo/admin/' class='" . $className . "' target='_blank' >Administrar</a>";
     }

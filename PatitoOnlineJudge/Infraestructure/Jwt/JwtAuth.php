@@ -5,7 +5,7 @@ use Firebase\JWT\Key;
 
 class JwtAuth
 {
-    function generateTokens($userId)
+    function generateTokens($userId, array $userRoles)
     {
         $claveSecreta = "esta_es_mi_super_clave_secreta_zsx";
         $actualTime = time();
@@ -14,6 +14,7 @@ class JwtAuth
 
         $payloadAccessToken = [
             "sub" => $userId,
+            "roles" => implode(",", array_column($userRoles, 'role_name')),
             "iat" => $actualTime,
             "exp" => $expirationTime,
             "iss" => "TuValorDeIssuer",
@@ -24,6 +25,7 @@ class JwtAuth
 
         $payloadRefreshToken = [
             "sub" => $userId,
+            "roles" => implode(",", array_column($userRoles, 'role_name')),
             "iat" => $actualTime,
             "exp" => $expirationTimeRefresh,
             "iss" => "TuValorDeIssuer",

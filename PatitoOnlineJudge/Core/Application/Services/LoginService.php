@@ -34,7 +34,8 @@ class LoginService implements ILoginService
                 $this->loginRepository->updateUserLastLogin($user['user_id'], $user["accesstime"]);
                 $this->loginRepository->logLoginAttempt($user['user_id']);
                 $this->startUserSession($user);
-                $tokens = $this->jwtService->generateTokens($user['user_id']);
+                $userRoles = $this->loginRepository->getAdminPrivilege($user['user_id']);
+                $tokens = $this->jwtService->generateTokens($user['user_id'], $userRoles);
                 setcookie('accessToken', $tokens["accessToken"], 0, '/', '', true, false);
                 setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', true, false);
                 return $user;
