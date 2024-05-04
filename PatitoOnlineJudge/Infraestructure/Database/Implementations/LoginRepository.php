@@ -23,6 +23,13 @@ class LoginRepository implements ILoginRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getUserProfile($username)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `user_profiles` WHERE `user_id` = :username");
+        $stmt->execute([':username' => $username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getUserByEmail($email)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM `user_profiles` WHERE `email` = :email");
@@ -123,6 +130,14 @@ class LoginRepository implements ILoginRepository
         return $stmt->fetchColumn() > 0;
     }
 
+    public function isEmailAvailableForChange($email, $user_id) {
+        $query = "SELECT COUNT(*) FROM user_profiles WHERE email = :email AND user_id != :currentUserId";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $user_id, PDO::PARAM_STR);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function resetRecoveryPassword($user_id, $password) {
         $sql=" UPDATE users SET reset_password_token =:reset_password_token,
                 reset_password_expires = ADDTIME(NOW(), '01:00:00')
@@ -131,7 +146,7 @@ class LoginRepository implements ILoginRepository
         $stmt->execute(['reset_password_token' => $password, 'user_id' => $user_id]);
     }
 
-    public function verifyTokenRecovey($token) {
+    public function verifyTokenRecovery($token) {
         $stmt = $this->pdo->prepare("SELECT *
                                     FROM users
                                     WHERE reset_password_token = :token
@@ -147,5 +162,25 @@ class LoginRepository implements ILoginRepository
                 WHERE reset_password_token =:token";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['password' => $password, 'token' => $token]);
+    }
+
+    public function updatePasswordByUserId($password, $user_id) {
+        $sql=" UPDATE users SET password = :password
+                WHERE user_id =:user_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['password' => $password, 'user_id' => $user_id]);
+    }
+
+    public function updateUserProfile($user_id, UserDomainObject $userData)
+    {
+        $sql = "UPDATE user_profiles 
+        SET email = :email, nick = :nick, lastname = :lastname
+        WHERE user_id = :user_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $userData->email, PDO::PARAM_STR);
+        $stmt->bindValue(':nick', $userData->nick, PDO::PARAM_STR);
+        $stmt->bindValue(':lastname', $userData->lastname, PDO::PARAM_STR);
+        $stmt->execute();
     }
 }

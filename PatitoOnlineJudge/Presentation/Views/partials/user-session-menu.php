@@ -2,7 +2,7 @@
 $className = "text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium";
 if (isset($_SESSION['user_id'])) {
 ?>
-    <a href="modifypage.php" class="<?php echo $className; ?>">Editar Usuario</a>
+    <a href="userInfo.php" class="<?php echo $className; ?>">Perfil</a>
     <a href="logout.php" class="<?php echo $className; ?>">Salir</a>
     <?php
     if (

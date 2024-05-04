@@ -15,12 +15,14 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     ISolutionService,
     IStatusService,
     ISubmitPageService,
-    IJwtService
+    IJwtService,
+    IUserInfoService
 };
 use PatitoOnlineJudge\Core\Application\Services\{
     ContestRankService,
     ContestService,
     ExcelService,
+    UserInfoService,
     JwtService,
     LoginService,
     NewsService,
@@ -46,7 +48,8 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\{
     IStatusRepository,
     ISubmitPageRepository,
     IUserStaticRepository,
-    ISourceCodeRepository
+    ISourceCodeRepository,
+    IUserInfoRepository
 };
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\{
     ContestRepository,
@@ -61,7 +64,8 @@ use PatitoOnlineJudge\Infraestructure\Database\Implementations\{
     SubmitPageRepository,
     ContestRankRepository,
     UserStaticRepository,
-    SourceCodeRepository
+    SourceCodeRepository,
+    UserInfoRepository
 };
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -81,7 +85,6 @@ $builder->addDefinitions([
     IRankListRepository::class => \DI\get(RankListRepository::class),
     IShowSourceRepository::class => \DI\get(ShowSourceRepository::class),
     ISolutionRepository::class => \DI\get(SolutionRepository::class),
-    IStatusRepository::class => \DI\get(StatusRepository::class),
     ISubmitPageRepository::class => \DI\get(SubmitPageRepository::class),
     IUserStaticRepository::class => \DI\get(UserStaticRepository::class),
     ISourceCodeRepository::class => \DI\get(SourceCodeRepository::class),
@@ -96,9 +99,11 @@ $builder->addDefinitions([
     IRankListService::class => \DI\create(RankListService::class)->constructor(\DI\get(RankListRepository::class)),
     IShowSourceService::class => \DI\create(ShowSourceService::class)->constructor(\DI\get(ShowSourceRepository::class)),
     ISolutionService::class => \DI\create(SolutionService::class)->constructor(\DI\get(SolutionRepository::class)),
-    IStatusService::class => \DI\create(StatusService::class)->constructor(\DI\get(StatusRepository::class)),
+    //IStatusService::class => \DI\create(StatusService::class)->constructor(\DI\get(StatusRepository::class)),
     ISubmitPageService::class => \DI\create(SubmitPageService::class)->constructor(\DI\get(SubmitPageRepository::class), \DI\get(SourceCodeRepository::class), \DI\get(ContestService::class)),
     IExcelService::class => \DI\create(ExcelService::class)->constructor(),
+    IUserInfoService::class => \DI\create(UserInfoService::class)->constructor(\DI\get(SolutionRepository::class), \DI\get(LoginRepository::class)),
+
 
     // Validator
     UserValidator::class => \DI\autowire()->constructor(\DI\get(ILoginRepository::class)),

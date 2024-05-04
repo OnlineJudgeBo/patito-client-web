@@ -14,4 +14,8 @@ if (isset($_GET["user_id"])) {
     $statusController->add_params("user_id", $_GET["user_id"]);
 }
 
+if (isset($_GET["problem_id"])) {
+    $statusController->add_params("problem_id", $_GET["problem_id"]);
+}
+
 $statusController->render();

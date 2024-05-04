@@ -10,10 +10,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
-/*ini_set("dispay_errors", "ON");
+/*
+ini_set("dispay_errors", "ON");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+error_reporting(E_ALL);
+*/
 try {
     $router = new Router();
     $authMiddleware = new AuthMiddleware();
@@ -88,10 +90,6 @@ try {
         require  __DIR__ . '/Routing/contestrank.php';
     });
 
-    $router->get($prefix . '/userinfo.php', function () {
-        require  __DIR__ . '/Routing/userinfo.php';
-    });
-
     $router->get($prefix . '/showsource.php', function () use ($authMiddleware) {
         $authMiddleware->handle();
         require  __DIR__ . '/Routing/showsource.php';
@@ -131,6 +129,14 @@ try {
 
     $router->get($prefix . '/faqs.php', function () {
         require  __DIR__ . '/Routing/faqs.php';
+    });
+
+    $router->get($prefix . '/userInfo.php', function () {
+        require  __DIR__ . '/Routing/userInfo.php';
+    });
+
+    $router->post($prefix . '/userInfo.php', function () {
+        require  __DIR__ . '/Routing/userInfo.php';
     });
 
     $router->get($prefix . '/spi.php', function () {

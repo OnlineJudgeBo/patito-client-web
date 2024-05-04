@@ -49,6 +49,9 @@ class LoginService implements ILoginService
         $this->userValidator->validate($user);
         $user->password = $authService->generatePasswordHash($user->password);
         $this->loginRepository->registerUser($user);
+
+        $mail = new MailService();
+        $mail->sendWelcomeEmail($user->email, $user);
     }
 
     public function updatePasswordByToken($password, $token) {
@@ -90,10 +93,24 @@ class LoginService implements ILoginService
         }
     }
 
+    public function getMe($userId)
+    {
+        return $this->loginRepository->getUserProfile($userId);
+    }
+
     public function verifyToken($token)
     {
-        if (!$this->loginRepository->verifyTokenRecovey($token)) {
+        if (!$this->loginRepository->verifyTokenRecovery($token)) {
             throw new \Exception("El token no es correcto o ya expiro.");
         }
+    }
+
+    public function updateUserProfile($userId, UserDomainObject $user) {
+        if (!empty($user->password)) {
+            $userEmail = $this->getMe($userId);
+            $this->userRecoveryPassword($userEmail["email"]);
+        }
+        $this->userValidator->validateProfileToUpdate($user);
+        $this->loginRepository->updateUserProfile($userId, $user);
     }
 }

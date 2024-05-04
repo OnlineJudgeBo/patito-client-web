@@ -13,6 +13,10 @@ class SolutionService implements ISolutionService
         $this->solutionRepository = $solutionRepository;
     }
 
+    public function getStatusData($params, $limit) {
+        return $this->solutionRepository->getStatusData($params, $limit);
+    }
+
     public function getLastRuns()
     {
         return $this->solutionRepository->getLastRuns();

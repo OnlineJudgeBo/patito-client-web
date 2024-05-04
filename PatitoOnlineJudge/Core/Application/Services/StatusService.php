@@ -2,16 +2,17 @@
 
 namespace PatitoOnlineJudge\Core\Application\Services;
 
+use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ISolutionRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IStatusRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IStatusService;
 
 class StatusService implements IStatusService
 {
-    private $statusRepository;
+    private $solutionRepository;
 
-    public function __construct(IStatusRepository $statusRepository)
+    public function __construct(ISolutionRepository $solutionRepository)
     {
-        $this->statusRepository = $statusRepository;
+        $this->solutionRepository = $solutionRepository;
     }
 
     public function getStatusData($params)
@@ -25,6 +26,6 @@ class StatusService implements IStatusService
         if (isset($params["user_id"])) {
             $limit = 100000;
         }
-        return $this->statusRepository->getStatusData($params, $limit);
+        return $this->solutionRepository->getStatusData($params, $limit);
     }
 }

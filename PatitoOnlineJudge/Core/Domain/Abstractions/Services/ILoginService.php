@@ -11,4 +11,6 @@ interface ILoginService
     public function userRecoveryPassword($email);
     public function verifyToken($token);
     public function updatePasswordByToken($password, $token);
+    public function getMe($userId);
+    public function updateUserProfile($userId, UserDomainObject $user);
 }

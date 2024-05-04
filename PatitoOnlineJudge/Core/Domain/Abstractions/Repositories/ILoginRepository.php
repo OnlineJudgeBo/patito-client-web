@@ -27,7 +27,13 @@ interface ILoginRepository
 
     public function resetRecoveryPassword($email, $passwod);
 
-    public function verifyTokenRecovey($token);
+    public function verifyTokenRecovery($token);
 
     public function updatePasswordByToken($password, $token);
+
+    public function getUserProfile($username);
+
+    public function updateUserProfile($user_id, UserDomainObject $userData);
+
+    public function isEmailAvailableForChange($email, $user_id);
 }
