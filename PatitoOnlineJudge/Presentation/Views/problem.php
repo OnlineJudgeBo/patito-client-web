@@ -27,7 +27,7 @@
         require "oj-header-contest.php";
     } else {
         require "oj-header.php";
-    }    
+    }
     ?>
     <?php require __DIR__ . "/Modules/StatusTime.php"; ?>
     <main class="container mx-auto p-4 grid grid-cols-0">
@@ -58,19 +58,19 @@
                         </div>
 
                         <div class="flex justify-center gap-4">
-                            <?php 
+                            <?php
                             if ($isContestActive) {
                             ?>
-                            <a href="submitpage.php?<?php
-                                                    if (isset($cid)) {
-                                                        echo "cid=" . $cid . "&pid=" . $num;
-                                                    } else {
-                                                        echo "id=" . $problem["problem_id"];
-                                                    }
-                                                    ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Enviar
-                            </a>
-                            <?php 
+                                <a href="submitpage.php?<?php
+                                                        if (isset($cid)) {
+                                                            echo "cid=" . $cid . "&pid=" . $num;
+                                                        } else {
+                                                            echo "id=" . $problem["problem_id"];
+                                                        }
+                                                        ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    Enviar
+                                </a>
+                            <?php
                             }
                             ?>
                             <a href="problemstatus.php?id=<?php echo $problem["problem_id"] ?>" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -80,7 +80,7 @@
                             if (
                                 isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                                 isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                                isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar" 
+                                isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
                             ) {
                             ?>
                                 <a href="/admin/problem_edit.php?id=<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -120,21 +120,27 @@
 
                     <div class="grid grid-cols-1 gap-4">
                         <div>
-                            <h3 class="text-xl font-bold tracking-tight text-black mb-1">Ejemplo Entrada</h3>
-                            <div class="bg-gray-100 p-2 rounded">
-                                <pre class="text-gray-600 bg-gray-100 text-gray-800 p-4"><?php echo $problem["sample_input"]; ?></pre>
+                            <h3 class="text-xl font-bold tracking-tight text-black mb-1 inline-block">Ejemplo Entrada</h3>
+                            <a href="javascript:CopyToClipboard('samplein')" class="inline-block ml-2">
+                                <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/icons/clipboard.svg" alt="Copy icon" class="w-5 h-5">
+                            </a>
+                            <div class="bg-gray-100 p-2 rounded mt-2">
+                                <pre class="text-gray-600 bg-gray-100 text-gray-800 p-4" id="samplein"><?php echo $problem["sample_input"]; ?></pre>
                             </div>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold tracking-tight text-black mb-1">Ejemplo Salida</h3>
+                            <h3 class="text-xl font-bold tracking-tight text-black mb-1 inline-block">Ejemplo Salida</h3>
+                            <a href="javascript:CopyToClipboard('#sampleout')" alt="Click para copiar" class="inline-block ml-2">
+                                <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/icons/clipboard.svg" alt="Copy icon" class="w-5 h-5">
+                            </a>
                             <div class="bg-gray-100 p-2 rounded">
-                                <pre class="text-gray-600 bg-gray-100 text-gray-800 p-4"><?php echo $problem["sample_output"] ?></pre>
+                                <pre class="text-gray-600 bg-gray-100 text-gray-800 p-4" id="sampleout"><?php echo $problem["sample_output"] ?></pre>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mb-4">
+                    <div class=" mb-4">
                         <h3 class="text-xl font-bold tracking-tight text-black mb-1">Ayuda</h3>
                         <div class="text-gray-600 bg-gray-100 text-gray-800 p-4"><?php echo $problem["hint"] ?></div>
                     </div>
@@ -146,6 +152,19 @@
     </main>
 
     <?php require_once "oj-footer.php" ?>
+    <script>
+        function CopyToClipboard(id) {
+            const textToCopy = document.getElementById(id).innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                console.log('Text successfully copied to clipboard');
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+    </script>
 
 </body>
 

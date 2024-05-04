@@ -77,10 +77,11 @@
             color: rgb(255, 255, 255);
             color: rgb(var(--dt-row-selected-text));
         }
+
         .dtsp-searchPane a {
-        pointer-events: none;
-        color: inherit;
-    }
+            pointer-events: none;
+            color: inherit;
+        }
     </style>
 </head>
 
@@ -94,6 +95,11 @@
     ?>
     <main class="container mx-auto p-4 grid grid-cols-0">
         <div class="relative w-full overflow-auto">
+            <div class="flex items-center p-3 bg-white border border-gray-300 rounded-lg shadow-sm hidden" id="history-panel">
+                <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/icons/search.svg" alt="Search" class="w-5 h-5 mr-3 text-gray-500">
+                <input type="search" id="searchInput" placeholder="Escriba el nombre de usuario para buscar (histórico completo)" class="flex-1 outline-none" />
+                <button onclick="performSearch()" class="ml-2 text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-sm px-4 py-2">Buscar</button>
+            </div>
 
             <table class="border-b transition-colors hover:bg-muted/50 w-full" id="status-table">
                 <thead>
@@ -129,10 +135,11 @@
                         <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
                             <td class="p-4">
                                 <?php
-                                if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || 
+                                if (
+                                    isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
                                     isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                                     isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                                    isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"      
+                                    isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
                                 ) {
                                     $showSource = "showsource.php?id=" . $value["solution_id"];
                                 }
@@ -168,10 +175,11 @@
                                     } elseif ($value["result"] == 4) {
                                         echo  $judge_result[$value["result"]];
                                     } else {
-                                        if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || 
+                                        if (
+                                            isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
                                             isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                                             isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                                            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar" 
+                                            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
                                         ) {
                                             echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
                                         } else {
@@ -228,7 +236,7 @@
             cascadePanes: true,
             viewTotal: true,
         },
-        select: false,
+        select: true,
         columns: [{
                 title: "RunID",
                 searchPanes: {
@@ -272,7 +280,7 @@
                 }
             },
             {
-                title: "Hora de Envio",
+                title: "Hora de Envió",
                 searchPanes: {
                     show: false
                 }
@@ -295,10 +303,29 @@
                     1: ""
                 }
             }
+        },
+        initComplete: function(settings, json) {
+            $('.dtsp-paneButton').on('click', function() {
+                let userId = document.querySelector('.dtsp-paneInputButton.dtsp-search').value;
+                if (userId.length > 2) {
+                    window.location = "status.php?user_id=" + userId
+                }
+            });
         }
     });
 
     table.on('init.dt', function() {
+
+        var newButton = document.createElement("button");
+        newButton.type = "button";
+        newButton.style = "border: 1px solid transparent;background-color: transparent;"
+        newButton.className = "text-black py-2 px-4 mr-2 mb-2 transition ease-in-out duration-150 shadow-md bg-blue-200 hover:bg-blue-300 focus:bg-blue-300 border-blue-300 hover:shadow-lg focus:shadow-lg";
+        newButton.textContent = "Buscar todos mis envíos";
+        newButton.onclick = toggleSearch;
+
+        var container = document.querySelector(".dtsp-titleRow");
+        container.appendChild(newButton);
+
         $('.dtsp-collapseAll').click();
         $('.dtsp-paneButton.dtsp-nameButton.dtsp-disabledButton').removeClass('dtsp-paneButton dtsp-nameButton dtsp-disabledButton');
         $('.dtsp-paneButton.dtsp-countButton').removeClass('dtsp-paneButton dtsp-countButton');
@@ -318,11 +345,34 @@
                 });
             }
         });
-
     })
 
-    $('.dtsp-searchPane').on('click', 'a', function(e) {
-        e.preventDefault();
-    });
+    function performSearch() {
+        var userId = document.getElementById('searchInput').value;
+        window.location = "status.php?user_id=" + userId
+    }
+
+    function toggleSearch() {
+        var historyPanel = document.getElementById('history-panel');
+        var statusTable = document.getElementById('status-table');
+        var searchPanel = document.getElementsByClassName('dtsp-searchPanes');
+        var dtInfo = document.getElementsByClassName('dt-info');
+        var dtPaging = document.getElementsByClassName('paging_full_numbers');
+
+        if (historyPanel.classList.contains('hidden')) {
+            historyPanel.classList.remove('hidden');
+            statusTable.classList.add('hidden');
+            searchPanel[0].style.display = 'none'
+            dtInfo[0].style.display = 'none'
+            dtPaging[0].style.display = 'none'
+        } else {
+            historyPanel.classList.add('hidden');
+            statusTable.classList.remove('hidden');
+            searchPanel[0].style.display = ''
+            dtInfo[0].style.display = ''
+            dtPaging[0].style.display = ''
+        }
+    }
 </script>
+
 </html>
