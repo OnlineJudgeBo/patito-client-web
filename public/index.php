@@ -156,7 +156,11 @@ try {
     } else {
         $errorString = "No hay errores.";
     }
-
+    
+ob_start();
+print_r(json_encode($_REQUEST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+$requestDataString = ob_get_clean();
+    
     ob_start();
     print_r($e);
     $backtrace = ob_get_clean();
@@ -178,6 +182,7 @@ try {
     $messageToSend = "Error: " . $errorString .
         "\nBacktrace:\n" . $backtraceString .
         "\nSession Data:\n" . $sessionDataString .
+        "\nRequest Data:\n" . $requestDataString .
         "\nURL Actual: " . $urlActual .
         "\nMétodo HTTP: " . $metodoHttp .
         "\nIP Cliente: " . $ipCliente .
