@@ -70,12 +70,11 @@
         div.dt-container .dt-paging .ellipsis {
             padding: 0 1em;
         }
-
         table.dataTable>tbody>tr.selected>* {
-            box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.9);
-            box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-selected), 0.9);
-            color: rgb(255, 255, 255);
-            color: rgb(var(--dt-row-selected-text));
+            box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.3) !important;
+            box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-selected), 0.3) !important;
+            color: #2c3e50 !important;
+            color: rgb(var(--dt-row-selected-text)) !important;
         }
 
         .dtsp-searchPane a {
@@ -136,7 +135,7 @@
                             <td class="p-4">
                                 <?php
                                 if (
-                                    isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
+                                    isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
                                     isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                                     isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
                                     isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
@@ -167,7 +166,22 @@
                                     <?php echo $language_name[$value["language"]]; ?>
                                 </a>
                             </td>
-                            <td class="p-4">
+                            <td class="p-4 flex items-center space-x-4">
+                                <?php
+                                if (
+                                    isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
+                                    isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
+                                    isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
+                                ) {
+                                    echo sprintf(
+                                        '<button onclick="rejudgeSolution(%d)" class="border-b transition-colors hover:bg-muted/50">Rejudge</button>',
+                                        $value["solution_id"]
+                                    );
+                                    
+                                } else {
+                                    echo $judge_result[$value["result"]];
+                                }
+                                ?>
                                 <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
                                     <?php
                                     if ($value["result"] <= 3) {
@@ -176,7 +190,7 @@
                                         echo  $judge_result[$value["result"]];
                                     } else {
                                         if (
-                                            isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
+                                            isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
                                             isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                                             isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
                                             isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
@@ -373,6 +387,43 @@
             dtPaging[0].style.display = ''
         }
     }
+</script>
+<script>
+function getCookieValue(name) {
+    const value = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+    return value ? value.pop() : null;
+}
+
+function rejudgeSolution(solutionId) {
+    const token = getCookieValue('accessToken');
+
+    if (!token) {
+        console.error('No access token found in cookies');
+        return;
+    }
+
+    fetch(`https://jv.umsa.bo/api/Judge/rejudge/solution/${solutionId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            throw new Error(response);
+        }
+    })
+    .then(response => {
+        console.log('Success:', response);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 </script>
 
 </html>
