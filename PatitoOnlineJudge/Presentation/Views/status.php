@@ -402,7 +402,7 @@ function rejudgeSolution(solutionId) {
         return;
     }
 
-    fetch(`https://jv.umsa.bo/api/Judge/rejudge/solution/${solutionId}`, {
+    fetch(`https://juezvirtual.com/api/Judge/rejudge/solution/${solutionId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

@@ -55,7 +55,7 @@ header("HTTP/1.0 404 Not Found");
     <div class="center">
         <pre><?php echo $asciiArt; ?></pre>
         <p>Lo sentimos, la página que buscas no se encuentra.</p>
-        <p><a href="https://jv.umsa.bo">Vuelve a jv.umsa.bo</a></p>
+        <p><a href="https://juezvirtual.com/">Vuelve a jv.umsa.bo</a></p>
     </div>
 </body>
 </html>
