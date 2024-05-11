@@ -36,6 +36,6 @@ class Router
             return;
         }
 
-        header('Location: https://juezvirtual.com/404.php');
+        header('Location: https://juezvirtual.com/oj/404.php');
     }
 }

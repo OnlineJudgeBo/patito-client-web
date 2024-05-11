@@ -4,7 +4,7 @@
                 Juez Virtual
             </div>
             <div class="flex items-center">
-                <a href="https://juezvirtual.com" class="mr-6 text-gray-800 hover:text-blue-200">Inicio</a>
+                <a href="https://juezvirtual.com/oj/" class="mr-6 text-gray-800 hover:text-blue-200">Inicio</a>
                 <a href="contest.php" class="mr-6 text-gray-800 hover:text-blue-200">Concursos</a>
                 <a href="problemset.php" class="mr-6 text-gray-800 hover:text-blue-200">Problemas</a>
                 <a href="ranklist.php" class="mr-6 text-gray-800 hover:text-blue-200">Ranking</a>

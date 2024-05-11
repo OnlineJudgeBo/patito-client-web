@@ -1,5 +1,5 @@
-<footer class="mt-auto bg-slate-800	text-white p-2">
-  <div class="text-center mt-1">
+<footer class="bg-white p-4 mt-6 border-t border-gray-200">
+        <div class="container mx-auto text-center text-gray-800">
     <p> Sugerencias a:
       <a href="mailto:samuel.loza26@gmail.com" class="text-blue-300 hover:text-blue-500">samuel.loza26@gmail.com</a>
     </p>

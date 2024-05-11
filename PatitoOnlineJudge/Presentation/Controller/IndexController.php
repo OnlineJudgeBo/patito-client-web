@@ -13,7 +13,7 @@ class IndexController
 
     public function __construct(INewsService $newsService, ISolutionService $solutionService)
     {
-        $this->title = "Bienvenido al Juez de la Carrera de Informática - UMSA";
+        $this->title = "Bienvenido al Juez Virtual Bo";
         $this->newsService = $newsService;
         $this->solutionService = $solutionService;
     }
