@@ -33,7 +33,7 @@
             <table id="problemList" class="display" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Resuelto?</th>
+                        <th>.</th>
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Setter</th>

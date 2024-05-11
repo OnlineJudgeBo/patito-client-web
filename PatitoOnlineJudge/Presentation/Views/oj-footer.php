@@ -1,6 +1,6 @@
 <footer class="mt-auto bg-slate-800	text-white p-2">
   <div class="text-center mt-1">
-    <p> Algun problema, Envie un correo:
+    <p> Sugerencias a:
       <a href="mailto:samuel.loza26@gmail.com" class="text-blue-300 hover:text-blue-500">samuel.loza26@gmail.com</a>
     </p>
     <p>O a través de Telegram:

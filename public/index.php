@@ -19,7 +19,7 @@ error_reporting(E_ALL);
 try {
     $router = new Router();
     $authMiddleware = new AuthMiddleware();
-    $prefix = "";
+    $prefix = "/oj";
 
     $databaseConnector = new DatabaseConnector();
     $logRepository = new LogRepository($databaseConnector);
