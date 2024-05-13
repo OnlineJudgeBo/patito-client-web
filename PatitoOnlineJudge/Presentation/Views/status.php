@@ -178,8 +178,6 @@
                                         $value["solution_id"]
                                     );
                                     
-                                } else {
-                                    echo $judge_result[$value["result"]];
                                 }
                                 ?>
                                 <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
