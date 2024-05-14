@@ -36,6 +36,6 @@ class Router
             return;
         }
 
-        header('Location: https://jv.umsa.bo/404.php');
+        require  __DIR__ . '/../../public/404.php';
     }
 }
