@@ -9,8 +9,33 @@ if (isset($_SESSION['user_id'])) {
         isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
         isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
         isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"      ||
-        isset($_SESSION["contest_creator"])) {
+        isset($_SESSION["contest_creator"])
+    ) {
         echo "<a href='https://jv.umsa.bo/admin/' class='" . $className . "' target='_blank' >Administrar</a>";
+    } else {
+    ?>
+        <script type="text/javascript">
+            window.onload = function() {
+                if (localStorage.getItem("isReadyToTakeSurvey") === null) {
+                    verifyTime();
+                }
+            };
+
+            function verifyTime() {
+                if (confirm("¿Tienes tiempo libre?")) {
+                    newTab();
+                } else {
+                    localStorage.setItem("isReadyToTakeSurvey", "true");
+                    alert('¡No hay problema, sigue con tu trabajo!');
+                }
+            }
+
+            function newTab() {
+                window.open('http://survey.aquicasual.me/index.php/567236?lang=es-informal', '_blank');
+            }
+        </script>
+
+    <?php
     }
 } else {
     ?>
