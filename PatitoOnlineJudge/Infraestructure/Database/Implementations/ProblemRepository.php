@@ -42,10 +42,19 @@ class ProblemRepository implements IProblemRepository {
     }
 
     public function getProblems($offset, $limit) {
-        $sql = "SELECT problem_id, title, source, submit, accepted, tags 
-                FROM problem
-                WHERE defunct='N'
-                LIMIT :limit OFFSET :offset";
+        $sql = "SELECT problem_id, title, source, submit, accepted, 
+        FROM problem
+        WHERE defunct = 'N'
+            AND problem.problem_id NOT IN (
+            SELECT contest_problem.problem_id 
+            FROM (
+              SELECT * 
+                FROM contest
+                WHERE NOW() BETWEEN contest.start_time AND contest.end_time
+            ) c 
+            INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
+        )
+        LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
         $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
