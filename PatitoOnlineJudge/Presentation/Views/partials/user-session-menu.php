@@ -22,16 +22,14 @@ if (isset($_SESSION['user_id'])) {
             };
 
             function verifyTime() {
-                if (confirm("¿Tienes tiempo libre?")) {
+                localStorage.setItem("isReadyToTakeSurvey", "true");
+                if (confirm("¿Tienes unos minutos para ayudarnos a mejorar el Juez Virtual?")) {
                     newTab();
-                } else {
-                    localStorage.setItem("isReadyToTakeSurvey", "true");
-                    alert('¡No hay problema, sigue con tu trabajo!');
                 }
             }
 
             function newTab() {
-                window.open('http://survey.aquicasual.me/index.php/567236?lang=es-informal', '_blank');
+                window.open('http://survey.aquicasual.me/index.php/567236?lang=es', '_blank');
             }
         </script>
 
