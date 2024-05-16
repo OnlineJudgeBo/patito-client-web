@@ -42,7 +42,7 @@ class ProblemRepository implements IProblemRepository {
     }
 
     public function getProblems($offset, $limit) {
-        $sql = "SELECT problem_id, title, source, submit, accepted, 
+        $sql = "SELECT problem_id, title, source, submit, accepted
         FROM problem
         WHERE defunct = 'N'
             AND problem.problem_id NOT IN (
