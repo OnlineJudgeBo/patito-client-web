@@ -83,10 +83,10 @@
                                 isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
                             ) {
                             ?>
-                                <a href="/admin/problem_edit.php?id=<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                <a href="/admin/problems/edit/<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                     Editar
                                 </a>
-                                <a href="/admin/quixplorer/index.php?action=list&dir=<?php echo $problem["problem_id"] ?>&order=name&srt=yes" target="_blank" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                <a href="/admin/fileManager/<?php echo $problem["problem_id"] ?>" target="_blank" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                     TestData
                                 </a>
                             <?php

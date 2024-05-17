@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /
 Allow: /contest
 Allow: /problemset
-Allow: ranklist
+Allow: /ranklist
