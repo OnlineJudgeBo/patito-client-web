@@ -12,7 +12,8 @@
     <script>
         window.localStorage.removeItem('accessToken');
         window.localStorage.removeItem('refreshToken');
-
+        window.localStorage.removeItem('user_id');
+        
         setTimeout(function() {
             window.location.href = 'login.php';
         }, 1000);

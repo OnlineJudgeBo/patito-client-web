@@ -38,6 +38,7 @@ class LoginService implements ILoginService
                 $tokens = $this->jwtService->generateTokens($user['user_id'], $userRoles);
                 setcookie('accessToken', $tokens["accessToken"], 0, '/', '', true, false);
                 setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', true, false);
+                setcookie('user_id', $user['user_id'], 0, '/', '', true, false);
                 return $user;
             }
         }

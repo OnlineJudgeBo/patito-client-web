@@ -10,7 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./assets/base.css">
   <script>
-  ['accessToken', 'refreshToken'].forEach(t=>{let v=document.cookie.split('; ').find(c=>c.startsWith(t+'='))?.split('=')[1];if(v)localStorage.setItem(t,v);});
+  ['accessToken', 'refreshToken', 'user_id'].forEach(t=>{let v=document.cookie.split('; ').find(c=>c.startsWith(t+'='))?.split('=')[1];if(v)localStorage.setItem(t,v);});
 </script>
 
 </head>
