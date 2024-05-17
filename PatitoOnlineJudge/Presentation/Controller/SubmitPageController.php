@@ -17,7 +17,7 @@ class SubmitPageController
 
     public function __construct(ISubmitPageService $submitPageService)
     {
-        $this->title = "Bienvenido al Juez de la Carrera de Informatica - UMSA";
+        $this->title = "Bienvenido al Juez Virtual";
         $this->submitPageService = $submitPageService;
         $this->cid = 0;
         $this->pid = 0;
@@ -54,10 +54,15 @@ class SubmitPageController
             $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source, $this->language_id);
             header("Location: status.php?cid=".$this->cid);
         } else {
-            $this->submitPageService->saveProblemRequest($this->pid, $this->source, $this->language_id);
+            try {
+                $this->submitPageService->saveProblemRequest($this->pid, $this->source, $this->language_id);
+            } catch (\Exception $e) {
+                $error = $e->getMessage();
+                require_once __DIR__."/../Views/genericError.php";
+                die();
+            }
             header("Location: status.php");
         }
-
     }
 
     public function render()

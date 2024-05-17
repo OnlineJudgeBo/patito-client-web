@@ -2,6 +2,8 @@
 
 namespace PatitoOnlineJudge\Core\Application\Services;
 
+use Exception;
+use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IProblemRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ISourceCodeRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ISubmitPageRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
@@ -13,11 +15,18 @@ class SubmitPageService implements ISubmitPageService
     private $submitPageRepository;
     private $sourceCodeRepository;
     private $contestService;
+    private $problemRepository;
 
-    public function __construct(ISubmitPageRepository $submitPageRepository, ISourceCodeRepository $sourceCodeRepository, IContestService $contestService)
+    public function __construct(
+        ISubmitPageRepository $submitPageRepository,
+        ISourceCodeRepository $sourceCodeRepository,
+        IContestService $contestService,
+        IProblemRepository $problemRepository
+    )
     {
         $this->submitPageRepository = $submitPageRepository;
         $this->sourceCodeRepository = $sourceCodeRepository;
+        $this->problemRepository    = $problemRepository;
         $this->contestService       = $contestService;
     }
 
@@ -37,6 +46,9 @@ class SubmitPageService implements ISubmitPageService
 
     public function saveProblemRequest($pid, $source, $language_id)
     {
+        if ($this->problemRepository->isProblemInContest($pid)) {
+            throw new Exception("Actualmente, el problema {$pid} no se puede ver porque está siendo utilizado en un contest.");
+        }
         $solutionModel = new SolutionModel();
         $solutionModel->language = $language_id;
         $solutionModel->code_length = strlen($source);

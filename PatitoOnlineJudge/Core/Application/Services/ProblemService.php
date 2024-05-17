@@ -2,6 +2,7 @@
 
 namespace PatitoOnlineJudge\Core\Application\Services;
 
+use Exception;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IProblemRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemService;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\ProblemRepository;
@@ -23,6 +24,9 @@ class ProblemService implements IProblemService
 
     public function getProblemById($pid)
     {
+        if ($this->isProblemInContest($pid)) {
+            throw new Exception("Actualmente, el problema {$pid} no se puede ver porque está siendo utilizado en un contest.");
+        }
         return $this->problemRepository->getProblemById($pid);
     }
 
@@ -42,5 +46,10 @@ class ProblemService implements IProblemService
             return $this->problemRepository->getProblems($offset, $limit);
         }
         return $this->problemRepository->getProblemsByUser($offset, $limit, $this->userId);
+    }
+
+    public function isProblemInContest(int $pid): bool
+    {
+        return $this->problemRepository->isProblemInContest($pid);
     }
 }

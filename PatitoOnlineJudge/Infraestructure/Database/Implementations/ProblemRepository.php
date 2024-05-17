@@ -69,14 +69,25 @@ class ProblemRepository implements IProblemRepository {
                     problem.source,
                     problem.submit,
                     problem.accepted,
-                    problem.tags,
-                    (SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result = 4 AND solution.user_id = :userid1) AS ac,
-                    (SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result != 4 AND solution.user_id =:userid2) AS wa
+                    (
+                        SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result = 4 AND solution.user_id = :userid1
+                    ) AS ac,
+                    (
+                        SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result != 4 AND solution.user_id =:userid2
+                    ) AS wa
                 FROM
                     problem
                 WHERE
-                    problem.defunct = 'N'
-                ORDER BY problem.accepted DESC
+                    problem.defunct = 'N' AND problem.problem_id NOT IN (
+                        SELECT contest_problem.problem_id 
+                        FROM (
+                          SELECT * 
+                            FROM contest
+                            WHERE NOW() BETWEEN contest.start_time AND contest.end_time
+                        ) c 
+                        INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
+                        ORDER BY problem.accepted DESC
+                    )
                 LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
@@ -85,5 +96,23 @@ class ProblemRepository implements IProblemRepository {
         $stmt->bindParam(":userid2", $userId, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function isProblemInContest($problem_id)
+    {
+        $sql = "SELECT count(*) AS total
+        FROM (
+            SELECT * 
+            FROM contest
+            WHERE NOW() BETWEEN contest.start_time AND contest.end_time
+        ) c 
+        INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
+        WHERE problem_id = :problem_id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(":problem_id", $problem_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return intval($result['total']) > 0;
     }
 }

@@ -13,4 +13,6 @@ interface IProblemRepository {
     public function getProblems($offset, $limit);
 
     public function getProblemsByUser($offset, $limit, $userId);
+
+    public function isProblemInContest($problem_id);
 }

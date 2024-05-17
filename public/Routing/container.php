@@ -100,7 +100,12 @@ $builder->addDefinitions([
     IShowSourceService::class => \DI\create(ShowSourceService::class)->constructor(\DI\get(ShowSourceRepository::class)),
     ISolutionService::class => \DI\create(SolutionService::class)->constructor(\DI\get(SolutionRepository::class)),
     //IStatusService::class => \DI\create(StatusService::class)->constructor(\DI\get(StatusRepository::class)),
-    ISubmitPageService::class => \DI\create(SubmitPageService::class)->constructor(\DI\get(SubmitPageRepository::class), \DI\get(SourceCodeRepository::class), \DI\get(ContestService::class)),
+    ISubmitPageService::class => \DI\create(SubmitPageService::class)->constructor(
+        \DI\get(SubmitPageRepository::class),
+        \DI\get(SourceCodeRepository::class),
+        \DI\get(ContestService::class),
+        \DI\get(ProblemRepository::class),
+    ),
     IExcelService::class => \DI\create(ExcelService::class)->constructor(),
     IUserInfoService::class => \DI\create(UserInfoService::class)->constructor(\DI\get(SolutionRepository::class), \DI\get(LoginRepository::class)),
 

@@ -15,4 +15,6 @@ interface IProblemService
     public function getProblemsCount();
 
     public function getProblems($offset, $limit);
+
+    public function isProblemInContest(int $pid): bool;
 }
