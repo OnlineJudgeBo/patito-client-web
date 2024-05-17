@@ -74,7 +74,7 @@ class SolutionRepository implements ISolutionRepository
             $contest_id = intval($params['contest_id']);
             $sql .= " AND `contest_id` = " . intval($contest_id);
         } else {
-            $sql .= " AND contest_id IS NULL";
+            $sql .= " AND COALESCE(contest_id, 0) = 0";
         }
 
         if (isset($params['problem_id'])) {
