@@ -143,6 +143,10 @@ try {
         require  __DIR__ . '/Routing/spi.php';
     });
 
+    $router->get($prefix . '/redirect.php', function () {
+        require  __DIR__ . '/Routing/redirect.php';
+    });    
+
     $router->dispatch();
 } catch (\Throwable $e) {
     $error = error_get_last();
