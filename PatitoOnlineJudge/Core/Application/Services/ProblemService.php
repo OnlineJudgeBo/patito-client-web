@@ -24,9 +24,9 @@ class ProblemService implements IProblemService
 
     public function getProblemById($pid)
     {
-        if ($this->isProblemInContest($pid)) {
-            throw new Exception("Actualmente, el problema {$pid} no se puede ver porque está siendo utilizado en un contest.");
-        }
+        //if ($this->isProblemInContest($pid)) {
+        //    throw new Exception("Actualmente, el problema {$pid} no se puede ver porque está siendo utilizado en un contest.");
+        //}
         return $this->problemRepository->getProblemById($pid);
     }
 
