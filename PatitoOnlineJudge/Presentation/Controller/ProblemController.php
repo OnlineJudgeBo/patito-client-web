@@ -43,9 +43,9 @@ class ProblemController
             try {
                 $problem = $this->problemService->getProblemById($this->pid);
             } catch (\Exception $e) {
-                $error = $e->getMessage();
-                require_once __DIR__."/../Views/genericError.php";
-                die();
+                //$error = $e->getMessage();
+                //require_once __DIR__."/../Views/genericError.php";
+                //die();
             }
         }
         require_once __DIR__ . "/../Views/problem.php";
