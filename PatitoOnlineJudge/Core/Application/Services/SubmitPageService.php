@@ -47,7 +47,7 @@ class SubmitPageService implements ISubmitPageService
     public function saveProblemRequest($pid, $source, $language_id)
     {
         if ($this->problemRepository->isProblemInContest($pid)) {
-            throw new Exception("Actualmente, el problema {$pid} no se puede ver porque está siendo utilizado en un contest.");
+            throw new Exception("Actualmente, el problema {$pid} no se puede enviar porque está siendo utilizado en un contest. Para subir su solución entre al contest y envie desde alli.");
         }
         $solutionModel = new SolutionModel();
         $solutionModel->language = $language_id;
