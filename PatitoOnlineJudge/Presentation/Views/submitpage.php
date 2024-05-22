@@ -19,7 +19,7 @@
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                 <div class="flex flex-col items-center p-6">
                     Lenguaje:
-                    <select id="language" name="language" onchange="setModelLanguage(this)">
+                    <select id="language" name="language" onchange="setModelLanguage(this)" required>
                         <?php
                         include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
                         foreach ($languagesAvailable as $key => $value) {
@@ -86,7 +86,7 @@
             var currentValue = element.value;
             const model = editor.getModel();
             if (currentValue == 0 || currentValue == 1 || currentValue == 16) {
-                monaco.editor.setModelLanguage(model, 'c++');
+                monaco.editor.setModelLanguage(model, 'cpp');
             } else if (currentValue == 3) {
                 monaco.editor.setModelLanguage(model, 'java');
             } else if (currentValue == 17 || currentValue == 19) {
