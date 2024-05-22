@@ -52,7 +52,7 @@ class SubmitPageController
     {
         if ($this->cid > 0) {
             $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source, $this->language_id);
-            header("Location: status.php?cid=".$this->cid);
+            header("Location: status.php?cid=".$this->cid."&user_id=".$_SESSION["user_id"]);
         } else {
             try {
                 $this->submitPageService->saveProblemRequest($this->pid, $this->source, $this->language_id);
