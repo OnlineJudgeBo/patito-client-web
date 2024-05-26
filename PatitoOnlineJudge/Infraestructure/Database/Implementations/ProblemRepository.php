@@ -107,7 +107,9 @@ class ProblemRepository implements IProblemRepository {
             WHERE NOW() BETWEEN contest.start_time AND contest.end_time
         ) c 
         INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
-        WHERE problem_id = :problem_id";
+        WHERE problem_id = :problem_id
+            AND problem_id NOT IN (1000)
+        ";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":problem_id", $problem_id, PDO::PARAM_INT);
