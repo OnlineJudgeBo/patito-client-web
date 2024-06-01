@@ -17,8 +17,8 @@ class JwtAuth
             "roles" => implode(",", array_column($userRoles, 'role_name')),
             "iat" => $actualTime,
             "exp" => $expirationTime,
-            "iss" => "TuValorDeIssuer",
-            "aud" => "TuValorDeAudiencia"
+            "iss" => "https://jv.umsa.bo",
+            "aud" => "https://jv.umsa.bo"
         ];
 
         $accessToken = JWT::encode($payloadAccessToken, $claveSecreta, 'HS256');
@@ -28,8 +28,8 @@ class JwtAuth
             "roles" => implode(",", array_column($userRoles, 'role_name')),
             "iat" => $actualTime,
             "exp" => $expirationTimeRefresh,
-            "iss" => "TuValorDeIssuer",
-            "aud" => "TuValorDeAudiencia"
+            "iss" => "https://jv.umsa.bo",
+            "aud" => "https://jv.umsa.bo"
         ];
 
         $refreshToken = JWT::encode($payloadRefreshToken, $claveSecreta, 'HS256');
