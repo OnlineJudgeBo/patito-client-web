@@ -35,38 +35,39 @@
       </div>
 
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start text-custom-blue ">
-        <div class="flex flex-shrink-0 items-center">
+        <div class="hidden lg:flex flex flex-shrink-0 items-center">
           <img class="h-16 w-auto" src="./assets/logo.svg" alt="Juez Virtual Patito">
         </div>
 
-        <div class="hidden sm:ml-6 sm:block">
-          <div class="flex space-x-4 pt-2">
-            <a href="/" class="text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium">Inicio</a>
-            <a href="contest.php" class="text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium">Concursos</a>
-            <a href="problemset.php" class="text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium">Problemas</a>
-            <a href="ranklist.php" class="text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium">Ranking</a>
-            <a href="status.php" class="text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium">Envios</a>
-            <a href="faqs.php" class="text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium">Ayuda</a>
+        <div class="hidden lg:ml-6 sm:flex">
+          <div class="flex space-x-4 pt-2 space-x-1">
+            <a href="/" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Inicio</a>
+            <a href="contest.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
+            <a href="problemset.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
+            <a href="ranklist.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
+            <a href="status.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envios</a>
+            <a href="faqs.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ayuda</a>
           </div>
         </div>
-      </div>
 
-      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 hidden sm:ml-6 sm:block">
-        <div class="flex space-x-4">
+        <div class="hidden sm:ml-6 sm:flex">
+          <div class="flex space-x-4 pt-2">
           <?php include __DIR__.'/partials/user-session-menu.php';?>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
 
   <div class="sm:hidden hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
-      <a href="/" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">Inicio</a>
-      <a href="contest.php" class="text-white hover:text-yellow-400 block rounded-md px-3 py-2 text-base font-medium">Concursos</a>
-      <a href="problemset.php" class="text-white hover:text-yellow-400 block rounded-md px-3 py-2 text-base font-medium">Problemas</a>
-      <a href="ranklist.php" class="text-white hover:text-yellow-400 block rounded-md px-3 py-2 text-base font-medium">Ranking</a>
-      <a href="status.php" class="text-white hover:text-yellow-400 block rounded-md px-3 py-2 text-base font-medium">Envios</a>
-      <a href="faqs.php" class="text-white hover:text-yellow-400 block rounded-md px-3 py-2 text-base font-medium">Ayuda</a>
+      <a href="/" class="bg-gray-900 text-white block rounded-md px-3 py-2">Inicio</a>
+      <a href="contest.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
+      <a href="problemset.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
+      <a href="ranklist.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
+      <a href="status.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envios</a>
+      <a href="faqs.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ayuda</a>
       <?php include __DIR__.'/partials/user-session-menu.php';?>
     </div>
   </div>

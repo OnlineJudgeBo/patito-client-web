@@ -57,7 +57,7 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <h2 class="text-lg font-bold mb-2">Solución usando C</h2>
                     <pre class="bg-gray-100 p-3 overflow-auto">
-#include <iostream>
+#include &lt;iostream&gt;
 using namespace std;
 int main(){
   int a,b;
@@ -71,7 +71,8 @@ int main(){
                 <div class="bg-white shadow-md rounded p-4">
                     <h2 class="text-lg font-bold mb-2">Solución usando C++</h2>
                     <pre class="bg-gray-100 p-3 overflow-auto">
-#include <stdio.h>
+#include &lt;stdio.h&gt;
+
 int main(){
   int a,b;
   while(scanf("%d %d",&a, &b) != EOF)

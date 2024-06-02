@@ -14,10 +14,10 @@ foreach ($view_contest as $row) {
 	<a href="contest.php?cid='.$row["contest_id"].'">
 		<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white mb-2 flex flex-col justify-center items-center">
 			<div class="pt-2 text-center mb-2">
-				<div class="font-bold text-xl">' . $row["title"] . '</div>
+				<div class="font-bold text-xl py-2">' . $row["title"] . '</div>
 			</div>
 	
-			<div class="pb-1 flex flex-col justify-center items-center">
+			<div class="px-2 pb-1 flex flex-col justify-center items-center">
 				<span class="inline-block rounded-full text-base font-semibold ' . $css1 . '">' . $row["start_time_run"] . '</span>
 				<span class="inline-block rounded-full text-base font-semibold ' . $css2 . '">' . $row["start_time"] . '</span>
 			</div>

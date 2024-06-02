@@ -1,5 +1,5 @@
 <?php
-$className = "text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2 text-sm font-medium";
+$className = "block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2";
 if (isset($_SESSION['user_id'])) {
 ?>
     <a href="userInfo.php" class="<?php echo $className; ?>">Perfil</a>
@@ -12,28 +12,6 @@ if (isset($_SESSION['user_id'])) {
         isset($_SESSION["contest_creator"])
     ) {
         echo "<a href='https://jv.umsa.bo/admin/' class='" . $className . "' target='_blank' >Administrar</a>";
-    } else {
-    ?>
-        <script type="text/javascript">
-            window.onload = function() {
-                if (localStorage.getItem("isReadyToTakeSurvey") === null) {
-                    verifyTime();
-                }
-            };
-
-            function verifyTime() {
-                localStorage.setItem("isReadyToTakeSurvey", "true");
-                if (confirm("¿Tienes unos minutos para ayudarnos a mejorar el Juez Virtual?")) {
-                    newTab();
-                }
-            }
-
-            function newTab() {
-                window.open('http://survey.aquicasual.me/index.php/567236?lang=es', '_blank');
-            }
-        </script>
-
-    <?php
     }
 } else {
     ?>

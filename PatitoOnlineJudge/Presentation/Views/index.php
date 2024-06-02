@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es" class="">
 
 <head>
   <meta charset="UTF-8">
@@ -15,7 +15,7 @@
 
 </head>
 
-<body class="flex flex-col h-full">
+<body class="w-full fixed top-0 left-0 z-50">
 
   <?php
   require_once "oj-header.php" ?>
