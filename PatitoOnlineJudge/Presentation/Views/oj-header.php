@@ -21,7 +21,9 @@
 
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start text-custom-blue ">
         <div class="hidden lg:flex flex flex-shrink-0 items-center">
-          <img class="h-16 w-auto" src="./assets/logo.svg" alt="Juez Virtual Patito">
+          <a href="https://jv.umsa.bo">
+            <img class="h-16 w-auto" src="./assets/logo.svg" alt="Juez Virtual Patito">
+          <a>
         </div>
 
         <div class="hidden lg:ml-6 sm:flex">
