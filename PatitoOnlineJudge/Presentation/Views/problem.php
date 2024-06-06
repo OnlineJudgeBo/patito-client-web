@@ -8,6 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
+    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
         MathJax.Hub.Config({
             tex2jax: {

@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./assets/base.css">
+    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
 </head>
 
 <body class="flex flex-col h-full">

@@ -11,6 +11,7 @@
     <script src="./assets/highlight/highlight.min.js"></script>
     <link rel="stylesheet" href="./assets/highlight/styles/nnfx-light.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
 
     <link rel="stylesheet" href="./assets/base.css">
     <style>

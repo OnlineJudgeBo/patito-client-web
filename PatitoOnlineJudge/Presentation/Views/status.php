@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.css">
     <script src="https://cdn.datatables.net/select/2.0.0/js/dataTables.select.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.0/js/select.dataTables.js"></script>
+    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
     <style>
         .dt-paging.paging_full_numbers {
             display: flex;
@@ -70,6 +71,7 @@
         div.dt-container .dt-paging .ellipsis {
             padding: 0 1em;
         }
+
         table.dataTable>tbody>tr.selected>* {
             box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.3) !important;
             box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-selected), 0.3) !important;
@@ -177,7 +179,6 @@
                                         '<button onclick="rejudgeSolution(%d)" class="border-b transition-colors hover:bg-muted/50">Rejudge</button>',
                                         $value["solution_id"]
                                     );
-                                    
                                 }
                                 ?>
                                 <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
@@ -387,41 +388,40 @@
     }
 </script>
 <script>
-function getCookieValue(name) {
-    const value = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
-    return value ? value.pop() : null;
-}
-
-function rejudgeSolution(solutionId) {
-    const token = getCookieValue('accessToken');
-
-    if (!token) {
-        console.error('No access token found in cookies');
-        return;
+    function getCookieValue(name) {
+        const value = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+        return value ? value.pop() : null;
     }
 
-    fetch(`https://jv.umsa.bo/api/Judge/rejudge/solution/${solutionId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            window.location.reload();
-        } else {
-            throw new Error(response);
-        }
-    })
-    .then(response => {
-        console.log('Success:', response);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
+    function rejudgeSolution(solutionId) {
+        const token = getCookieValue('accessToken');
 
+        if (!token) {
+            console.error('No access token found in cookies');
+            return;
+        }
+
+        fetch(`https://jv.umsa.bo/api/Judge/rejudge/solution/${solutionId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    throw new Error(response);
+                }
+            })
+            .then(response => {
+                console.log('Success:', response);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 </script>
 
 </html>

@@ -8,6 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
     <link rel="stylesheet" href="./assets/base.css">
     <style>
         #piechart {

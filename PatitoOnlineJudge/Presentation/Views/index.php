@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -11,14 +11,13 @@
   <link rel="stylesheet" href="./assets/base.css">
   <script>
   ['accessToken', 'refreshToken', 'user_id'].forEach(t=>{let v=document.cookie.split('; ').find(c=>c.startsWith(t+'='))?.split('=')[1];if(v)localStorage.setItem(t,v);});
-</script>
-
+  </script>
+  <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
 </head>
 
 <body class="w-full fixed top-0 left-0 z-50">
 
-  <?php
-  require_once "oj-header.php" ?>
+  <?php require_once "oj-header.php" ?>
 
   <main class="container mx-auto p-4 sm:grid sm:grid-cols-4 sm:gap-4">
     <div class="col-span-3">
@@ -50,7 +49,7 @@
                   <th class="p-4 font-semibold">Resultado</th>
                   <th class="p-4 font-semibold">Memoria</th>
                   <th class="p-4 font-semibold">Tiempo</th>
-                  <th class="p-4 font-semibold">Hora de Envio</th>
+                  <th class="p-4 font-semibold">Hora de Envió</th>
                 </tr>
               </thead>
 
