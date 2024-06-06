@@ -8,7 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
-    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
+    <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
         MathJax.Hub.Config({
             tex2jax: {
@@ -35,6 +35,19 @@
         <div class="col-span-2">
 
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+
+
+                <div id="notification" class="notification" role="alert">
+                    <div class="content">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                        </svg>
+                        <div class="text">
+                            <p class="title">Copiado al portapapeles</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex flex-col items-center p-6">
                     <div class="text-center">
                         <h2 class="text-xl font-bold tracking-tight text-black mb-1"><?php echo $problem["title"] ?></h2>
@@ -132,7 +145,7 @@
 
                         <div>
                             <h3 class="text-xl font-bold tracking-tight text-black mb-1 inline-block">Ejemplo Salida</h3>
-                            <a href="javascript:CopyToClipboard('#sampleout')" alt="Click para copiar" class="inline-block ml-2">
+                            <a href="javascript:CopyToClipboard('sampleout')" alt="Click para copiar" class="inline-block ml-2">
                                 <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/icons/clipboard.svg" alt="Copy icon" class="w-5 h-5">
                             </a>
                             <div class="bg-gray-100 p-2 rounded">
@@ -156,15 +169,22 @@
     <script>
         function CopyToClipboard(id) {
             const textToCopy = document.getElementById(id).innerText;
-
             navigator.clipboard.writeText(textToCopy).then(() => {
-                console.log('Text successfully copied to clipboard');
-            })
-            .catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
+                    showNotification()
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
         }
 
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'flex';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 1000);
+        }
     </script>
 
 </body>

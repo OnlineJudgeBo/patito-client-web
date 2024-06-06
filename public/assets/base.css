@@ -30,3 +30,44 @@
 .red-text {
     color: #F44336 !important;
 }
+
+.notification {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background-color: #e6fffa;
+    border-top-width: 4px;
+    border-top-color: #38b2ac;
+    border-radius: 0 0 0.375rem 0.375rem;
+    color: #234e52;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    width: 300px;
+}
+
+.notification .icon {
+    fill: currentColor;
+    height: 1.5rem;
+    width: 1.5rem;
+    color: #38b2ac;
+    margin-right: 1rem;
+}
+
+.notification .content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.notification .content .text {
+    margin-left: 1rem;
+}
+
+.notification .content .text .title {
+    font-weight: bold;
+}
+
+.notification .content .text .message {
+    font-size: 0.875rem;
+}
