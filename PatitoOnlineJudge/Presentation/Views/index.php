@@ -15,7 +15,7 @@
   <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
 </head>
 
-<body class="w-full fixed top-0 left-0 z-50">
+<body class="w-full top-0 left-0 z-50">
 
   <?php require_once "oj-header.php" ?>
 
