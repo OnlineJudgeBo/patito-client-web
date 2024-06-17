@@ -65,9 +65,10 @@ class SolutionRepository implements ISolutionRepository
     {
         $language_ext = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
 
-        $sql = "SELECT solution.*
+        $sql = "SELECT solution.*, similar_code.similar_s_id, similar_code.percentage
         FROM solution
         INNER JOIN  problem ON problem.problem_id = solution.problem_id
+        LEFT JOIN similar_code ON solution.solution_id = similar_code.solution_id
         WHERE solution.problem_id > 0 ";
 
         if (isset($params['contest_id'])) {

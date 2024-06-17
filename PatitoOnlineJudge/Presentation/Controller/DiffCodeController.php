@@ -1,0 +1,41 @@
+<?php
+
+namespace PatitoOnlineJudge\Presentation\Controller;
+
+use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IShowSourceService;
+
+class DiffCodeController
+{
+    public $title;
+    public $solution_id = "";
+    public $solution_id2 = "";
+    private $showSourceService;
+
+    public function __construct()
+    {
+        $this->title = "";
+    }
+
+    public function addService(IShowSourceService $showSourceService)
+    {
+        $this->showSourceService = $showSourceService;
+    }
+
+    public function setSolution1($sid)
+    {
+        $this->solution_id = $sid;
+    }
+
+    public function setSolution2($sid)
+    {
+        $this->solution_id2 = $sid;
+    }
+
+    public function render()
+    {
+
+        $sourceDetail  = $this->showSourceService->showCode($this->solution_id);
+        $sourceDetail2 = $this->showSourceService->showCode($this->solution_id2);
+        require_once __DIR__ . "/../Views/diffCode.php";
+    }
+}
