@@ -1,9 +1,9 @@
 <?php
-  echo file_get_contents(__DIR__."./partials/utils-header.php");
+  echo file_get_contents(__DIR__."/partials/utils-header.php");
 ?>
 <nav class="w-full bg-slate-900 border-b-4 border-green-700 bg-gradient-to-r from-bg-slate-600 to-bg-slate-700">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="relative flex h-16 items-center justify-between ">
+    <div class="relative flex h-16 items-center justify-between">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
         <!-- Mobile menu button-->
         <button type="button" class="mobile-menu-button relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
@@ -23,13 +23,19 @@
         <div class="hidden lg:flex flex flex-shrink-0 items-center">
           <a href="https://jv.umsa.bo">
             <img class="h-16 w-auto" src="./assets/logo.svg" alt="Juez Virtual Patito">
-          <a>
+          </a>
         </div>
 
         <div class="hidden lg:ml-6 sm:flex">
           <div class="flex space-x-4 pt-2 space-x-1">
             <a href="/" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Inicio</a>
-            <a href="contest.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
+            <div class="relative py-2">
+              <a href="contest.php" class="dropdown-toggle text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
+              <div class="dropdown-menu absolute hidden bg-white text-black rounded-md shadow-lg">
+                <a href="contest.php" class="block px-4 py-2 text-sm">Concurso de práctica</a>
+                <a href="icpc_contest.php" class="block px-4 py-2 text-sm">Concursos ICPC</a>
+              </div>
+            </div>
             <a href="problemset.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
             <a href="ranklist.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
             <a href="status.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envios</a>
@@ -39,10 +45,9 @@
 
         <div class="hidden sm:ml-6 sm:flex">
           <div class="flex space-x-4 pt-2">
-          <?php include __DIR__.'/partials/user-session-menu.php';?>
+            <?php include __DIR__.'/partials/user-session-menu.php';?>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -64,11 +69,25 @@
   document.addEventListener('DOMContentLoaded', function() {
     let menuButton = document.querySelector('.mobile-menu-button');
     let mobileMenu = document.getElementById('mobile-menu');
+    let dropdownToggle = document.querySelector('.dropdown-toggle');
+    let dropdownMenu = document.querySelector('.dropdown-menu');
 
     menuButton.addEventListener('click', function() {
       mobileMenu.classList.toggle('hidden');
       menuButton.querySelector('.open-icon').classList.toggle('hidden');
       menuButton.querySelector('.close-icon').classList.toggle('hidden');
     });
+
+    dropdownToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      dropdownMenu.classList.toggle('hidden');
+    });
   });
 </script>
+
+<style>
+  .dropdown-toggle:hover + .dropdown-menu,
+  .dropdown-menu:hover {
+    display: block;
+  }
+</style>

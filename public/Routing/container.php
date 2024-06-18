@@ -6,6 +6,7 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     IContestRankService,
     IContestService,
     IExcelService,
+    IIcpcContestService,
     ILoginService,
     INewsService,
     IProblemService,
@@ -32,12 +33,14 @@ use PatitoOnlineJudge\Core\Application\Services\{
     ShowSourceService,
     SolutionService,
     StatusService,
-    SubmitPageService
+    SubmitPageService,
+    IcpcContestService,
 };
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\{
     IContestRepository,
     IContestRankRepository,
+    IIcpcContestRepository,
     ILoginRepository,
     INewsRepository,
     IProblemRepository,
@@ -63,6 +66,7 @@ use PatitoOnlineJudge\Infraestructure\Database\Implementations\{
     StatusRepository,
     SubmitPageRepository,
     ContestRankRepository,
+    IcpcContestRepository,
     UserStaticRepository,
     SourceCodeRepository,
     UserInfoRepository
@@ -77,6 +81,7 @@ $builder->addDefinitions([
 
     // Repositories
     IContestRepository::class => \DI\get(ContestRepository::class),
+    IIcpcContestRepository::class => \DI\get(IcpcContestRepository::class),
     IContestRankRepository::class => \DI\get(ContestRankRepository::class),
     ILoginRepository::class => \DI\get(LoginRepository::class),
     INewsRepository::class => \DI\get(NewsRepository::class),
@@ -91,6 +96,7 @@ $builder->addDefinitions([
 
     // Servicios
     IContestService::class => \DI\create(ContestService::class)->constructor(\DI\get(ContestRepository::class)),
+    IIcpcContestService::class => \DI\create(IcpcContestService::class)->constructor(\DI\get(IcpcContestRepository::class)),
     IContestRankService::class => \DI\create(ContestRankService::class)->constructor(\DI\get(ContestRankRepository::class)),
     ILoginService::class => \DI\create(LoginService::class)->constructor(\DI\get(LoginRepository::class), \DI\get(JwtService::class), \DI\get(UserValidator::class)),
     INewsService::class => \DI\create(NewsService::class)->constructor(\DI\get(NewsRepository::class)),
