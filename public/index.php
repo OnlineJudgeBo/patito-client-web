@@ -149,7 +149,11 @@ try {
 
     $router->get($prefix . '/diff_code.php', function () {
         require  __DIR__ . '/Routing/diffCode.php';
-    });    
+    });
+
+    $router->get($prefix . '/icpc_contest.php', function () {
+        require  __DIR__ . '/Routing/icpc_contest.php';
+    });
 
     $router->dispatch();
 } catch (\Throwable $e) {
