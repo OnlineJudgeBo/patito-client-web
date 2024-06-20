@@ -1,5 +1,6 @@
 <?php
 
+use Dotenv\Dotenv;
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Application\Services\LogService;
 use PatitoOnlineJudge\Infraestructure\Database\Implementations\LogRepository;
@@ -9,17 +10,36 @@ require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
+$envPath = __DIR__."/..";
+if (file_exists($envPath . '/.env.local')) {
+    $dotenv = Dotenv::createImmutable($envPath, '.env.local');
+} else {
+    $dotenv = Dotenv::createImmutable($envPath, '.env');
+}
+$dotenv->load();
 
-/*
-ini_set("dispay_errors", "ON");
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
-try {
+$environment = $_SERVER['APP_ENV'] ?: 'production';
+
+if ($environment !== 'development') {
+    try {
+        executeRouter();
+    } catch (\Throwable $e) {
+        handleException($e);
+    }
+} else {
+    ini_set("display_errors", "ON");
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    executeRouter();
+}
+
+function executeRouter()
+{
+    global $prefix, $router, $authMiddleware;
     $router = new Router();
     $authMiddleware = new AuthMiddleware();
-    $prefix = "/oj";
+    $prefix = $_SERVER['APP_PREFIX_ROUTE'];
 
     $databaseConnector = new DatabaseConnector();
     $logRepository = new LogRepository($databaseConnector);
@@ -145,7 +165,7 @@ try {
 
     $router->get($prefix . '/redirect.php', function () {
         require  __DIR__ . '/Routing/redirect.php';
-    });   
+    });
 
     $router->get($prefix . '/diff_code.php', function () {
         require  __DIR__ . '/Routing/diffCode.php';
@@ -156,7 +176,10 @@ try {
     });
 
     $router->dispatch();
-} catch (\Throwable $e) {
+}
+
+function handleException(\Throwable $e)
+{
     $error = error_get_last();
     if ($error) {
         ob_start();
@@ -168,11 +191,11 @@ try {
     } else {
         $errorString = "No hay errores.";
     }
-    
-ob_start();
-print_r(json_encode($_REQUEST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-$requestDataString = ob_get_clean();
-    
+
+    ob_start();
+    print_r(json_encode($_REQUEST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    $requestDataString = ob_get_clean();
+
     ob_start();
     print_r($e);
     $backtrace = ob_get_clean();
@@ -201,8 +224,8 @@ $requestDataString = ob_get_clean();
         "\nUser Agent: " . $userAgent .
         "\nMessage:\n" . (isset($e) ? $e->getMessage() : "No Exception Message");
 
-    $botToken = "6489308644:AAH9mEGOGFtZH6VEG-1llCAikEETaDf0J1I";
-    $chatId = "67317765";
+    $botToken = $_SERVER['TELEGRAM_BOT_TOKEN'];
+    $chatId = $_SERVER['TELEGRAM_CHAT_ID'];;
 
     $url = "https://api.telegram.org/bot" . $botToken . "/sendMessage?chat_id=" . $chatId . "&text=" . urlencode($messageToSend);
     file_get_contents($url);

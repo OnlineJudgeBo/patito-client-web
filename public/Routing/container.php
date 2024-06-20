@@ -1,6 +1,7 @@
 <?php
 
 use DI\ContainerBuilder;
+use Dotenv\Dotenv;
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     IContestRankService,
@@ -17,6 +18,7 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     IStatusService,
     ISubmitPageService,
     IJwtService,
+    ISessionService,
     IUserInfoService
 };
 use PatitoOnlineJudge\Core\Application\Services\{
@@ -35,6 +37,7 @@ use PatitoOnlineJudge\Core\Application\Services\{
     StatusService,
     SubmitPageService,
     IcpcContestService,
+    SessionService,
 };
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\{
@@ -73,7 +76,13 @@ use PatitoOnlineJudge\Infraestructure\Database\Implementations\{
 };
 
 require_once __DIR__ . '/../../vendor/autoload.php';
-
+$envPath = __DIR__."/../..";
+if (file_exists($envPath . '/.env.local')) {
+    $dotenv = Dotenv::createImmutable($envPath, '.env.local');
+} else {
+    $dotenv = Dotenv::createImmutable($envPath, '.env');
+}
+$dotenv->load();
 $builder = new ContainerBuilder();
 
 $builder->addDefinitions([
@@ -95,8 +104,9 @@ $builder->addDefinitions([
     ISourceCodeRepository::class => \DI\get(SourceCodeRepository::class),
 
     // Servicios
+    ISessionService::class => DI\autowire(SessionService::class),
     IContestService::class => \DI\create(ContestService::class)->constructor(\DI\get(ContestRepository::class)),
-    IIcpcContestService::class => \DI\create(IcpcContestService::class)->constructor(\DI\get(IcpcContestRepository::class)),
+    IIcpcContestService::class => \DI\create(IcpcContestService::class)->constructor(\DI\get(SessionService::class), \DI\get(IcpcContestRepository::class)),
     IContestRankService::class => \DI\create(ContestRankService::class)->constructor(\DI\get(ContestRankRepository::class)),
     ILoginService::class => \DI\create(LoginService::class)->constructor(\DI\get(LoginRepository::class), \DI\get(JwtService::class), \DI\get(UserValidator::class)),
     INewsService::class => \DI\create(NewsService::class)->constructor(\DI\get(NewsRepository::class)),

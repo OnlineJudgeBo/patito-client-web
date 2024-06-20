@@ -1,5 +1,5 @@
 <?php
-  echo file_get_contents(__DIR__."/partials/utils-header.php");
+echo file_get_contents(__DIR__ . "/partials/utils-header.php");
 ?>
 <nav class="w-full bg-slate-900 border-b-4 border-green-700 bg-gradient-to-r from-bg-slate-600 to-bg-slate-700">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -21,31 +21,32 @@
 
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start text-custom-blue ">
         <div class="hidden lg:flex flex flex-shrink-0 items-center">
-          <a href="https://jv.umsa.bo">
+          <a href="<?php echo $_SERVER["APP_DOMAIN"]; ?>">
             <img class="h-16 w-auto" src="./assets/logo.svg" alt="Juez Virtual Patito">
           </a>
         </div>
 
         <div class="hidden lg:ml-6 sm:flex">
           <div class="flex space-x-4 pt-2 space-x-1">
-            <a href="/" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Inicio</a>
-            <div class="relative py-2">
-              <a href="contest.php" class="dropdown-toggle text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
-              <div class="dropdown-menu absolute hidden bg-white text-black rounded-md shadow-lg">
-                <a href="contest.php" class="block px-4 py-2 text-sm">Concurso de práctica</a>
+            <a href="<?php echo $_SERVER["APP_DOMAIN"]; ?>" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Inicio</a>
+            <div class="relative py-2 group">
+              <a class="dropdown-toggle text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
+              <div class="dropdown-menu hidden group-hover:block absolute bg-white text-black rounded-md shadow-lg">
+                <a href="contest.php" class="block px-4 py-2 text-sm">Concursos</a>
                 <a href="icpc_contest.php" class="block px-4 py-2 text-sm">Concursos ICPC</a>
               </div>
             </div>
+
             <a href="problemset.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
             <a href="ranklist.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
-            <a href="status.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envios</a>
+            <a href="status.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envíos</a>
             <a href="faqs.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ayuda</a>
           </div>
         </div>
 
         <div class="hidden sm:ml-6 sm:flex">
           <div class="flex space-x-4 pt-2">
-            <?php include __DIR__.'/partials/user-session-menu.php';?>
+            <?php include __DIR__ . '/partials/user-session-menu.php'; ?>
           </div>
         </div>
       </div>
@@ -54,13 +55,13 @@
 
   <div class="sm:hidden hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
-      <a href="/" class="bg-gray-900 text-white block rounded-md px-3 py-2">Inicio</a>
+      <a href="<?php echo $_SERVER["APP_DOMAIN"]; ?>" class="bg-gray-900 text-white block rounded-md px-3 py-2">Inicio</a>
       <a href="contest.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
       <a href="problemset.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
       <a href="ranklist.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
-      <a href="status.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envios</a>
+      <a href="status.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envíos</a>
       <a href="faqs.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ayuda</a>
-      <?php include __DIR__.'/partials/user-session-menu.php';?>
+      <?php include __DIR__ . '/partials/user-session-menu.php'; ?>
     </div>
   </div>
 </nav>
@@ -84,10 +85,3 @@
     });
   });
 </script>
-
-<style>
-  .dropdown-toggle:hover + .dropdown-menu,
-  .dropdown-menu:hover {
-    display: block;
-  }
-</style>

@@ -28,9 +28,15 @@ class IcpcContestRepository implements IIcpcContestRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAllContests()
+    public function getAllContests() : array
     {
         $stmt = $this->pdo->query("SELECT * FROM icpc_contest WHERE defunct = 'E' ORDER BY contest_id DESC LIMIT 50");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllContestsForAdmin() : array
+    {
+        $stmt = $this->pdo->query("SELECT * FROM icpc_contest ORDER BY contest_id");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

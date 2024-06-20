@@ -17,6 +17,7 @@
     "require": {
         "php-di/php-di": "^7.0",
         "paragonie/sodium_compat": "^1.20",
-        "firebase/php-jwt": "^6.10"
+        "firebase/php-jwt": "^6.10",
+        "vlucas/phpdotenv": "^5.6"
     }
 }

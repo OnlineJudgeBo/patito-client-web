@@ -4,44 +4,55 @@ namespace PatitoOnlineJudge\Core\Application\Services;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IIcpcContestRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IIcpcContestService;
+use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISessionService;
 
 class IcpcContestService implements IIcpcContestService
 {
-    protected $contestRepository;
+    protected $icpcContestRepository;
+    private $sessionService;
 
-    public function __construct(IIcpcContestRepository $contestRepository)
+    public function __construct(ISessionService $sessionService, IIcpcContestRepository $icpcContestRepository)
     {
-        $this->contestRepository = $contestRepository;
+        $this->icpcContestRepository = $icpcContestRepository;
+        $this->sessionService = $sessionService;
     }
 
     public function isContestActive($cid)
     {
-        return $this->contestRepository->isContestActive($cid);
+        return $this->icpcContestRepository->isContestActive($cid);
     }
 
     public function getContestProblems($cid)
     {
-        return $this->contestRepository->getProblemsByContestId($cid);
+        return $this->icpcContestRepository->getProblemsByContestId($cid);
     }
 
     public function getContestById($cid)
     {
-        return $this->contestRepository->getContestById($cid);
+        return $this->icpcContestRepository->getContestById($cid);
     }
 
     public function getAllContestDetails()
     {
-        return $this->contestRepository->getAllContests();
+        $role = $this->sessionService->getUserRole();
+
+        if ($role === 'Administrador') {
+            return $this->icpcContestRepository->getAllContestsForAdmin();
+        } elseif ($role === 'Docente' || $role === 'Auxiliar') {
+            return $this->icpcContestRepository->getAllContests();
+        } else {
+            return $this->icpcContestRepository->getAllContests();
+        }
     }
 
     public function isContestByIdPublic($cid)
     {
-        return $this->contestRepository->isContestByIdPublic($cid);
+        return $this->icpcContestRepository->isContestByIdPublic($cid);
     }
 
     public function getAcProblemsByIdContest($cid)
     {
-        $data = $this->contestRepository->getAcProblemsByIdContest($cid);
+        $data = $this->icpcContestRepository->getAcProblemsByIdContest($cid);
         $result = array();
         foreach ($data as $value) {
             $result[$value["user_id"]][] = $value["num"];
@@ -51,20 +62,20 @@ class IcpcContestService implements IIcpcContestService
 
     public function getProblemTitleByNumber($cid, $num)
     {
-        return $this->contestRepository->getProblemTitleByNumber($cid, $num);
+        return $this->icpcContestRepository->getProblemTitleByNumber($cid, $num);
     }
 
     public function getProblemIdByNum($cid, $pid)
     {
-        return $this->contestRepository->getProblemIdByNum($cid, $pid);
+        return $this->icpcContestRepository->getProblemIdByNum($cid, $pid);
     }
 
     public function languagesAvailable($cid)
     {
         if ($cid > 0) {
-            return $this->contestRepository->getLanguagesAvailable($cid);
+            return $this->icpcContestRepository->getLanguagesAvailable($cid);
         } else {
-            return $this->contestRepository->getAllLanguages();
+            return $this->icpcContestRepository->getAllLanguages();
         }
     }
 }

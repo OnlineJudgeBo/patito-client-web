@@ -21,9 +21,9 @@ class MailService implements IMailService
         $this->mailer->SMTPSecure = "ssl";
         $this->mailer->Host = "smtp.gmail.com";
         $this->mailer->Port = 465;
-        $this->mailer->Username = "acm.icpc.umsa@gmail.com";
-        $this->mailer->Subject = "Juez Virtual";
-        $this->mailer->Password = "qmrtolnhjblhijau";
+        $this->mailer->Username = $_SERVER["MAIL_USER_NAME"];
+        $this->mailer->Subject = $_SERVER["MAIL_SUBJECT"];
+        $this->mailer->Password = $_SERVER["MAIL_PASSWORD"];
     }
 
     public function sendWelcomeEmail($email, $userId) {
@@ -51,9 +51,9 @@ class MailService implements IMailService
                 </tr>
             </table>
             <br>
-            <p>Para restablecer tu contraseña, haz clic en el siguiente enlace: <a href='https://jv.umsa.bo/oj/updatepassword.php?token=" . urlencode($encodePassword) . "' style='color: #3278b3; text-decoration: none; font-weight: bold;'>Cambiar contraseña</a></p>
-            <p>O copia el siguiente enlace y pégalo en tu navegador:</p>
-            <p><a href='https://jv.umsa.bo/oj/updatepassword.php?token=" . urlencode($encodePassword) . "' style='color: #3278b3; text-decoration: none;'>https://jv.umsa.bo/oj/updatepassword.php?token=" . urlencode($encodePassword) . "</a></p>
+            <p>Para restablecer tu contraseña, haz clic en el siguiente enlace: <a href='".$_SERVER["APP_DOMAIN"]."/updatepassword.php?token=" . urlencode($encodePassword) . "' style='color: #3278b3; text-decoration: none; font-weight: bold;'>Cambiar contraseña</a></p>
+            <p>O copia el siguiente enlace y abre en tu navegador:</p>
+            <p><a href='".$_SERVER["APP_DOMAIN"]."/updatepassword.php?token=" . urlencode($encodePassword) . "' style='color: #3278b3; text-decoration: none;'>".$_SERVER["APP_DOMAIN"]."/updatepassword.php?token=" . urlencode($encodePassword) . "</a></p>
         </div>";
         return $sms;
     }
@@ -75,7 +75,7 @@ class MailService implements IMailService
             <p>O a través de Telegram:
                 <a href='https://t.me/zsams'>@zsams</a>
             </p>
-            <p>Para iniciar sesión, por favor visita: <a href='https://jv.umsa.bo/oj/login.php' style='color: #3278b3; text-decoration: none; font-weight: bold;'>Iniciar sesión</a></p>
+            <p>Para iniciar sesión, por favor visita: <a href='".$_SERVER["APP_DOMAIN"]."/login.php' style='color: #3278b3; text-decoration: none; font-weight: bold;'>Iniciar sesión</a></p>
         </div>";
         return $sms;
     }

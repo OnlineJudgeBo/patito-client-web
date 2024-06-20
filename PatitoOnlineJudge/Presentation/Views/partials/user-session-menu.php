@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])) {
         isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"      ||
         isset($_SESSION["contest_creator"])
     ) {
-        echo "<a href='https://jv.umsa.bo/admin/' class='" . $className . "' target='_blank' >Administrar</a>";
+        echo "<a href='".$_SERVER["APP_DOMAIN_ADMIN"]."' class='" . $className . "' target='_blank' >Administrar</a>";
     }
 } else {
     ?>

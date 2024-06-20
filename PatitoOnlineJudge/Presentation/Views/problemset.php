@@ -28,13 +28,13 @@
 
 <body class="flex flex-col h-full">
     <?php require_once "oj-header.php" ?>
-    <main class="container mx-auto p-4 grid grid-cols-0">
+    <main class="container mx-auto p-4 mt-5">
         <div class="col-span-2">
 
             <table id="problemList" class="display" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Resuelto?</th>
+                        <th></th>
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Setter</th>
@@ -45,12 +45,12 @@
             </table>
             <style>
                 .wide-column {
-                    width: 60% !important;
+                    width: 80% !important;
                 }
 
                 #problemList thead th,
                 #problemList tbody td {
-                    padding: 3px;
+                    padding: 6px;
                 }
             </style>
             <script>

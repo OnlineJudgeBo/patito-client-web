@@ -405,7 +405,7 @@
             return;
         }
 
-        fetch(`https://jv.umsa.bo/api/Judge/rejudge/solution/${solutionId}`, {
+        fetch(`<?php echo $_SERVER["APP_DOMAIN_API"]?>/Judge/rejudge/solution/${solutionId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

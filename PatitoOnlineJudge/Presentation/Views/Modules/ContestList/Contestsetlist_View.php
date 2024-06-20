@@ -32,6 +32,10 @@ $css2 = "";
 	<?php date_default_timezone_set("America/La_Paz"); ?>
 	var diff = new Date("<?php echo date("Y/m/d H:i:s") ?>").getTime() - new Date().getTime();
 
+	function addZeroDigit(digit) {
+		return digit >= 10 ? digit: "0" + digit;
+	}
+
 	function clock() {
 		var x, h, m, s, n, xingqi, y, mon, d;
 		var x = new Date(new Date().getTime() + diff);
@@ -44,7 +48,7 @@ $css2 = "";
 		m = x.getMinutes();
 		s = x.getSeconds();
 
-		n = y + "-" + mon + "-" + d + " " + (h >= 10 ? h : "0" + h) + ":" + (m >= 10 ? m : "0" + m) + ":" + (s >= 10 ? s : "0" + s);
+		n = y + "-" + addZeroDigit(mon) + "-" + addZeroDigit(d) + " " + addZeroDigit(h) + ":" + addZeroDigit(m) + ":" + addZeroDigit(s);
 		var elements = document.getElementsByTagName("nowdate");
 		var j = elements.length;
 		for (var i = 0; i < j; i++) {

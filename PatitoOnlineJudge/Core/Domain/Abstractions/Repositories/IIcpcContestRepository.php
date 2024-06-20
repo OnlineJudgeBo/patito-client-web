@@ -8,7 +8,9 @@ interface IIcpcContestRepository
 
     public function getContestById($cid);
 
-    public function getAllContests();
+    public function getAllContests() : array;
+
+    public function getAllContestsForAdmin() : array;
 
     public function getProblemsByContestId($cid);
 
