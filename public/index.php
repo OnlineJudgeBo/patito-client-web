@@ -233,8 +233,8 @@ function handleException(\Throwable $e)
     $url = "https://api.telegram.org/bot" . $botToken . "/sendMessage?chat_id=" . $chatId . "&text=" . urlencode("\nBacktrace Files:\n" . $backtrace);
     file_get_contents($url);
 
-    /*echo "<pre>";
+    echo "<pre>";
     print_r("Disculpe, hemos detectado un error interno. Por favor, regrese a la pantalla anterior.<br>Lo solucionaremos pronto, agradecemos su comprensión y paciencia. Gracias.");
     echo "</pre>";
-    exit();*/
+    exit();
 }
