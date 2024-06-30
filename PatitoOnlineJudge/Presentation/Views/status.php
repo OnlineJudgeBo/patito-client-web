@@ -195,6 +195,8 @@
                                                 isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
                                             ) {
                                                 echo "<a href=\"diff_code.php?solution_id=" . $value["solution_id"] . "&solution_id2=" . $value["similar_s_id"] . "\"><span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] ". $value['percentage']."%</span></a>";
+                                            } else {
+                                                echo "<span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] ". $value['percentage']."%</span>";
                                             }
                                         }
 
