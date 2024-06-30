@@ -188,7 +188,14 @@
                                     } elseif ($value["result"] == 4) {
                                         echo  $judge_result[$value["result"]];
                                         if ($value["percentage"] > 51) {
-                                            echo "<a href=\"diff_code.php?solution_id=" . $value["solution_id"] . "&solution_id2=" . $value["similar_s_id"] . "\"><span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] ". $value['percentage']."%</span></a>";
+                                            if (
+                                                isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
+                                                isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
+                                                isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
+                                                isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
+                                            ) {
+                                                echo "<a href=\"diff_code.php?solution_id=" . $value["solution_id"] . "&solution_id2=" . $value["similar_s_id"] . "\"><span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] ". $value['percentage']."%</span></a>";
+                                            }
                                         }
 
                                     } else {
