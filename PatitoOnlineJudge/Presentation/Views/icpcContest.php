@@ -40,8 +40,8 @@
                                         $css = "oddrow";
                                     }
                                     echo '<tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ' . $css . '">';
-                                    echo '<td class="p-4 result-blue"><a href="icpcContest.php?cid=' . $value["contest_id"] . '">' . $value["title"] . '</td>';
-                                    echo '<td class="p-4 result-blue"><a href="icpcContest.php?cid=' . $value["contest_id"] . '">' . $value["title"] . '</td>';
+                                    echo '<td class="p-4 result-blue"><a href="icpc_contest.php?cid=' . $value["contest_id"] . '">' . $value["title"] . '</td>';
+                                    echo '<td class="p-4 result-blue"><a href="icpc_contest.php?cid=' . $value["contest_id"] . '">' . $value["title"] . '</td>';
                                     echo '</tr>';
                                 }
                                 ?>
