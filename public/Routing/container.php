@@ -54,7 +54,7 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\{
     ISourceCodeRepository,
     IUserInfoRepository
 };
-use PatitoOnlineJudge\Infraestructure\Database\Implementations\{
+use PatitoOnlineJudge\Infrastructure\Database\Implementations\{
     ContestRepository,
     LoginRepository,
     NewsRepository,

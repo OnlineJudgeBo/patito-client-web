@@ -13,6 +13,7 @@ class ScoreDomainObject
     public $lastname;
     public $pass_rate;
     public $points;
+    public $p_virtual_num;
 
     public function __construct()
     {
@@ -22,10 +23,12 @@ class ScoreDomainObject
         $this->p_ac_sec  = array();
         $this->pass_rate = array();
         $this->points    = 0;
+        $this->p_virtual_num = array();
     }
 
-    public function Add($pid, $sec, $res, $pass_rate = 0, $obi = 0)
+    public function Add($pid, $sec, $res, $pass_rate = 0, $obi = 0, $is_virtual)
     {
+        $this->p_virtual_num[$pid] = $is_virtual;
         if ($obi == 0) {
             if (isset($this->p_ac_sec[$pid]) && $this->p_ac_sec[$pid] > 0) {
                 return;

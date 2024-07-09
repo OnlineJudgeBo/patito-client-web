@@ -1,5 +1,5 @@
 <?php
-namespace PatitoOnlineJudge\Infraestructure\Database\EntityObjects;
+namespace PatitoOnlineJudge\Infrastructure\Database\EntityObjects;
 
 class SolutionModel
 {

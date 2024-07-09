@@ -43,19 +43,19 @@ class ContestRankService implements IContestRankService
             }
             if (time() < $end_time && $lock < strtotime($row['in_date'])) {
                 if ($obi == 1) {
-                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 0, 0, 1);
+                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 0, 0, 1, $row['is_virtual']);
                 } else {
-                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 0, 0, 0);
+                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 0, 0, 0, $row['is_virtual']);
                 }
             } else {
                 if ($obi == 1) {
                     if ($row['pass_rate'] > 0.0) {
-                        $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 4, $row['pass_rate'], 1);
+                        $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 4, $row['pass_rate'], 1, 0, $row['is_virtual']);
                     } else {
-                        $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, intval($row['result']), 0, 1);
+                        $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, intval($row['result']), 0, 1, $row['is_virtual']);
                     }
                 } else {
-                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, intval($row['result']), 0);
+                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, intval($row['result']), 0, 0, $row['is_virtual']);
                 }
             }
         }

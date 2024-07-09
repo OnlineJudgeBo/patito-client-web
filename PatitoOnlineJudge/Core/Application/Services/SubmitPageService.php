@@ -8,7 +8,7 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ISourceCodeRepositor
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ISubmitPageRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISubmitPageService;
-use PatitoOnlineJudge\Infraestructure\Database\EntityObjects\SolutionModel;
+use PatitoOnlineJudge\Infrastructure\Database\EntityObjects\SolutionModel;
 
 class SubmitPageService implements ISubmitPageService
 {
@@ -22,8 +22,7 @@ class SubmitPageService implements ISubmitPageService
         ISourceCodeRepository $sourceCodeRepository,
         IContestService $contestService,
         IProblemRepository $problemRepository
-    )
-    {
+    ) {
         $this->submitPageRepository = $submitPageRepository;
         $this->sourceCodeRepository = $sourceCodeRepository;
         $this->problemRepository    = $problemRepository;
@@ -32,31 +31,45 @@ class SubmitPageService implements ISubmitPageService
 
     public function saveContestRequest($num, $cid, $source, $language_id)
     {
-        $solutionModel = new SolutionModel();
-        $solutionModel->language = $language_id;
-        $solutionModel->code_length = strlen($source);
-        $solutionModel->problem_id = $this->contestService->getProblemIdByNum($cid, $num);
-        $solutionModel->contest_id = $cid;
-        $solutionModel->user_id = $_SESSION["user_id"];
-        $solutionModel->ip = $_SERVER['REMOTE_ADDR'];
-        $solutionModel->num = $num;
-        $solution_id = $this->submitPageRepository->saveContestSolutionAndReturnId($solutionModel);
+        $solutionModel = $this->createSolutionModel($cid, $num, $source, $language_id);
+
+        if ($this->contestService->isVirtualContest($cid)) {
+            $solution_id = $this->submitPageRepository->saveVirtualContestSolutionAndReturnId($solutionModel);
+        } elseif ($this->contestService->isContestActive($cid)) {
+            $solution_id = $this->submitPageRepository->saveContestSolutionAndReturnId($solutionModel);
+        } else {
+            throw new Exception("El contest no esta activo.");
+        }
         $this->sourceCodeRepository->save($solution_id, $source);
     }
 
     public function saveProblemRequest($pid, $source, $language_id)
     {
         if ($this->problemRepository->isProblemInContest($pid)) {
-            throw new Exception("Actualmente, el problema {$pid} no se puede enviar porque está siendo utilizado en un contest. Para subir su solución entre al contest y envie desde alli.");
+            throw new Exception("Actualmente, el problema {$pid} no se puede enviar porque está siendo utilizado en un contest. Para subir su solución entre al contest y envié desde allí.");
         }
+
+        $solutionModel = $this->createSolutionModel(null, -1, $source, $language_id);
+        $solutionModel->problem_id = $pid;
+
+        $solution_id = $this->submitPageRepository->saveSolutionAndReturnId($solutionModel);
+        $this->sourceCodeRepository->save($solution_id, $source);
+    }
+
+    private function createSolutionModel($contest_id, $num, $source, $language_id)
+    {
         $solutionModel = new SolutionModel();
         $solutionModel->language = $language_id;
         $solutionModel->code_length = strlen($source);
-        $solutionModel->problem_id = $pid;
+        $solutionModel->contest_id = $contest_id;
         $solutionModel->user_id = $_SESSION["user_id"];
         $solutionModel->ip = $_SERVER['REMOTE_ADDR'];
-        $solutionModel->num = -1;
-        $solution_id = $this->submitPageRepository->saveSolutionAndReturnId($solutionModel);
-        $this->sourceCodeRepository->save($solution_id, $source);
+        $solutionModel->num = $num;
+
+        if ($contest_id !== null) {
+            $solutionModel->problem_id = $this->contestService->getProblemIdByNum($contest_id, $num);
+        }
+
+        return $solutionModel;
     }
 }

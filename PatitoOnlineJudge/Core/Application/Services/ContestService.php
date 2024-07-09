@@ -19,6 +19,11 @@ class ContestService implements IContestService
         return $this->contestRepository->isContestActive($cid);
     }
 
+    public function isVirtualContest($cid)
+    {
+        return $this->contestRepository->isVirtualContest($cid);
+    }
+
     public function getContestProblems($cid)
     {
         return $this->contestRepository->getProblemsByContestId($cid);

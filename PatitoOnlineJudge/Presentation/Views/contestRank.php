@@ -112,8 +112,14 @@
                                                 $hexColorDecrease = dechex($colorDecrease);
                                                 $backgroundColor = "ff$hexColorDecrease$hexColorDecrease";
                                             }
-
-                                            echo "<td class=well style='padding:1px;background-color:#$backgroundColor'>";
+                                            $virtual = "";
+                                            if (
+                                                isset($row->p_virtual_num[$j]) &&
+                                                $row->p_virtual_num[$j] > 0
+                                            ) {
+                                                $virtual = "*";
+                                            }
+                                            echo "<td class=well style='padding:1px;background-color:#$backgroundColor'>$virtual";
                                             if (isset($row)) {
                                                 if (
                                                     isset($row->p_ac_sec[$j]) 
@@ -149,6 +155,7 @@
                                         </tr>
                                 </tbody>
                             </table>
+                            (*) Denota la participación de los usuarios en modo práctica.
                         </div>
                     </div>
                 </div>

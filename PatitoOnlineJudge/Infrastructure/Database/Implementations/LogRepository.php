@@ -1,6 +1,6 @@
 <?php
 
-namespace PatitoOnlineJudge\Infraestructure\Database\Implementations;
+namespace PatitoOnlineJudge\Infrastructure\Database\Implementations;
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ILogRepository;
@@ -16,7 +16,7 @@ class LogRepository implements ILogRepository
     }
     public function addRecordHistory($hash, $userId, $ip, $ua, $uri, $refer) {
         $now = time();
-        $sql = "INSERT INTO online_history(hash,user_id, ip, ua, uri, refer, firsttime, lastmove,timestamp)
+        $sql = "INSERT INTO online_history(hash,user_id, ip, ua, uri, refer, firsttime, lastmove, timestamp)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, now())";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$hash, $userId, $ip, $ua, $uri, $refer, $now, $now]);

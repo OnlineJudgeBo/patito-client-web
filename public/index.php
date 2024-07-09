@@ -3,7 +3,7 @@
 use Dotenv\Dotenv;
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Application\Services\LogService;
-use PatitoOnlineJudge\Infraestructure\Database\Implementations\LogRepository;
+use PatitoOnlineJudge\Infrastructure\Database\Implementations\LogRepository;
 use PatitoOnlineJudge\Presentation\Middleware\AuthMiddleware;
 
 require __DIR__ . '/Routing/Router.php';

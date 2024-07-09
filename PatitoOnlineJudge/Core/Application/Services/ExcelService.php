@@ -4,7 +4,7 @@ namespace PatitoOnlineJudge\Core\Application\Services;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IExcelService;
 
-require __DIR__."/../../../Infraestructure/ExcelWriter/xlsxwriter.class.php";
+require __DIR__."/../../../Infrastructure/ExcelWriter/xlsxwriter.class.php";
 
 class ExcelService implements IExcelService
 {

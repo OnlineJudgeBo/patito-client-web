@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_POST["cid"])) {
         $submitPageController->addCid(intval($_POST["cid"]));
     }
+
     $submitPageController->addSource($_POST["source"]);
     $submitPageController->addLanguage($_POST["language_id"]);
     $submitPageController->saveRequest();

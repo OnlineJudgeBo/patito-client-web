@@ -4,7 +4,7 @@ namespace PatitoOnlineJudge\Core\Application\Services;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IJwtService;
 
-require __DIR__."/../../../Infraestructure/Jwt/JwtAuth.php";
+require __DIR__."/../../../Infrastructure/Jwt/JwtAuth.php";
 
 class JwtService implements IJwtService
 {

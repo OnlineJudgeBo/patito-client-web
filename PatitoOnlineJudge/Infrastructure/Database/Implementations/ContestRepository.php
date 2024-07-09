@@ -1,6 +1,6 @@
 <?php
 
-namespace PatitoOnlineJudge\Infraestructure\Database\Implementations;
+namespace PatitoOnlineJudge\Infrastructure\Database\Implementations;
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IContestRepository;
@@ -28,6 +28,18 @@ class ContestRepository implements IContestRepository
             ':start_time1' => $currentDate,
             ':start_time2' => $currentDate
         ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return intval($result["result"]) > 0;
+    }
+
+    public function isVirtualContest($cid)
+    {
+        $stmt = $this->pdo->prepare("SELECT count(contest_id) AS result
+        FROM contest
+        WHERE contest_id = :cid
+        AND defunct = 'O'");
+        $stmt->execute([':cid' => $cid]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return intval($result["result"]) > 0;

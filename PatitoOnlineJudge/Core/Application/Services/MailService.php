@@ -5,8 +5,8 @@ namespace PatitoOnlineJudge\Core\Application\Services;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IMailService;
 use PHPMailer;
 
-require(__DIR__ . "/../../../Infraestructure/Phpmailer/class.phpmailer.php");
-require(__DIR__ . "/../../../Infraestructure/Phpmailer/class.smtp.php");
+require(__DIR__ . "/../../../Infrastructure/Phpmailer/class.phpmailer.php");
+require(__DIR__ . "/../../../Infrastructure/Phpmailer/class.smtp.php");
 
 class MailService implements IMailService
 {

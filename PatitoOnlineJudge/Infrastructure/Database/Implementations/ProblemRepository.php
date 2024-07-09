@@ -1,6 +1,6 @@
 <?php
 
-namespace PatitoOnlineJudge\Infraestructure\Database\Implementations;
+namespace PatitoOnlineJudge\Infrastructure\Database\Implementations;
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IProblemRepository;
@@ -33,8 +33,7 @@ class ProblemRepository implements IProblemRepository {
 
     public function getProblemByOfficialContestId($cid, $pid) {
         $stmt = $this->pdo->prepare("SELECT * FROM problem
-                                        WHERE defunct='O' AND
-                                        problem_id = (SELECT problem_id
+                                        WHERE problem_id = (SELECT problem_id
                                                         FROM contest_problem
                                                         WHERE contest_id = :cid
                                                         AND num = :pid)");

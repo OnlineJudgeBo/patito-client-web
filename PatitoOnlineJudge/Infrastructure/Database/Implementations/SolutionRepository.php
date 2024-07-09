@@ -1,6 +1,6 @@
 <?php
 
-namespace PatitoOnlineJudge\Infraestructure\Database\Implementations;
+namespace PatitoOnlineJudge\Infrastructure\Database\Implementations;
 
 use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ISolutionRepository;

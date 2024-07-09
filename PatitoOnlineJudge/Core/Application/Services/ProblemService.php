@@ -5,7 +5,7 @@ namespace PatitoOnlineJudge\Core\Application\Services;
 use Exception;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IProblemRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemService;
-use PatitoOnlineJudge\Infraestructure\Database\Implementations\ProblemRepository;
+use PatitoOnlineJudge\Infrastructure\Database\Implementations\ProblemRepository;
 
 class ProblemService implements IProblemService
 {

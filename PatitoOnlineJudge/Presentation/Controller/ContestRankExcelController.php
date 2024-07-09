@@ -121,11 +121,20 @@ class ContestRankExcelController
                         }
                     }
                 }
+                $virtual = "";
+                if (
+                    isset($row->p_virtual_num[$j]) &&
+                    $row->p_virtual_num[$j] > 0
+                ) {
+                    $virtual = "*";
+                }
+                $element = $virtual.$element;
                 array_push($data, $element);
             }
             $this->excelService->addRow("Hoja 1", $data, $stylesB);
         }
-
+        $this->excelService->addRow("Hoja 1", ["", "(*) Muestra la participación de los usuarios en el modo de práctica"], "");
+        $this->excelService->addRow("Hoja 1", ["", "    que se lleva a cabo después de que el concurso oficial ha terminado."], "");
         $this->excelService->saveExcel();
     }
 

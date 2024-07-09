@@ -1,6 +1,6 @@
 <?php
 
-namespace PatitoOnlineJudge\Infraestructure\Presentation\DataObjectTransfer;
+namespace PatitoOnlineJudge\Infrastructure\Presentation\DataObjectTransfer;
 
 class UserDataObjectTransfer
 {
