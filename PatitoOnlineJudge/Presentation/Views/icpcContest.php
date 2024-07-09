@@ -18,10 +18,10 @@
         <div class="flex flex-col items-center">
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full">
                 <div class="flex flex-col space-y-1.5 p-6">
-                    <h1 class="text-4xl font-bold leading-tight text-center text-blue-600 mb-4">
-                        Bienvenido a la sección de concursos oficiales pasados<br>
-                        Aquí podrás encontrar concursos anteriores de ICPC, OBI y OCE.
-                    </h1>
+                    <h2 class="text-4xl font-bold leading-tight text-center text-blue-600 mb-4">
+                        Bienvenido a la sección de archivos de concursos.<br>
+                        Explora competencias pasadas de ICPC, OBI y OCE, y practica con los problemas.
+                    </h2>
                 </div>
                 <div class="p-1">
                     <div class="relative w-full overflow-auto">

@@ -33,7 +33,7 @@ echo file_get_contents(__DIR__ . "/partials/utils-header.php");
               <a class="dropdown-toggle text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
               <div class="dropdown-menu hidden group-hover:block absolute bg-white text-black rounded-md shadow-lg">
                 <a href="contest.php" class="block px-4 py-2 text-sm">Concursos</a>
-                <a href="icpc_contest.php" class="block px-4 py-2 text-sm">Concursos ICPC</a>
+                <a href="icpc_contest.php" class="block px-4 py-2 text-sm">Arena de Entrenamiento</a>
               </div>
             </div>
 
