@@ -60,7 +60,7 @@ class ContestRepository implements IContestRepository
 
     public function getOfficialContests()
     {
-        $stmt = $this->pdo->query("SELECT * FROM contest WHERE defunct = 'O' ORDER BY contest_id");
+        $stmt = $this->pdo->query("SELECT * FROM contest WHERE defunct = 'O' ORDER BY contest_id DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
