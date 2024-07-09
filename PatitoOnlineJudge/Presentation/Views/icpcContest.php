@@ -28,6 +28,7 @@
                         <table class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted w-full">
                             <thead class="">
                                 <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                    <th class="p-4 font-semibold">Id</th>
                                     <th class="p-4 font-semibold">Nombre</th>
                                     <th class="p-4 font-semibold">Descripción</th>
                                 </tr>
@@ -40,6 +41,7 @@
                                         $css = "oddrow";
                                     }
                                     echo '<tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ' . $css . '">';
+                                    echo '<td class="p-4 result-blue"><a href="contest.php?cid=' . $value["contest_id"] . '&type=official_contest">' . $value["contest_id"] . '</td>';
                                     echo '<td class="p-4 result-blue"><a href="contest.php?cid=' . $value["contest_id"] . '&type=official_contest">' . $value["title"] . '</td>';
                                     echo '<td class="p-4 result-blue"><a href="contest.php?cid=' . $value["contest_id"] . '&type=official_contest">' . $value["title"] . '</td>';
                                     echo '</tr>';
