@@ -10,6 +10,8 @@ interface IContestRepository
 
     public function getAllContests();
 
+    public function getOfficialContests();
+
     public function getProblemsByContestId($cid);
 
     public function isContestByIdPublic($cid);

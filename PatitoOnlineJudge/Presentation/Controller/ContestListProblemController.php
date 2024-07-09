@@ -10,6 +10,7 @@ class ContestListProblemController
     private $contestService;
     public $title;
     public $cid;
+    public $cType;
 
     public function __construct(IContestService $contestService)
     {
@@ -19,6 +20,10 @@ class ContestListProblemController
     
     public function addCid($cid) {
         $this->cid = $cid;
+    }
+
+    public function addCtype($cType) {
+        $this->cType = $cType;
     }
 
     private function userHasAccess()
@@ -51,6 +56,7 @@ class ContestListProblemController
                 }
     
                 $cid = $this->cid;
+                $cType = $this->cType;
                 require_once __DIR__ . "/../Views/contestProblemList.php";
         } else {
             $contestDetail = $this->contestService->getContestById($this->cid);

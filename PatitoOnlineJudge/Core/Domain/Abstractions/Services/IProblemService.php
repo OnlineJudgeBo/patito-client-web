@@ -10,7 +10,7 @@ interface IProblemService
 
     public function getProblemById($pid);
 
-    public function getProblemByContestId($cid, $pid);
+    public function getProblemByContestId($cid, $pid, $cType);
 
     public function getProblemsCount();
 

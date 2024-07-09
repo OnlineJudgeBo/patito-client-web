@@ -73,7 +73,7 @@
 
                         <div class="flex justify-center gap-4">
                             <?php
-                            if ($isContestActive) {
+                            if ($isContestActive || isset($cType) && $cType == "official_contest") {
                             ?>
                                 <a href="submitpage.php?<?php
                                                         if (isset($cid)) {

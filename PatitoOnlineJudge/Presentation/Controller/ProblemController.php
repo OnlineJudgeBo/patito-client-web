@@ -12,6 +12,7 @@ class ProblemController
     public $title;
     private $cid;
     private $pid;
+    private $cType;
 
     public function __construct(IProblemService $problemService, IContestService $contestService)
     {
@@ -30,6 +31,11 @@ class ProblemController
         $this->cid = $cid;
     }
 
+    public function setCtype($cType)
+    {
+        $this->cType = $cType;
+    }
+
     public function render()
     {
         $title = $this->title;
@@ -37,8 +43,9 @@ class ProblemController
         if (intval($this->pid) >= 0 && intval($this->cid) > 0) {
             $num = $this->pid;
             $cid = $this->cid;
-            $problem = $this->problemService->getProblemByContestId($this->cid, $this->pid);
-            $isContestActive = $this->contestService->isContestActive($this->cid);
+            $cType = $this->cType;
+            $problem = $this->problemService->getProblemByContestId($this->cid, $this->pid, $this->cType);
+            $isContestActive = $this->contestService->isContestActive($this->cid, $this->cType);
         } else {
             try {
                 $problem = $this->problemService->getProblemById($this->pid);

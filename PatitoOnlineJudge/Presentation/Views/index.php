@@ -10,9 +10,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./assets/base.css">
   <script>
-  ['accessToken', 'refreshToken', 'user_id'].forEach(t=>{let v=document.cookie.split('; ').find(c=>c.startsWith(t+'='))?.split('=')[1];if(v)localStorage.setItem(t,v);});
+    ['accessToken', 'refreshToken', 'user_id'].forEach(t => {
+      let v = document.cookie.split('; ').find(c => c.startsWith(t + '='))?.split('=')[1];
+      if (v) localStorage.setItem(t, v);
+    });
   </script>
-  <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
+  <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
 </head>
 
 <body class="w-full top-0 left-0 z-50">
@@ -73,7 +76,8 @@
                   <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
                     <td class="p-4">
                       <?php
-                      if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || 
+                      if (
+                        isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
                         isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                         isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
                         isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
@@ -112,10 +116,12 @@
                         } elseif ($value["result"] == 4) {
                           echo  $judge_result[$value["result"]];
                         } else {
-                          if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] || 
-                          isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
-                          isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                          isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar" ) {
+                          if (
+                            isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
+                            isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
+                            isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
+                            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
+                          ) {
                             echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
                           } else {
                             echo $judge_result[$value["result"]];

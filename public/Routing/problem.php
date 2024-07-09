@@ -6,6 +6,10 @@ require_once __DIR__ . '/container.php';
 
 $problemController = $container->get(ProblemController::class);
 
+if (isset($_GET["type"]) && isset($_GET["type"])) {
+    $problemController->setCtype($_GET["type"]);
+}
+
 if (isset($_GET["cid"]) && isset($_GET["pid"])) {
     $cid = $_GET["cid"];
     $pid = $_GET["pid"];

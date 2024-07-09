@@ -17,7 +17,9 @@ class ContestController
 
     public function render()
     {
-        $contest_list = $this->contestService->getAllContestDetails();
+        $title = $this->title;
+        $contest_type = "no_official";
+        $contest_list = $this->contestService->getAllContestDetails($contest_type);
         require_once __DIR__ . "/../Views/contest.php";
     }
 }

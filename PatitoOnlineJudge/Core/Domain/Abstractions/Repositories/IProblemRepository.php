@@ -8,6 +8,8 @@ interface IProblemRepository {
 
     public function getProblemByContestId($cid, $pid);
 
+    public function getProblemByOfficialContestId($cid, $pid);
+
     public function getProblemsCount();
 
     public function getProblems($offset, $limit);

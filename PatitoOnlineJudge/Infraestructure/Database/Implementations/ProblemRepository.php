@@ -22,7 +22,18 @@ class ProblemRepository implements IProblemRepository {
 
     public function getProblemByContestId($cid, $pid) {
         $stmt = $this->pdo->prepare("SELECT * FROM problem
-                                        WHERE defunct = 'N' AND
+                                        WHERE defunct='N' AND
+                                        problem_id = (SELECT problem_id
+                                                        FROM contest_problem
+                                                        WHERE contest_id = :cid
+                                                        AND num = :pid)");
+        $stmt->execute(['cid' => $cid, 'pid' => $pid]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getProblemByOfficialContestId($cid, $pid) {
+        $stmt = $this->pdo->prepare("SELECT * FROM problem
+                                        WHERE defunct='O' AND
                                         problem_id = (SELECT problem_id
                                                         FROM contest_problem
                                                         WHERE contest_id = :cid

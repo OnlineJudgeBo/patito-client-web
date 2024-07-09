@@ -24,15 +24,16 @@ class ProblemService implements IProblemService
 
     public function getProblemById($pid)
     {
-        //if ($this->isProblemInContest($pid)) {
-        //    throw new Exception("Actualmente, el problema {$pid} no se puede ver porque está siendo utilizado en un contest.");
-        //}
         return $this->problemRepository->getProblemById($pid);
     }
 
-    public function getProblemByContestId($cid, $pid)
+    public function getProblemByContestId($cid, $pid, $cType)
     {
-        return $this->problemRepository->getProblemByContestId($cid, $pid);
+        if ($cType == "official_contest") {
+            return $this->problemRepository->getProblemByOfficialContestId($cid, $pid);
+        } else {
+            return $this->problemRepository->getProblemByContestId($cid, $pid);
+        }
     }
 
     public function getProblemsCount()
