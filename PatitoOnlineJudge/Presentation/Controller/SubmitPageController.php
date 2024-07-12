@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISubmitPageService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class SubmitPageController
 {
@@ -67,6 +68,7 @@ class SubmitPageController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $OJ_LANGMASK = 32692;
         $id = "";
@@ -86,6 +88,6 @@ class SubmitPageController
         } else {
             $languagesAvailable = $this->contestService->languagesAvailable(0);
         }
-        require_once __DIR__ . "/../Views/submitpage.php";
+        require_once $current_theme . "/submitpage.php";
     }
 }

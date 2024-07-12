@@ -56,7 +56,7 @@
     <?php require_once "oj-header.php" ?>
     <?php require __DIR__ . "/Modules/Utils.php"; ?>
     <?php
-    include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
+    include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
     $language = "";
     if (str_contains($language_name[$sourceDetail["language"]], "Python") === true) {
         $language = "python";
@@ -76,7 +76,7 @@
 
 
 <?php
-include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
+include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
 $comment = "/";
 if (str_contains($language_name[$sourceDetail["language"]], "Python") === true) {
     $comment = "#";

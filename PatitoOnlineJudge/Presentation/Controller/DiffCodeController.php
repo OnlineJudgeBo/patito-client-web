@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IShowSourceService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class DiffCodeController
 {
@@ -33,9 +34,9 @@ class DiffCodeController
 
     public function render()
     {
-
+        $current_theme = Utils::get_current_theme();
         $sourceDetail  = $this->showSourceService->showCode($this->solution_id);
         $sourceDetail2 = $this->showSourceService->showCode($this->solution_id2);
-        require_once __DIR__ . "/../Views/diffCode.php";
+        require_once $current_theme . "/diffCode.php";
     }
 }

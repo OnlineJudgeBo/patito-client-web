@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\INewsService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISolutionService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class IndexController
 {
@@ -20,10 +21,11 @@ class IndexController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $view_news = $this->newsService->getLatestNews();
         $view_last_runs = $this->solutionService->getStatusData("", 50);
 
-        require_once __DIR__ . "/../Views/index.php";
+        require_once $current_theme . "/index.php";
     }
 }

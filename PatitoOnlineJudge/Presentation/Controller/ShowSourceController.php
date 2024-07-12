@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IShowSourceService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ShowSourceController
 {
@@ -23,8 +24,9 @@ class ShowSourceController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $sourceDetail = $this->showSourceService->showCode($this->solution_id);
-        require_once __DIR__ . "/../Views/showsource.php";
+        require_once $current_theme . "/showsource.php";
     }
 }

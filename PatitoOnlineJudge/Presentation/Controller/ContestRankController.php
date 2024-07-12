@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestRankService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ContestRankController
 {
@@ -26,6 +27,7 @@ class ContestRankController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $contest = $this->contestService->getContestById($this->cid);
         $problems = $this->contestService->getContestProblems($this->cid);
@@ -44,6 +46,6 @@ class ContestRankController
             $cid = $this->cid;
         }
 
-        require_once __DIR__ . "/../Views/contestRank.php";
+        require_once $current_theme . "/contestRank.php";
     }
 }

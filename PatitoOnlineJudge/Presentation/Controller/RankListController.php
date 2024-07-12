@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IRankListService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class RankListController
 {
@@ -29,8 +30,9 @@ class RankListController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $rankList = $this->rankListService->getRankListByDate($this->scope, $this->rank);
-        require_once __DIR__ . "/../Views//ranklist.php";
+        require_once $current_theme . "/ranklist.php";
     }
 }

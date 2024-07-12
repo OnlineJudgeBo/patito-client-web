@@ -3,7 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
-use PatitoOnlineJudge\Service\ContestService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ContestListProblemController
 {
@@ -46,6 +46,7 @@ class ContestListProblemController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         if ($this->userHasAccess()) {
                 $contestProblemList = $this->contestService->getContestProblems($this->cid);
@@ -57,12 +58,12 @@ class ContestListProblemController
     
                 $cid = $this->cid;
                 $cType = $this->cType;
-                require_once __DIR__ . "/../Views/contestProblemList.php";
+                require_once $current_theme . "/contestProblemList.php";
         } else {
             $contestDetail = $this->contestService->getContestById($this->cid);
             $contestProblemList = array();
             $error = "Este contest es privado";
-            require_once __DIR__ . "/../Views/error.php";
+            require_once $current_theme . "/error.php";
         }
     }
 }

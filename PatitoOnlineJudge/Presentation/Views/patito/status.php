@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.css">
     <script src="https://cdn.datatables.net/select/2.0.0/js/dataTables.select.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.0/js/select.dataTables.js"></script>
-    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
+    <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
     <style>
         .dt-paging.paging_full_numbers {
             display: flex;
@@ -110,6 +110,7 @@
                         <th class="p-2 font-semibold">Problema</th>
                         <th class="p-2 font-semibold">Lenguaje</th>
                         <th class="p-2 font-semibold">Resultado</th>
+                        <th class="p-2 font-semibold"></th>
                         <th class="p-2 font-semibold">Memoria</th>
                         <th class="p-2 font-semibold">Tiempo</th>
                         <th class="p-2 font-semibold">Hora de Envio</th>
@@ -118,7 +119,7 @@
 
                 <tbody>
                     <?php
-                    require __DIR__ . "/../../../Legacy/Include/const.inc.php";
+                    require __DIR__ . "/../../../../Legacy/Include/const.inc.php";
                     $showSource = "";
                     foreach ($statusViewList as $key => $value) {
                         $css = "evenrow";
@@ -187,19 +188,6 @@
                                         echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
                                     } elseif ($value["result"] == 4) {
                                         echo  $judge_result[$value["result"]];
-                                        if ($value["percentage"] > 51) {
-                                            if (
-                                                isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
-                                                isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
-                                                isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                                                isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
-                                            ) {
-                                                echo "<a href=\"diff_code.php?solution_id=" . $value["solution_id"] . "&solution_id2=" . $value["similar_s_id"] . "\"><span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] ". $value['percentage']."%</span></a>";
-                                            } else {
-                                                echo "<span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] ". $value['percentage']."%</span>";
-                                            }
-                                        }
-
                                     } else {
                                         if (
                                             isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
@@ -210,6 +198,24 @@
                                             echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
                                         } else {
                                             echo $judge_result[$value["result"]];
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <div class="font-bold decoration-solid decoration-sky-500">
+                                    <?php
+                                    if ($value["percentage"] > 51) {
+                                        if (
+                                            isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
+                                            isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
+                                            isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
+                                            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
+                                        ) {
+                                            echo "<a href=\"diff_code.php?solution_id=" . $value["solution_id"] . "&solution_id2=" . $value["similar_s_id"] . "\"><span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] " . $value['percentage'] . "%</span></a>";
+                                        } else {
+                                            echo "<span class=\"text-xs align-super text-black\">[" . $value['similar_s_id'] . "] " . $value['percentage'] . "%</span>";
                                         }
                                     }
                                     ?>
@@ -291,6 +297,12 @@
                 title: "Resultado",
                 searchPanes: {
                     show: true
+                }
+            },
+            {
+                title: "",
+                searchPanes: {
+                    show: false
                 }
             },
             {
@@ -414,7 +426,7 @@
             return;
         }
 
-        fetch(`<?php echo $_SERVER["APP_DOMAIN_API"]?>/Judge/rejudge/solution/${solutionId}`, {
+        fetch(`<?php echo $_SERVER["APP_DOMAIN_API"] ?>/Judge/rejudge/solution/${solutionId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

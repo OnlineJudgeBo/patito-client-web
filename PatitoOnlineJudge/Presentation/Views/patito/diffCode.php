@@ -49,7 +49,7 @@
                     setValue(`<?php echo $sourceDetail["source"] ?>
                     <?php
                     echo "\n\n\n\n";
-                    include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
+                    include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
                     $comment = str_contains($language_name[$sourceDetail["language"]], "Python") ? "#" : "/";
                     echo $comment . "**************************************************************$comment\n";
                     echo "Solución: " . $sourceDetail["solution_id"] . "\n";
@@ -67,7 +67,7 @@
                     setValue(`<?php echo $sourceDetail2["source"] ?>
                     <?php
                     echo "\n\n\n\n";
-                    include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
+                    include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
                     $comment = str_contains($language_name[$sourceDetail2["language"]], "Python") ? "#" : "/";
                     echo $comment . "**************************************************************$comment\n";
                     echo "Solución: " . $sourceDetail2["solution_id"] . "\n";

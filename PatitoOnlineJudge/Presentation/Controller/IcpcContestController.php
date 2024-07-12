@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Application\Services\ContestService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class IcpcContestController
 {
@@ -17,9 +18,10 @@ class IcpcContestController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $contest_type = "official";
         $contest_list = $this->contestService->getAllContestDetails($contest_type);
-        require_once __DIR__ . "/../Views/icpcContest.php";
+        require_once $current_theme . "/icpcContest.php";
     }
 }

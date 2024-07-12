@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ProblemSetController
 {
@@ -23,6 +24,7 @@ class ProblemSetController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         if (intval($this->page) == 0) {
             $this->page = 0;
@@ -38,6 +40,6 @@ class ProblemSetController
             $user_id = $_SESSION["user_id"];
         }
 
-        require_once __DIR__ . "/../Views/problemset.php";
+        require_once $current_theme . "/problemset.php";
     }
 }

@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemStatusService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ProblemStatusController
 {
@@ -27,10 +28,11 @@ class ProblemStatusController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $userStatics = $this->problemStatusService->getUserStatics($this->problem_id);
         $topUsersByProblem = $this->problemStatusService->getTopUsersByProblem($this->problem_id);
         $problem = $this->problemService->getProblemById($this->problem_id);
-        require_once __DIR__ . "/../Views/problemstatus.php";
+        require_once $current_theme . "/problemstatus.php";
     }
 }

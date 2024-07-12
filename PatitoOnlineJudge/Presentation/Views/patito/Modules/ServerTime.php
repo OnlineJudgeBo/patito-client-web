@@ -2,6 +2,10 @@
     <?php date_default_timezone_set("America/La_Paz"); ?>
     var diff = new Date("<?php echo date("Y/m/d H:i:s") ?>").getTime() - new Date().getTime();
 
+    function addZeroDigit(digit) {
+		return digit >= 10 ? digit: "0" + digit;
+	}
+
     function clock() {
         var x, h, m, s, n, xingqi, y, mon, d;
         var x = new Date(new Date().getTime() + diff);
@@ -10,10 +14,10 @@
         mon = x.getMonth() + 1;
         d = x.getDate();
         xingqi = x.getDay();
-        h = formatNumber(x.getHours());
-        m = formatNumber(x.getMinutes());
-        s = formatNumber(x.getSeconds());
-        n = y + "-" + mon + "-" + d + " " + h + ":" + m + ":" + s;
+        h = x.getHours();
+        m = x.getMinutes();
+        s = x.getSeconds();
+		n = y + "-" + addZeroDigit(mon) + "-" + addZeroDigit(d) + " " + addZeroDigit(h) + ":" + addZeroDigit(m) + ":" + addZeroDigit(s);
         let elements = document.getElementsByClassName("nowdate");
         for (let i = 0; i < elements.length; i++) {
             if (elements[i].getAttribute("data-start_time") != null) {
@@ -42,9 +46,5 @@
         let seconds = diff_seconds % 60;
 
         return `${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
-    }
-
-    function formatNumber(n) {
-        return n < 10 ? '0' + n : n;
     }
 </script>

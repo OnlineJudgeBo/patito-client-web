@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISolutionService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ResultAnswerController
 {
@@ -23,12 +24,13 @@ class ResultAnswerController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $solution_id = $this->solution_id;
         $result = $this->solutionService->getErrorResult($solution_id);
         if (empty($result["error"])) {
             $result["error"] = "";
         }
-        require_once __DIR__ . "/../Views/resultAnswer.php";
+        require_once $current_theme . "/resultAnswer.php";
     }
 }

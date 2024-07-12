@@ -5,6 +5,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestRankService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IExcelService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ContestRankExcelController
 {
@@ -29,6 +30,7 @@ class ContestRankExcelController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $problems = $this->contestService->getContestProblems($this->cid);
         $contest = $this->contestService->getContestById($this->cid);

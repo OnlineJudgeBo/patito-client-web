@@ -58,7 +58,7 @@
 
               <tbody>
                 <?php
-                require __DIR__ . "/../../../Legacy/Include/const.inc.php";
+                require __DIR__ . "/../../../../Legacy/Include/const.inc.php";
                 $showSource = "";
                 foreach ($view_last_runs as $key => $value) {
                   $css = "evenrow";

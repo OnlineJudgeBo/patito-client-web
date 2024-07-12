@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
 use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class RegisterController
 {
@@ -49,7 +50,8 @@ class RegisterController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
-        require_once __DIR__ . "/../Views/register.php";
+        require_once $current_theme . "/register.php";
     }
 }

@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IProblemService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class ProblemController
 {
@@ -38,6 +39,7 @@ class ProblemController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $isContestActive = true;
         if (intval($this->pid) >= 0 && intval($this->cid) > 0) {
@@ -55,6 +57,6 @@ class ProblemController
                 //die();
             }
         }
-        require_once __DIR__ . "/../Views/problem.php";
+        require_once $current_theme . "/problem.php";
     }
 }

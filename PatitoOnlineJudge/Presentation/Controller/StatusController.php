@@ -4,6 +4,7 @@ namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ISolutionService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IStatusService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class StatusController
 {
@@ -24,11 +25,12 @@ class StatusController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $statusViewList = $this->statusService->getStatusData($this->params, -1);
         if (isset($this->params["contest_id"])) {
             $cid = $this->params["contest_id"];
         }
-        require_once __DIR__ . "/../Views/status.php";
+        require_once $current_theme . "/status.php";
     }
 }

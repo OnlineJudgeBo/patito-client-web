@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
+use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class UpdatePasswordController
 {
@@ -37,8 +38,9 @@ class UpdatePasswordController
 
     public function render()
     {
+        $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $token = $this->token;
-        require_once __DIR__ . "/../Views/updatepassword.php";
+        require_once $current_theme . "/updatepassword.php";
     }
 }
