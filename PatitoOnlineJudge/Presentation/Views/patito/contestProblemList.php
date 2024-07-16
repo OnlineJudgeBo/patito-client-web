@@ -94,7 +94,7 @@
                                         echo "Y";
                                     }
                                     echo "</td>";
-                                    echo '<td class="p-1 text-center align-middle">' . $value["pid"] . " " . ' ' . chr($letter) . " " . $xtra_letter . '</td>';
+                                    echo '<td class="p-1 text-center align-middle">' . $value["pid"] . " " . ' ' . chr($letter) . "" . $xtra_letter . '</td>';
                                     $problemUrl = sprintf("problem.php?cid=%d&pid=%d", $cid, $value["pnum"]);
                                     if (isset($cType) && $cType == "official_contest") {
                                         $problemUrl = sprintf("problem.php?cid=%d&pid=%d&type=%s", $cid, $value["pnum"], $cType);
