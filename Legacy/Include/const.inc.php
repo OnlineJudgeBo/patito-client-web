@@ -134,8 +134,8 @@ $jresult      = array($MSG_PD, $MSG_PR, $MSG_CI, $MSG_RJ, $MSG_AC, $MSG_PE, $MSG
 $judge_color  = array("gray", "gray", "orange", "orange", "green", "red", "red", "red", "red", "red", "red", "red ", "red");
 
 //                         0    1      2             3     4      5       6         7       8       9     10       11          12               13 ,14,  15          16          17       18, 19
-//$language_name    = array("C", "C++", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.7", "Go", "Python3.12");
-$language_name    = array("C", "C++11", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.12", "Go", "Python3.12");
+//$language_name    = array("C", "C++", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.7", "Go", "Python3.12", "Psint");
+$language_name    = array("C", "C++11", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.12", "Go", "Python3.12", "Psint");
 $language_ext     = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
 $language_visible = array(0,  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1);
 $PID = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
