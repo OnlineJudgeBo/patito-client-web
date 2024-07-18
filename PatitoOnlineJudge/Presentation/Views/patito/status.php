@@ -157,7 +157,7 @@
                                 <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" target='_blank' href="<?php echo $url ?>">
                                     <?php
                                     if (isset($value["contest_id"])) {
-                                        echo chr(65 + $value['num'] % 26) . "" . intval($value['num']/26);
+                                        echo chr(65 + $value['num'] % 26) . "" . intval($value['num'] / 26) > 0 ? intval($value['num'] / 26) : "";
                                     } else {
                                         echo $value["problem_id"];
                                     }
