@@ -83,6 +83,7 @@
                                 }
                                 $letter = 65;
                                 $xtra_letter = "";
+                                $numeration = 1;
                                 foreach ($contestProblemList as $key => $value) {
                                     $css = "oddrow";
                                     if ($key % 2 == 0) {
@@ -94,7 +95,7 @@
                                         echo "Y";
                                     }
                                     echo "</td>";
-                                    echo '<td class="p-1 text-center align-middle">' . $value["pid"] . " " . ' ' . chr($letter) . "" . $xtra_letter . '</td>';
+                                    echo '<td class="p-1 text-center align-middle">' . $numeration . " " . ' ' . chr($letter) . "" . $xtra_letter . '</td>';
                                     $problemUrl = sprintf("problem.php?cid=%d&pid=%d", $cid, $value["pnum"]);
                                     if (isset($cType) && $cType == "official_contest") {
                                         $problemUrl = sprintf("problem.php?cid=%d&pid=%d&type=%s", $cid, $value["pnum"], $cType);
@@ -110,6 +111,7 @@
                                         $xtra_letter = intval($xtra_letter) + 1;
                                     }
                                     $letter = intval($letter) + 1;
+                                    $numeration = intval($numeration) + 1;
                                 }
                                 ?>
                             </tbody>
