@@ -22,7 +22,8 @@
                     Lenguaje:
                     <select id="language" name="language" onchange="setModelLanguage(this)" required>
                         <?php
-                        include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
+                        //include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
+                        $language_name    = array("C", "C++11", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.12", "Go", "Python3.12", "Pseint");
                         foreach ($languagesAvailable as $key => $value) {
                             echo "<option value=".$value['language_id'] .">" . $language_name[$value['language_id']] . "</option>";
                         }
