@@ -213,8 +213,10 @@ function handleException(\Throwable $e)
     $metodoHttp = $_SERVER['REQUEST_METHOD'];
     $ipCliente = $_SERVER['REMOTE_ADDR'];
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $requestHttp = $_REQUEST;
 
     $messageToSend = "Error: " . $errorString .
+        "\Request:\n" . $requestHttp .
         "\nBacktrace:\n" . $backtraceString .
         "\nSession Data:\n" . $sessionDataString .
         "\nRequest Data:\n" . $requestDataString .
