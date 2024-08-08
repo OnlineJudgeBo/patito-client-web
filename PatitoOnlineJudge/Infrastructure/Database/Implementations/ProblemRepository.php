@@ -64,6 +64,7 @@ class ProblemRepository implements IProblemRepository {
             ) c 
             INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
         )
+        OR problem.problem_id IN (1000)
         LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
