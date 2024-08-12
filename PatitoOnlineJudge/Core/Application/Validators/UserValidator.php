@@ -2,6 +2,7 @@
 
 namespace PatitoOnlineJudge\Core\Application\Validators;
 
+use PatitoOnlineJudge\Core\Application\Exceptions\ApplicationException;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ILoginRepository;
 use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 
@@ -36,54 +37,54 @@ class UserValidator
     protected function validateUsername($username, $field = "nombre de usuario")
     {
         if (strpos($username, ' ') !== false) {
-            throw new \Exception("El $field no tiene que tener espacios.");
+            throw new ApplicationException("El $field no tiene que tener espacios.");
         }
 
         if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
-            throw new \Exception("El $field contiene caracteres no permitidos.");
+            throw new ApplicationException("El $field contiene caracteres no permitidos.");
         }
 
         if (strlen($username) < 3) {
-            throw new \Exception("El $field es muy corto, mínimo 3 caracteres");
+            throw new ApplicationException("El $field es muy corto, mínimo 3 caracteres");
         }
     }
 
     protected function validateName($username, $field = "nombre de usuario")
     {
         if (!preg_match('/^[a-zA-Z0-9 ]+$/', $username)) {
-            throw new \Exception("El $field contiene caracteres no permitidos.");
+            throw new ApplicationException("El $field contiene caracteres no permitidos.");
         }
 
         if (strlen($username) < 3) {
-            throw new \Exception("El $field es muy corto, mínimo 3 caracteres");
+            throw new ApplicationException("El $field es muy corto, mínimo 3 caracteres");
         }
     }
 
     protected function validateUsernameNotEmpty($username, $field = "nombre de usuario")
     {
         if (empty(rtrim(trim($username)))) {
-            throw new \Exception("El $field no puede estar vacio.");
+            throw new ApplicationException("El $field no puede estar vacio.");
         }
     }
 
     protected function validateUsernameUniqueness($username)
     {
         if ($this->userRepository->existsByUserId($username)) {
-            throw new \Exception("El nombre de usuario {$username} ya está en uso.");
+            throw new ApplicationException("El nombre de usuario {$username} ya está en uso.");
         }
     }
 
     protected function validateEmailUnique($email)
     {
         if ($this->userRepository->existsByEmail($email)) {
-            throw new \Exception("El correo electrónico {$email} ya está registrado.");
+            throw new ApplicationException("El correo electrónico {$email} ya está registrado.");
         }
     }
 
     protected function validateEmailUniqueToChange($email, $userId)
     {
         if ($this->userRepository->isEmailAvailableForChange($email, $userId)) {
-            throw new \Exception("El correo electrónico {$email} ya se encuentra en uso por otro usuario registrado.");
+            throw new ApplicationException("El correo electrónico {$email} ya se encuentra en uso por otro usuario registrado.");
         }
     }    
 }

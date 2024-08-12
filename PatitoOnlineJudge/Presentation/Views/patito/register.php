@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
+    <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
 </head>
 
 <body class="flex flex-col h-full">
@@ -30,43 +30,43 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
                             Nombre
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" name="name" type="text" placeholder="Tu nombre" require>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" name="name" type="text" placeholder="Tu nombre" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="lastname">
                             Apellidos
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="lastname" name="lastname" type="text" placeholder="Apellidos" require>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="lastname" name="lastname" type="text" placeholder="Apellidos" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="nickname">
                             Nombre de usuario (nickname)
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="nickname" name="nickname" type="text" placeholder="Tu nombre de usuario (nickname)" require>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="nickname" name="nickname" type="text" placeholder="Tu nombre de usuario (nickname)" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                             Correo Electrónico
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" name="email" id="email" type="email" placeholder="tucorreo@ejemplo.com" require>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" name="email" id="email" type="email" placeholder="tucorreo@ejemplo.com" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                             Confirma tu Correo Electrónico
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" name="email2" id="email2" type="email2" placeholder="tucorreo@ejemplo.com" require>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" name="email2" id="email2" type="email" placeholder="tucorreo@ejemplo.com" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password" autocomplete="new-password">
                             Contraseña
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="password" name="password" type="password" require>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="password" name="password" type="password" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                             Confirma tu Contraseña
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="password2" name="password2" type="password" require>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="password2" name="password2" type="password" required>
                     </div>
 
                     <div class="flex items-center justify-between">
@@ -86,6 +86,15 @@
     <script>
         document.getElementById('registrationForm').addEventListener('submit', function(event) {
             event.preventDefault();
+
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Por favor, espere mientras se crea su usuario.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
             let email = document.getElementById('email').value;
             let confirmEmail = document.getElementById('email2').value;
@@ -130,7 +139,7 @@
                             icon: 'success',
                             timer: 3000,
                             timerProgressBar: true,
-                            onBeforeOpen: () => {
+                            didOpen: () => {
                                 Swal.showLoading();
                             },
                             onClose: () => {
@@ -146,7 +155,7 @@
                         });
                     } else {
                         return response.text().then(text => {
-                            throw new Error(text)
+                            throw new Error(text);
                         })
                     }
                 })

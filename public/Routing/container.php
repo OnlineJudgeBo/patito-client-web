@@ -18,7 +18,8 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     ISubmitPageService,
     IJwtService,
     ISessionService,
-    IUserInfoService
+    IUserInfoService,
+    INotificationErrorService
 };
 use PatitoOnlineJudge\Core\Application\Services\{
     ContestRankService,
@@ -36,6 +37,7 @@ use PatitoOnlineJudge\Core\Application\Services\{
     StatusService,
     SubmitPageService,
     SessionService,
+    NotificationErrorService
 };
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\{
@@ -118,7 +120,7 @@ $builder->addDefinitions([
     ),
     IExcelService::class => \DI\create(ExcelService::class)->constructor(),
     IUserInfoService::class => \DI\create(UserInfoService::class)->constructor(\DI\get(SolutionRepository::class), \DI\get(LoginRepository::class)),
-
+    INotificationErrorService::class => DI\autowire(NotificationErrorService::class),
 
     // Validator
     UserValidator::class => \DI\autowire()->constructor(\DI\get(ILoginRepository::class)),

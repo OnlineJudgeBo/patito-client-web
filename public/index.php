@@ -213,7 +213,7 @@ function handleException(\Throwable $e)
     $metodoHttp = $_SERVER['REQUEST_METHOD'];
     $ipCliente = $_SERVER['REMOTE_ADDR'];
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
-    $requestHttp = $_REQUEST;
+    $requestHttp = http_build_query($_REQUEST);
 
     $messageToSend = "Error: " . $errorString .
         "\Request:\n" . $requestHttp .

@@ -2,20 +2,25 @@
 
 namespace PatitoOnlineJudge\Presentation\Controller;
 
+use PatitoOnlineJudge\Core\Application\Exceptions\ApplicationException;
+use PatitoOnlineJudge\Core\Application\Services\NotificationErrorService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
+use PatitoOnlineJudge\Core\Domain\Abstractions\Services\INotificationErrorService;
 use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class RegisterController
 {
     private $loginService;
+    private $notificationErrorService;
     public $title;
     public $error;
 
-    public function __construct(ILoginService $loginService)
+    public function __construct(ILoginService $loginService, INotificationErrorService $notificationErrorService)
     {
         $this->title = "Contests";
         $this->loginService = $loginService;
+        $this->notificationErrorService = $notificationErrorService;
         $this->error = "";
     }
 
@@ -41,11 +46,16 @@ class RegisterController
             echo json_encode("OK");
             header('Content-Type: application/json; charset=utf-8');
             header("HTTP/1.1 201 Created");
-        } catch (\Exception $e) {
+        } catch (ApplicationException $e) {
             echo $e->getMessage();
             header('Content-Type: application/json; charset=utf-8');
             header("HTTP/1.1 400 Bad Request");
-        }
+        } catch (\Exception $e) {
+            $this->notificationErrorService->notifyError($e);
+            echo "Error al registrar el usuario";
+            header('Content-Type: application/json; charset=utf-8');
+            header("HTTP/1.1 400 Bad Request");
+        } 
     }
 
     public function render()
