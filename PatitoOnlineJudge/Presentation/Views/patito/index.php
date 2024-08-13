@@ -30,8 +30,7 @@
           <div class="my-1">
             <h2 class="text-lg font-semibold">¿Nuevo aquí? ¡Bienvenido!</h2>
             <p>Se encuentran disponibles una <a href="https://aquicasual.me/es/online-judge/jv-umsa-bo/guia-de-inicio" target="_blank"><span class="text-blue-600 underline">guía rápida</span> </a>, una
-              <span class="text-blue-600"><s>
-              <a href="https://www.youtube.com/watch?v=ZQaFqwxha1s&list=PLK6g3h2B751dKmQUH60RaX9SOAv_cl6-I" target="_blank">guía en video</a></s></span>.
+              <span class="text-blue-600"> <a href="https://www.youtube.com/watch?v=ZQaFqwxha1s&list=PLK6g3h2B751dKmQUH60RaX9SOAv_cl6-I" target="_blank">guía en video</a></span>.
             </p>
           </div>
         </div>
