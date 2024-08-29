@@ -16,6 +16,7 @@ class RankListService implements IRankListService
 
     public function getRankListByDate($rank, $scope)
     {
-        return $this->rankListRepository->getRankListByDate($rank, $scope);
+        $realm = $_SERVER["REALM"];
+        return $this->rankListRepository->getRankListByDate($rank, $scope, $realm);
     }
 }

@@ -32,7 +32,8 @@ class RankListController
     {
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
-        $rankList = $this->rankListService->getRankListByDate($this->scope, $this->rank);
+        $realm = $_SERVER["REALM"];
+        $rankList = $this->rankListService->getRankListByDate($this->scope, $this->rank, $realm);
         require_once $current_theme . "/ranklist.php";
     }
 }

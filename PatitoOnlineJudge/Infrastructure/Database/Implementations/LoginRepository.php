@@ -7,31 +7,51 @@ use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 
 class LoginRepository extends BaseRepository implements ILoginRepository
 {
-    public function getUser($username)
+    public function getUser($username, $realm)
     {
-        $query = "SELECT * FROM `users` WHERE `user_id` = :username AND is_deleted = 0";
-        return $this->executeQuery($query, [':username' => $username]);
+        $query = "SELECT * FROM users, user_profiles 
+                    WHERE user_id = :username AND is_deleted = 0
+                    AND user_profiles.user_id = users.user_id
+                    AND user_profiles.registration_domain :registration_domain";
+
+        $params = [
+            ":username" => $username,
+            ":registration_domain" => $realm
+        ];
+        return $this->executeQuery($query, $params);
     }
 
-    public function getUserProfile($username)
+    public function getUserProfile($username, $realm)
     {
-        $query = "SELECT * FROM `user_profiles` WHERE `user_id` = :username";
-        return $this->executeQuery($query, [':username' => $username]);
+        $query = "SELECT * FROM user_profiles 
+            WHERE `user_id` = :username
+            AND user_profiles.registration_domain = :registration_domain";
+
+        $params = [
+            ":username" => $username,
+            ":registration_domain" => $realm
+        ];
+        return $this->executeQuery($query, $params);
     }
 
-    public function getUserByEmail($email)
+    public function getUserByEmail($email, $realm)
     {
-        $query = "SELECT * FROM `user_profiles` WHERE `email` = :email";
-        return $this->fetchAll($query, [':email' => $email]);
+        $query = "SELECT * FROM `user_profiles` WHERE `email` = :email
+            AND user_profiles.registration_domain = :registration_domain";
+        $params = [
+            ":email" => $email,
+            ":registration_domain" => $realm
+        ];
+        return $this->fetchAll($query, $params);
     }
 
-    public function getPrivilege($username)
+    public function getPrivilege($username, $realm)
     {
         $query = "SELECT `contest_id` FROM `contest_user` WHERE `user_id` = :username";
         return $this->fetchAll($query, [':username' => $username]);
     }
 
-    public function getAdminPrivilege($username)
+    public function getAdminPrivilege($username, $realm)
     {
         $query = "SELECT user_id, role_name
                   FROM user_roles, roles
@@ -40,7 +60,7 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         return $this->fetchAll($query, [':user_id' => $username]);
     }
 
-    public function updateUserLastLogin($username, $accesstime)
+    public function updateUserLastLogin($username, $accesstime, $realm)
     {
         if ($accesstime == "0000-00-00 00:00:00") {
             $query = "UPDATE users SET accesstime = NOW() WHERE user_id = :user_id";
@@ -48,7 +68,7 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         }
     }
 
-    public function logLoginAttempt($username)
+    public function logLoginAttempt($username, $realm)
     {
         $userIP = $_SERVER['REMOTE_ADDR'];
 
@@ -60,7 +80,7 @@ class LoginRepository extends BaseRepository implements ILoginRepository
     }
 
     public function registerUser(UserDomainObject $user)
-    {   
+    {
         $this->beginTransaction();
         $sql = "INSERT INTO users (user_id, ip, accesstime, password, reg_time)
         VALUES (:user_id, :ip, NOW(), :password, NOW())";
@@ -77,14 +97,15 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         $this->executeQuery($sql, $params);
 
         $sql = "INSERT INTO user_profiles (user_id, email, nick, school, lastname, pais_id)
-        VALUES (:user_id, :email, :nick, :school, :lastname, :pais_id)";
+        VALUES (:user_id, :email, :nick, :school, :lastname, :pais_id, :registration_domain)";
         $params = [
             ':user_id' => $user->userId,
             ':email' => $user->email,
             ':nick' => $user->nick,
             ':school' => $user->school,
             ':lastname' => $user->lastname,
-            ':pais_id' => $user->paisId
+            ':pais_id' => $user->paisId,
+            ':registration_domain' => $user->realm
         ];
         $this->executeQuery($sql, $params);
 
@@ -101,19 +122,19 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         $this->commit();
     }
 
-    public function existsByUserId($username)
+    public function existsByUserId($username, $realm)
     {
         $query = "SELECT COUNT(*) FROM users WHERE user_id = :username";
         return $this->fetchColumn($query, [':username' => $username]) > 0;
     }
 
-    public function existsByEmail($email)
+    public function existsByEmail($email, $realm)
     {
         $query = "SELECT COUNT(*) FROM user_profiles WHERE email = :email";
         return $this->fetchColumn($query, [':email' => $email]) > 0;
     }
 
-    public function isEmailAvailableForChange($email, $user_id)
+    public function isEmailAvailableForChange($email, $user_id, $realm)
     {
         $query = "SELECT COUNT(*) FROM user_profiles
                 WHERE email = :email AND user_id != :currentUserId";
@@ -123,7 +144,7 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         ]) > 0;
     }
 
-    public function resetRecoveryPassword($user_id, $password)
+    public function resetRecoveryPassword($user_id, $password, $realm)
     {
         $query = "UPDATE users SET reset_password_token =:reset_password_token,
                 reset_password_expires = ADDTIME(NOW(), '01:00:00')
@@ -134,7 +155,7 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         ]);
     }
 
-    public function verifyTokenRecovery($token)
+    public function verifyTokenRecovery($token, $realm)
     {
         $query = "SELECT *
                 FROM users
@@ -143,7 +164,7 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         return $this->fetchColumn($query, [':token' => $token]) > 0;
     }
 
-    public function updatePasswordByToken($password, $token)
+    public function updatePasswordByToken($password, $token, $realm)
     {
         $query = "UPDATE users SET reset_password_token = NULL,
                 password = :password,
@@ -155,7 +176,7 @@ class LoginRepository extends BaseRepository implements ILoginRepository
         ]);
     }
 
-    public function updatePasswordByUserId($password, $user_id)
+    public function updatePasswordByUserId($password, $user_id, $realm)
     {
         $query = "UPDATE users SET password = :password
                 WHERE user_id =:user_id";

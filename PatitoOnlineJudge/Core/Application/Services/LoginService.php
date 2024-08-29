@@ -49,6 +49,7 @@ class LoginService implements ILoginService
         $authService = new AuthService();
         $this->userValidator->validate($user);
         $user->password = $authService->generatePasswordHash($user->password);
+        $user->realm = $_SERVER["THEME_TEMPLATE"]; 
         $this->loginRepository->registerUser($user);
 
         $mail = new MailService();

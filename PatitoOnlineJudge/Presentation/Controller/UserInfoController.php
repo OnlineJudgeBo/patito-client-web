@@ -39,6 +39,7 @@ class UserInfoController
         $user->lastname = $data["lastname"];
         $user->userId   = $this->userId;
         $user->password = $data["password"];
+        $user->realm    = $_SERVER["REALM"];
 
         $this->loginService->updateUserProfile($this->userId, $user);
         header('Location: ./userInfo.php');
