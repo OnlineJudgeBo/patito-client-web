@@ -6,7 +6,7 @@ interface IContestRankRepository {
 
     public function getContestDetails($cid);
         
-    public function getContestSolutions($cid, $realm);
+    public function getContestSolutions($cid);
     
     public function getFirstBlood($cid);
 }

@@ -31,18 +31,15 @@ class ContestRankRepository implements IContestRankRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getContestSolutions($cid, $realm)
+    public function getContestSolutions($cid)
     {
         $sql = "SELECT user_profiles.user_id, user_profiles.nick, user_profiles.lastname, solution.result, solution.num, solution.in_date, solution.pass_rate,
                 solution.is_virtual
                 FROM (SELECT * FROM solution WHERE solution.contest_id = :cid AND num >= 0) solution
                 LEFT JOIN user_profiles ON user_profiles.user_id = solution.user_id
-                WHERE user_profiles.registration_domain = :registration_domain
                 ORDER BY user_profiles.user_id, in_date";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':cid' => $cid]);
-        $stmt->execute([':registration_domain' => $realm]);
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

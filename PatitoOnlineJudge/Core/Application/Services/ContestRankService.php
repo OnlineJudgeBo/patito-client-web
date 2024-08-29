@@ -22,8 +22,7 @@ class ContestRankService implements IContestRankService
 
     public function getContestRankListById($cid, $start_time, $end_time)
     {
-        $realm = $_SESSION["REALM"];
-        $rows = $this->contestRankRepository->getContestSolutions($cid, $realm);
+        $rows = $this->contestRankRepository->getContestSolutions($cid);
         $obi = 0;
         $user_cnt = 0;
         $user_name = '';
