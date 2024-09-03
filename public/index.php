@@ -171,6 +171,11 @@ function executeRouter()
         require  __DIR__ . '/Routing/redirect.php';
     });
 
+    $router->get('/oj/redirect.php', function () {
+        require  __DIR__ . '/Routing/redirect.php';
+    });
+
+
     $router->get($prefix . '/diff_code.php', function () {
         require  __DIR__ . '/Routing/diffCode.php';
     });
