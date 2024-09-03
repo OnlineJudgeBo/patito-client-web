@@ -15,7 +15,7 @@
         window.localStorage.removeItem('user_id');
 
         setTimeout(function() {
-            window.location.href = 'login.php';
+            window.location.href = '/';
         }, 1000);
     </script>
 </body>
