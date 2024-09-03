@@ -70,6 +70,10 @@ function executeRouter()
         require  __DIR__ . '/Routing/logout.php';
     });
 
+    $router->get('/oj/logout.php', function () {
+        require  __DIR__ . '/Routing/logout.php';
+    });
+
     $router->get($prefix . '/problem.php', function () {
         require  __DIR__ . '/Routing/problem.php';
     });
