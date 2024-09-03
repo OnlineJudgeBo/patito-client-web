@@ -25,8 +25,8 @@
                 </div>
                 <div class="p-1">
                     <div class="relative w-full overflow-auto">
-                        <?php require __DIR__ . "/Modules/ServerTime.php"; ?>
-                        <?php require __DIR__ . "/Modules/StatusTime.php"; ?>
+                        <?php require __DIR__ . "/../Modules/ServerTime.php"; ?>
+                        <?php require __DIR__ . "/../Modules/StatusTime.php"; ?>
                         <table class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted w-full">
                             <thead class="">
                                 <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">

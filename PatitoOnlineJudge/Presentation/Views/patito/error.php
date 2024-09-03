@@ -13,8 +13,8 @@
 
 <body class="flex flex-col h-full">
     <?php require "oj-header.php"; ?>
-    <?php require __DIR__ . "/Modules/StatusTime.php"; ?>
-    <?php require __DIR__ . "/Modules/Utils.php"; ?>
+    <?php require __DIR__ . "/../Modules/StatusTime.php"; ?>
+    <?php require __DIR__ . "/../Modules/Utils.php"; ?>
     <main class="container mx-auto p-4">
         <div class="flex flex-col">
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full">

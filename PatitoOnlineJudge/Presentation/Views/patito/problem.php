@@ -30,7 +30,7 @@
         require "oj-header.php";
     }
     ?>
-    <?php require __DIR__ . "/Modules/StatusTime.php"; ?>
+    <?php require __DIR__ . "/../Modules/StatusTime.php"; ?>
     <main class="container mx-auto p-4 grid grid-cols-0">
         <div class="col-span-2">
 
