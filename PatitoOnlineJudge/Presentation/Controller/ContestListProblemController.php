@@ -64,7 +64,7 @@ class ContestListProblemController
         } else {
             $contestDetail = $this->contestService->getContestById($this->cid);
             $contestProblemList = array();
-            $error = "Este contest es privado";
+            $error = "Este concurso es privado. Por favor, contacta con el creador del concurso para más información.";
             require_once $current_theme . "/error.php";
         }
     }
