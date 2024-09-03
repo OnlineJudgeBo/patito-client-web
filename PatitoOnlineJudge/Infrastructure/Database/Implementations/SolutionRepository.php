@@ -50,11 +50,11 @@ class SolutionRepository implements ISolutionRepository
     {
         $qry = "SELECT error
         FROM (
-            SELECT error
+            SELECT error, solution_id
             FROM compileinfo
             WHERE solution_id = :sid1
             UNION ALL
-            SELECT error
+            SELECT error, solution_id
             FROM runtimeinfo
             WHERE solution_id = :sid2
         ) AS combined_errors, solution
