@@ -10,11 +10,11 @@ interface IProblemRepository {
 
     public function getProblemByOfficialContestId($cid, $pid);
 
-    public function getProblemsCount();
+    public function getProblemsCount($site_id);
 
-    public function getProblems($offset, $limit);
+    public function getProblems($offset, $limit, $site_id);
 
-    public function getProblemsByUser($offset, $limit, $userId);
+    public function getProblemsByUser($offset, $limit, $userId, $site_id);
 
-    public function isProblemInContest($problem_id);
+    public function isProblemInContest($problem_id, $site_id);
 }

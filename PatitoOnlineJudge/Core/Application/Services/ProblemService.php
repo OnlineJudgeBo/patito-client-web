@@ -11,10 +11,12 @@ class ProblemService implements IProblemService
 {
     private $problemRepository;
     private $userId;
+    private $site_id;
 
     public function __construct(IProblemRepository $problemRepository)
     {
         $this->problemRepository = $problemRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function addUserid($userId)
@@ -24,33 +26,33 @@ class ProblemService implements IProblemService
 
     public function getProblemById($pid)
     {
-        return $this->problemRepository->getProblemById($pid);
+        return $this->problemRepository->getProblemById($pid, $this->site_id);
     }
 
     public function getProblemByContestId($cid, $pid, $cType)
     {
         if ($cType == "official_contest") {
-            return $this->problemRepository->getProblemByOfficialContestId($cid, $pid);
+            return $this->problemRepository->getProblemByOfficialContestId($cid, $pid, $this->site_id);
         } else {
-            return $this->problemRepository->getProblemByContestId($cid, $pid);
+            return $this->problemRepository->getProblemByContestId($cid, $pid, $this->site_id);
         }
     }
 
     public function getProblemsCount()
     {
-        return $this->problemRepository->getProblemsCount();
+        return $this->problemRepository->getProblemsCount($this->site_id);
     }
 
     public function getProblems($offset, $limit)
     {
         if (empty($this->userId)) {
-            return $this->problemRepository->getProblems($offset, $limit);
+            return $this->problemRepository->getProblems($offset, $limit, $this->site_id);
         }
-        return $this->problemRepository->getProblemsByUser($offset, $limit, $this->userId);
+        return $this->problemRepository->getProblemsByUser($offset, $limit, $this->userId, $this->site_id);
     }
 
     public function isProblemInContest(int $pid): bool
     {
-        return $this->problemRepository->isProblemInContest($pid);
+        return $this->problemRepository->isProblemInContest($pid, $this->site_id);
     }
 }

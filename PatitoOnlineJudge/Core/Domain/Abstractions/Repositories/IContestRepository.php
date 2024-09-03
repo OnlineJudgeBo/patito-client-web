@@ -4,21 +4,21 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Repositories;
 
 interface IContestRepository
 {
-    public function isContestActive($cid);
+    public function isContestActive($cid, $site_id);
 
-    public function isVirtualContest($cid);
+    public function isVirtualContest($cid, $site_id);
 
     public function getContestById($cid);
 
-    public function getAllContests();
+    public function getAllContests($site_id);
 
-    public function getOfficialContests();
+    public function getOfficialContests($site_id);
 
-    public function getProblemsByContestId($cid);
+    public function getProblemsByContestId($cid, $site_id);
 
     public function isContestByIdPublic($cid);
 
-    public function getAcProblemsByIdContest($cid);
+    public function getAcProblemsByIdContest($cid, $site_id);
 
     public function getProblemTitleByNumber($cid, $num);
 

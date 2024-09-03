@@ -15,31 +15,36 @@ class ContestRepository implements IContestRepository
         $this->pdo = $connector->getConnection();
     }
 
-    public function isContestActive($cid)
+    public function isContestActive($cid, $site_id)
     {
         $currentDate = date('Y-m-d H:i:s');
-        $stmt = $this->pdo->prepare("SELECT count(contest_id) AS result
-        FROM contest
-        WHERE contest_id = :cid
+        $stmt = $this->pdo->prepare("SELECT count(contest.contest_id) AS result
+        FROM contest, contest_site
+        WHERE contest.contest_id = :cid
         AND timediff(:start_time1, start_time) >= 0
-        AND timediff(end_time, :start_time2) >= 0;");
+        AND timediff(end_time, :start_time2) >= 0
+        AND contest_site.contest_id = contest.contest_id
+        AND contest_site.site_id = :site_id");
         $stmt->execute([
             ':cid' => $cid,
             ':start_time1' => $currentDate,
-            ':start_time2' => $currentDate
+            ':start_time2' => $currentDate,
+            ':site_id'     => $site_id
         ]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return intval($result["result"]) > 0;
     }
 
-    public function isVirtualContest($cid)
+    public function isVirtualContest($cid, $site_id)
     {
-        $stmt = $this->pdo->prepare("SELECT count(contest_id) AS result
-        FROM contest
-        WHERE contest_id = :cid
-        AND defunct = 'O'");
-        $stmt->execute([':cid' => $cid]);
+        $stmt = $this->pdo->prepare("SELECT count(contest.contest_id) AS result
+        FROM contest, contest_site
+        WHERE contest.contest_id = :cid
+        AND contest.defunct = 'O'
+        AND contest_site.contest_id = contest.contest_id
+        AND contest_site.site_id = :site_id");
+        $stmt->execute([':cid' => $cid, ':site_id' => $site_id]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return intval($result["result"]) > 0;
@@ -52,19 +57,27 @@ class ContestRepository implements IContestRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAllContests()
+    public function getAllContests($site_id)
     {
-        $stmt = $this->pdo->query("SELECT * FROM contest WHERE defunct = 'N' ORDER BY contest_id DESC LIMIT 50");
+        $stmt = $this->pdo->query("SELECT * FROM contest, contest_site
+            WHERE contest.defunct = 'N'
+            AND contest_site.contest_id = contest.contest_id
+            AND contest_site.site_id = $site_id
+            ORDER BY contest.contest_id DESC LIMIT 50");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getOfficialContests()
+    public function getOfficialContests($site_id)
     {
-        $stmt = $this->pdo->query("SELECT * FROM contest WHERE defunct = 'O' ORDER BY contest_id DESC");
+        $stmt = $this->pdo->query("SELECT * FROM contest, contest_site
+            WHERE contest.defunct = 'O'
+            AND contest_site.contest_id = contest.contest_id
+            AND contest_site.site_id = $site_id
+            ORDER BY contest.contest_id DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemsByContestId($cid)
+    public function getProblemsByContestId($cid, $site_id)
     {
         $stmt = $this->pdo->prepare("SELECT *
         FROM (
@@ -74,10 +87,12 @@ class ContestRepository implements IContestRepository
                 problem.source AS source,
                 contest_problem.num AS pnum
             FROM
-                contest_problem, problem
+                contest_problem, problem, contest_site
             WHERE
                 contest_problem.problem_id = problem.problem_id
                 AND contest_problem.contest_id = :cid1
+                AND contest_site.contest_id = contest_problem.contest_id
+                AND contest_site.site_id = :site_id
         ) problem
         LEFT JOIN (
             SELECT
@@ -88,6 +103,7 @@ class ContestRepository implements IContestRepository
             WHERE
                 result = 4
                 AND contest_id = :cid2
+                AND site_id = :site_id2
             GROUP BY
                 pid1
         ) p1 ON problem.pid = p1.pid1
@@ -99,13 +115,20 @@ class ContestRepository implements IContestRepository
                 solution
             WHERE
                 contest_id = :cid3
+                AND site_id = :site_id3
             GROUP BY
                 pid2
         ) p2 ON problem.pid = p2.pid2
         ORDER BY
             pnum");
 
-        $stmt->execute(['cid1' => $cid, 'cid2' => $cid, 'cid3' => $cid]);
+        $stmt->execute(['cid1' => $cid,
+            'cid2' => $cid,
+            'cid3' => $cid,
+            'site_id' => $site_id,
+            'site_id2' => $site_id,
+            'site_id3' => $site_id
+        ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -117,13 +140,14 @@ class ContestRepository implements IContestRepository
         return false;
     }
 
-    public function getAcProblemsByIdContest($cid)
+    public function getAcProblemsByIdContest($cid, $site_id)
     {
-        $stmt = $this->pdo->prepare("SELECT user_id, contest_id, num
+        $stmt = $this->pdo->prepare("SELECT solution.user_id, solution.contest_id, solution.num
             FROM solution
-            WHERE contest_id =:contest_id
-            AND result = 4");
-        $stmt->execute([':contest_id' => $cid]);
+            WHERE solution.contest_id =:contest_id
+            AND solution.result = 4
+            AND solution.site_id = :site_id");
+        $stmt->execute([':contest_id' => $cid, ':site_id' => $site_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

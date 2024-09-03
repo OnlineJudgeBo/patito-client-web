@@ -8,25 +8,27 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IContestService;
 class ContestService implements IContestService
 {
     protected $contestRepository;
+    private $site_id;
 
     public function __construct(IContestRepository $contestRepository)
     {
         $this->contestRepository = $contestRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function isContestActive($cid)
     {
-        return $this->contestRepository->isContestActive($cid);
+        return $this->contestRepository->isContestActive($cid, $this->site_id);
     }
 
     public function isVirtualContest($cid)
     {
-        return $this->contestRepository->isVirtualContest($cid);
+        return $this->contestRepository->isVirtualContest($cid, $this->site_id);
     }
 
     public function getContestProblems($cid)
     {
-        return $this->contestRepository->getProblemsByContestId($cid);
+        return $this->contestRepository->getProblemsByContestId($cid, $this->site_id);
     }
 
     public function getContestById($cid)
@@ -36,10 +38,11 @@ class ContestService implements IContestService
 
     public function getAllContestDetails($contest_type)
     {
+
         if ($contest_type == "official") {
-            return $this->contestRepository->getOfficialContests();
+            return $this->contestRepository->getOfficialContests($this->site_id);
         } else {
-            return $this->contestRepository->getAllContests();
+            return $this->contestRepository->getAllContests($this->site_id);
         }
     }
 
@@ -50,7 +53,7 @@ class ContestService implements IContestService
 
     public function getAcProblemsByIdContest($cid)
     {
-        $data = $this->contestRepository->getAcProblemsByIdContest($cid);
+        $data = $this->contestRepository->getAcProblemsByIdContest($cid, $this->site_id);
         $result = array();
         foreach ($data as $value) {
             $result[$value["user_id"]][] = $value["num"];

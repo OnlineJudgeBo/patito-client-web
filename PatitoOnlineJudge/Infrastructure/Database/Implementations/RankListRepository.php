@@ -15,7 +15,7 @@ class RankListRepository implements IRankListRepository
         $this->pdo = $connector->getConnection();
     }
 
-    public function getRankListByDate($scope, $rank)
+    public function getRankListByDate($scope, $rank, $site_id)
     {
         $page_size = 500000;
         $s = "";
@@ -35,6 +35,7 @@ class RankListRepository implements IRankListRepository
                     SELECT count(DISTINCT problem_id) solved ,user_id
                     FROM solution WHERE in_date > str_to_date('$s','%Y-%m-%d')
                     AND result = 4
+                    AND site_id = $site_id
                     GROUP BY user_id
                     ORDER BY solved DESC LIMIT " . strval($rank) . ",$page_size
                 ) s ON user_profiles.user_id=s.user_id

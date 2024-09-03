@@ -23,11 +23,12 @@ class ProblemRepository implements IProblemRepository {
     public function getProblemByContestId($cid, $pid) {
         $stmt = $this->pdo->prepare("SELECT * FROM problem
                                         WHERE defunct='N' AND
-                                        problem_id = (SELECT problem_id
-                                                        FROM contest_problem
-                                                        WHERE contest_id = :cid
-                                                        AND num = :pid)");
-        $stmt->execute(['cid' => $cid, 'pid' => $pid]);
+                                        problem_id = (
+                                            SELECT problem_id FROM contest_problem
+                                            WHERE contest_id = :cid
+                                            AND num = :pid)");
+        $stmt->execute(['cid' => $cid,
+                        'pid' => $pid]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -41,39 +42,47 @@ class ProblemRepository implements IProblemRepository {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemsCount() {
-        $sql = "SELECT COUNT(problem_id) as total
-                FROM problem
-                WHERE defunct='N'";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
+    public function getProblemsCount($site_id) {
+        $stmt = $this->pdo->prepare("SELECT COUNT(problem.problem_id) as total
+                                        FROM problem, problems_site
+                                        WHERE problems_site.problem_id = problem.problem_id
+                                        AND problems_site.site_id = :site_id
+                                        AND problem.defunct='N'");
+        $stmt->execute(['site_id' => $site_id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return intval($result['total']);
     }
 
-    public function getProblems($offset, $limit) {
-        $sql = "SELECT problem_id, title, source, submit, accepted
-        FROM problem
+    public function getProblems($offset, $limit, $site_id) {
+        $sql = "SELECT problem.problem_id, problem.title, source, submit, accepted
+        FROM problem, problems_site
         WHERE defunct = 'N'
             AND problem.problem_id NOT IN (
             SELECT contest_problem.problem_id 
             FROM (
-              SELECT * 
-                FROM contest
+              SELECT contest.*  
+                FROM contest, contest_site
                 WHERE NOW() BETWEEN contest.start_time AND contest.end_time
+                AND contest_site.contest_id = contest.contest_id
+                AND contest_site.contest_id = :site_id1
             ) c 
             INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
+            OR problem.problem_id IN (1000)
         )
-        OR problem.problem_id IN (1000)
+        
+        AND problems_site.problem_id = problem.problem_id
+        AND problems_site.site_id = :site_id2
         LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
         $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->bindParam(":site_id1", $site_id, PDO::PARAM_INT);
+        $stmt->bindParam(":site_id2", $site_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemsByUser($offset, $limit, $userId) {
+    public function getProblemsByUser($offset, $limit, $userId, $site_id) {
         $sql = "SELECT
                     problem.problem_id,
                     problem.title,
@@ -81,42 +90,60 @@ class ProblemRepository implements IProblemRepository {
                     problem.submit,
                     problem.accepted,
                     (
-                        SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result = 4 AND solution.user_id = :userid1
+                        SELECT COUNT(*) FROM solution 
+                            WHERE solution.problem_id = problem.problem_id
+                            AND solution.result = 4
+                            AND solution.user_id = :userid1
+                            AND solution.site_id = :site_id1
                     ) AS ac,
                     (
-                        SELECT COUNT(*) FROM solution WHERE solution.problem_id = problem.problem_id AND solution.result != 4 AND solution.user_id =:userid2
+                        SELECT COUNT(*) FROM solution
+                            WHERE solution.problem_id = problem.problem_id
+                            AND solution.result != 4
+                            AND solution.user_id =:userid2
+                            AND solution.site_id = :site_id2
                     ) AS wa
                 FROM
-                    problem
+                    problem, problems_site
                 WHERE
                     problem.defunct = 'N' AND problem.problem_id NOT IN (
                         SELECT contest_problem.problem_id 
                         FROM (
-                          SELECT * 
-                            FROM contest
+                            SELECT contest.*  
+                            FROM contest, contest_site
                             WHERE NOW() BETWEEN contest.start_time AND contest.end_time
+                            AND contest_site.contest_id = contest.contest_id
+                            AND contest_site.site_id = :site_id3
                         ) c 
                         INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
+                        AND problem.problem_id IN (1000)
                         ORDER BY problem.accepted DESC
                     )
-                OR problem.problem_id IN (1000)
+                    AND problems_site.problem_id = problem.problem_id
+                    AND problems_site.site_id = :site_id4
                 LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
         $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
         $stmt->bindParam(":userid1", $userId, PDO::PARAM_STR);
         $stmt->bindParam(":userid2", $userId, PDO::PARAM_STR);
+        $stmt->bindParam(":site_id1", $site_id, PDO::PARAM_INT);
+        $stmt->bindParam(":site_id2", $site_id, PDO::PARAM_INT);
+        $stmt->bindParam(":site_id3", $site_id, PDO::PARAM_INT);
+        $stmt->bindParam(":site_id4", $site_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function isProblemInContest($problem_id)
+    public function isProblemInContest($problem_id, $site_id)
     {
         $sql = "SELECT count(*) AS total
         FROM (
-            SELECT * 
-            FROM contest
+            SELECT contest.*
+            FROM contest, contest_site
             WHERE NOW() BETWEEN contest.start_time AND contest.end_time
+            AND contest.contest_id = contest_site.contest_id
+            AND contest_site.site_id = :site_id 
         ) c 
         INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
         WHERE problem_id = :problem_id
@@ -125,6 +152,7 @@ class ProblemRepository implements IProblemRepository {
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":problem_id", $problem_id, PDO::PARAM_INT);
+        $stmt->bindParam(":site_id", $site_id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return intval($result['total']) > 0;

@@ -9,10 +9,12 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IStatusService;
 class StatusService implements IStatusService
 {
     private $solutionRepository;
+    private $site_id;
 
     public function __construct(ISolutionRepository $solutionRepository)
     {
         $this->solutionRepository = $solutionRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function getStatusData($params)
@@ -26,6 +28,6 @@ class StatusService implements IStatusService
         if (isset($params["user_id"])) {
             $limit = 100000;
         }
-        return $this->solutionRepository->getStatusData($params, $limit);
+        return $this->solutionRepository->getStatusData($params, $limit, $this->site_id);
     }
 }

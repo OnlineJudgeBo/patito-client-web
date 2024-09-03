@@ -4,5 +4,5 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Repositories;
 
 interface IProblemStatusRepository
 {
-    public function getTopUsersByProblem($problem_id);
+    public function getTopUsersByProblem($problem_id, $site_id);
 }
