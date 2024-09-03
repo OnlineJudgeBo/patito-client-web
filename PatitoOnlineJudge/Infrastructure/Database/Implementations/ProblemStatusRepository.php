@@ -16,7 +16,7 @@ class ProblemStatusRepository implements IProblemStatusRepository
     }
 
 
-    public function getTopUsersByProblem($problem_id)
+    public function getTopUsersByProblem($problem_id, $site_id)
     {
         $sql = "SELECT
             c.user_id,
@@ -34,7 +34,7 @@ class ProblemStatusRepository implements IProblemStatusRepository
                     COUNT(*) AS att,
                     MIN(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS min_score
                 FROM solution
-                WHERE problem_id = $problem_id AND result = 4
+                WHERE problem_id = $problem_id AND result = 4 AND site_id = $site_id
                 GROUP BY user_id
             ) AS c
             LEFT JOIN (

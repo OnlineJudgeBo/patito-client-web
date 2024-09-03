@@ -10,23 +10,25 @@ class ProblemStatusService implements IProblemStatusService
 {
     private $problemStatusRepository;
     private $userStaticRepository;
+    private $site_id;
 
     public function __construct(IProblemStatusRepository $problemStatusRepository, IuserStaticRepository $userStaticRepository)
     {
         $this->problemStatusRepository = $problemStatusRepository;
         $this->userStaticRepository = $userStaticRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function getUserStatics($problemId)
     {
-        $totalsubmits = $this->userStaticRepository->getTotalUserSubmitByProblem($problemId);
-        $totalac = $this->userStaticRepository->getTotalUserAcByProblem($problemId);
-        $totalpe = $this->userStaticRepository->getTotalUserPeByProblem($problemId);
-        $totalwa = $this->userStaticRepository->getTotalUserWaByProblem($problemId);
-        $totaltle = $this->userStaticRepository->getTotalUserTleByProblem($problemId);
-        $totalole = $this->userStaticRepository->getTotalUserOleByProblem($problemId);
-        $totalre = $this->userStaticRepository->getTotalUserReByProblem($problemId);
-        $totalce = $this->userStaticRepository->getTotalUserCeByProblem($problemId);
+        $totalsubmits = $this->userStaticRepository->getTotalUserSubmitByProblem($problemId, $this->site_id);
+        $totalac = $this->userStaticRepository->getTotalUserAcByProblem($problemId, $this->site_id);
+        $totalpe = $this->userStaticRepository->getTotalUserPeByProblem($problemId, $this->site_id);
+        $totalwa = $this->userStaticRepository->getTotalUserWaByProblem($problemId, $this->site_id);
+        $totaltle = $this->userStaticRepository->getTotalUserTleByProblem($problemId, $this->site_id);
+        $totalole = $this->userStaticRepository->getTotalUserOleByProblem($problemId, $this->site_id);
+        $totalre = $this->userStaticRepository->getTotalUserReByProblem($problemId, $this->site_id);
+        $totalce = $this->userStaticRepository->getTotalUserCeByProblem($problemId, $this->site_id);
 
         return  [
             'total_submits' => $totalsubmits,
@@ -42,6 +44,6 @@ class ProblemStatusService implements IProblemStatusService
 
     public function getTopUsersByProblem($problem_id)
     {
-        return $this->problemStatusRepository->getTopUsersByProblem($problem_id);
+        return $this->problemStatusRepository->getTopUsersByProblem($problem_id, $this->site_id);
     }
 }

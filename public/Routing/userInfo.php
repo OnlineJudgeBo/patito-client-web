@@ -1,6 +1,5 @@
 <?php
 
-use PatitoOnlineJudge\Core\Application\Services\LoginService;
 use PatitoOnlineJudge\Presentation\Controller\UserInfoController;
 
 require_once __DIR__ . '/container.php';

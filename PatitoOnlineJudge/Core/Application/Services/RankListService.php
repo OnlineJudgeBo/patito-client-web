@@ -8,15 +8,16 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IRankListService;
 class RankListService implements IRankListService
 {
     private $rankListRepository;
+    private $site_id;
 
     public function __construct(IRankListRepository $rankListRepository)
     {
         $this->rankListRepository = $rankListRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function getRankListByDate($rank, $scope)
     {
-        $realm = $_SERVER["REALM"];
-        return $this->rankListRepository->getRankListByDate($rank, $scope, $realm);
+        return $this->rankListRepository->getRankListByDate($rank, $scope, $this->site_id);
     }
 }

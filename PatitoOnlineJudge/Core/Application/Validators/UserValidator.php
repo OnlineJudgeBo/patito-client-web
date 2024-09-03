@@ -9,10 +9,12 @@ use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 class UserValidator
 {
     protected $userRepository;
+    private $site_id;
 
     public function __construct(ILoginRepository $userRepository)
     {
         $this->userRepository = $userRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function validate(UserDomainObject $userData)
@@ -69,21 +71,21 @@ class UserValidator
 
     protected function validateUsernameUniqueness($username)
     {
-        if ($this->userRepository->existsByUserId($username)) {
+        if ($this->userRepository->existsByUserId($username, $this->site_id)) {
             throw new ApplicationException("El nombre de usuario {$username} ya está en uso.");
         }
     }
 
     protected function validateEmailUnique($email)
     {
-        if ($this->userRepository->existsByEmail($email)) {
+        if ($this->userRepository->existsByEmail($email, $this->site_id)) {
             throw new ApplicationException("El correo electrónico {$email} ya está registrado.");
         }
     }
 
     protected function validateEmailUniqueToChange($email, $userId)
     {
-        if ($this->userRepository->isEmailAvailableForChange($email, $userId)) {
+        if ($this->userRepository->isEmailAvailableForChange($email, $userId, $this->site_id)) {
             throw new ApplicationException("El correo electrónico {$email} ya se encuentra en uso por otro usuario registrado.");
         }
     }    

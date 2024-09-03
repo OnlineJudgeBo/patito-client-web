@@ -17,19 +17,21 @@ class ContestListProblemController
         $this->title = "Lista de problemas";
         $this->contestService = $contestService;
     }
-    
-    public function addCid($cid) {
+
+    public function addCid($cid)
+    {
         $this->cid = $cid;
     }
 
-    public function addCtype($cType) {
+    public function addCtype($cType)
+    {
         $this->cType = $cType;
     }
 
     private function userHasAccess()
     {
         if (
-            
+
             (isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador") ||
             (isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente")       ||
             (isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar")      ||
@@ -49,16 +51,16 @@ class ContestListProblemController
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
         if ($this->userHasAccess()) {
-                $contestProblemList = $this->contestService->getContestProblems($this->cid);
-                $contestDetail = $this->contestService->getContestById($this->cid);
-                $resolveBy = $this->contestService->getAcProblemsByIdContest($this->cid);
-                if (isset($_SESSION["user_id"])) {
-                    $user_id = $_SESSION["user_id"];
-                }
-    
-                $cid = $this->cid;
-                $cType = $this->cType;
-                require_once $current_theme . "/contestProblemList.php";
+            $contestProblemList = $this->contestService->getContestProblems($this->cid);
+            $contestDetail = $this->contestService->getContestById($this->cid);
+            $resolveBy = $this->contestService->getAcProblemsByIdContest($this->cid);
+            if (isset($_SESSION["user_id"])) {
+                $user_id = $_SESSION["user_id"];
+            }
+
+            $cid = $this->cid;
+            $cType = $this->cType;
+            require_once $current_theme . "/contestProblemList.php";
         } else {
             $contestDetail = $this->contestService->getContestById($this->cid);
             $contestProblemList = array();

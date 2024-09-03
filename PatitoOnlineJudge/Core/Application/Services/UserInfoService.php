@@ -10,6 +10,7 @@ class UserInfoService implements IUserInfoService
 {
     private $solutionRepository;
     private $loginRepository;
+    private $site_id;
 
     public function __construct(
         ISolutionRepository $solutionRepository,
@@ -18,10 +19,11 @@ class UserInfoService implements IUserInfoService
     {
         $this->solutionRepository = $solutionRepository;
         $this->loginRepository = $loginRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function getSummarySolutions($userId) {
-        $solutions = $this->solutionRepository->getSummarySolutions($userId);
+        $solutions = $this->solutionRepository->getSummarySolutions($userId, $this->site_id);
         return $solutions;
     }
 }

@@ -9,21 +9,22 @@ use PatitoOnlineJudge\Core\Domain\DomainObjects\ScoreDomainObject;
 class ContestRankService implements IContestRankService
 {
     private $contestRankRepository;
+    private $site_id;
 
     public function __construct(IContestRankRepository $contestRankRepository)
     {
         $this->contestRankRepository = $contestRankRepository;
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function getFirstBlood($cid)
     {
-        return $this->contestRankRepository->getFirstBlood($cid);
+        return $this->contestRankRepository->getFirstBlood($cid, $this->site_id);
     }
 
     public function getContestRankListById($cid, $start_time, $end_time)
     {
-        $realm = $_SESSION["REALM"];
-        $rows = $this->contestRankRepository->getContestSolutions($cid, $realm);
+        $rows = $this->contestRankRepository->getContestSolutions($cid, $this->site_id );
         $obi = 0;
         $user_cnt = 0;
         $user_name = '';

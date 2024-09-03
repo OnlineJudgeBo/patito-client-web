@@ -14,6 +14,7 @@ class ProblemController
     private $cid;
     private $pid;
     private $cType;
+    private $siteId;
 
     public function __construct(IProblemService $problemService, IContestService $contestService)
     {
@@ -49,13 +50,13 @@ class ProblemController
             $problem = $this->problemService->getProblemByContestId($this->cid, $this->pid, $this->cType);
             $isContestActive = $this->contestService->isContestActive($this->cid, $this->cType);
         } else {
-            try {
+            //try {
                 $problem = $this->problemService->getProblemById($this->pid);
-            } catch (\Exception $e) {
+            //} catch (\Exception $e) {
                 //$error = $e->getMessage();
                 //require_once __DIR__."/../Views/genericError.php";
                 //die();
-            }
+            //}
         }
         require_once $current_theme . "/problem.php";
     }

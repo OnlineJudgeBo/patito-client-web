@@ -15,6 +15,4 @@ class UserDomainObject
     public $lastname;
     public $paisId;
     public $obi;
-    public $institucionId;
-    public $realm = "";
 }

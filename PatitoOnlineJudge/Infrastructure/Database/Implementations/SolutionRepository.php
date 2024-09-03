@@ -10,10 +10,12 @@ class SolutionRepository implements ISolutionRepository
 {
     private $pdo;
     private $view_last_runs = [];
+    private $site_id;
 
     public function __construct(DatabaseConnector $connector)
     {
         $this->pdo = $connector->getConnection();
+        $this->site_id = $_SERVER["SITE_ID"];
     }
 
     public function getLastRuns()
@@ -23,6 +25,7 @@ class SolutionRepository implements ISolutionRepository
         $sql = "SELECT solution_id, problem_id, user_id, time, memory, in_date, result, language
                 FROM solution
                 WHERE problem_id > 0
+                and site_id = $this->site_id
                 AND contest_id IS NOT NULL
                 ORDER BY in_date DESC LIMIT 10";
         $stmt = $this->pdo->query($sql);
@@ -54,14 +57,16 @@ class SolutionRepository implements ISolutionRepository
             SELECT error
             FROM runtimeinfo
             WHERE solution_id = :sid2
-        ) AS combined_errors
+        ) AS combined_errors, solution
+        WHERE solution.solution_id = combined_errors.solution_id
+        AND solution.site_id = :site_id
         LIMIT 1;";
         $stmt = $this->pdo->prepare($qry);
-        $stmt->execute([':sid1' => $solution_id, ':sid2' => $solution_id]);
+        $stmt->execute([':sid1' => $solution_id, ':sid2' => $solution_id, ':site_id' => $this->site_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getStatusData($params, $limit)
+    public function getStatusData($params, $limit, $site_id)
     {
         $language_ext = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
 
@@ -69,7 +74,8 @@ class SolutionRepository implements ISolutionRepository
         FROM solution
         INNER JOIN  problem ON problem.problem_id = solution.problem_id
         LEFT JOIN similar_code ON solution.solution_id = similar_code.solution_id
-        WHERE solution.problem_id > 0 ";
+        WHERE solution.problem_id > 0
+        AND site_id = $site_id";
 
         if (isset($params['contest_id'])) {
             $contest_id = intval($params['contest_id']);
@@ -114,7 +120,7 @@ class SolutionRepository implements ISolutionRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getSummarySolutions($user_id)
+    public function getSummarySolutions($user_id, $site_id)
     {
         $language_ext = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
         $sql = "SELECT 
@@ -133,6 +139,7 @@ class SolutionRepository implements ISolutionRepository
             AND solution.contest_id IS NULL 
             AND solution.user_id = '$user_id' 
             AND solution.result = '4'
+            AND solution.site_id = $site_id
         GROUP BY 
             problem.problem_id, problem.title 
         ORDER BY `first_solved_date` ASC LIMIT 10000000";
