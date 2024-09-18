@@ -22,8 +22,12 @@ class UserInfoService implements IUserInfoService
         $this->site_id = $_SERVER["SITE_ID"];
     }
 
-    public function getSummarySolutions($userId) {
-        $solutions = $this->solutionRepository->getSummarySolutions($userId, $this->site_id);
+    public function getSummarySolutions($userId, $type) {
+        if ($type == "ac") {
+            $solutions = $this->solutionRepository->getSummarySolutions($userId, $this->site_id);
+        } else if ($type == "error") {
+            $solutions = $this->solutionRepository->getSummaryErrorSolutions($userId, $this->site_id);
+        }
         return $solutions;
     }
 }

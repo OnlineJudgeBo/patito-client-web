@@ -47,7 +47,8 @@ class UserInfoController
     public function render()
     {
         $current_theme = Utils::get_current_theme();
-        $problemList = $this->userInfoService->getSummarySolutions($this->userId);
+        $problemList = $this->userInfoService->getSummarySolutions($this->userId, "ac");
+        $problemErrorList = $this->userInfoService->getSummarySolutions($this->userId, "error");
         $user = $this->loginService->getMe($this->userId);
         $title = $this->title;
         require_once $current_theme . "/userInfo.php";

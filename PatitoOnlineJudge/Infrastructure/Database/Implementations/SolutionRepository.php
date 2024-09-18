@@ -126,23 +126,47 @@ class SolutionRepository implements ISolutionRepository
         $sql = "SELECT 
         problem.problem_id,
         problem.title,
-        MIN(solution.in_date) AS first_solved_date,
         solution.solution_id,
-        COUNT(solution.solution_id) AS submission_count,
-        solution.user_id
+        solution.user_id,
+        solution.in_date,
+        solution.result
         FROM 
             solution
         INNER JOIN 
             problem ON problem.problem_id = solution.problem_id
         WHERE 
             solution.problem_id > 0 
-            AND solution.contest_id IS NULL 
+            AND (solution.contest_id IS NULL OR solution.contest_id = 0)
             AND solution.user_id = '$user_id' 
             AND solution.result = '4'
             AND solution.site_id = $site_id
-        GROUP BY 
-            problem.problem_id, problem.title 
-        ORDER BY `first_solved_date` ASC LIMIT 10000000";
+        ORDER BY solution.in_date ASC LIMIT 10000000";
+        $stmt = $this->pdo->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSummaryErrorSolutions($user_id, $site_id)
+    {
+        $language_ext = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
+        $sql = "SELECT 
+        problem.problem_id,
+        problem.title,
+        solution.solution_id,
+        solution.user_id,
+        solution.in_date,
+        solution.result
+        FROM 
+            solution
+        INNER JOIN 
+            problem ON problem.problem_id = solution.problem_id
+        WHERE 
+            solution.problem_id > 0 
+            AND (solution.contest_id IS NULL OR solution.contest_id = 0)
+            AND solution.user_id = '$user_id' 
+            AND solution.result != 4
+            AND solution.site_id = $site_id
+        ORDER BY solution.in_date ASC LIMIT 10000000";
         $stmt = $this->pdo->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

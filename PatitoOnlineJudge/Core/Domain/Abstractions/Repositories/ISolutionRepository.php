@@ -10,4 +10,6 @@ interface ISolutionRepository
     public function getStatusData($params, $limit, $site_id);
 
     public function getSummarySolutions($user_id, $site_id);
+    
+    public function getSummaryErrorSolutions($user_id, $site_id);
 }
