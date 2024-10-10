@@ -18,9 +18,9 @@ class MailService implements IMailService
         $this->mailer->IsSMTP();
         $this->mailer->IsHTML(true);
         $this->mailer->SMTPAuth = true;
-        $this->mailer->SMTPSecure = "ssl";
+        $this->mailer->SMTPSecure = "tls";
         $this->mailer->Host = "smtp.gmail.com";
-        $this->mailer->Port = 465;
+        $this->mailer->Port = 587;
         $this->mailer->Username = $_SERVER["MAIL_USER_NAME"];
         $this->mailer->Subject = $_SERVER["MAIL_SUBJECT"];
         $this->mailer->Password = $_SERVER["MAIL_PASSWORD"];
