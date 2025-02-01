@@ -14,12 +14,11 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Services\{
     IRankListService,
     IShowSourceService,
     ISolutionService,
-    IStatusService,
     ISubmitPageService,
-    IJwtService,
     ISessionService,
     IUserInfoService,
-    INotificationErrorService
+    INotificationErrorService,
+    IScheduleService
 };
 use PatitoOnlineJudge\Core\Application\Services\{
     ContestRankService,
@@ -34,10 +33,10 @@ use PatitoOnlineJudge\Core\Application\Services\{
     RankListService,
     ShowSourceService,
     SolutionService,
-    StatusService,
     SubmitPageService,
     SessionService,
-    NotificationErrorService
+    NotificationErrorService,
+    ScheduleService
 };
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\{
@@ -50,12 +49,11 @@ use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\{
     IRankListRepository,
     IShowSourceRepository,
     ISolutionRepository,
-    IStatusRepository,
     ISubmitPageRepository,
     IUserStaticRepository,
-    ISourceCodeRepository,
-    IUserInfoRepository
+    ISourceCodeRepository
 };
+
 use PatitoOnlineJudge\Infrastructure\Database\Implementations\{
     ContestRepository,
     LoginRepository,
@@ -65,16 +63,15 @@ use PatitoOnlineJudge\Infrastructure\Database\Implementations\{
     RankListRepository,
     ShowSourceRepository,
     SolutionRepository,
-    StatusRepository,
     SubmitPageRepository,
     ContestRankRepository,
+    ScheduleRepository,
     UserStaticRepository,
     SourceCodeRepository,
-    UserInfoRepository
 };
 
 require_once __DIR__ . '/../../vendor/autoload.php';
-$envPath = __DIR__."/../..";
+$envPath = __DIR__ . "/../..";
 if (file_exists($envPath . '/.env.local')) {
     $dotenv = Dotenv::createImmutable($envPath, '.env.local');
 } else {
@@ -102,6 +99,7 @@ $builder->addDefinitions([
 
     // Servicios
     ISessionService::class => DI\autowire(SessionService::class),
+    IScheduleService::class => \DI\create(ScheduleService::class)->constructor(\DI\get(ScheduleRepository::class)),
     IContestService::class => \DI\create(ContestService::class)->constructor(\DI\get(ContestRepository::class)),
     IContestRankService::class => \DI\create(ContestRankService::class)->constructor(\DI\get(ContestRankRepository::class)),
     ILoginService::class => \DI\create(LoginService::class)->constructor(\DI\get(LoginRepository::class), \DI\get(JwtService::class), \DI\get(UserValidator::class)),
@@ -111,7 +109,6 @@ $builder->addDefinitions([
     IRankListService::class => \DI\create(RankListService::class)->constructor(\DI\get(RankListRepository::class)),
     IShowSourceService::class => \DI\create(ShowSourceService::class)->constructor(\DI\get(ShowSourceRepository::class)),
     ISolutionService::class => \DI\create(SolutionService::class)->constructor(\DI\get(SolutionRepository::class)),
-    //IStatusService::class => \DI\create(StatusService::class)->constructor(\DI\get(StatusRepository::class)),
     ISubmitPageService::class => \DI\create(SubmitPageService::class)->constructor(
         \DI\get(SubmitPageRepository::class),
         \DI\get(SourceCodeRepository::class),
