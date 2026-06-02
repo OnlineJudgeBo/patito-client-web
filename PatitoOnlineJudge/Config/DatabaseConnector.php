@@ -15,6 +15,8 @@ class DatabaseConnector
     public function __construct()
     {
         date_default_timezone_set("America/La_Paz");
+        AppConfig::loadFromEnvironment();
+
         $this->dsn = "mysql:host=" . AppConfig::$DB_HOST . ";dbname=" . AppConfig::$DB_NAME . ";charset=utf8";
         $this->username = AppConfig::$DB_USER;
         $this->password = AppConfig::$DB_PASS;
