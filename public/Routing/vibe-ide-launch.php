@@ -19,9 +19,11 @@ if (!$userId) {
     exit;
 }
 
-$cid = isset($_GET['cid']) ? intval($_GET['cid']) : 0;
-$pid = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$cid = isset($_GET['contestId']) ? intval($_GET['contestId']) : (isset($_GET['cid']) ? intval($_GET['cid']) : 0);
+$pid = isset($_GET['num']) ? intval($_GET['num']) : (isset($_GET['pid']) ? intval($_GET['pid']) : 0);
+$id = isset($_GET['problemId']) ? intval($_GET['problemId']) : (isset($_GET['id']) ? intval($_GET['id']) : 0);
+$languageId = isset($_GET['languageId']) ? intval($_GET['languageId']) : null;
+$languageName = isset($_GET['languageName']) ? trim(strval($_GET['languageName'])) : '';
 $siteId = intval($_SERVER['SITE_ID'] ?? $_ENV['SITE_ID'] ?? getenv('SITE_ID') ?: 1);
 
 try {
@@ -54,6 +56,13 @@ try {
             'site_id' => $siteId,
             'problem_id' => $id,
         ];
+    }
+
+    if ($languageId !== null && $languageId >= 0) {
+        $claims['language_id'] = $languageId;
+    }
+    if ($languageName !== '') {
+        $claims['language_name'] = $languageName;
     }
 
     $claims['allowed_languages'] = array_values(array_map(static fn ($language) => intval($language['language_id']), $languagesAvailable));

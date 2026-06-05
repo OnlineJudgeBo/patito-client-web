@@ -100,8 +100,15 @@
                                     if (isset($cType) && $cType == "official_contest") {
                                         $problemUrl = sprintf("problem.php?cid=%d&pid=%d&type=%s", $cid, $value["pnum"], $cType);
                                     }
+                                    $vibeIdeUrl = ($_SERVER['APP_PREFIX_ROUTE'] ?? '/oj') . '/vibe-ide-launch.php?' . http_build_query([
+                                        'contestId' => intval($cid),
+                                        'cid' => intval($cid),
+                                        'num' => intval($value["pnum"]),
+                                        'pid' => intval($value["pnum"]),
+                                    ]);
                                     echo '<td class="p-1 text-center align-middle result-blue">
-                                            <a href="' . $problemUrl . '">' . $value["title"] . '</a></td>';
+                                            <a href="' . $problemUrl . '">' . $value["title"] . '</a>
+                                            <a class="ml-2 text-sky-600 hover:text-sky-800" target="_blank" rel="noopener noreferrer" href="' . htmlspecialchars($vibeIdeUrl, ENT_QUOTES, 'UTF-8') . '">IDE</a></td>';
                                     echo '<td class="p-1 text-center align-middle">' . $value["source"] . '</td>';
                                     echo '<td class="p-1 text-center align-middle">' . $value["accepted"] . '</td>';
                                     echo '<td class="p-1 text-center align-middle">' . $value["submit"] . '</td>';
