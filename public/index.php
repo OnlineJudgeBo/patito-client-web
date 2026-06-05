@@ -108,6 +108,11 @@ function executeRouter()
         require  __DIR__ . '/Routing/problem.php';
     });
 
+    $router->get($prefix . '/vibe-ide-launch.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+        require  __DIR__ . '/Routing/vibe-ide-launch.php';
+    });
+
     $router->get($prefix . '/problemset.php', function () {
         require  __DIR__ . '/Routing/problemset.php';
     });
