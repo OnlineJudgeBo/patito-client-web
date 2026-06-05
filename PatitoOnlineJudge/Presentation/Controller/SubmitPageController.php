@@ -51,6 +51,22 @@ class SubmitPageController
 
     public function saveRequest()
     {
+/*            $ch = curl_init("http://178.156.150.33:5678/webhook/9891acf7-8802-4bbb-b0f4-b3d184862f01");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+                "user_id" => $_SESSION["user_id"]." ".$this->pid,
+                "language" => $this->language_id,
+                "code" => $this->source
+            ]));
+
+            $response = curl_exec($ch);
+            //echo "<pre>"; print_r($response); echo "</pre>";exit();
+            $error = curl_error($ch);
+            curl_close($ch);
+*/
         if ($this->cid > 0) {
             $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source, $this->language_id);
             header("Location: status.php?cid=" . $this->cid . "&user_id=" . $_SESSION["user_id"]);

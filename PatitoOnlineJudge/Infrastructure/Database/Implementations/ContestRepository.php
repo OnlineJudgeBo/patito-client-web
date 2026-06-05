@@ -18,6 +18,17 @@ class ContestRepository implements IContestRepository
     public function isContestActive($cid, $site_id)
     {
         $currentDate = date('Y-m-d H:i:s');
+        $stmt = $this->pdo->prepare("SELECT count(*) AS result
+        FROM contest, contest_site
+        WHERE contest.contest_id = :cid
+        AND (
+            (:start_time1 BETWEEN contest.start_time AND contest.end_time)
+            OR
+            (contest.private = 0 AND :start_time2 > contest.end_time)
+            )
+        AND contest_site.contest_id = contest.contest_id
+        AND contest_site.site_id = :site_id");
+/*
         $stmt = $this->pdo->prepare("SELECT count(contest.contest_id) AS result
         FROM contest, contest_site
         WHERE contest.contest_id = :cid
@@ -25,6 +36,7 @@ class ContestRepository implements IContestRepository
         AND timediff(end_time, :start_time2) >= 0
         AND contest_site.contest_id = contest.contest_id
         AND contest_site.site_id = :site_id");
+*/
         $stmt->execute([
             ':cid' => $cid,
             ':start_time1' => $currentDate,
