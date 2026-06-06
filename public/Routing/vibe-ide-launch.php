@@ -15,7 +15,7 @@ $tokenService = new VibeIdeHandoffTokenService();
 $userId = $_SESSION['user_id'] ?? null;
 if (!$userId) {
     http_response_code(401);
-    echo 'Debe iniciar sesión para usar Vibe IDE.';
+    echo 'Debe iniciar sesión para usar IDE.';
     exit;
 }
 
