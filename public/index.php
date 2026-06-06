@@ -19,7 +19,7 @@ if (file_exists($envPath . '/.env.local')) {
 $dotenv->load();
 
 $environment = $_SERVER['APP_ENV'] ?: 'production';
-
+redirect();
 if ($environment !== 'development') {
     try {
         executeRouter();
@@ -32,6 +32,36 @@ if ($environment !== 'development') {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
     executeRouter();
+}
+
+function redirect() 
+{
+// Obtener la URL solicitada
+$requestUri = $_SERVER['REQUEST_URI'];
+
+// Reemplazar "/oj" por "/"
+$newUri = str_replace('/oj', '', $requestUri);
+
+// Eliminar cualquier doble "//" en la URL
+$newUri = preg_replace('#/+#', '/', $newUri); // Reemplaza múltiples "/" por un único "/"
+
+// Asegurar que la URL comienza con "/"
+if ($newUri[0] !== '/') {
+    $newUri = '/' . $newUri;
+}
+
+// Redirigir si hubo un cambio
+if ($requestUri !== $newUri) {
+    // Construir la nueva URL completa
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $host = $_SERVER['HTTP_HOST'];
+    $redirectUrl = $protocol . $host . $newUri;
+
+    // Redirigir al usuario
+    header("Location: $redirectUrl", true, 301);
+    exit;
+}
+
 }
 
 function executeRouter()

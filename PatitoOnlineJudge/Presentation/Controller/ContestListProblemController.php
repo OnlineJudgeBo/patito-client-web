@@ -50,6 +50,15 @@ class ContestListProblemController
     {
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
+
+        if (!$this->contestService->isContestActive($this->cid)) {
+            $contestDetail = $this->contestService->getContestById($this->cid);
+            $contestProblemList = array();
+            $error = "Este concurso no inicio.";
+            require_once $current_theme . "/error.php";
+            return;
+        }
+
         if ($this->userHasAccess()) {
             $contestProblemList = $this->contestService->getContestProblems($this->cid);
             $contestDetail = $this->contestService->getContestById($this->cid);

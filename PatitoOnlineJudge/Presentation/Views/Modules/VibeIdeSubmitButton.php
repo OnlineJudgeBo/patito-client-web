@@ -30,7 +30,7 @@ $vibeIdeLaunchUrl = $prefixRoute . '/vibe-ide-launch.php?' . http_build_query($q
     onclick="event.stopPropagation(); updateVibeIdeLaunchLink();"
     class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 >
-    Vibe IDE
+    IDE
 </a>
 <script>
 (function () {
