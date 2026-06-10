@@ -18,177 +18,157 @@
   <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
 </head>
 
-<body class="w-full top-0 left-0 z-50">
+<body class="w-full top-0 left-0 z-50 bg-gray-50">
 
   <?php require_once "oj-header.php" ?>
 
-  <main class="container mx-auto p-4 sm:grid sm:grid-cols-4 sm:gap-4">
-    <div class="col-span-3">
-      <div class="bg-gray-100 p-0 mb-2">
-        <div class="container mx-auto bg-white shadow-lg rounded-lg border p-6">
-
-          <div class="my-1">
-            <h2 class="text-lg font-semibold">¿Nuevo aquí? ¡Bienvenido!</h2>
-            <p>Se encuentran disponibles una <a href="https://aquicasual.me/es/online-judge/jv-umsa-bo/guia-de-inicio" target="_blank"><span class="text-blue-600 underline">guía rápida</span> </a>, una
-              <span class="text-blue-600 underline"> <a href="https://www.youtube.com/watch?v=ZQaFqwxha1s&list=PLK6g3h2B751dKmQUH60RaX9SOAv_cl6-I" target="_blank">guía en video</a></span>.
-            </p>
-          </div>
-        </div>
+  <main class="container mx-auto p-4 sm:grid sm:grid-cols-4 sm:gap-6">
+    <!-- Columna principal -->
+    <div class="col-span-3 space-y-6">
+      <!-- Tarjeta de Bienvenida -->
+      <div class="bg-white shadow-lg rounded-lg border p-6">
+        <h2 class="text-2xl font-bold mb-4">¿Nuevo aquí? ¡Bienvenido!</h2>
+        <p class="text-gray-700">
+          Se encuentran disponibles una
+          <a href="https://aquicasual.me/es/online-judge/jv-umsa-bo/guia-de-inicio" target="_blank" class="text-blue-600 hover:text-blue-800 underline">guía rápida</a>, y una
+          <a href="https://www.youtube.com/watch?v=ZQaFqwxha1s&list=PLK6g3h2B751dKmQUH60RaX9SOAv_cl6-I" target="_blank" class="text-blue-600 hover:text-blue-800 underline">guía en video</a>.
+        </p>
       </div>
 
-      <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full lg:block hidden">
-        <div class="flex flex-col space-y-1.5 p-6">
-          <h3 class="text-2xl font-semibold leading-none tracking-tight">Últimos envíos</h3>
-        </div>
-        <div class="flex flex-1">
-          <div class="w-full overflow-auto">
-            <table class="w-full border-collapse border-slate-500">
-              <thead>
-                <tr class="border-b transition-colors hover:bg-muted/50">
-                  <th class="p-4 font-semibold">RunID</th>
-                  <th class="p-4 font-semibold">Usuario</th>
-                  <th class="p-4 font-semibold">Problema</th>
-                  <th class="p-4 font-semibold">Lenguaje</th>
-                  <th class="p-4 font-semibold">Resultado</th>
-                  <th class="p-4 font-semibold">Memoria</th>
-                  <th class="p-4 font-semibold">Tiempo</th>
-                  <th class="p-4 font-semibold">Hora de Envió</th>
-                </tr>
-              </thead>
+      <!-- Tarjeta de Anuncios -->
+      <div class="bg-white shadow-lg rounded-lg border p-6">
+        <h2 class="text-2xl font-bold mb-4">Anuncios Importantes</h2>
+        <p class="text-gray-600 mb-4">¡Bienvenidos al nuevo semestre! Aquí encontrarás información importante.</p>
+        <ul class="list-disc list-inside space-y-2">
+          <li class="text-gray-700">Inicio de clases: 15 de Agosto</li>
+          <li class="text-gray-700">Reunión de bienvenida: 10 de Agosto, 10:00 AM</li>
+          <li class="text-gray-700">Entrega de materiales: 12 de Agosto</li>
+        </ul>
+      </div>
 
-              <tbody>
-                <?php
-                require __DIR__ . "/../../../../Legacy/Include/const.inc.php";
-                $showSource = "";
-                foreach ($view_last_runs as $key => $value) {
-                  $css = "evenrow";
-                  if ($key % 2 == 0) {
-                    $css = "oddrow";
+      <!-- Tarjeta de Horarios -->
+      <div class="bg-white shadow-lg rounded-lg border p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold">Horarios de Clases</h2>
+          <button onclick="toggleTable()" class="text-blue-600 hover:text-blue-800 underline">
+            Mostrar/Ocultar
+          </button>
+        </div>
+        <div id="horariosTable" class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-4 py-3">Hora</th>
+                <th scope="col" class="px-4 py-3">Lunes</th>
+                <th scope="col" class="px-4 py-3">Martes</th>
+                <th scope="col" class="px-4 py-3">Miércoles</th>
+                <th scope="col" class="px-4 py-3">Jueves</th>
+                <th scope="col" class="px-4 py-3">Viernes</th>
+                <th scope="col" class="px-4 py-3">Sábado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $schedules = $schedule;
+              $startTime = strtotime("08:00");
+              $endTime = strtotime("18:00");
+
+              while ($startTime < $endTime) {
+                $currentTime = date("H:i", $startTime);
+                $nextTime = date("H:i", strtotime("+2 hours", $startTime));
+                echo "<tr class='bg-white border-b hover:bg-gray-50 even:bg-gray-50'>";
+                echo "<td class='px-4 py-3 font-medium text-gray-900'>$currentTime - $nextTime</td>";
+
+                $days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                foreach ($days as $day) {
+                  echo "<td class='px-4 py-3'>";
+                  foreach ($schedules as $schedule) {
+                    if ($schedule['day_of_week'] == $day && $schedule['start_time'] == $currentTime . ":00") {
+                      echo "<div class='cursor-pointer hover:bg-blue-50 p-2 rounded-lg' onclick='mostrarAuxiliar(\"{$schedule['assistance_name']}\", \"{$schedule['schedule']}\")'>";
+                      echo "<p class='font-bold'>{$schedule['subject']}</p>";
+                      echo "<p class='text-sm'>{$schedule['teacher_name']}</p>";
+                      echo "</div>";
+                    }
                   }
-                  if (!empty($value["contest_id"])) {
-                    $url = "problem.php?cid=" . $value['contest_id'] . "&pid=" . $value['num'];
-                    $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
-                  } else {
-                    $url = "problem.php?id=" . $value['problem_id'];
-                    $user_url = "status.php?user_id=" . $value["user_id"];
-                  }
-                ?>
-                  <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
-                    <td class="p-4">
-                      <?php
-                      if (
-                        isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
-                        isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
-                        isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                        isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
-                      ) {
-                        $showSource = "showsource.php?id=" . $value["solution_id"];
-                      }
-                      echo $value["solution_id"];
-                      ?>
-                    </td>
-                    <td class="p-4">
-                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $user_url ?>">
-                        <?php echo $value["user_id"] ?>
-                      </a>
-                    </td>
-                    <td class="p-4">
-                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $url ?>">
-                        <?php
-                        if (isset($value["contest_id"])) {
-                          echo $PID2[$value["num"]];
-                        } else {
-                          echo $value["problem_id"];
-                        }
-                        ?>
-                      </a>
-                    </td>
-                    <td class="p-4">
-                      <a class="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" href="<?php echo $showSource ?>">
-                        <?php echo $language_name[$value["language"]]; ?>
-                      </a>
-                    </td>
-                    <td class="p-4">
-                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                        <?php
-                        if ($value["result"] <= 3) {
-                          echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
-                        } elseif ($value["result"] == 4) {
-                          echo  $judge_result[$value["result"]];
-                        } else {
-                          if (
-                            isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $value["user_id"] ||
-                            isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
-                            isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
-                          ) {
-                            echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
-                          } else {
-                            echo $judge_result[$value["result"]];
-                          }
-                        }
-                        ?>
-                      </div>
-                    </td>
-                    <td class="p-4">
-                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                        <?php echo $value["memory"] ?>
-                      </div>
-                    </td>
-                    <td class="p-4">
-                      <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
-                        <?php echo $value["time"] ?>
-                      </div>
-                    </td>
-                    <td class="p-4">
-                      <?php echo $value["in_date"] ?>
-                    </td>
-                  <?php
+                  echo "</td>";
                 }
-                  ?>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
+                echo "</tr>";
+                $startTime = strtotime("+2 hours", $startTime);
+              }
+              ?>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <div class="col-span-1">
-      <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full mb-2">
-        <div class="px-4 py-3" role="alert">
-          <?php
-
-          use PatitoOnlineJudgeModule\ContestList\ContestList;
-
-          $contestListModule = new ContestList();
-          $contestListModule->render();
-          ?>
-        </div>
+    <!-- Columna lateral -->
+    <div class="col-span-1 space-y-6">
+      <!-- Tarjeta de Concursos -->
+      <div class="bg-white shadow-lg rounded-lg border p-6">
+        <h3 class="text-xl font-bold mb-4">Concursos Activos</h3>
+        <?php
+        use PatitoOnlineJudgeModule\ContestList\ContestList;
+        $contestListModule = new ContestList();
+        $contestListModule->render();
+        ?>
       </div>
 
-
-      <div class="rounded-lg border bg-card text-card-foreground">
-        <div class="px-4 py-3" role="alert">
-          <h3 class="text-2xl font-bold text-center mb-3">Últimas Noticias</h3>
-          <?php
-          foreach ($view_news as $value) {
-            echo '<div class="flex mb-4 p-3">';
-            echo '<div>';
-            echo '<p class="font-bold">' . $value["title"] . '</p>';
-            echo '<p class="text-sm">' . $value["content"] . '</p>';
-            echo '</div>';
-            echo '</div>';
-          }
-          ?>
-        </div>
+      <!-- Tarjeta de Noticias -->
+      <div class="bg-white shadow-lg rounded-lg border p-6">
+        <h3 class="text-xl font-bold mb-4 text-center">Últimas Noticias</h3>
+        <?php
+        foreach ($view_news as $value) {
+          echo '<div class="mb-4 p-3 bg-gray-50 rounded-lg">';
+          echo '<p class="font-bold text-gray-800">' . $value["title"] . '</p>';
+          echo '<p class="text-sm text-gray-600">' . $value["content"] . '</p>';
+          echo '</div>';
+        }
+        ?>
       </div>
     </div>
-
   </main>
 
   <?php require_once "oj-footer.php" ?>
 
+  <!-- Modal para mostrar el auxiliar -->
+  <div id="modalAuxiliar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <h3 class="text-xl font-bold mb-4">Información del Auxiliar</h3>
+      <div id="auxiliarInfo"></div>
+      <button onclick="cerrarModal()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        Cerrar
+      </button>
+    </div>
+  </div>
+
+  <!-- Script para manejar el modal -->
+  <script>
+    function mostrarAuxiliar(nombre, horario) {
+      document.getElementById('auxiliarInfo').innerHTML = `
+      <p><strong>Nombre:</strong> ${nombre}</p>
+      <p><strong>Horario:</strong> ${horario}</p>
+    `;
+      document.getElementById('modalAuxiliar').classList.remove('hidden');
+      document.addEventListener('keydown', cerrarModalConEscape);
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalAuxiliar').classList.add('hidden');
+      document.removeEventListener('keydown', cerrarModalConEscape);
+    }
+
+    function toggleTable() {
+      const table = document.getElementById('horariosTable');
+      table.classList.toggle('hidden');
+    }
+
+    function cerrarModalConEscape(event) {
+      if (event.key === 'Escape' || event.keyCode === 27) {
+        cerrarModal();
+      }
+    }
+  </script>
 </body>
 
 </html>
