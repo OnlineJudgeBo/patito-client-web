@@ -87,6 +87,6 @@ Este proyecto se distribuye bajo la **Apache License 2.0**, una licencia de cód
 
 A continuación se listan las personas que han contribuido al proyecto:
 
-- **Samuel Loza** - Mantenedor original - [github.com/samuellr](https://github.com/samuellr)
+- **Samuel Loza** - Mantenedor original - [github.com/samueelloza](https://github.com/samueelloza)
 
 La lista se actualizará conforme se incorporen nuevas contribuciones
