@@ -36,14 +36,19 @@ class ContestService implements IContestService
         return $this->contestRepository->getContestById($cid);
     }
 
-    public function getAllContestDetails($contest_type)
+    public function getAllContestDetails($contest_type, $year = null)
     {
 
         if ($contest_type == "official") {
             return $this->contestRepository->getOfficialContests($this->site_id);
         } else {
-            return $this->contestRepository->getAllContests($this->site_id);
+            return $this->contestRepository->getAllContests($this->site_id, $year);
         }
+    }
+
+    public function getContestYears()
+    {
+        return $this->contestRepository->getContestYears($this->site_id);
     }
 
     public function isContestByIdPublic($cid)

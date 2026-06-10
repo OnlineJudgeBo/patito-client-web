@@ -71,3 +71,202 @@
 .notification .content .text .message {
     font-size: 0.875rem;
 }
+
+.oj-page {
+    width: min(100% - 2rem, 1440px);
+    margin: 0 auto;
+    padding: 1.5rem 0 2.5rem;
+}
+
+.oj-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.oj-eyebrow {
+    color: #2563eb;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.oj-page-title {
+    color: #0f172a;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.oj-page-description {
+    color: #64748b;
+    margin-top: 0.4rem;
+    max-width: 48rem;
+}
+
+.oj-card {
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+.oj-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #334155;
+}
+
+.oj-table thead {
+    background: linear-gradient(135deg, #0f172a, #1d4ed8);
+    color: #fff;
+}
+
+.oj-table th {
+    padding: 0.9rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.oj-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+.oj-table tbody tr {
+    background: #fff;
+    transition: background-color 150ms ease;
+}
+
+.oj-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.oj-table tbody tr:hover {
+    background: #eff6ff;
+}
+
+.oj-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.oj-table-link {
+    color: #1d4ed8;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.oj-table-link:hover {
+    color: #1e40af;
+    text-decoration: underline;
+}
+
+.oj-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.oj-badge-public {
+    color: #047857;
+    background: #d1fae5;
+}
+
+.oj-badge-private {
+    color: #be123c;
+    background: #ffe4e6;
+}
+
+.oj-empty-state {
+    padding: 3.5rem 1.5rem !important;
+    color: #64748b;
+    text-align: center;
+}
+
+.oj-empty-state strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #0f172a;
+    font-size: 1rem;
+}
+
+.oj-rank-position {
+    display: inline-flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #334155;
+    font-weight: 800;
+}
+
+.oj-rank-position[data-position="1"] {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.oj-rank-position[data-position="2"] {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.oj-rank-position[data-position="3"] {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+.oj-stat {
+    display: inline-flex;
+    min-width: 2.25rem;
+    justify-content: center;
+    padding: 0.35rem 0.6rem;
+    border-radius: 0.6rem;
+    background: #dbeafe;
+    color: #1e40af;
+    font-weight: 800;
+}
+
+.oj-legend {
+    padding: 0.9rem 1rem;
+    color: #64748b;
+    font-size: 0.8rem;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+@media (max-width: 640px) {
+    .oj-page {
+        width: min(100% - 1rem, 1440px);
+        padding-top: 1rem;
+    }
+
+    .oj-table th,
+    .oj-table td {
+        padding: 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .oj-table tbody tr {
+        transition: none;
+    }
+}

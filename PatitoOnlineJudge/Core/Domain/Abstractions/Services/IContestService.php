@@ -12,7 +12,9 @@ interface IContestService
 
     public function getContestById($cid);
 
-    public function getAllContestDetails($contest_type);
+    public function getAllContestDetails($contest_type, $year = null);
+
+    public function getContestYears();
 
     public function isContestByIdPublic($cid);
 

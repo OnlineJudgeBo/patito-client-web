@@ -83,6 +83,58 @@
             pointer-events: none;
             color: inherit;
         }
+
+        #status-table thead {
+            color: #334155;
+            background: #f8fafc;
+        }
+
+        #status-table th {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #cbd5e1;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            text-transform: none;
+        }
+
+        #status-table .status-result {
+            display: inline-flex;
+            align-items: center;
+            min-height: 1.75rem;
+            padding: 0.3rem 0.65rem;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            line-height: 1.15;
+            white-space: nowrap;
+        }
+
+        #status-table .status-result.result-green {
+            color: #166534;
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        #status-table .status-result.result-red {
+            color: #991b1b;
+            background: #fff7ed;
+            border-color: #fed7aa;
+        }
+
+        #status-table .status-result.result-blue,
+        #status-table .status-result.result-orange,
+        #status-table .status-result.result-gray {
+            color: #475569;
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        #status-table .status-metric {
+            color: #475569;
+            font-variant-numeric: tabular-nums;
+        }
     </style>
 </head>
 
@@ -102,7 +154,7 @@
                 <button onclick="performSearch()" class="ml-2 text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-sm px-4 py-2">Buscar</button>
             </div>
 
-            <table class="border-b transition-colors hover:bg-muted/50 w-full" id="status-table">
+            <table class="oj-table" id="status-table">
                 <thead>
                     <tr class="border-b transition-colors hover:bg-muted/50">
                         <th class="p-2 font-semibold">RunID</th>
@@ -122,10 +174,6 @@
                     require __DIR__ . "/../../../../Legacy/Include/const.inc.php";
                     $showSource = "";
                     foreach ($statusViewList as $key => $value) {
-                        $css = "evenrow";
-                        if ($key % 2 == 0) {
-                            $css = "oddrow";
-                        }
                         if (!empty($value["contest_id"])) {
                             $url = "problem.php?cid=" . $value['contest_id'] . "&pid=" . $value['num'];
                             $user_url = "contestrank.php?cid=" . $value['contest_id'] . "&user_id=" . $value["user_id"] . "#" . $value["user_id"];
@@ -134,7 +182,7 @@
                             $user_url = "status.php?user_id=" . $value["user_id"];
                         }
                     ?>
-                        <tr class="border-b transition-colors hover:bg-muted/50 <?php echo $css ?> ">
+                        <tr>
                             <td class="p-4">
                                 <?php
                                 if (
@@ -182,7 +230,7 @@
                                     );
                                 }
                                 ?>
-                                <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                                <div class="status-result result-<?php echo trim($judge_color[$value["result"]]) ?>">
                                     <?php
                                     if ($value["result"] <= 3) {
                                         echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
@@ -222,12 +270,12 @@
                                 </div>
                             </td>
                             <td class="p-4">
-                                <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                                <div class="status-metric">
                                     <?php echo $value["memory"] ?>
                                 </div>
                             </td>
                             <td class="p-4">
-                                <div class="font-bold decoration-solid decoration-sky-500 result-<?php echo $judge_color[$value["result"]] ?>">
+                                <div class="status-metric">
                                     <?php echo $value["time"] ?>
                                 </div>
                             </td>
@@ -248,17 +296,36 @@
     <?php require_once "oj-footer.php" ?>
 </body>
 <script>
-    function reloadPage() {
-        var celdasPending = document.querySelectorAll('#status-table .pending');
-        if (celdasPending.length >= 1) {
-            setTimeout(function() {
-                window.location.reload();
-            }, 3000);
-        } else {
-            setTimeout(reloadPage, 2000);
-        }
+    const pendingSubmissions = Array.from(document.querySelectorAll('#status-table .pending'));
+    const refreshKey = `status-refresh:${window.location.pathname}${window.location.search}`;
+    const maxRefreshAttempts = 5;
+    const pendingSignature = pendingSubmissions
+        .map(element => element.closest('tr')?.querySelector('td')?.textContent.trim() || '')
+        .join(',');
+    let refreshState;
+
+    try {
+        refreshState = JSON.parse(sessionStorage.getItem(refreshKey) || 'null');
+    } catch {
+        refreshState = null;
     }
-    reloadPage();
+
+    if (!refreshState || refreshState.pendingSignature !== pendingSignature) {
+        refreshState = {
+            pendingSignature,
+            attempts: 0
+        };
+    }
+
+    if (pendingSubmissions.length === 0) {
+        sessionStorage.removeItem(refreshKey);
+    } else if (refreshState.attempts < maxRefreshAttempts) {
+        refreshState.attempts += 1;
+        sessionStorage.setItem(refreshKey, JSON.stringify(refreshState));
+        window.setTimeout(() => window.location.reload(), 3000);
+    } else {
+        sessionStorage.setItem(refreshKey, JSON.stringify(refreshState));
+    }
 
     let table = new DataTable('#status-table', {
         "order": [],
@@ -326,6 +393,7 @@
         ],
         language: {
             url: "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json",
+            emptyTable: "No hay envíos para mostrar",
             searchPanes: {
                 count: "{total}",
                 countFiltered: "{shown} ({total})",
