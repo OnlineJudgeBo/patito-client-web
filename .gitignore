@@ -1,4 +1,7 @@
 PatitoOnlineJudge/Config/AppConfig.php
+.env*
+!.env.example
+!docker/.env.example
 
 ##### Windows
 # Windows thumbnail cache files

@@ -1,0 +1,38 @@
+name: patito-client-starter
+
+services:
+  db:
+    image: mariadb:11.3
+    environment:
+      MARIADB_DATABASE: patito_demo
+      MARIADB_USER: patito
+      MARIADB_PASSWORD: patito_demo
+      MARIADB_ROOT_PASSWORD: local_root_only
+    ports:
+      - "${PATITO_STARTER_DB_PORT:-3307}:3306"
+    volumes:
+      - starter_db:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p$${MARIADB_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build:
+      context: ..
+      dockerfile: docker/docker/php/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${PATITO_STARTER_WEB_PORT:-8082}:80"
+    volumes:
+      - ../:/var/www/html/client-web
+      - ${PATITO_STARTER_ENV_FILE:-./.env.example}:/var/www/html/client-web/.env:ro
+      - composer_cache:/tmp/composer-cache
+
+volumes:
+  starter_db:
+  composer_cache:

@@ -38,9 +38,10 @@ class LoginService implements ILoginService
                 $this->startUserSession($user);
                 $userRoles = $this->loginRepository->getAdminPrivilege($user['user_id'], $this->site_id);
                 $tokens = $this->jwtService->generateTokens($user['user_id'], $userRoles);
-                setcookie('accessToken', $tokens["accessToken"], 0, '/', '', true, false);
-                setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', true, false);
-                setcookie('user_id', $user['user_id'], 0, '/', '', true, false);
+                $isSecureRequest = $this->isSecureRequest();
+                setcookie('accessToken', $tokens["accessToken"], 0, '/', '', $isSecureRequest, false);
+                setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', $isSecureRequest, false);
+                setcookie('user_id', $user['user_id'], 0, '/', '', $isSecureRequest, false);
                 return $user;
             }
         }
@@ -82,6 +83,17 @@ class LoginService implements ILoginService
         } else {
             throw new \Exception("El correo electrónico no tiene cuenta en el Juez Virtual");
         }
+    }
+
+
+    private function isSecureRequest(): bool
+    {
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+            return true;
+        }
+
+        return (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https')
+            || (($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '') === 'on');
     }
 
     private function startUserSession($user)
