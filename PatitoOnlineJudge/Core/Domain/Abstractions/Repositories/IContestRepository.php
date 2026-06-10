@@ -10,7 +10,9 @@ interface IContestRepository
 
     public function getContestById($cid);
 
-    public function getAllContests($site_id);
+    public function getAllContests($site_id, $year = null);
+
+    public function getContestYears($site_id);
 
     public function getOfficialContests($site_id);
 

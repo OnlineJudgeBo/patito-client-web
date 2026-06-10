@@ -22,15 +22,16 @@
     }
     ?>
     <?php require __DIR__ . "/Modules/Utils.php"; ?>
-    <main class="w-full">
+    <main class="oj-page">
         <div class="flex flex-col items-center">
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full">
+            <div class="oj-card w-full">
                 <div class="flex flex-col space-y-1.5 p-6 items-center">
-                    <h3 class="text-2xl font-semibold leading-none tracking-tight">
+                    <p class="oj-eyebrow">Resultados en tiempo real</p>
+                    <h1 class="oj-page-title text-center">
                         <?php
                         echo $contest["contest_id"] . " - " . closetags($contest["title"]);
                         ?>
-                    </h3>
+                    </h1>
 
                 </div>
                 <div class="flex justify-center">
@@ -56,8 +57,8 @@
                         }
                         ?>
                         <div class="overflow-x-auto relative shadow-lg rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-900">
-                                <thead class="text-xs uppercase bg-gradient-to-r from-cyan-500 to-blue-700 text-gray-100">
+                            <table class="oj-table text-sm">
+                                <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">NOMBRE</th>
@@ -73,6 +74,9 @@
                                 </thead>
                                 <tbody>
                                     <?php
+                                    if (empty($contestRank)) {
+                                        echo '<tr><td colspan="' . (count($problems) + 4) . '" class="oj-empty-state"><strong>Aún no hay participantes clasificados</strong>La tabla se actualizará cuando existan envíos en el concurso.</td></tr>';
+                                    }
                                     foreach ($contestRank as $index => $row) {
                                         $css = "oddrow";
                                         if ($index % 2 == 0) {
@@ -80,10 +84,10 @@
                                         }
                                     ?>
                                         <tr class="border-b hover:bg-gray-100 <?php echo $css ?>">
-                                            <td><?php echo ($index + 1) ?></td>
+                                            <td><span class="oj-rank-position" data-position="<?php echo ($index + 1) ?>"><?php echo ($index + 1) ?></span></td>
                                             <td class="px-2"><?php echo htmlspecialchars($row->nick) ?></td>
                                             <td class="px-2"><?php echo htmlspecialchars($row->user_id) ?></td>
-                                            <td class="px-2"><?php echo $row->solved ?></td>
+                                            <td class="px-2"><span class="oj-stat"><?php echo $row->solved ?></span></td>
                                             <!--
                                             <td class="px-2"><?php echo $sec2str($row->time) ?></td>
                                             -->
@@ -155,7 +159,7 @@
                                         </tr>
                                 </tbody>
                             </table>
-                            (*) Denota la participación de los usuarios en modo práctica.
+                            <div class="oj-legend">(*) Denota la participación de los usuarios en modo práctica. El color azul identifica la primera solución aceptada.</div>
                         </div>
                     </div>
                 </div>

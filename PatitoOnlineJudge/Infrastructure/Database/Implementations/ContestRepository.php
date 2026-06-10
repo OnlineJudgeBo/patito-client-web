@@ -69,14 +69,44 @@ class ContestRepository implements IContestRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAllContests($site_id)
+    public function getAllContests($site_id, $year = null)
     {
-        $stmt = $this->pdo->query("SELECT * FROM contest, contest_site
+        $sql = "SELECT contest.*
+            FROM contest
+            INNER JOIN contest_site ON contest_site.contest_id = contest.contest_id
             WHERE contest.defunct = 'N'
-            AND contest_site.contest_id = contest.contest_id
-            AND contest_site.site_id = $site_id
-            ORDER BY contest.contest_id DESC LIMIT 50");
+            AND contest_site.site_id = :site_id
+            AND YEAR(contest.start_time) >= YEAR(CURDATE()) - 1"; // Ultimo años
+        $params = [':site_id' => $site_id];
+
+        if ($year !== null) {
+            $sql .= " AND YEAR(contest.start_time) = :year";
+            $params[':year'] = $year;
+        }
+
+        $sql .= " ORDER BY contest.contest_id DESC";
+        if ($year === null) {
+            $sql .= " LIMIT 50";
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getContestYears($site_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT DISTINCT YEAR(contest.start_time) AS contest_year
+            FROM contest
+            INNER JOIN contest_site ON contest_site.contest_id = contest.contest_id
+            WHERE contest.defunct = 'N'
+            AND contest_site.site_id = :site_id
+            AND contest.start_time IS NOT NULL
+            AND YEAR(contest.start_time) >= YEAR(CURDATE()) - 1
+            ORDER BY contest_year DESC");  // Ultimo años
+        $stmt->execute([':site_id' => $site_id]);
+
+        return array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
     }
 
     public function getOfficialContests($site_id)
