@@ -18,7 +18,7 @@ if (file_exists($envPath . '/.env.local')) {
 }
 $dotenv->load();
 
-$environment = $_SERVER['APP_ENV'] ?: 'production';
+$environment = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'production';
 redirect();
 if ($environment !== 'development') {
     try {
@@ -38,6 +38,11 @@ function redirect()
 {
 // Obtener la URL solicitada
 $requestUri = $_SERVER['REQUEST_URI'];
+$prefix = $_SERVER['APP_PREFIX_ROUTE'] ?? $_ENV['APP_PREFIX_ROUTE'] ?? '';
+
+if ($prefix !== '' && $prefix !== '/' && str_starts_with($requestUri, $prefix)) {
+    return;
+}
 
 // Reemplazar "/oj" por "/"
 $newUri = str_replace('/oj', '', $requestUri);
@@ -69,7 +74,7 @@ function executeRouter()
     global $prefix, $router, $authMiddleware;
     $router = new Router();
     $authMiddleware = new AuthMiddleware();
-    $prefix = $_SERVER['APP_PREFIX_ROUTE'];
+    $prefix = $_SERVER['APP_PREFIX_ROUTE'] ?? $_ENV['APP_PREFIX_ROUTE'] ?? '';
 
     $databaseConnector = new DatabaseConnector();
     $logRepository = new LogRepository($databaseConnector);

@@ -1,99 +1,92 @@
-# New patito
+# Patito Online Judge — cliente web
 
-After many years...  in that time I learned many things, and I decided to change the structure of the Patito.
+Cliente web en PHP para JV Patito Online Judge.
 
-I think that structure is easier than old Patito
+## Inicio rápido con datos de demostración
 
-Folder structure similar to MVC, but not is MVC
+El directorio [`docker/`](docker/) contiene un entorno de prueba:
 
+- Esquema de MariaDB sin información real
+- Problemas demo
+- Concursos demo
+- Envíos
+- Cuenta de estudiante
+- Cuenta administrador
+- Todo esta dockerizado
 
-## composer.json
-This file is used by Composer, a dependency manager for PHP. It defines the project's dependencies and other metadata.
+### Requisitos
 
-## index.php
-The main entry point for the web application. It typically initializes the application and handles requests.
+- Docker 24 o superior
+- Docker Compose
 
-## Legacy/Include
-- **const.inc.php**: Likely contains constants used throughout the application.  
-- **en.php**: Old translations.
+### Instalación
 
-## src/PatitoOnlineJudge
-The source code of the application.
-
-### Config
-- **AppConfig.php**: Configuration settings for the application.
-
-### Controller
-- **IndexController.php**: The controller that handles the logic for the index or main page.
-
-### Database
-- **DatabaseConnector.php**: Manages database connections.
-
-### Other Files
-- **robots.txt**: A text file for web crawlers, specifying how to index the site.
-- **SECURITY.md**: A markdown file containing security policies or guidelines.
-
-### View/template/ZaDuckOJ
-- **index.php**: The main template file for the application's user interface.
-- **Modules/ContestList**: 
-  - **ContestList.php**: Manages the logic for displaying contest lists.
-  - **Contestsetlist_View.php**: The view file for displaying contest lists.
-- **oj-footer.php**: The footer template for the application.
-- **oj-header.php**: The header template for the application.
-
-## statics/ZaDuckOJ
-Contains static resources.
-- **base.css**: The base CSS file for the application's styling.
-- **logo.svg**: The application's logo in SVG format.
-
-## vendor
-Contains libraries and dependencies managed by Composer.
-- **autoload.php**: Composer's autoloader script.
-- **composer**: Various Composer-related files, including autoloaders, classmaps, and licenses.
-
-## The new folder structure is:
-```
-composer.json
-index.php
-Legacy
-└── Include
-    ├── const.inc.php
-    └── en.php
-src
-└── PatitoOnlineJudge
-    ├── Config
-    │   └── AppConfig.php
-    ├── Controller
-    │   └── IndexController.php
-    ├── Database
-    │   └── DatabaseConnector.php
-    ├── robots.txt
-    ├── SECURITY.md
-    └── View
-        └── template
-            └── ZaDuckOJ
-                ├── index.php
-                ├── Modules
-                │   └── ContestList
-                │       ├── ContestList.php
-                │       └── Contestsetlist_View.php
-                ├── oj-footer.php
-                └── oj-header.php
-statics
-└── ZaDuckOJ
-    ├── base.css
-    └── logo.svg
-vendor
-├── autoload.php
-└── composer
-    ├── autoload_classmap.php
-    ├── autoload_files.php
-    ├── autoload_namespaces.php
-    ├── autoload_psr4.php
-    ├── autoload_real.php
-    ├── autoload_static.php
-    ├── ClassLoader.php
-    └── LICENSE
+```bash
+docker compose -f docker/compose.yml up --build
 ```
 
-## Happy Hacking
+Después abre:
+
+- Aplicación: <http://localhost:8082/oj/>
+
+### Cuentas de prueba
+
+| Rol | Usuario | Contraseña |
+|---|---|---|
+| Estudiante | `patito` | `patito` |
+| Administrador | `patitoAdmin` | `patitoAdmin` |
+
+## Estructura de carpetas
+
+```text
+client-web/
+├── PatitoOnlineJudge/
+│   ├── Config/                 # Configuración de la aplicación y base de datos
+│   ├── Core/
+│   │   ├── Application/        # Servicios y casos de uso
+│   │   └── Domain/             # Contratos y objetos del dominio
+│   ├── Infrastructure/         # Repositorios e integraciones externas
+│   └── Presentation/
+│       ├── Controller/         # Controladores HTTP
+│       ├── Middleware/         # Autenticación y validaciones de acceso
+│       ├── Utils/              # Utilidades de presentación
+│       └── Views/
+│           ├── Modules/        # Componentes compartidos entre templates
+│           ├── patito/         # Template público predeterminado
+│           ├── itboliviamar/   # Template institucional
+│           ├── juezvirtual/    # Template institucional
+│           └── jvbo/           # Template institucional
+├── Legacy/
+│   └── Include/                # Constantes y traducciones heredadas
+├── public/
+│   ├── Routing/                # Definición de rutas HTTP
+│   └── assets/                 # CSS, JavaScript, imágenes y editores
+├── docker/                     # Entorno local, esquema y datos de demostración
+├── vendor/                     # Dependencias instaladas por Composer
+├── composer.json
+└── Readme.md
+```
+
+## Templates
+
+Los templates se encuentran en `PatitoOnlineJudge/Presentation/Views/`. La variable `THEME_TEMPLATE` determina cuál de ellos utiliza la aplicación:
+
+```dotenv
+THEME_TEMPLATE=patito
+```
+
+## Configuración
+
+La aplicación busca primero `.env.local` y utiliza `.env` como alternativa..
+
+## Licencia
+
+Este proyecto se distribuye bajo la **Apache License 2.0**, una licencia de código abierto que permite usar, modificar y distribuir el software, incluso con fines comerciales.
+
+## Contribuidores
+
+A continuación se listan las personas que han contribuido al proyecto:
+
+- **Samuel Loza** - Mantenedor original - [github.com/samuellr](https://github.com/samuellr)
+
+La lista se actualizará conforme se incorporen nuevas contribuciones
