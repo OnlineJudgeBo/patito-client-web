@@ -13,32 +13,56 @@ class ProblemRepository implements IProblemRepository {
         $this->pdo = $connector->getConnection();
     }
 
-    public function getProblemById($pid) {
-        $stmt = $this->pdo->prepare("SELECT * FROM problem
-                                        WHERE problem_id = :pid");
-        $stmt->execute(['pid' => $pid]);
+    public function getProblemById($pid, $site_id) {
+        $stmt = $this->pdo->prepare("SELECT problem.* FROM problem, problems_site
+                                        WHERE problem.problem_id = :pid
+                                        AND problems_site.problem_id = problem.problem_id
+                                        AND problems_site.site_id = :site_id
+                                        AND problems_site.is_active = 1");
+        $stmt->execute(['pid' => $pid,
+                        'site_id' => $site_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemByContestId($cid, $pid) {
-        $stmt = $this->pdo->prepare("SELECT * FROM problem
-                                        WHERE defunct='N' AND
-                                        problem_id = (
+    public function getProblemByContestId($cid, $pid, $site_id) {
+        $stmt = $this->pdo->prepare("SELECT problem.* FROM problem, problems_site
+                                        WHERE problem.defunct='N'
+                                        AND problem.problem_id = (
                                             SELECT problem_id FROM contest_problem
                                             WHERE contest_id = :cid
-                                            AND num = :pid)");
+                                            AND num = :pid)
+                                        AND problems_site.problem_id = problem.problem_id
+                                        AND problems_site.site_id = :site_id
+                                        AND problems_site.is_active = 1");
         $stmt->execute(['cid' => $cid,
-                        'pid' => $pid]);
+                        'pid' => $pid,
+                        'site_id' => $site_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemByOfficialContestId($cid, $pid) {
-        $stmt = $this->pdo->prepare("SELECT * FROM problem
-                                        WHERE problem_id = (SELECT problem_id
-                                                        FROM contest_problem
-                                                        WHERE contest_id = :cid
-                                                        AND num = :pid)");
-        $stmt->execute(['cid' => $cid, 'pid' => $pid]);
+    public function getProblemByOfficialContestId($cid, $pid, $site_id) {
+        $stmt = $this->pdo->prepare("SELECT problem.*
+                                        FROM problem
+                                        INNER JOIN contest_problem
+                                            ON contest_problem.problem_id = problem.problem_id
+                                        INNER JOIN contest
+                                            ON contest.contest_id = contest_problem.contest_id
+                                        INNER JOIN contest_site
+                                            ON contest_site.contest_id = contest.contest_id
+                                        INNER JOIN problems_site
+                                            ON problems_site.problem_id = problem.problem_id
+                                        WHERE contest.contest_id = :cid
+                                        AND contest_problem.num = :pid
+                                        AND contest.defunct = 'O'
+                                        AND contest_site.site_id = :contest_site_id
+                                        AND problems_site.site_id = :problem_site_id
+                                        AND problems_site.is_active = 1");
+        $stmt->execute([
+            'cid' => $cid,
+            'pid' => $pid,
+            'contest_site_id' => $site_id,
+            'problem_site_id' => $site_id
+        ]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -47,6 +71,7 @@ class ProblemRepository implements IProblemRepository {
                                         FROM problem, problems_site
                                         WHERE problems_site.problem_id = problem.problem_id
                                         AND problems_site.site_id = :site_id
+                                        AND problems_site.is_active = 1
                                         AND problem.defunct='N'");
         $stmt->execute(['site_id' => $site_id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -64,7 +89,7 @@ class ProblemRepository implements IProblemRepository {
                 FROM contest, contest_site
                 WHERE NOW() BETWEEN contest.start_time AND contest.end_time
                 AND contest_site.contest_id = contest.contest_id
-                AND contest_site.contest_id = :site_id1
+                AND contest_site.site_id = :site_id1
             ) c 
             INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
             OR problem.problem_id IN (1000)
@@ -72,6 +97,7 @@ class ProblemRepository implements IProblemRepository {
         
         AND problems_site.problem_id = problem.problem_id
         AND problems_site.site_id = :site_id2
+        AND problems_site.is_active = 1
         LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
@@ -121,6 +147,7 @@ class ProblemRepository implements IProblemRepository {
                     )
                     AND problems_site.problem_id = problem.problem_id
                     AND problems_site.site_id = :site_id4
+                    AND problems_site.is_active = 1
                 LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);

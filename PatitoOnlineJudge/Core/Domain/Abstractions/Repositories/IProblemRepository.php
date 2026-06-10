@@ -4,11 +4,11 @@ namespace PatitoOnlineJudge\Core\Domain\Abstractions\Repositories;
 
 interface IProblemRepository {
 
-    public function getProblemById($pid);
+    public function getProblemById($pid, $site_id);
 
-    public function getProblemByContestId($cid, $pid);
+    public function getProblemByContestId($cid, $pid, $site_id);
 
-    public function getProblemByOfficialContestId($cid, $pid);
+    public function getProblemByOfficialContestId($cid, $pid, $site_id);
 
     public function getProblemsCount($site_id);
 
