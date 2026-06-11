@@ -6,12 +6,12 @@ Cliente web en PHP para JV Patito Online Judge.
 
 El directorio [`docker/`](docker/) contiene un entorno de prueba:
 
-- Esquema de MariaDB sin información real
+- Esquema de MariaDB
 - Problemas demo
 - Concursos demo
-- Envíos
-- Cuenta de estudiante
-- Cuenta administrador
+- Envíos demo
+- Cuenta de estudiante demo
+- Cuenta administrador demo
 - Todo esta dockerizado
 
 ### Requisitos
@@ -136,9 +136,10 @@ Parte de estas propuestas fueron utilizadas como experimentos de desarrollo y ev
 
 * **2018**: Desarrollo y evaluación de propuestas de modernización de la interfaz web, nuevos componentes para concursos y rankings, experimentos con APIs y soporte para expresiones matemáticas mediante MathJax.
 
-* **2019-presente**: Evolución continua de la plataforma mediante mejoras en infraestructura, administración de concursos, gestión de problemas, soporte para nuevos entornos de ejecución, herramientas académicas y mantenimiento general del sistema.
+* **2019-2024**: Estabilizacion de la plataforma, gestión de problemas, soporte para nuevos entornos de ejecución.
 
-* **Actualidad**: Uso continuo de la plataforma en cursos, entrenamientos y competencias de programación.
+* **2024–presente**: Modernización de la plataforma mediante una nueva arquitectura basada en servicios, incorporación de nuevas funcionalidades administrativas y desarrollo de un entorno de programación web con Monaco Editor y soporte para LSP (auto completado) para tener  una experiencia similar a Visual Studio Code
+
 
 Agradecemos a la comunidad de HUSTOJ por proporcionar la base tecnológica que hizo posible el inicio de este proyecto.
 
