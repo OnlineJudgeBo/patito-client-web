@@ -99,7 +99,7 @@ Diversas personas participaron en distintas etapas del desarrollo, despliegue y 
 
 Debido a que gran parte de la historia temprana del proyecto no fue documentada y ocurrió antes de la adopción de las herramientas actuales de control de versiones, esta lista puede ser incompleta o contener imprecisiones. **Si alguna persona que contribuyó al proyecto no aparece mencionada, o si existe información que deba corregirse o ampliarse, agradecezco que me lo hagan saber para actualizar este registro histórico. o crear un PR**
 
-### Jorge Terán (2014–presente)
+### Jorge Terán (2014-presente)
 
 Impulsor académico de la iniciativa. Promovió el uso de la plataforma en actividades de enseñanza, entrenamiento y concursos de programación, además de contribuir con la creación, selección y organización de problemas utilizados en cursos y competencias.
 
@@ -107,11 +107,11 @@ Impulsor académico de la iniciativa. Promovió el uso de la plataforma en activ
 
 Responsable de las primeras instalaciones, adaptación de HUSTOJ, despliegue de servidores, personalización de la plataforma y mantenimiento continuo del sistema. Ha participado activamente en la evolución técnica y operativa del proyecto desde sus primeras etapas hasta la actualidad.
 
-### Jhonatan Castro (2013–2014)
+### Jhonatan Castro (2013-2014)
 
 Apoyo en infraestructura, coordinación y tareas relacionadas con las etapas iniciales de despliegue y puesta en funcionamiento de la plataforma.
 
-### Branimir Espinoza (2012–2014)
+### Branimir Espinoza (2012-2014)
 
 Colaborador en pruebas técnicas, validación de instalaciones y experimentación con distintas configuraciones durante las primeras etapas de desarrollo.
 
