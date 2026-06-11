@@ -36,7 +36,7 @@
       </div>
 
       <!-- Tarjeta de Anuncios -->
-      <div class="bg-white shadow-lg rounded-lg border p-6">
+       <!--  <div class="bg-white shadow-lg rounded-lg border p-6">
         <h2 class="text-2xl font-bold mb-4">Anuncios Importantes</h2>
         <p class="text-gray-600 mb-4">¡Bienvenidos al nuevo semestre! Aquí encontrarás información importante.</p>
         <ul class="list-disc list-inside space-y-2">
@@ -44,7 +44,7 @@
           <li class="text-gray-700">Reunión de bienvenida: 10 de Agosto, 10:00 AM</li>
           <li class="text-gray-700">Entrega de materiales: 12 de Agosto</li>
         </ul>
-      </div>
+      </div>-->
 
       <!-- Tarjeta de Horarios -->
       <div class="bg-white shadow-lg rounded-lg border p-6">
