@@ -6,25 +6,44 @@ use PatitoOnlineJudge\Config\DatabaseConnector;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\IProblemRepository;
 use PDO;
 
-class ProblemRepository implements IProblemRepository {
+class ProblemRepository implements IProblemRepository
+{
     private $pdo;
 
-    public function __construct(DatabaseConnector $connector) {
+    public function __construct(DatabaseConnector $connector)
+    {
         $this->pdo = $connector->getConnection();
     }
 
-    public function getProblemById($pid, $site_id) {
-        $stmt = $this->pdo->prepare("SELECT problem.* FROM problem, problems_site
-                                        WHERE problem.problem_id = :pid
-                                        AND problems_site.problem_id = problem.problem_id
-                                        AND problems_site.site_id = :site_id
-                                        AND problems_site.is_active = 1");
-        $stmt->execute(['pid' => $pid,
-                        'site_id' => $site_id]);
+    public function getProblemById($pid, $site_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT p.*
+        FROM problem p
+        INNER JOIN problems_site ps
+            ON ps.problem_id = p.problem_id
+        WHERE p.problem_id = :pid
+          AND ps.site_id = :site_id
+          AND NOT EXISTS (
+              SELECT 1
+              FROM contest_problem cp
+              INNER JOIN contest c
+                  ON c.contest_id = cp.contest_id
+              INNER JOIN contest_site cs
+                  ON cs.contest_id = c.contest_id
+              WHERE cp.problem_id = p.problem_id
+                AND cs.site_id = ps.site_id
+                AND c.defunct = 'N'
+                AND c.end_time >= NOW()
+        );");
+        $stmt->execute([
+            'pid' => $pid,
+            'site_id' => $site_id
+        ]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemByContestId($cid, $pid, $site_id) {
+    public function getProblemByContestId($cid, $pid, $site_id)
+    {
         $stmt = $this->pdo->prepare("SELECT problem.* FROM problem, problems_site
                                         WHERE problem.defunct='N'
                                         AND problem.problem_id = (
@@ -34,13 +53,16 @@ class ProblemRepository implements IProblemRepository {
                                         AND problems_site.problem_id = problem.problem_id
                                         AND problems_site.site_id = :site_id
                                         AND problems_site.is_active = 1");
-        $stmt->execute(['cid' => $cid,
-                        'pid' => $pid,
-                        'site_id' => $site_id]);
+        $stmt->execute([
+            'cid' => $cid,
+            'pid' => $pid,
+            'site_id' => $site_id
+        ]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemByOfficialContestId($cid, $pid, $site_id) {
+    public function getProblemByOfficialContestId($cid, $pid, $site_id)
+    {
         $stmt = $this->pdo->prepare("SELECT problem.*
                                         FROM problem
                                         INNER JOIN contest_problem
@@ -66,7 +88,8 @@ class ProblemRepository implements IProblemRepository {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemsCount($site_id) {
+    public function getProblemsCount($site_id)
+    {
         $stmt = $this->pdo->prepare("SELECT COUNT(problem.problem_id) as total
                                         FROM problem, problems_site
                                         WHERE problems_site.problem_id = problem.problem_id
@@ -78,7 +101,8 @@ class ProblemRepository implements IProblemRepository {
         return intval($result['total']);
     }
 
-    public function getProblems($offset, $limit, $site_id) {
+    public function getProblems($offset, $limit, $site_id)
+    {
         $sql = "SELECT problem.problem_id, problem.title, source, submit, accepted
         FROM problem, problems_site
         WHERE defunct = 'N'
@@ -108,7 +132,8 @@ class ProblemRepository implements IProblemRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProblemsByUser($offset, $limit, $userId, $site_id) {
+    public function getProblemsByUser($offset, $limit, $userId, $site_id)
+    {
         $sql = "SELECT
                     problem.problem_id,
                     problem.title,
