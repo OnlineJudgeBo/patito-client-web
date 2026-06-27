@@ -1,0 +1,94 @@
+name: Continuos Deploy to Patito Online Judge 2.0
+on:
+  push:
+    branches: 'patito2-3'
+  pull_request:
+    branches: 'patito2-3'
+
+jobs:
+  deploy-patito:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/patito2-0' || github.ref == 'refs/heads/patito2-0'
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          password: ${{ secrets.DEV_SSH_SECRET }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          script: |
+            killall ssh-agent
+            eval `ssh-agent`
+            ssh-add /home/deploy/.ssh/id_rsa
+            cd /var/www/patito2.0/client
+            git checkout -f
+            git pull -f
+            rm -f .env.local
+            cp -f .env.patito .env
+            cp PatitoOnlineJudge/Config/AppConfig.php.back PatitoOnlineJudge/Config/AppConfig.php
+            php composer.phar install
+            php composer.phar dump-autoload
+            
+  deploy-juezvirtual:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/patito2-0' || github.ref == 'refs/heads/patito2-0'
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST_OJ }}
+          username: ${{ secrets.DEV_SSH_USERNAME_OJ }}
+          key: ${{ secrets.DEV_SSH_SECRET_OJ }}
+          port: ${{ secrets.DEV_SSH_PORT_OJ }}
+          script: |
+            cd /var/www/client
+            git checkout -f
+            git pull -f
+            cp PatitoOnlineJudge/Config/AppConfig.php.back PatitoOnlineJudge/Config/AppConfig.php
+            rm -f .env.local
+            cp -f .env.juezvirtual .env
+            composer install
+            composer dump-autoload
+
+  deploy-juezvirtualbo:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/patito2-0' || github.ref == 'refs/heads/patito2-0'
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST_OJ }}
+          username: ${{ secrets.DEV_SSH_USERNAME_OJ }}
+          key: ${{ secrets.DEV_SSH_SECRET_OJ }}
+          port: ${{ secrets.DEV_SSH_PORT_OJ }}
+          script: |
+            cd /var/www/client2
+            git checkout -f
+            git pull -f
+            cp PatitoOnlineJudge/Config/AppConfig.php.back PatitoOnlineJudge/Config/AppConfig.php
+            rm -f .env.local
+            cp -f .env.juezvirtualbo .env
+            composer install
+            composer dump-autoload
+
+  deploy-itboliviamar:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/patito2-0' || github.ref == 'refs/heads/patito2-0'
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST_OJ }}
+          username: ${{ secrets.DEV_SSH_USERNAME_OJ }}
+          key: ${{ secrets.DEV_SSH_SECRET_OJ }}
+          port: ${{ secrets.DEV_SSH_PORT_OJ }}
+          script: |
+            cd /var/www/itboliviamar
+            git checkout -f
+            git pull -f
+            cp PatitoOnlineJudge/Config/AppConfig.php.back PatitoOnlineJudge/Config/AppConfig.php
+            rm -f .env.local
+            cp -f .env.boliviamar .env
+            composer install
+            composer dump-autoload
