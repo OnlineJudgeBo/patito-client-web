@@ -58,6 +58,46 @@ class ProblemController
                 //die();
             //}
         }
+        $problem = $this->inlineDisplayMath($problem);
         require_once $current_theme . "/problem.php";
+    }
+
+    private function inlineDisplayMath($problem)
+    {
+        $fields = ["description", "input", "output", "hint"];
+
+        if (!is_array($problem)) {
+            return $problem;
+        }
+
+        foreach ($fields as $field) {
+            if (isset($problem[$field]) && is_string($problem[$field])) {
+                $problem[$field] = $this->inlineMixedParagraphDisplayMath($problem[$field]);
+            }
+        }
+
+        return $problem;
+    }
+
+    private function inlineMixedParagraphDisplayMath(string $html): string
+    {
+        return preg_replace_callback('/<p\b([^>]*)>(.*?)<\/p>/is', function ($paragraphMatch) {
+            $content = $paragraphMatch[2];
+
+            if (!preg_match('/\\\[[\s\S]+?\\\]/', $content)) {
+                return $paragraphMatch[0];
+            }
+
+            $textOutsideMath = preg_replace('/\\\[[\s\S]+?\\\]/', '', strip_tags($content));
+            $textOutsideMath = trim(html_entity_decode($textOutsideMath ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+
+            if ($textOutsideMath === '') {
+                return $paragraphMatch[0];
+            }
+
+            $content = str_replace(['\\[', '\\]'], ['\\(', '\\)'], $content);
+
+            return '<p' . $paragraphMatch[1] . '>' . $content . '</p>';
+        }, $html);
     }
 }
