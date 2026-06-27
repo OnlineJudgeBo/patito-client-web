@@ -33,7 +33,8 @@ class SubmitPageService implements ISubmitPageService
 
     public function saveContestRequest($num, $cid, $source, $language_id)
     {
-        $solutionModel = $this->createSolutionModel($cid, $num, $source, $language_id);
+        $language = $this->validateContestLanguage($cid, $language_id);
+        $solutionModel = $this->createSolutionModel($cid, $num, $source, $language);
 
         if ($this->contestService->isVirtualContest($cid)) {
             $solution_id = $this->submitPageRepository->saveVirtualContestSolutionAndReturnId($solutionModel, $this->site_id);
@@ -58,10 +59,31 @@ class SubmitPageService implements ISubmitPageService
         $this->sourceCodeRepository->save($solution_id, $source);
     }
 
+    private function validateContestLanguage($cid, $language_id)
+    {
+        $language = filter_var($language_id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 0]]);
+        if ($language === false) {
+            throw new Exception("Seleccione un lenguaje válido para enviar la solución.");
+        }
+
+        foreach ($this->contestService->languagesAvailable($cid) as $availableLanguage) {
+            if (isset($availableLanguage["language_id"]) && intval($availableLanguage["language_id"]) === $language) {
+                return $language;
+            }
+        }
+
+        throw new Exception("El lenguaje seleccionado no está disponible para este contest.");
+    }
+
     private function createSolutionModel($contest_id, $num, $source, $language_id)
     {
+        $language = filter_var($language_id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 0]]);
+        if ($language === false) {
+            throw new Exception("Seleccione un lenguaje válido para enviar la solución.");
+        }
+
         $solutionModel = new SolutionModel();
-        $solutionModel->language = $language_id;
+        $solutionModel->language = $language;
         $solutionModel->code_length = strlen($source);
         $solutionModel->contest_id = $contest_id;
         $solutionModel->user_id = $_SESSION["user_id"];

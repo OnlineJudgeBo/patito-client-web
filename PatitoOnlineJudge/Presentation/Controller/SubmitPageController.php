@@ -67,19 +67,19 @@ class SubmitPageController
             $error = curl_error($ch);
             curl_close($ch);
 */
-        if ($this->cid > 0) {
-            $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source, $this->language_id);
-            header("Location: status.php?cid=" . $this->cid . "&user_id=" . $_SESSION["user_id"]);
-        } else {
-            try {
+        try {
+            if ($this->cid > 0) {
+                $this->submitPageService->saveContestRequest($this->pid, $this->cid, $this->source, $this->language_id);
+                header("Location: status.php?cid=" . $this->cid . "&user_id=" . $_SESSION["user_id"]);
+            } else {
                 $this->submitPageService->saveProblemRequest($this->pid, $this->source, $this->language_id);
-            } catch (\Exception $e) {
-                $current_theme = Utils::get_current_theme();
-                $error = $e->getMessage();
-                require_once $current_theme . "/genericError.php";
-                die();
+                header("Location: status.php");
             }
-            header("Location: status.php");
+        } catch (\Exception $e) {
+            $current_theme = Utils::get_current_theme();
+            $error = $e->getMessage();
+            require_once $current_theme . "/genericError.php";
+            die();
         }
     }
 
