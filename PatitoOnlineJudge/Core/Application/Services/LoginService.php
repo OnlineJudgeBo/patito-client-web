@@ -55,7 +55,7 @@ class LoginService implements ILoginService
         $this->loginRepository->registerUser($user, $this->site_id);
 
         $mail = new MailService();
-        $mail->sendWelcomeEmail($user->email, $user);
+        $mail->sendWelcomeEmailAsync($user->email, $user);
     }
 
     public function updatePasswordByToken($password, $token) {

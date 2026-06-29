@@ -9,4 +9,5 @@ interface IMailService
 
     public function sendRecoveryPasswordEmail($email, $token, $userId);
     public function sendWelcomeEmail($email, UserDomainObject $userId);
+    public function sendWelcomeEmailAsync($email, UserDomainObject $userId);
 }

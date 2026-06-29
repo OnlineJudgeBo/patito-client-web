@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Core\Application\Services;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IMailService;
+use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 use PHPMailer;
 
 require(__DIR__ . "/../../../Infrastructure/Phpmailer/class.phpmailer.php");
@@ -30,6 +31,20 @@ class MailService implements IMailService
         $this->mailer->AddAddress($email);
         $this->mailer->Body = $this->buildWelcomeMessage($userId);
         $this->mailer->Send();
+    }
+
+    //TODO Cambiar a futuro por algo mas actual o usar workers
+
+    public function sendWelcomeEmailAsync($email, UserDomainObject $userId)
+    {
+        //Simula Async, pero no es Async
+        register_shutdown_function(function () use ($email, $userId) {
+            if (function_exists('fastcgi_finish_request')) {
+                fastcgi_finish_request();
+            }
+
+            $this->sendWelcomeEmail($email, $userId);
+        });
     }
 
     public function sendRecoveryPasswordEmail($email, $encodePassword, $userId)
