@@ -99,6 +99,10 @@ class LoginService implements ILoginService
     private function startUserSession($user)
     {
         $_SESSION['user_id'] = $user['user_id'];
+
+        $profile = $this->loginRepository->getUserProfile($user['user_id'], $this->site_id);
+        $_SESSION['user_display_name'] = $this->getUserDisplayName($profile ?: $user);
+
         foreach ($this->loginRepository->getPrivilege($user['user_id'], $this->site_id) as $rightstr) {
             $_SESSION["c".$rightstr["contest_id"]] = true;
         }
@@ -127,5 +131,17 @@ class LoginService implements ILoginService
         }
         $this->userValidator->validateProfileToUpdate($user, $this->site_id);
         $this->loginRepository->updateUserProfile($userId, $user, $this->site_id);
+        $_SESSION['user_display_name'] = $this->getUserDisplayName([
+            'user_id' => $userId,
+            'nick' => $user->nick,
+            'lastname' => $user->lastname,
+        ]);
+    }
+
+    private function getUserDisplayName($user): string
+    {
+        $fullName = trim(($user['nick'] ?? '') . ' ' . ($user['lastname'] ?? ''));
+
+        return $fullName !== '' ? $fullName : (string)($user['user_id'] ?? '');
     }
 }

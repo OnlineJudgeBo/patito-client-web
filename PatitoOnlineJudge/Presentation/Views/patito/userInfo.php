@@ -33,6 +33,9 @@
             <div class="min-h-screen p-8">
                 <div class="max-w-4xl mx-auto">
                     <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+                        <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Perfil</p>
+                        <h1 class="text-2xl font-bold text-gray-900 mb-1"><?php echo htmlspecialchars($userDisplayName ?? '', ENT_QUOTES, 'UTF-8'); ?></h1>
+                        <p class="text-sm text-gray-600 mb-6">Usuario: <?php echo htmlspecialchars((string)($_SESSION['user_id'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
                         <h2 class="text-xl font-bold mb-6">Editar datos de cuenta</h2>
                         <form method="POST">
                             <div class="mb-4">

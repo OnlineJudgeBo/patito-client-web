@@ -50,6 +50,9 @@ class UserInfoController
         $problemList = $this->userInfoService->getSummarySolutions($this->userId, "ac");
         $problemErrorList = $this->userInfoService->getSummarySolutions($this->userId, "error");
         $user = $this->loginService->getMe($this->userId);
+        $userDisplayName = trim(($user['nick'] ?? '') . ' ' . ($user['lastname'] ?? ''));
+        $userDisplayName = $userDisplayName !== '' ? $userDisplayName : (string)$this->userId;
+        $_SESSION['user_display_name'] = $userDisplayName;
         $title = $this->title;
         require_once $current_theme . "/userInfo.php";
     }

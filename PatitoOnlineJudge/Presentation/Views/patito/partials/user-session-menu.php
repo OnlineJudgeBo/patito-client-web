@@ -1,8 +1,12 @@
 <?php
 $className = "block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2";
 if (isset($_SESSION['user_id'])) {
+    $menuUserId = htmlspecialchars((string)$_SESSION['user_id'], ENT_QUOTES, 'UTF-8');
 ?>
-    <a href="userInfo.php" class="<?php echo $className; ?>">Perfil</a>
+    <a href="userInfo.php" class="<?php echo $className; ?>">
+        <span class="block">Perfil</span>
+        <span class="block text-xs md:text-sm leading-tight text-yellow-200"><?php echo $menuUserId; ?></span>
+    </a>
     <a href="logout.php" class="<?php echo $className; ?>">Salir</a>
     <?php
     if (
