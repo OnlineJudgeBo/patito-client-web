@@ -234,7 +234,8 @@ CREATE TABLE `problem` (
 
 CREATE TABLE `problems_site` (
   `problem_id` int(11) NOT NULL,
-  `site_id` int(11) NOT NULL
+  `site_id` int(11) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

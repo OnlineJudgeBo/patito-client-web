@@ -165,19 +165,19 @@ INSERT INTO problem
     (problem_id, title, description, input, output, sample_input, sample_output, hint, source,
      in_date, time_limit, memory_limit, defunct, accepted, submit, solved, tags2)
 VALUES
-    (1001, 'Suma de dos números', '<p>Lee dos enteros y muestra su suma.</p>', '<p>Dos enteros A y B.</p>', '<p>La suma A+B.</p>', '2 3', '5', '', 'Starter Kit', NOW(), 1000, 128, 'N', 2, 3, 2, 'implementación'),
-    (1002, 'Número par', '<p>Determina si un entero es par.</p>', '<p>Un entero N.</p>', '<p>SI o NO.</p>', '8', 'SI', '', 'Starter Kit', NOW(), 1000, 128, 'N', 1, 2, 1, 'condicionales'),
-    (1003, 'Mayor de tres', '<p>Encuentra el mayor de tres enteros.</p>', '<p>Tres enteros.</p>', '<p>El valor mayor.</p>', '4 9 2', '9', '', 'Starter Kit', NOW(), 1000, 128, 'N', 1, 1, 1, 'condicionales'),
-    (1004, 'Tabla de multiplicar', '<p>Muestra la tabla de N del 1 al 10.</p>', '<p>Un entero N.</p>', '<p>Diez productos, uno por línea.</p>', '2', '2\n4\n6\n8\n10\n12\n14\n16\n18\n20', '', 'Starter Kit', NOW(), 1000, 128, 'N', 1, 2, 1, 'ciclos'),
-    (1005, 'Factorial', '<p>Calcula N! para 0 ≤ N ≤ 12.</p>', '<p>Un entero N.</p>', '<p>El factorial de N.</p>', '5', '120', '', 'Starter Kit', NOW(), 1000, 128, 'N', 1, 1, 1, 'ciclos'),
-    (1006, 'Contar vocales', '<p>Cuenta las vocales de una línea.</p>', '<p>Una línea de texto.</p>', '<p>La cantidad de vocales.</p>', 'Patito', '3', '', 'Starter Kit', NOW(), 1000, 128, 'N', 0, 1, 0, 'cadenas'),
-    (1007, 'Invertir una cadena', '<p>Imprime una cadena en orden inverso.</p>', '<p>Una cadena sin espacios.</p>', '<p>La cadena invertida.</p>', 'codigo', 'ogidoc', '', 'Starter Kit', NOW(), 1000, 128, 'N', 1, 1, 1, 'cadenas'),
-    (1008, 'Máximo de un arreglo', '<p>Encuentra el máximo de N números.</p>', '<p>N seguido de N enteros.</p>', '<p>El máximo.</p>', '5\n1 7 3 4 2', '7', '', 'Starter Kit', NOW(), 1000, 128, 'N', 0, 0, 0, 'arreglos'),
-    (1009, '¿Es primo?', '<p>Determina si N es primo.</p>', '<p>Un entero N ≥ 2.</p>', '<p>SI o NO.</p>', '17', 'SI', '', 'Starter Kit', NOW(), 1000, 128, 'N', 0, 0, 0, 'matemática'),
-    (1010, 'Serie Fibonacci', '<p>Muestra el término N de Fibonacci, con F0=0 y F1=1.</p>', '<p>Un entero N.</p>', '<p>FN.</p>', '10', '55', '', 'Starter Kit', NOW(), 1000, 128, 'N', 0, 1, 0, 'dinámica');
+    (1001, 'Suma de dos números', '<p>Lee dos enteros y muestra su suma.</p>', '<p>Dos enteros A y B.</p>', '<p>La suma A+B.</p>', '2 3', '5', '', 'Patito QA', NOW(), 1000, 128, 'N', 2, 3, 2, 'implementación'),
+    (1002, 'Número par', '<p>Determina si un entero es par.</p>', '<p>Un entero N.</p>', '<p>SI o NO.</p>', '8', 'SI', '', 'Patito QA', NOW(), 1000, 128, 'N', 1, 2, 1, 'condicionales'),
+    (1003, 'Mayor de tres', '<p>Encuentra el mayor de tres enteros.</p>', '<p>Tres enteros.</p>', '<p>El valor mayor.</p>', '4 9 2', '9', '', 'Patito QA', NOW(), 1000, 128, 'N', 1, 1, 1, 'condicionales'),
+    (1004, 'Tabla de multiplicar', '<p>Muestra la tabla de N del 1 al 10.</p>', '<p>Un entero N.</p>', '<p>Diez productos, uno por línea.</p>', '2', '2\n4\n6\n8\n10\n12\n14\n16\n18\n20', '', 'Patito QA', NOW(), 1000, 128, 'N', 1, 2, 1, 'ciclos'),
+    (1005, 'Factorial', '<p>Calcula N! para 0 ≤ N ≤ 12.</p>', '<p>Un entero N.</p>', '<p>El factorial de N.</p>', '5', '120', '', 'Patito QA', NOW(), 1000, 128, 'N', 1, 1, 1, 'ciclos'),
+    (1006, 'Contar vocales', '<p>Cuenta las vocales de una línea.</p>', '<p>Una línea de texto.</p>', '<p>La cantidad de vocales.</p>', 'Patito', '3', '', 'Patito QA', NOW(), 1000, 128, 'N', 0, 1, 0, 'cadenas'),
+    (1007, 'Invertir una cadena', '<p>Imprime una cadena en orden inverso.</p>', '<p>Una cadena sin espacios.</p>', '<p>La cadena invertida.</p>', 'codigo', 'ogidoc', '', 'Patito QA', NOW(), 1000, 128, 'N', 1, 1, 1, 'cadenas'),
+    (1008, 'Máximo de un arreglo', '<p>Encuentra el máximo de N números.</p>', '<p>N seguido de N enteros.</p>', '<p>El máximo.</p>', '5\n1 7 3 4 2', '7', '', 'Patito QA', NOW(), 1000, 128, 'N', 0, 0, 0, 'arreglos'),
+    (1009, '¿Es primo?', '<p>Determina si N es primo.</p>', '<p>Un entero N ≥ 2.</p>', '<p>SI o NO.</p>', '17', 'SI', '', 'Patito QA', NOW(), 1000, 128, 'N', 0, 0, 0, 'matemática'),
+    (1010, 'Serie Fibonacci', '<p>Muestra el término N de Fibonacci, con F0=0 y F1=1.</p>', '<p>Un entero N.</p>', '<p>FN.</p>', '10', '55', '', 'Patito QA', NOW(), 1000, 128, 'N', 0, 1, 0, 'dinámica');
 
-INSERT INTO problems_site (problem_id, site_id)
-SELECT problem_id, 1 FROM problem WHERE problem_id BETWEEN 1001 AND 1010;
+INSERT INTO problems_site (problem_id, site_id, is_active)
+SELECT problem_id, 1, 1 FROM problem WHERE problem_id BETWEEN 1001 AND 1010;
 
 INSERT INTO contest
     (contest_id, title, start_time, end_time, defunct, description, private, track, level)
