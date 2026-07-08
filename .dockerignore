@@ -1,0 +1,17 @@
+.git
+.github
+.idea
+
+.env
+.env.*
+!docker/.env.example
+
+vendor
+docker/database
+
+*.log
+*.tmp
+*.bak
+*.orig
+*.swp
+*.swo
