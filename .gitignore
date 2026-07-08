@@ -477,3 +477,7 @@ composer.lock
 *.css.map
 *.sass.map
 *.scss.map
+
+patito-client-web/PatitoOnlineJudge/Presentation/Views/itboliviamar
+patito-client-web/PatitoOnlineJudge/Presentation/Views/juezvirtual
+patito-client-web/PatitoOnlineJudge/Presentation/Views/jvbo
