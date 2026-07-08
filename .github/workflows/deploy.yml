@@ -32,50 +32,21 @@ permissions:
         default: '3'
 
 jobs:
-  build-image:
-    name: Build Docker image without publishing
-    runs-on: self-hosted
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/docker/php/Dockerfile
-          push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   deploy-patito:
+    name: Deploy local Docker Compose stack
     runs-on: self-hosted
-    needs: build-image
     if: github.ref == 'refs/heads/patito2-0'
     steps:
-      - name: Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_SECRET }}
-          port: ${{ secrets.DEV_SSH_PORT }}
-          script: |
-            killall ssh-agent
-            eval `ssh-agent`
-            ssh-add /home/deploy/.ssh/id_rsa
-            cd /var/www/patito2.0/client
-            git checkout -f
-            git pull -f
-            rm -f .env.local
-            cp -f .env.patito .env
-            cp PatitoOnlineJudge/Config/AppConfig.php.back PatitoOnlineJudge/Config/AppConfig.php
-            php composer.phar install
-            php composer.phar dump-autoload
-            
+      - name: Pull latest code and restart stack
+        run: |
+          set -euo pipefail
+          cd /home/sloza/patito/patito-client-web
+          git pull --ff-only
+          cd ..
+          docker compose down
+          docker compose up -d --build
+          docker compose ps
+
   run-automation-tests:
     name: Run Selenium BDD tests
     runs-on: self-hosted
