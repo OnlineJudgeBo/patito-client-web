@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full">
 
 <head>
   <meta charset="UTF-8">
@@ -18,11 +18,11 @@
   <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
 </head>
 
-<body class="w-full top-0 left-0 z-50 bg-gray-50">
+<body class="w-full min-h-screen flex flex-col bg-gray-50">
 
   <?php require_once "oj-header.php" ?>
 
-  <main class="container mx-auto p-4 sm:grid sm:grid-cols-4 sm:gap-6">
+  <main class="container mx-auto p-4 sm:grid sm:grid-cols-4 sm:gap-6 flex-1">
     <!-- Columna principal -->
     <div class="col-span-3 space-y-6">
       <!-- Tarjeta de Bienvenida -->
@@ -173,5 +173,3 @@
 
 </html>
 
-<?php
-echo date('Y-m-d H:i:s');
