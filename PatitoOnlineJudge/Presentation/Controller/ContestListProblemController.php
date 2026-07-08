@@ -50,18 +50,24 @@ class ContestListProblemController
     {
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
+        $contestDetail = $this->contestService->getContestById($this->cid);
+
+        if ($this->contestHasNotStarted($contestDetail)) {
+            $contestProblemList = array();
+            $error = "Este concurso aún no inició.";
+            require_once $current_theme . "/error.php";
+            return;
+        }
 
         if (!$this->contestService->isContestActive($this->cid)) {
-            $contestDetail = $this->contestService->getContestById($this->cid);
             $contestProblemList = array();
-            $error = "Este concurso no inicio.";
+            $error = "Este concurso no está activo.";
             require_once $current_theme . "/error.php";
             return;
         }
 
         if ($this->userHasAccess()) {
             $contestProblemList = $this->contestService->getContestProblems($this->cid);
-            $contestDetail = $this->contestService->getContestById($this->cid);
             $resolveBy = $this->contestService->getAcProblemsByIdContest($this->cid);
             if (isset($_SESSION["user_id"])) {
                 $user_id = $_SESSION["user_id"];
@@ -71,10 +77,19 @@ class ContestListProblemController
             $cType = $this->cType;
             require_once $current_theme . "/contestProblemList.php";
         } else {
-            $contestDetail = $this->contestService->getContestById($this->cid);
             $contestProblemList = array();
             $error = "Este concurso es privado. Por favor, contacta con el creador del concurso para más información.";
             require_once $current_theme . "/error.php";
         }
+    }
+
+    private function contestHasNotStarted($contestDetail): bool
+    {
+        if (empty($contestDetail["start_time"])) {
+            return false;
+        }
+
+        $startTime = strtotime(str_replace("-", "/", $contestDetail["start_time"]));
+        return $startTime !== false && time() < $startTime;
     }
 }
