@@ -40,7 +40,7 @@ jobs:
       - name: Pull latest code and restart stack
         run: |
           set -euo pipefail
-          cd /home/sloza/patito/patito-client-web
+          cd /home/github-runner/patito/patito-client-web
           git pull --ff-only
           cd ..
           docker compose down
@@ -48,46 +48,73 @@ jobs:
           docker compose ps
 
   run-automation-tests:
-    name: Run Selenium BDD tests
+    name: Trigger Selenium BDD tests (patito-automation-test)
     runs-on: self-hosted
     needs:
       - deploy-patito
     if: ${{ success() && github.event_name != 'pull_request' }}
-    env:
-      ENV_NAME: ${{ github.event.inputs.env || 'dev' }}
-      TAGS: ${{ github.event.inputs.tags || '' }}
-      RESET_DB: ${{ github.event.inputs.reset_db || 'true' }}
-      HEADLESS: 'true'
     steps:
-      - name: Checkout automation tests repository
-        uses: actions/checkout@v4
-        with:
-          repository: OnlineJudgeBo/patito-automation-test
-          ref: main
-          token: ${{ secrets.PATITO_AUTOMATION_TOKEN }}
-          path: patito-automation-test
-
-      - name: Ensure scripts are executable
-        working-directory: patito-automation-test
-        run: |
-          chmod +x ./gradlew
-          chmod +x scripts/reset-test-db.sh
-
-      - name: Reset test database
-        if: env.RESET_DB == 'true'
-        working-directory: patito-automation-test
-        run: scripts/reset-test-db.sh --yes
-
-      - name: Run BDD tests
-        working-directory: patito-automation-test
+      - name: Trigger and wait for BDD tests in patito-automation-test
+        env:
+          GH_TOKEN: ${{ secrets.PATITO_AUTOMATION_TOKEN }}
         run: |
           set -euo pipefail
-          if [ -n "$TAGS" ]; then
-            ./gradlew clean executeBDDTests --no-daemon -Denv="$ENV_NAME" -Dheadless="$HEADLESS" -Dtags="$TAGS"
-          else
-            ./gradlew clean executeBDDTests --no-daemon -Denv="$ENV_NAME" -Dheadless="$HEADLESS"
+
+          WORKFLOW_FILE="selenium-tests.yml"
+          REPO="OnlineJudgeBo/patito-automation-test"
+          ENV_NAME="${{ github.event.inputs.env || 'dev' }}"
+          TAGS="${{ github.event.inputs.tags || '' }}"
+          RESET_DB="${{ github.event.inputs.reset_db || 'true' }}"
+
+          echo "Capturando runs existentes antes de disparar..."
+          BEFORE_IDS=$(gh run list \
+            --repo "$REPO" \
+            --workflow "$WORKFLOW_FILE" \
+            --limit 10 \
+            --json databaseId \
+            --jq '.[].databaseId')
+
+          echo "Disparando $WORKFLOW_FILE..."
+          gh workflow run "$WORKFLOW_FILE" \
+            --repo "$REPO" \
+            --ref main \
+            -f env="$ENV_NAME" \
+            -f tags="$TAGS" \
+            -f reset_db="$RESET_DB"
+
+          echo "Buscando el nuevo run_id..."
+          RUN_ID=""
+          for i in $(seq 1 15); do
+            sleep 3
+            CURRENT_IDS=$(gh run list \
+              --repo "$REPO" \
+              --workflow "$WORKFLOW_FILE" \
+              --limit 10 \
+              --json databaseId \
+              --jq '.[].databaseId')
+
+            # El primer ID en CURRENT_IDS que no estaba en BEFORE_IDS es el nuevo run
+            for id in $CURRENT_IDS; do
+              if ! echo "$BEFORE_IDS" | grep -qx "$id"; then
+                RUN_ID="$id"
+                break 2
+              fi
+            done
+            echo "Intento $i: aún no aparece un run nuevo, reintentando..."
+          done
+
+          if [ -z "$RUN_ID" ]; then
+            echo "::error::No se detectó ningún run nuevo tras disparar $WORKFLOW_FILE"
+            exit 1
           fi
 
+          echo "Run ID encontrado: $RUN_ID"
+          echo "Ver en: https://github.com/$REPO/actions/runs/$RUN_ID"
+
+          gh run watch "$RUN_ID" \
+            --repo "$REPO" \
+            --exit-status
+  
   publish-image:
     name: Publish Docker image after tests
     runs-on: self-hosted
