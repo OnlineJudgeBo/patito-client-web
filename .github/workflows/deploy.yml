@@ -60,7 +60,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          WORKFLOW_FILE="selenium-bdd-tests.yml"
+          WORKFLOW_FILE="selenium-tests.yml"
           ENV_NAME="${{ github.event.inputs.env || 'dev' }}"
           TAGS="${{ github.event.inputs.tags || '' }}"
           RESET_DB="${{ github.event.inputs.reset_db || 'true' }}"
