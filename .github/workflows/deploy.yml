@@ -61,49 +61,60 @@ jobs:
           set -euo pipefail
 
           WORKFLOW_FILE="selenium-tests.yml"
+          REPO="OnlineJudgeBo/patito-automation-test"
           ENV_NAME="${{ github.event.inputs.env || 'dev' }}"
           TAGS="${{ github.event.inputs.tags || '' }}"
           RESET_DB="${{ github.event.inputs.reset_db || 'true' }}"
-          MARKER="ci-${{ github.run_id }}-${{ github.run_attempt }}"
 
-          echo "Disparando $WORKFLOW_FILE con marker: $MARKER"
+          echo "Capturando runs existentes antes de disparar..."
+          BEFORE_IDS=$(gh run list \
+            --repo "$REPO" \
+            --workflow "$WORKFLOW_FILE" \
+            --limit 10 \
+            --json databaseId \
+            --jq '.[].databaseId')
+
+          echo "Disparando $WORKFLOW_FILE..."
           gh workflow run "$WORKFLOW_FILE" \
-            --repo OnlineJudgeBo/patito-automation-test \
+            --repo "$REPO" \
             --ref main \
             -f env="$ENV_NAME" \
             -f tags="$TAGS" \
-            -f reset_db="$RESET_DB" \
-            -f run_marker="$MARKER"
+            -f reset_db="$RESET_DB"
 
-          echo "Buscando el run_id correspondiente..."
+          echo "Buscando el nuevo run_id..."
           RUN_ID=""
           for i in $(seq 1 15); do
-            RUN_ID=$(gh run list \
-              --repo OnlineJudgeBo/patito-automation-test \
+            sleep 3
+            CURRENT_IDS=$(gh run list \
+              --repo "$REPO" \
               --workflow "$WORKFLOW_FILE" \
               --limit 10 \
-              --json databaseId,displayTitle \
-              --jq ".[] | select(.displayTitle | contains(\"$MARKER\")) | .databaseId" | head -1)
+              --json databaseId \
+              --jq '.[].databaseId')
 
-            if [ -n "$RUN_ID" ]; then
-              break
-            fi
-            echo "Intento $i: aún no aparece, reintentando en 3s..."
-            sleep 3
+            # El primer ID en CURRENT_IDS que no estaba en BEFORE_IDS es el nuevo run
+            for id in $CURRENT_IDS; do
+              if ! echo "$BEFORE_IDS" | grep -qx "$id"; then
+                RUN_ID="$id"
+                break 2
+              fi
+            done
+            echo "Intento $i: aún no aparece un run nuevo, reintentando..."
           done
 
           if [ -z "$RUN_ID" ]; then
-            echo "::error::No se pudo encontrar el run disparado con marker $MARKER"
+            echo "::error::No se detectó ningún run nuevo tras disparar $WORKFLOW_FILE"
             exit 1
           fi
 
           echo "Run ID encontrado: $RUN_ID"
-          echo "Ver en: https://github.com/OnlineJudgeBo/patito-automation-test/actions/runs/$RUN_ID"
+          echo "Ver en: https://github.com/$REPO/actions/runs/$RUN_ID"
 
           gh run watch "$RUN_ID" \
-            --repo OnlineJudgeBo/patito-automation-test \
+            --repo "$REPO" \
             --exit-status
-
+  
   publish-image:
     name: Publish Docker image after tests
     runs-on: self-hosted
