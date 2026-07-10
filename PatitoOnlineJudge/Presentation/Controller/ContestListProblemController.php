@@ -28,11 +28,16 @@ class ContestListProblemController
         $this->cType = $cType;
     }
 
+    private function isAdministrator()
+    {
+        return isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador";
+    }
+
     private function userHasAccess()
     {
         if (
 
-            (isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador") ||
+            $this->isAdministrator() ||
             (isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente")       ||
             (isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar")      ||
             isset($_SESSION["c$this->cid"])
@@ -52,18 +57,20 @@ class ContestListProblemController
         $title = $this->title;
         $contestDetail = $this->contestService->getContestById($this->cid);
 
-        if ($this->contestHasNotStarted($contestDetail)) {
-            $contestProblemList = array();
-            $error = "Este concurso aún no inició.";
-            require_once $current_theme . "/error.php";
-            return;
-        }
+        if (!$this->isAdministrator()) {
+            if ($this->contestHasNotStarted($contestDetail)) {
+                $contestProblemList = array();
+                $error = "Este concurso aún no inició.";
+                require_once $current_theme . "/error.php";
+                return;
+            }
 
-        if (!$this->contestService->isContestActive($this->cid)) {
-            $contestProblemList = array();
-            $error = "Este concurso no está activo.";
-            require_once $current_theme . "/error.php";
-            return;
+            if (!$this->contestService->isContestActive($this->cid)) {
+                $contestProblemList = array();
+                $error = "Este concurso no está activo.";
+                require_once $current_theme . "/error.php";
+                return;
+            }
         }
 
         if ($this->userHasAccess()) {
