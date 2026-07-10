@@ -40,7 +40,7 @@ jobs:
       - name: Pull latest code and restart stack
         run: |
           set -euo pipefail
-          cd /home/sloza/patito/patito-client-web
+          cd /home/github-runner/patito/patito-client-web
           git pull --ff-only
           cd ..
           docker compose down
