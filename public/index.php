@@ -217,7 +217,19 @@ function executeRouter()
     });
 
 
-    $router->get($prefix . '/diff_code.php', function () {
+    $router->get($prefix . '/diff_code.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+
+        if (!(
+            isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
+            isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente" ||
+            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
+        )) {
+            http_response_code(403);
+            echo "No tiene permiso para ver esta comparación.";
+            return;
+        }
+
         require  __DIR__ . '/Routing/diffCode.php';
     });
 

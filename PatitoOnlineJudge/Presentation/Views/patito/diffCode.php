@@ -1,3 +1,28 @@
+<?php
+include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
+
+function sourceLabel($sourceDetail, $language_name, $judge_result): string
+{
+    if (!$sourceDetail) {
+        return '';
+    }
+
+    $language = $language_name[$sourceDetail["language"]] ?? $sourceDetail["language"] ?? 'N/D';
+    $result = $judge_result[$sourceDetail["result"]] ?? $sourceDetail["result"] ?? 'N/D';
+
+    return sprintf(
+        "Solución: %s\nProblema: %s\nUsuario: %s\nLenguaje: %s\nResultado: %s",
+        $sourceDetail["solution_id"] ?? 'N/D',
+        $sourceDetail["problem_id"] ?? 'N/D',
+        $sourceDetail["user_id"] ?? 'N/D',
+        $language,
+        $result
+    );
+}
+
+$leftSource = $sourceDetail ? (string)($sourceDetail["source"] ?? '') . "\n\n/*\n" . sourceLabel($sourceDetail, $language_name, $judge_result) . "\n*/\n" : '';
+$rightSource = $sourceDetail2 ? (string)($sourceDetail2["source"] ?? '') . "\n\n/*\n" . sourceLabel($sourceDetail2, $language_name, $judge_result) . "\n*/\n" : '';
+?>
 <!DOCTYPE html>
 <html lang="es" class="h-full">
 
@@ -8,9 +33,7 @@
     <link href="https://fonts.googleapis.com/css?family=Capriola" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/codemirror.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/wickedest/Mergely/3.4.1/lib/mergely.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/codemirror.min.css" />
@@ -26,90 +49,72 @@
             margin-left: 0;
         }
     </style>
-    <script>
-        function getWinHeight() {
-            return window.innerHeight || document.body.clientHeight;
-        }
-
-        function getWinWidth() {
-            return window.innerWidth || document.body.clientWidth;
-        }
-
-        $(document).ready(function() {
-            var comp = $('#compare');
-            comp.mergely({
-                cmsettings: {
-                    readOnly: false,
-                    lineWrapping: true
-                },
-                wrap_lines: true,
-                lcs: true,
-                viewport: false,
-                lhs: function(setValue) {
-                    setValue(`<?php echo $sourceDetail["source"] ?>
-                    <?php
-                    echo "\n\n\n\n";
-                    include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
-                    $comment = str_contains($language_name[$sourceDetail["language"]], "Python") ? "#" : "/";
-                    echo $comment . "**************************************************************$comment\n";
-                    echo "Solución: " . $sourceDetail["solution_id"] . "\n";
-                    echo "Problema: " . $sourceDetail["problem_id"] . "\nUsuario: " . $sourceDetail["user_id"] . "\n";
-                    echo "Lenguaje: " . $language_name[$sourceDetail["language"]] . "\nResult: " . $judge_result[$sourceDetail["result"]] . "\n";
-                    if ($sourceDetail["result"] == 4) {
-                        echo "Time:" . $sourceDetail["time"] . " ms\n";
-                        echo "Memory:" . $sourceDetail["memory"] . " kb\n";
-                    }
-                    echo $comment . "**************************************************************$comment\n";
-                    ?>
-                    `)
-                },
-                rhs: function(setValue) {
-                    setValue(`<?php echo $sourceDetail2["source"] ?>
-                    <?php
-                    echo "\n\n\n\n";
-                    include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
-                    $comment = str_contains($language_name[$sourceDetail2["language"]], "Python") ? "#" : "/";
-                    echo $comment . "**************************************************************$comment\n";
-                    echo "Solución: " . $sourceDetail2["solution_id"] . "\n";
-                    echo "Problema: " . $sourceDetail2["problem_id"] . "\nUsuario: " . $sourceDetail2["user_id"] . "\n";
-                    echo "Lenguaje: " . $language_name[$sourceDetail2["language"]] . "\nResult: " . $judge_result[$sourceDetail2["result"]] . "\n";
-                    if ($sourceDetail2["result"] == 4) {
-                        echo "Time:" . $sourceDetail2["time"] . " ms\n";
-                        echo "Memory:" . $sourceDetail2["memory"] . " kb\n";
-                    }
-                    echo $comment . "**************************************************************$comment\n";
-                    ?>
-                    `)
-                }
-            });
-
-            function resizeMergely() {
-                $('#compare').mergely('options', {
-                    height: getWinHeight() - 190,
-                    width: "100%"
-                });
-                $('#compare').mergely('update');
-            }
-
-            $(window).resize(resizeMergely);
-            resizeMergely();
-        });
-    </script>
-
     <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
-
 </head>
 
 <body class="flex flex-col h-full">
     <?php require_once "oj-header.php"; ?>
     <main class="container mx-auto p-4 grid grid-cols-1">
-        <div class="diffs">
-            <div class="compare-wrapper ml-0">
-                <div id="compare" class="ml-0"></div>
+        <?php if (!empty($errorMessage)): ?>
+            <div class="mb-4 text-red-700">
+                <?php echo htmlspecialchars((string)$errorMessage, ENT_QUOTES, 'UTF-8'); ?>
             </div>
-        </div>
+        <?php elseif ($comparison): ?>
+            <div class="mb-3 text-xl font-bold">
+                Similitud: <?php echo htmlspecialchars(number_format($comparison["similarity_percentage"], 2), ENT_QUOTES, 'UTF-8'); ?>%
+            </div>
+        <?php endif; ?>
+
+        <?php if (empty($errorMessage)): ?>
+            <div class="diffs">
+                <div class="compare-wrapper ml-0">
+                    <div id="compare" class="ml-0"></div>
+                </div>
+            </div>
+        <?php endif; ?>
     </main>
     <?php require_once "oj-footer.php"; ?>
+
+    <?php if (empty($errorMessage)): ?>
+        <script>
+            const leftSource = <?php echo json_encode($leftSource, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
+            const rightSource = <?php echo json_encode($rightSource, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
+
+            function getWinHeight() {
+                return window.innerHeight || document.body.clientHeight;
+            }
+
+            $(document).ready(function() {
+                const comp = $('#compare');
+                comp.mergely({
+                    cmsettings: {
+                        readOnly: true,
+                        lineWrapping: true
+                    },
+                    wrap_lines: true,
+                    lcs: true,
+                    viewport: false,
+                    lhs: function(setValue) {
+                        setValue(leftSource);
+                    },
+                    rhs: function(setValue) {
+                        setValue(rightSource);
+                    }
+                });
+
+                function resizeMergely() {
+                    $('#compare').mergely('options', {
+                        height: getWinHeight() - 190,
+                        width: "100%"
+                    });
+                    $('#compare').mergely('update');
+                }
+
+                $(window).resize(resizeMergely);
+                resizeMergely();
+            });
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>
