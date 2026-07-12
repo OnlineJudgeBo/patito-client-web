@@ -1,4 +1,3 @@
-PatitoOnlineJudge/Config/AppConfig.php
 .env*
 !.env.example
 !docker/.env.example
