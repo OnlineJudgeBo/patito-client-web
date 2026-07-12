@@ -162,12 +162,3 @@ jobs:
           package-type: container
           min-versions-to-keep: ${{ github.event.inputs.keep_image_versions || '3' }}
           ignore-versions: '^(${{ github.sha }}|${{ github.ref_name }})$'
-
-      - name: Delete untagged GHCR image versions
-        uses: actions/delete-package-versions@v5
-        with:
-          owner: OnlineJudgeBo
-          package-name: patito-client-web
-          package-type: container
-          min-versions-to-keep: '0'
-          delete-only-untagged-versions: 'true'
