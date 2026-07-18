@@ -10,6 +10,10 @@
     color: blue;
 }
 
+.result-black {
+    color: black;
+}
+
 .oddrow {
     background-color: #E5ECF9;
 }

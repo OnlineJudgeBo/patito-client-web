@@ -31,6 +31,7 @@ $MSG_Output_Limit_Exceed = "Output Limit Exceed";
 $MSG_Runtime_Error = "Runtime Error";
 $MSG_TEST_RUN = "Test Running Done";
 $MSG_Compile_Error = "Compile Error";
+$MSG_AI_Detected = "AI DETECTED";
 
 $MSG_Runtime_Click = "Runtime Error(Click)";
 $MSG_Compile_Click = "Compile Error(Click)";

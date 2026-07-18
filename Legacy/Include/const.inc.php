@@ -31,6 +31,7 @@ $MSG_Output_Limit_Exceed = "Output Limit Exceed";
 $MSG_Runtime_Error = "Runtime Error";
 $MSG_TEST_RUN = "Test Running Done";
 $MSG_Compile_Error = "Compile Error";
+$MSG_AI_Detected = "AI_DETECTED";
 
 $MSG_Runtime_Click = "Runtime Error(Click)";
 $MSG_Compile_Click = "Compile Error(Click)";
@@ -129,9 +130,9 @@ $MSG_TotalTime = "Falta";
 $MSG_LeftTime = "Termina en";
 $MSG_Ended = "Termino";
 
-$judge_result = array($MSG_Pending, $MSG_Pending_Rejudging, $MSG_Compiling, $MSG_Running_Judging, $MSG_Accepted, $MSG_Presentation_Error, $MSG_Wrong_Answer, $MSG_Time_Limit_Exceed, $MSG_Memory_Limit_Exceed, $MSG_Output_Limit_Exceed, $MSG_Runtime_Error, $MSG_Compile_Error, $MSG_Compile_OK, $MSG_TEST_RUN);
-$jresult      = array($MSG_PD, $MSG_PR, $MSG_CI, $MSG_RJ, $MSG_AC, $MSG_PE, $MSG_WA, $MSG_TLE, $MSG_MLE, $MSG_OLE, $MSG_RE, $MSG_CE, $MSG_CO, $MSG_TR);
-$judge_color  = array("gray", "gray", "orange", "orange", "green", "red", "red", "red", "red", "red", "red", "red ", "red");
+$judge_result = array($MSG_Pending, $MSG_Pending_Rejudging, $MSG_Compiling, $MSG_Running_Judging, $MSG_Accepted, $MSG_Presentation_Error, $MSG_Wrong_Answer, $MSG_Time_Limit_Exceed, $MSG_Memory_Limit_Exceed, $MSG_Output_Limit_Exceed, $MSG_Runtime_Error, $MSG_Compile_Error, $MSG_Compile_OK, $MSG_TEST_RUN, $MSG_AI_Detected);
+$jresult      = array($MSG_PD, $MSG_PR, $MSG_CI, $MSG_RJ, $MSG_AC, $MSG_PE, $MSG_WA, $MSG_TLE, $MSG_MLE, $MSG_OLE, $MSG_RE, $MSG_CE, $MSG_CO, $MSG_TR, "AI");
+$judge_color  = array("gray", "gray", "orange", "orange", "green", "red", "red", "red", "red", "red", "red", "red", "red", "gray", "black");
 
 //                         0    1      2             3     4      5       6         7       8       9     10       11          12               13 ,14,  15          16          17       18, 19
 //$language_name    = array("C", "C++", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.7", "Go", "Python3.12", "Pseint");

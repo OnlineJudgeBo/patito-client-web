@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . "/../Modules/ManualJudgeControls.php"; ?>
 <!DOCTYPE html>
 <html lang="es" class="h-full">
 
@@ -16,6 +17,7 @@
     <script src="https://cdn.datatables.net/searchpanes/2.3.0/js/searchPanes.dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.css">
     <script src="https://cdn.datatables.net/select/2.0.0/js/dataTables.select.js"></script>
+    <script src="./assets/manual-judge.js" defer></script>
     <script src="https://cdn.datatables.net/select/2.0.0/js/select.dataTables.js"></script>
     <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
     <style>
@@ -123,6 +125,12 @@
             border-color: #fed7aa;
         }
 
+        #status-table .status-result.result-black {
+            color: #ffffff;
+            background: #000000;
+            border-color: #000000;
+        }
+
         #status-table .status-result.result-blue,
         #status-table .status-result.result-orange,
         #status-table .status-result.result-gray {
@@ -227,6 +235,11 @@
                                     echo sprintf(
                                         '<button onclick="rejudgeSolution(%d)" class="border-b transition-colors hover:bg-muted/50">Rejudge</button>',
                                         $value["solution_id"]
+                                    );
+                                    renderManualJudgeControls(
+                                        (int)$value["solution_id"],
+                                        (int)$value["result"],
+                                        $_SERVER["APP_DOMAIN_API"]
                                     );
                                 }
                                 ?>
