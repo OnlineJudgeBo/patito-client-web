@@ -3,19 +3,24 @@ function getAccessToken() {
     return value ? value.pop() : null;
 }
 
-async function manuallyJudgeSolution(solutionId) {
-    const select = document.getElementById(`manual-verdict-${solutionId}`);
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.manual-judge-controls').forEach((controls) => {
+        controls.addEventListener('click', (event) => event.stopPropagation());
+    });
+});
+
+async function manuallyJudgeSolution(button) {
+    const controls = button?.closest('.manual-judge-controls');
+    const select = controls?.querySelector('.manual-verdict-select');
+    const solutionId = Number(controls?.dataset.solutionId);
     const token = getAccessToken();
 
-    if (!select || !token) {
+    if (!select || !Number.isInteger(solutionId) || solutionId <= 0 || !token) {
         window.alert('No se pudo iniciar el cambio de veredicto. Vuelve a iniciar sesión.');
         return;
     }
 
-    const button = document.getElementById(`manual-verdict-button-${solutionId}`);
-    if (button) {
-        button.disabled = true;
-    }
+    button.disabled = true;
 
     try {
         const response = await fetch(`${select.dataset.apiBase}/Judge/solution/${solutionId}/verdict`, {
@@ -35,8 +40,6 @@ async function manuallyJudgeSolution(solutionId) {
         window.location.reload();
     } catch (error) {
         window.alert(error.message);
-        if (button) {
-            button.disabled = false;
-        }
+        button.disabled = false;
     }
 }

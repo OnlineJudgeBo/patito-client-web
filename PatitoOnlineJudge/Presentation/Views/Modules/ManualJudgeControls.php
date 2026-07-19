@@ -11,14 +11,16 @@ function renderManualJudgeControls(int $solutionId, int $currentResult, string $
         9 => 'Output Limit Exceed',
         10 => 'Runtime Error',
         11 => 'Compile Error',
-        14 => 'AI_DETECTED',
+        14 => 'IA Detected',
     ];
 
     $safeApiBase = htmlspecialchars(rtrim($apiBase, '/'), ENT_QUOTES, 'UTF-8');
-    echo '<span class="inline-flex items-center gap-1">';
     echo sprintf(
-        '<select id="manual-verdict-%d" data-api-base="%s" aria-label="Nuevo veredicto" class="rounded border border-slate-300 bg-white px-2 py-1 text-xs">',
-        $solutionId,
+        '<span class="manual-judge-controls inline-flex items-center gap-1" data-solution-id="%d">',
+        $solutionId
+    );
+    echo sprintf(
+        '<select data-api-base="%s" aria-label="Nuevo veredicto" class="manual-verdict-select rounded border border-slate-300 bg-white px-2 py-1 text-xs">',
         $safeApiBase
     );
 
@@ -33,10 +35,6 @@ function renderManualJudgeControls(int $solutionId, int $currentResult, string $
     }
 
     echo '</select>';
-    echo sprintf(
-        '<button id="manual-verdict-button-%d" type="button" onclick="manuallyJudgeSolution(%d)" class="rounded border border-slate-400 px-2 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-50">Cambiar</button>',
-        $solutionId,
-        $solutionId
-    );
+    echo '<button type="button" onclick="manuallyJudgeSolution(this)" class="rounded border border-slate-400 px-2 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-50">Cambiar</button>';
     echo '</span>';
 }

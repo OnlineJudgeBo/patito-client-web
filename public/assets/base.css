@@ -257,6 +257,12 @@
     border-top: 1px solid #e2e8f0;
 }
 
+.manual-verdict-select,
+table.dataTable > tbody > tr.selected .manual-verdict-select {
+    color: #0f172a !important;
+    background-color: #ffffff !important;
+}
+
 @media (max-width: 640px) {
     .oj-page {
         width: min(100% - 1rem, 1440px);
