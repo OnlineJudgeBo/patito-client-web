@@ -58,6 +58,10 @@ class ProblemController
                 //die();
             //}
         }
+        if (!is_array($problem)) {
+            throw new \RuntimeException("No se encontró el problema solicitado.");
+        }
+
         $problem = $this->inlineDisplayMath($problem);
         require_once $current_theme . "/problem.php";
     }
