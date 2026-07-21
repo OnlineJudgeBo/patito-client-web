@@ -21,7 +21,7 @@ class JwtAuth
             "site_id" => $_SERVER["SITE_ID"]
         ];
 
-        $jwtSecret = $_SERVER["JWT_SECRET"];
+        $jwtSecret = $_SERVER["JWT_SECRET_KEY"];
         $accessToken = $this->encodeJwt($payloadAccessToken, $jwtSecret);
 
         $payloadRefreshToken = [
