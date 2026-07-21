@@ -4,11 +4,13 @@ class JwtAuth
 {
     function generateTokens($userId, array $userRoles)
     {
-        $claveSecreta = "esta_es_mi_super_clave_secreta_zsx";
         $actualTime = time();
-        $expirationTime = $actualTime + (60 * 60) * 1; //1h
-        $expirationTimeRefresh = $actualTime + (60 * 60 * 24 * 30);
+        $jwtTimeLife = isset($_SERVER["JWT_TIME_LIFE"]) ? (int) $_SERVER["JWT_TIME_LIFE"] : 1;
+        $jwtTimeLife = $jwtTimeLife > 0 ? $jwtTimeLife : 1;
 
+        $expirationTime = $actualTime + (60 * 60 * $jwtTimeLife); //1h default
+        $expirationTimeRefresh = $actualTime + (60 * 60 * 24 * 30);
+        
         $payloadAccessToken = [
             "sub"     => $userId,
             "roles"   => implode(",", array_column($userRoles, 'role_name')),
@@ -19,7 +21,8 @@ class JwtAuth
             "site_id" => $_SERVER["SITE_ID"]
         ];
 
-        $accessToken = $this->encodeJwt($payloadAccessToken, $claveSecreta);
+        $jwtSecret = $_SERVER["JWT_SECRET"];
+        $accessToken = $this->encodeJwt($payloadAccessToken, $jwtSecret);
 
         $payloadRefreshToken = [
             "sub"     => $userId,
@@ -31,7 +34,7 @@ class JwtAuth
             "site_id" => $_SERVER["SITE_ID"]
         ];
 
-        $refreshToken = $this->encodeJwt($payloadRefreshToken, $claveSecreta);
+        $refreshToken = $this->encodeJwt($payloadRefreshToken, $jwtSecret);
 
         return [
             'accessToken' => $accessToken,
