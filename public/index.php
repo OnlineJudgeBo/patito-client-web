@@ -11,7 +11,7 @@ require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
-$envPath = __DIR__."/..";
+$envPath = __DIR__ . "/..";
 if (file_exists($envPath . '/.env.local')) {
     $dotenv = Dotenv::createImmutable($envPath, '.env.local');
 } else {
@@ -22,52 +22,54 @@ $dotenv->load();
 $environment = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'production';
 redirect();
 if ($environment !== 'development') {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
     try {
         executeRouter();
     } catch (\Throwable $e) {
         handleException($e);
     }
 } else {
-    ini_set("display_errors", "ON");
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
+    ini_set("display_errors", 0);
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
     error_reporting(E_ALL);
     executeRouter();
 }
 
-function redirect() 
+function redirect()
 {
-// Obtener la URL solicitada
-$requestUri = $_SERVER['REQUEST_URI'];
-$prefix = $_SERVER['APP_PREFIX_ROUTE'] ?? $_ENV['APP_PREFIX_ROUTE'] ?? '';
+    // Obtener la URL solicitada
+    $requestUri = $_SERVER['REQUEST_URI'];
+    $prefix = $_SERVER['APP_PREFIX_ROUTE'] ?? $_ENV['APP_PREFIX_ROUTE'] ?? '';
 
-if ($prefix !== '' && $prefix !== '/' && str_starts_with($requestUri, $prefix)) {
-    return;
-}
+    if ($prefix !== '' && $prefix !== '/' && str_starts_with($requestUri, $prefix)) {
+        return;
+    }
 
-// Reemplazar "/oj" por "/"
-$newUri = str_replace('/oj', '', $requestUri);
+    // Reemplazar "/oj" por "/"
+    $newUri = str_replace('/oj', '', $requestUri);
 
-// Eliminar cualquier doble "//" en la URL
-$newUri = preg_replace('#/+#', '/', $newUri); // Reemplaza múltiples "/" por un único "/"
+    // Eliminar cualquier doble "//" en la URL
+    $newUri = preg_replace('#/+#', '/', $newUri); // Reemplaza múltiples "/" por un único "/"
 
-// Asegurar que la URL comienza con "/"
-if ($newUri[0] !== '/') {
-    $newUri = '/' . $newUri;
-}
+    // Asegurar que la URL comienza con "/"
+    if ($newUri[0] !== '/') {
+        $newUri = '/' . $newUri;
+    }
 
-// Redirigir si hubo un cambio
-if ($requestUri !== $newUri) {
-    // Construir la nueva URL completa
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-    $host = $_SERVER['HTTP_HOST'];
-    $redirectUrl = $protocol . $host . $newUri;
+    // Redirigir si hubo un cambio
+    if ($requestUri !== $newUri) {
+        // Construir la nueva URL completa
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+        $host = $_SERVER['HTTP_HOST'];
+        $redirectUrl = $protocol . $host . $newUri;
 
-    // Redirigir al usuario
-    header("Location: $redirectUrl", true, 301);
-    exit;
-}
-
+        // Redirigir al usuario
+        header("Location: $redirectUrl", true, 301);
+        exit;
+    }
 }
 
 function executeRouter()
