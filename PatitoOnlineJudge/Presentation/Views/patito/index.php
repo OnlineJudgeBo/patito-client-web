@@ -117,14 +117,16 @@
       <!-- Tarjeta de Noticias -->
       <div class="bg-white shadow-lg rounded-lg border p-6">
         <h3 class="text-xl font-bold mb-4 text-center">Últimas Noticias</h3>
-        <?php
-        foreach ($view_news as $value) {
-          echo '<div class="mb-4 p-3 bg-gray-50 rounded-lg">';
-          echo '<p class="font-bold text-gray-800">' . $value["title"] . '</p>';
-          echo '<p class="text-sm text-gray-600">' . $value["content"] . '</p>';
-          echo '</div>';
-        }
-        ?>
+        <div class="max-h-[60vh] overflow-y-auto pr-2" role="region" aria-label="Listado de últimas noticias" tabindex="0">
+          <?php
+          foreach ($view_news as $value) {
+            echo '<div class="mb-4 p-3 bg-gray-50 rounded-lg">';
+            echo '<p class="font-bold text-gray-800">' . $value["title"] . '</p>';
+            echo '<p class="text-sm text-gray-600">' . $value["content"] . '</p>';
+            echo '</div>';
+          }
+          ?>
+        </div>
       </div>
     </div>
   </main>
@@ -172,4 +174,3 @@
 </body>
 
 </html>
-
