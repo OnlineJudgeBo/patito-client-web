@@ -50,7 +50,7 @@ class UserStaticRepository implements IuserStaticRepository
 
     public function getTotalUserWaByProblem($problem_id, $site_id)
     {
-        $sql = "SELECT count(DISTINCT user_id) AS total FROM solution WHERE problem_id=:problem_id AND result != 4 AND site_id = :site_id";
+        $sql = "SELECT count(user_id) AS total FROM solution WHERE problem_id=:problem_id AND result = 6 AND site_id = :site_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':problem_id', $problem_id, PDO::PARAM_INT);
         $stmt->bindParam(':site_id', $site_id, PDO::PARAM_INT);

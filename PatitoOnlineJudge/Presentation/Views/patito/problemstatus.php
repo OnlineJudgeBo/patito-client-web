@@ -28,7 +28,10 @@
                 <div class="flex flex-col items-center p-6 w-full h-full">
                     <div class="text-center">
                         <h2 class="text-xl font-bold tracking-tight text-black mb-1">
-                            Problema: <?php echo $problem["title"]?>
+                            Problema:
+                            <a href="./problem.php?id=<?php echo intval($problem["problem_id"]) ?>" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                <?php echo htmlspecialchars($problem["title"], ENT_QUOTES, 'UTF-8') ?>
+                            </a>
                         </h2>
 
                         <div class="flex">
@@ -74,7 +77,6 @@
                                         <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                             <td class="p-4 font-semibold">CE</td>
                                             <td class="p-4"><?php echo $userStatics["total_ce"]?></td>
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -92,6 +94,7 @@
                                                         <th scope="col" class="p-4 font-semibold">No</th>
                                                         <th scope="col" class="p-4 font-semibold">RunId</th>
                                                         <th scope="col" class="p-4 font-semibold">Usuario</th>
+                                                        <th scope="col" class="p-4 font-semibold">Envíos aceptados</th>
                                                         <th scope="col" class="p-4 font-semibold">Memoria</th>
                                                         <th scope="col" class="p-4 font-semibold">Tiempo</th>
                                                         <th scope="col" class="p-4 font-semibold">Lenguaje</th>
@@ -101,21 +104,33 @@
                                                 </thead>
                                                 <tbody class="divide-y divide-x divide-z divide-gray-200 dark:divide-gray-700">
                                                     <?php
+                                                    require __DIR__ . "/../../../../Legacy/Include/const.inc.php";
                                                     foreach ($topUsersByProblem as $index => $value) {
                                                         $css = "evenrow";
                                                         if ($index % 2 == 0) {
                                                             $css = "oddrow";
                                                         }
+                                                        $languageId = intval($value["language"] ?? -1);
+                                                        $languageLabel = $language_name[$languageId] ?? "Desconocido";
                                                    ?>
                                                         <tr class="transition-colors hover:bg-muted/50  <?php echo $css?>">
                                                             <td class="p-4"><?php echo ($index + 1)?></td>
-                                                            <td class="p-4"><?php echo $value["solution_id"]?></td>
-                                                            <td class="p-4"><?php echo $value["user_id"]?></td>
+                                                            <td class="p-4">
+                                                                <a href="./showsource.php?id=<?php echo intval($value["solution_id"]) ?>" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                                                    <?php echo intval($value["solution_id"]) ?>
+                                                                </a>
+                                                            </td>
+                                                            <td class="p-4">
+                                                                <a href="./status.php?user_id=<?php echo rawurlencode((string)$value["user_id"]) ?>&amp;problem_id=<?php echo intval($problem["problem_id"]) ?>" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                                                    <?php echo htmlspecialchars((string)$value["user_id"], ENT_QUOTES, 'UTF-8') ?>
+                                                                </a>
+                                                            </td>
+                                                            <td class="p-4"><?php echo intval($value["attempts"])?></td>
                                                             <td class="p-4"><?php echo intval($value["s_memory"])?> KB</td>
                                                             <td class="p-4"><?php echo intval($value["s_time"])?> MS</td>
-                                                            <td class="p-4"><?php echo $value["language"]?> B</td>
-                                                            <td class="p-4"><?php echo $value["s_cl"]?></td>
-                                                            <td class="p-4"><?php echo $value["in_date"]?></td>
+                                                            <td class="p-4"><?php echo htmlspecialchars($languageLabel, ENT_QUOTES, 'UTF-8') ?></td>
+                                                            <td class="p-4"><?php echo intval($value["s_cl"])?> B</td>
+                                                            <td class="p-4"><?php echo htmlspecialchars((string)$value["in_date"], ENT_QUOTES, 'UTF-8') ?></td>
                                                         </tr>
                                                     <?php
                                                     }
@@ -134,9 +149,6 @@
         </div>
 
     </main>
-
-    <?php require_once "oj-footer.php"?>
-</body>
 
 <script type="text/javascript">
     google.charts.load('current', {
@@ -179,7 +191,6 @@
         chart.draw(data, options);
     }
 </script>
-
-
-
+    <?php require_once "oj-footer.php"?>
+</body>
 </html>

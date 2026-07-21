@@ -42,6 +42,7 @@ class UserInfoController
 
         $this->loginService->updateUserProfile($this->userId, $user);
         header('Location: ./userInfo.php');
+        exit;
     }
 
     public function render()

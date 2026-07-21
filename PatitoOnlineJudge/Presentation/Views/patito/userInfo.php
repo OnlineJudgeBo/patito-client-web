@@ -88,10 +88,15 @@
                     <div class="bg-white p-6 rounded-lg shadow-lg">
                         <h2 class="text-xl font-bold mb-6">Problemas resueltos</h2>
                         <div class="mb-4">
-                            <input class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Buscar problema">
+                            <label class="sr-only" for="problem-search">Buscar problema</label>
+                            <input
+                                class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="problem-search"
+                                type="search"
+                                placeholder="Buscar problema">
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white">
+                            <table id="solved-problems" class="min-w-full bg-white">
                                 <thead class="bg-gray-800 text-white">
                                     <tr>
                                         <th class="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">Mi primer envío</th>
@@ -137,6 +142,18 @@
 
         </div>
     </main>
+    <script>
+        const problemSearch = document.getElementById('problem-search');
+        const solvedProblemRows = document.querySelectorAll('#solved-problems tbody tr');
+
+        problemSearch.addEventListener('input', (event) => {
+            const query = event.target.value.trim().toLocaleLowerCase();
+
+            solvedProblemRows.forEach((row) => {
+                row.hidden = !row.textContent.toLocaleLowerCase().includes(query);
+            });
+        });
+    </script>
     <?php require_once "oj-footer.php" ?>
 </body>
 
