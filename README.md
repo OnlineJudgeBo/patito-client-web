@@ -100,7 +100,7 @@ Están disponibles `patito`, `itboliviamar`, `juezvirtual` y `jvbo`.
 ├── docker/
 │   ├── .env.example        entorno de demostración
 │   └── compose.yml         servicios locales
-├── docs/                    capturas usadas en este README
+├── docs/                    capturas e historia del proyecto
 ├── composer.json
 └── README.md
 ```
@@ -113,6 +113,12 @@ composer dump-autoload
 ```
 
 El document root del servidor debe apuntar a `public/`, no a la raíz del repositorio.
+
+## Historia del proyecto
+
+Patito comenzó en 2012 con pruebas de HUSTOJ para cursos y entrenamiento de programación competitiva en la UMSA. Desde entonces pasó por varias etapas de traducción, adaptación, despliegue y desarrollo propio.
+
+La historia completa, las personas que participaron y la línea de tiempo están en [`docs/HISTORY.md`](docs/HISTORY.md).
 
 ## Capturas
 
