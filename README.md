@@ -100,6 +100,7 @@ Están disponibles `patito`, `itboliviamar`, `juezvirtual` y `jvbo`.
 ├── docker/
 │   ├── .env.example        entorno de demostración
 │   └── compose.yml         servicios locales
+├── docs/                    capturas usadas en este README
 ├── composer.json
 └── README.md
 ```
@@ -110,6 +111,37 @@ Para trabajar sin Docker se necesita PHP, Composer y las extensiones de MariaDB:
 composer install
 composer dump-autoload
 ```
+
+El document root del servidor debe apuntar a `public/`, no a la raíz del repositorio.
+
+## Capturas
+
+### Inicio
+
+La portada muestra los horarios, concursos activos y noticias del sitio.
+
+![Página de inicio de Patito Online Judge](docs/home.png)
+
+### Estado de los envíos
+
+El listado se puede filtrar por usuario, problema, lenguaje y resultado.
+
+![Listado de envíos y veredictos](docs/status.png)
+
+### Patito IDE
+
+Desde un problema se puede abrir el editor, ejecutar casos de prueba y enviar la solución.
+
+![Editor de código de Patito IDE](docs/ide.png)
+
+### Envío aceptado
+
+![Confirmación de un envío aceptado](docs/ide-ac.png)
+
+### Autocompletado LSP
+
+![Autocompletado de Java dentro de Patito IDE](docs/ide-lsp.png)
+
 ## Licencia
 
 Apache License 2.0.
