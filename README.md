@@ -1,92 +1,115 @@
-# Patito Online Judge - cliente web
+# Cliente web de Patito Online Judge
 
-Cliente web en PHP para JV Patito Online Judge.
+Esta es la web que usan los estudiantes: problemas, concursos, envíos, rankings, perfil e inicio de sesión. Está escrita en PHP.
 
-## Inicio rápido con datos de demostración
-
-El directorio [`docker/`](docker/) contiene un entorno de prueba:
-
-- Esquema de MariaDB sin información real
-- Problemas demo
-- Concursos demo
-- Envíos
-- Cuenta de estudiante
-- Cuenta administrador
-- Todo esta dockerizado
-
-### Requisitos
-
-- Docker 24 o superior
-- Docker Compose
-
-### Instalación
+## Inicio Rapido
 
 ```bash
 docker compose -f docker/compose.yml up --build
 ```
 
-Después abre:
+Abre <http://localhost:8082/oj/>.
 
-- Aplicación: <http://localhost:8082/oj/>
+El contenedor usa `docker/.env.example`. Para montar otro archivo:
 
-### Cuentas de prueba
+```bash
+PATITO_STARTER_ENV_FILE=./mi-entorno.env \
+  docker compose -f docker/compose.yml up --build
+```
+
+El ambiente de prueba trae estas cuentas:
 
 | Rol | Usuario | Contraseña |
-|---|---|---|
+| --- | --- | --- |
 | Estudiante | `patito` | `patito` |
 | Administrador | `patitoAdmin` | `patitoAdmin` |
 
-## Estructura de carpetas
+No uses esas cuentas fuera del entorno local.
 
-```text
-client-web/
-├── PatitoOnlineJudge/
-│   ├── Config/                 # Configuración de la aplicación y base de datos
-│   ├── Core/
-│   │   ├── Application/        # Servicios y casos de uso
-│   │   └── Domain/             # Contratos y objetos del dominio
-│   ├── Infrastructure/         # Repositorios e integraciones externas
-│   └── Presentation/
-│       ├── Controller/         # Controladores HTTP
-│       ├── Middleware/         # Autenticación y validaciones de acceso
-│       ├── Utils/              # Utilidades de presentación
-│       └── Views/
-│           ├── Modules/        # Componentes compartidos entre templates
-│           ├── patito/         # Template público predeterminado
-│           ├── itboliviamar/   # Template institucional
-│           ├── juezvirtual/    # Template institucional
-│           └── jvbo/           # Template institucional
-├── Legacy/
-│   └── Include/                # Constantes y traducciones heredadas
-├── public/
-│   ├── Routing/                # Definición de rutas HTTP
-│   └── assets/                 # CSS, JavaScript, imágenes y editores
-├── docker/                     # Entorno local, esquema y datos de demostración
-├── vendor/                     # Dependencias instaladas por Composer
-├── composer.json
-└── Readme.md
+## Dependencias
+
+El entorno de `docker/compose.yml` levanta solamente esta web y su propia MariaDB de demostración. Sirve para trabajar en pantallas y flujos básicos.
+
+Para probar la integración completa también hacen falta:
+
+- `onlineJudgeAdmin-back` para las rutas nuevas de la API;
+- `core` para procesar envíos;
+- `patito-ide` para abrir el editor desde un problema;
+- `patito-lsp-server` para el autocompletado del IDE.
+
+```bash
+docker compose up -d --build
 ```
 
-## Templates
+La web queda en <http://localhost:8082/oj/>. Compose inicia primero `patito-db` y espera su healthcheck.
 
-Los templates se encuentran en `PatitoOnlineJudge/Presentation/Views/`. La variable `THEME_TEMPLATE` determina cuál de ellos utiliza la aplicación:
+## Variables de entorno
 
-```dotenv
+La aplicación lee primero `.env.local` y después `.env`.
+
+| Variable | Uso |
+| --- | --- |
+| `SITE_ID` | identificador del sitio actual |
+| `APP_ENV` | ambiente, por ejemplo `development` o `production` |
+| `APP_PREFIX_ROUTE` | prefijo de la web; normalmente `/oj` |
+| `APP_DOMAIN` | URL pública del cliente |
+| `APP_DOMAIN_ADMIN` | URL del panel administrativo |
+| `APP_DOMAIN_API` | URL de la API |
+| `THEME_TEMPLATE` | plantilla visual activa |
+| `DB_HOST`, `DB_NAME` | servidor y nombre de MariaDB |
+| `DB_USER`, `DB_PASS` | credenciales de MariaDB |
+| `JWT_ISS`, `JWT_AUD` | emisor y audiencia compartidos con la API |
+| `JWT_SECRET` | clave usada para firmar tokens |
+| `VIBE_IDE_BASE_URL` | URL pública de Patito IDE |
+| `VIBE_IDE_TOKEN_SECRET` | clave compartida para abrir el IDE |
+| `VIBE_IDE_TOKEN_TTL_SECONDS` | duración del enlace al IDE |
+
+Correo y Telegram son opcionales: `MAIL_USER_NAME`, `MAIL_PASSWORD`, `MAIL_SUBJECT`, `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` pueden quedar vacías si no se usan notificaciones.
+
+Usa secretos distintos en desarrollo y producción.
+
+## Plantillas
+
+Las vistas están en `PatitoOnlineJudge/Presentation/Views/`. La plantilla se elige así:
+
+```env
 THEME_TEMPLATE=patito
 ```
 
-## Configuración
+Están disponibles `patito`, `itboliviamar`, `juezvirtual` y `jvbo`.
 
-La aplicación busca primero `.env.local` y utiliza `.env` como alternativa..
+## Estructura del proyecto
 
+```text
+.
+├── PatitoOnlineJudge/
+│   ├── Config/              carga del entorno
+│   ├── Core/
+│   │   ├── Domain/          modelos y contratos
+│   │   └── Application/     servicios
+│   ├── Infrastructure/      repositorios e integraciones
+│   └── Presentation/
+│       ├── Controller/      controllers HTTP
+│       ├── Middleware/      sesión y permisos
+│       └── Views/           plantillas y módulos
+├── Legacy/                  constantes y traducciones antiguas
+├── public/
+│   ├── Routing/             rutas
+│   ├── assets/              CSS, JavaScript e imágenes
+│   └── index.php            entrada de la web
+├── docker/
+│   ├── .env.example        entorno de demostración
+│   └── compose.yml         servicios locales
+├── composer.json
+└── README.md
+```
+
+Para trabajar sin Docker se necesita PHP, Composer y las extensiones de MariaDB:
+
+```bash
+composer install
+composer dump-autoload
+```
 ## Licencia
 
-Este proyecto se distribuye bajo la **Apache License 2.0**, una licencia de código abierto que permite usar, modificar y distribuir el software, incluso con fines comerciales.
-
-## Contribuidores
-
-A continuación se listan las personas que han contribuido al proyecto:
-
-- **Samuel Loza** - Mantenedor original - [github.com/samueelloza](https://github.com/samueelloza)
-
-La lista se actualizará conforme se incorporen nuevas contribuciones
+Apache License 2.0.
