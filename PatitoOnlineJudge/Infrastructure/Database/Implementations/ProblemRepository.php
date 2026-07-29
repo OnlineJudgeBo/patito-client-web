@@ -45,8 +45,7 @@ class ProblemRepository implements IProblemRepository
     public function getProblemByContestId($cid, $pid, $site_id)
     {
         $stmt = $this->pdo->prepare("SELECT problem.* FROM problem, problems_site
-                                        WHERE problem.defunct='N'
-                                        AND problem.problem_id = (
+                                        WHERE problem.problem_id = (
                                             SELECT problem_id FROM contest_problem
                                             WHERE contest_id = :cid
                                             AND num = :pid)
