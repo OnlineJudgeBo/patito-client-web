@@ -6,6 +6,8 @@ interface IContestRepository
 {
     public function isContestActive($cid, $site_id);
 
+    public function isContestAcceptingSubmissions($cid, $site_id);
+
     public function isVirtualContest($cid, $site_id);
 
     public function getContestById($cid);

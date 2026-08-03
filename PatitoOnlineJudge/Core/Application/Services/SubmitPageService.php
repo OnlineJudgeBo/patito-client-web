@@ -38,7 +38,7 @@ class SubmitPageService implements ISubmitPageService
 
         if ($this->contestService->isVirtualContest($cid)) {
             $solution_id = $this->submitPageRepository->saveVirtualContestSolutionAndReturnId($solutionModel, $this->site_id);
-        } elseif ($this->contestService->isContestActive($cid)) {
+        } elseif ($this->contestService->isContestAcceptingSubmissions($cid)) {
             $solution_id = $this->submitPageRepository->saveContestSolutionAndReturnId($solutionModel, $this->site_id);
         } else {
             throw new Exception("El contest no esta activo.");

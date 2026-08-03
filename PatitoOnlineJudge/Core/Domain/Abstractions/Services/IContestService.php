@@ -6,6 +6,8 @@ interface IContestService
 {
     public function isContestActive($cid);
 
+    public function isContestAcceptingSubmissions($cid);
+
     public function isVirtualContest($cid);
 
     public function getContestProblems($cid);

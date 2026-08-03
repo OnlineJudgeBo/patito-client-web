@@ -62,6 +62,25 @@ class ContestRepository implements IContestRepository
         return intval($result["result"]) > 0;
     }
 
+    public function isContestAcceptingSubmissions($cid, $site_id)
+    {
+        $currentDate = date('Y-m-d H:i:s');
+        $stmt = $this->pdo->prepare("SELECT count(contest.contest_id) AS result
+        FROM contest
+        INNER JOIN contest_site ON contest_site.contest_id = contest.contest_id
+        WHERE contest.contest_id = :cid
+        AND :current_date BETWEEN contest.start_time AND contest.end_time
+        AND contest_site.site_id = :site_id");
+        $stmt->execute([
+            ':cid' => $cid,
+            ':current_date' => $currentDate,
+            ':site_id' => $site_id
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return intval($result["result"]) > 0;
+    }
+
     public function getContestById($cid)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM contest WHERE contest_id = :cid");
