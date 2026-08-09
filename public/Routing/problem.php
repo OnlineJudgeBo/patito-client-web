@@ -10,7 +10,10 @@ if (isset($_GET["type"]) && isset($_GET["type"])) {
     $problemController->setCtype($_GET["type"]);
 }
 
-if (isset($_GET["cid"]) && isset($_GET["pid"])) {
+if (isset($_GET['id'], $_GET['courseId'], $_GET['assignmentId'])) {
+    $problemController->setProblemId($_GET['id']);
+    $problemController->setAcademicContext($_GET['courseId'], $_GET['assignmentId']);
+} elseif (isset($_GET["cid"]) && isset($_GET["pid"])) {
     $cid = $_GET["cid"];
     $pid = $_GET["pid"];
     $problemController->setProblemId($pid);

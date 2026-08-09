@@ -71,6 +71,8 @@
                         <input type=hidden name="source" id="source">
                         <input id="cid" type='hidden' value='<?php echo $cid ?>' name="cid">
                         <input id="pid" type='hidden' value='<?php echo $id ?>' name="pid">
+                        <input type="hidden" value="<?php echo (int) ($courseId ?? 0); ?>" name="courseId">
+                        <input type="hidden" value="<?php echo (int) ($assignmentId ?? 0); ?>" name="assignmentId">
                         <input id="language_id" type='hidden' value='' name="language_id">
                         <input id="Submit" type="button" onclick="do_submit()" class="mt-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value="Enviar codigo">
                     </form>

@@ -6,6 +6,8 @@ interface IProblemRepository {
 
     public function getProblemById($pid, $site_id);
 
+    public function getProblemByAcademicAssignment($pid, $courseId, $assignmentId, $userId, $siteId);
+
     public function getProblemByContestId($cid, $pid, $site_id);
 
     public function getProblemByOfficialContestId($cid, $pid, $site_id);

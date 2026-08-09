@@ -17,6 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $submitPageController->addCid(intval($_GET["cid"]));
         $submitPageController->addPid(intval($_GET["pid"]));
     }
+    if (!empty($_GET['courseId']) && !empty($_GET['assignmentId'])) {
+        $submitPageController->addAcademicContext((int) $_GET['courseId'], (int) $_GET['assignmentId']);
+    }
     $submitPageController->render();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -26,6 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if (isset($_POST["cid"])) {
         $submitPageController->addCid(intval($_POST["cid"]));
+    }
+
+    if (!empty($_POST['courseId']) && !empty($_POST['assignmentId'])) {
+        $submitPageController->addAcademicContext((int) $_POST['courseId'], (int) $_POST['assignmentId']);
     }
 
     $submitPageController->addSource($_POST["source"]);

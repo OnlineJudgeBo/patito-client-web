@@ -23,7 +23,7 @@ class SubmitPageRepository implements ISubmitPageRepository
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':pid', $solutionModel->problem_id, PDO::PARAM_INT);
-        $stmt->bindParam(':user_id', $solutionModel->user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $solutionModel->user_id, PDO::PARAM_STR);
         $stmt->bindParam(':language', $solutionModel->language, PDO::PARAM_INT);
         $stmt->bindParam(':ip', $solutionModel->ip, PDO::PARAM_STR);
         $stmt->bindParam(':len', $solutionModel->code_length, PDO::PARAM_INT);
@@ -40,7 +40,7 @@ class SubmitPageRepository implements ISubmitPageRepository
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':problem_id', $solutionModel->problem_id, PDO::PARAM_INT);
-        $stmt->bindParam(':user_id', $solutionModel->user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $solutionModel->user_id, PDO::PARAM_STR);
         $stmt->bindParam(':language', $solutionModel->language, PDO::PARAM_INT);
         $stmt->bindParam(':ip', $solutionModel->ip, PDO::PARAM_STR);
         $stmt->bindParam(':len', $solutionModel->code_length, PDO::PARAM_INT);
@@ -59,7 +59,7 @@ class SubmitPageRepository implements ISubmitPageRepository
         $is_virtual = true;
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':problem_id', $solutionModel->problem_id, PDO::PARAM_INT);
-        $stmt->bindParam(':user_id', $solutionModel->user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $solutionModel->user_id, PDO::PARAM_STR);
         $stmt->bindParam(':language', $solutionModel->language, PDO::PARAM_INT);
         $stmt->bindParam(':ip', $solutionModel->ip, PDO::PARAM_STR);
         $stmt->bindParam(':len', $solutionModel->code_length, PDO::PARAM_INT);
@@ -69,5 +69,29 @@ class SubmitPageRepository implements ISubmitPageRepository
         $stmt->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $stmt->execute();
         return $this->pdo->lastInsertId();
+    }
+
+    public function saveAcademicSolutionAndReturnId(SolutionModel $solutionModel, $siteId, $courseId, $assignmentId)
+    {
+        $this->pdo->beginTransaction();
+        try {
+            $solutionId = $this->saveSolutionAndReturnId($solutionModel, $siteId);
+            $stmt = $this->pdo->prepare("INSERT INTO academic.course_submission_context
+                (solution_id, course_id, assignment_id, user_id, created_at)
+                VALUES (:solution_id, :course_id, :assignment_id, :user_id, NOW())");
+            $stmt->execute([
+                'solution_id' => $solutionId,
+                'course_id' => $courseId,
+                'assignment_id' => $assignmentId,
+                'user_id' => $solutionModel->user_id,
+            ]);
+            $this->pdo->commit();
+            return $solutionId;
+        } catch (\Throwable $error) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $error;
+        }
     }
 }

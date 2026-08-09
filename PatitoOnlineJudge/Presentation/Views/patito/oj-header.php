@@ -38,6 +38,9 @@ echo file_get_contents(__DIR__ . "/partials/utils-header.php");
             </div>
 
             <a href="problemset.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+              <a href="courses.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Cursos</a>
+            <?php endif; ?>
             <a href="ranklist.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
             <a href="status.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envíos</a>
             <a href="faqs.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ayuda</a>
@@ -58,6 +61,9 @@ echo file_get_contents(__DIR__ . "/partials/utils-header.php");
       <a href="<?php echo $_SERVER["APP_DOMAIN"]; ?>" class="bg-gray-900 text-white block rounded-md px-3 py-2">Inicio</a>
       <a href="contest.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
       <a href="problemset.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="courses.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Cursos</a>
+      <?php endif; ?>
       <a href="ranklist.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
       <a href="status.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Envíos</a>
       <a href="faqs.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ayuda</a>
