@@ -10,6 +10,8 @@ interface IProblemService
 
     public function getProblemById($pid);
 
+    public function getProblemByAcademicAssignment($pid, $courseId, $assignmentId, $userId);
+
     public function getProblemByContestId($cid, $pid, $cType);
 
     public function getProblemsCount();

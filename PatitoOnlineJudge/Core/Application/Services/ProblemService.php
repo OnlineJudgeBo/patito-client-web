@@ -29,6 +29,17 @@ class ProblemService implements IProblemService
         return $this->problemRepository->getProblemById($pid, $this->site_id);
     }
 
+    public function getProblemByAcademicAssignment($pid, $courseId, $assignmentId, $userId)
+    {
+        return $this->problemRepository->getProblemByAcademicAssignment(
+            $pid,
+            $courseId,
+            $assignmentId,
+            $userId,
+            $this->site_id
+        );
+    }
+
     public function getProblemByContestId($cid, $pid, $cType)
     {
         if ($cType == "official_contest") {

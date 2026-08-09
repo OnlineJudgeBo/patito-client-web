@@ -42,6 +42,40 @@ class ProblemRepository implements IProblemRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getProblemByAcademicAssignment($pid, $courseId, $assignmentId, $userId, $siteId)
+    {
+        $stmt = $this->pdo->prepare("SELECT p.*
+            FROM problem p
+            INNER JOIN problems_site ps
+                ON ps.problem_id = p.problem_id
+               AND ps.site_id = :site_id
+            WHERE p.problem_id = :problem_id
+              AND EXISTS (
+                  SELECT 1
+                  FROM academic.course_user cu
+                  INNER JOIN academic.course_assignment ca
+                      ON ca.course_id = cu.course_id
+                  INNER JOIN academic.course_assignment_problem cap
+                      ON cap.assignment_id = ca.assignment_id
+                  WHERE cu.course_id = :course_id
+                    AND cu.user_id = :user_id
+                    AND ca.assignment_id = :assignment_id
+                    AND ca.is_active = 1
+                    AND cap.problem_id = p.problem_id
+                    AND cap.is_visible = 1
+              )
+            LIMIT 1");
+        $stmt->execute([
+            'problem_id' => $pid,
+            'course_id' => $courseId,
+            'assignment_id' => $assignmentId,
+            'user_id' => $userId,
+            'site_id' => $siteId,
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getProblemByContestId($cid, $pid, $site_id)
     {
         $stmt = $this->pdo->prepare("SELECT problem.* FROM problem, problems_site

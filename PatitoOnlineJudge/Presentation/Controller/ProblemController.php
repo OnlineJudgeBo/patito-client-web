@@ -15,6 +15,8 @@ class ProblemController
     private $pid;
     private $cType;
     private $siteId;
+    private $courseId;
+    private $assignmentId;
 
     public function __construct(IProblemService $problemService, IContestService $contestService)
     {
@@ -38,12 +40,30 @@ class ProblemController
         $this->cType = $cType;
     }
 
+    public function setAcademicContext($courseId, $assignmentId)
+    {
+        $this->courseId = (int) $courseId;
+        $this->assignmentId = (int) $assignmentId;
+    }
+
     public function render()
     {
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $isContestActive = true;
-        if (intval($this->pid) >= 0 && intval($this->cid) > 0) {
+        if (intval($this->pid) > 0 && $this->courseId > 0 && $this->assignmentId > 0) {
+            if (empty($_SESSION['user_id'])) {
+                throw new \RuntimeException('Debes iniciar sesión para acceder a este problema del curso.');
+            }
+            $courseId = $this->courseId;
+            $assignmentId = $this->assignmentId;
+            $problem = $this->problemService->getProblemByAcademicAssignment(
+                $this->pid,
+                $courseId,
+                $assignmentId,
+                (string) $_SESSION['user_id']
+            );
+        } elseif (intval($this->pid) >= 0 && intval($this->cid) > 0) {
             $num = $this->pid;
             $cid = $this->cid;
             $cType = $this->cType;

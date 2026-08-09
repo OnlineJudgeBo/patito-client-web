@@ -80,6 +80,9 @@
                                                             echo "cid=" . $cid . "&pid=" . $num;
                                                         } else {
                                                             echo "id=" . $problem["problem_id"];
+                                                            if (isset($courseId, $assignmentId)) {
+                                                                echo "&courseId=" . urlencode((string) $courseId) . "&assignmentId=" . urlencode((string) $assignmentId);
+                                                            }
                                                         }
                                                         ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                     Enviar

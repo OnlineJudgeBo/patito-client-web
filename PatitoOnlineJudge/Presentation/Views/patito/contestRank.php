@@ -57,7 +57,7 @@
                         }
                         ?>
                         <div class="overflow-x-auto relative shadow-lg rounded-lg">
-                            <table class="oj-table text-sm">
+                            <table class="oj-table oj-table-icpc text-sm">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

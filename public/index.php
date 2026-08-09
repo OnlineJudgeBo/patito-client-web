@@ -125,6 +125,26 @@ function executeRouter()
         require  __DIR__ . '/Routing/problemset.php';
     });
 
+    $router->get($prefix . '/courses.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+        require __DIR__ . '/Routing/courses.php';
+    });
+
+    $router->get($prefix . '/course.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+        require __DIR__ . '/Routing/course.php';
+    });
+
+    $router->get($prefix . '/course-ranking.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+        require __DIR__ . '/Routing/courseRanking.php';
+    });
+
+    $router->get($prefix . '/course-submissions.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+        require __DIR__ . '/Routing/courseSubmissions.php';
+    });
+
     $router->get($prefix . '/ranklist.php', function () {
         require  __DIR__ . '/Routing/ranklist.php';
     });

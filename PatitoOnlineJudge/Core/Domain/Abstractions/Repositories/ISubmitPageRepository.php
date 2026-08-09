@@ -11,4 +11,6 @@ interface ISubmitPageRepository
     public function saveContestSolutionAndReturnId(SolutionModel $solutionModel, $site_id);
 
     public function saveVirtualContestSolutionAndReturnId(SolutionModel $solutionModel, $site_id);
+
+    public function saveAcademicSolutionAndReturnId(SolutionModel $solutionModel, $siteId, $courseId, $assignmentId);
 }

@@ -124,26 +124,27 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    color: #334155;
+    color: #000;
 }
 
 .oj-table thead {
-    background: linear-gradient(135deg, #0f172a, #1d4ed8);
-    color: #fff;
+    background: transparent;
+    color: inherit;
 }
 
 .oj-table th {
-    padding: 0.9rem 1rem;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
+    padding: 6px 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: normal;
     text-align: left;
-    text-transform: uppercase;
+    text-transform: none;
     white-space: nowrap;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .oj-table td {
-    padding: 0.9rem 1rem;
+    padding: 6px 0.75rem;
     border-bottom: 1px solid #e2e8f0;
     vertical-align: middle;
 }
@@ -154,11 +155,11 @@
 }
 
 .oj-table tbody tr:nth-child(even) {
-    background: #f8fafc;
+    background: #f9f9f9;
 }
 
 .oj-table tbody tr:hover {
-    background: #eff6ff;
+    background: #f3f4f6;
 }
 
 .oj-table tbody tr:last-child td {
@@ -256,6 +257,16 @@
     background: #f8fafc;
     border-top: 1px solid #e2e8f0;
 }
+
+.oj-rich-content h2,
+.oj-rich-content h3 { margin: 1rem 0 0.4rem; color: #0f172a; font-weight: 800; }
+.oj-rich-content h2 { font-size: 1.25rem; }
+.oj-rich-content h3 { font-size: 1.05rem; }
+.oj-rich-content p { margin: 0.55rem 0; }
+.oj-rich-content ul { margin: 0.65rem 0; padding-left: 1.5rem; list-style: disc; }
+.oj-rich-content ol { margin: 0.65rem 0; padding-left: 1.5rem; list-style: decimal; }
+.oj-rich-content a { color: #1d4ed8; text-decoration: underline; }
+.oj-rich-content blockquote { margin: 0.8rem 0; border-left: 4px solid #94a3b8; padding-left: 1rem; color: #475569; }
 
 .manual-verdict-select,
 table.dataTable > tbody > tr.selected .manual-verdict-select {

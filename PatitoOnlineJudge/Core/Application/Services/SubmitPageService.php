@@ -59,6 +59,30 @@ class SubmitPageService implements ISubmitPageService
         $this->sourceCodeRepository->save($solution_id, $source);
     }
 
+    public function saveAcademicRequest($pid, $courseId, $assignmentId, $source, $languageId)
+    {
+        $problem = $this->problemRepository->getProblemByAcademicAssignment(
+            $pid,
+            $courseId,
+            $assignmentId,
+            (string) $_SESSION['user_id'],
+            $this->site_id
+        );
+        if (!is_array($problem)) {
+            throw new Exception('No perteneces a este contest académico o el problema no está disponible.');
+        }
+
+        $solutionModel = $this->createSolutionModel(null, -1, $source, $languageId);
+        $solutionModel->problem_id = $pid;
+        $solutionId = $this->submitPageRepository->saveAcademicSolutionAndReturnId(
+            $solutionModel,
+            $this->site_id,
+            $courseId,
+            $assignmentId
+        );
+        $this->sourceCodeRepository->save($solutionId, $source);
+    }
+
     private function validateContestLanguage($cid, $language_id)
     {
         $language = filter_var($language_id, FILTER_VALIDATE_INT, ["options" => ["min_range" => 0]]);
