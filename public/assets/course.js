@@ -418,7 +418,7 @@
         button.addEventListener('click', () => activateTab(button.dataset.tab));
     });
 
-    const memberRoleLabels = { teacher: 'Docente', assistant: 'Auxiliar', student: 'Estudiante', admin: 'Administrador' };
+    const memberRoleLabels = { docente: 'Docente', auxiliar: 'Auxiliar', estudiante: 'Estudiante', administrador: 'Administrador' };
     const addMemberMessage = document.getElementById('add-member-message');
 
     function showAddMemberMessage(text, type) {
@@ -446,7 +446,7 @@
                     node('td', '', memberRoleLabels[member.role] || member.role)
                 );
                 const actionCell = node('td');
-                if (!member.isOwner && member.role !== 'teacher') {
+                if (!member.isOwner && member.role !== 'docente') {
                     const remove = node('button', 'text-sm font-semibold text-red-600 hover:underline', 'Quitar');
                     remove.type = 'button';
                     remove.addEventListener('click', () => removeMember(member.userId));
