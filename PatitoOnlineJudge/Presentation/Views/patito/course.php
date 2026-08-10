@@ -117,8 +117,8 @@
             <div>
               <label for="member-role" class="mb-1 block text-sm font-semibold text-slate-700">Rol</label>
               <select id="member-role" class="rounded-lg border border-slate-300 px-3 py-2.5 focus:border-green-600 focus:outline-none">
-                <option value="student">Estudiante</option>
-                <option value="assistant">Auxiliar</option>
+                <option value="estudiante">Estudiante</option>
+                <option value="auxiliar">Auxiliar</option>
               </select>
             </div>
             <button type="submit" class="rounded bg-green-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-600 disabled:opacity-60">Agregar</button>

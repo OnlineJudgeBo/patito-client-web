@@ -74,7 +74,7 @@
     function renderCourseDetail(course) {
         document.getElementById('course-detail-name').textContent = course.name || `Curso #${course.courseId}`;
         document.getElementById('course-detail-description').textContent = course.description || 'Sin descripción.';
-        document.getElementById('course-detail-role').textContent = course.memberRole === 'student' ? 'Estudiante' : (course.memberRole || 'Miembro');
+        document.getElementById('course-detail-role').textContent = course.memberRole === 'estudiante' ? 'Estudiante' : (course.memberRole || 'Miembro');
         assignmentsList.replaceChildren();
 
         const assignments = Array.isArray(course.assignments) ? course.assignments : [];
@@ -169,7 +169,7 @@
                 }
             });
             const courseCell = element('td');
-            const roleLabels = { admin: 'Administrador', teacher: 'Docente', assistant: 'Auxiliar', student: 'Estudiante' };
+            const roleLabels = { administrador: 'Administrador', docente: 'Docente', auxiliar: 'Auxiliar', estudiante: 'Estudiante' };
             courseCell.append(
                 element('span', 'oj-table-link', course.name || `Curso #${course.courseId}`),
                 element('p', 'mt-1 text-xs text-gray-500', roleLabels[String(course.role || '').toLowerCase()] || `Curso #${course.courseId}`)
