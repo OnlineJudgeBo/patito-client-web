@@ -4,7 +4,6 @@
     const config = window.PATITO_COURSE_CONFIG || {};
     const apiBase = String(config.apiUrl || '/api').replace(/\/+$/, '');
     const endpoint = `${apiBase}/academic/sites/${Number(config.siteId) || 1}/courses/${Number(config.courseId)}`;
-    const selectedAssignmentId = Number(config.assignmentId) || 0;
     let currentCourse = null;
     let membersLoaded = false;
     let reportLoaded = false;
@@ -19,14 +18,6 @@
         if (className) result.className = className;
         if (text !== undefined) result.textContent = text;
         return result;
-    }
-
-    function formatDate(value) {
-        const date = new Date(value);
-        return Number.isNaN(date.getTime()) ? 'Sin fecha' : date.toLocaleString('es-BO', {
-            dateStyle: 'medium',
-            timeStyle: 'short'
-        });
     }
 
     async function request(url, options) {
@@ -55,148 +46,6 @@
                 : 'No se pudo cargar el curso.'));
         }
         return response.status === 204 ? null : response.json();
-    }
-
-    function formatRemaining(milliseconds) {
-        const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = String(Math.floor((totalSeconds % 86400) / 3600)).padStart(2, '0');
-        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-        const seconds = String(totalSeconds % 60).padStart(2, '0');
-        return (days > 0 ? `${days} días, ` : '') + `${hours}:${minutes}:${seconds}`;
-    }
-
-    function updateCountdown(element) {
-        const start = new Date(element.dataset.startTime).getTime();
-        const end = new Date(element.dataset.endTime).getTime();
-        const now = Date.now();
-        if (!Number.isFinite(start) || !Number.isFinite(end)) {
-            element.textContent = '';
-            return;
-        }
-        if (now < start) {
-            element.className = 'result-blue';
-            element.textContent = `Inicia el ${formatDate(element.dataset.startTime)} (en ${formatRemaining(start - now)})`;
-        } else if (now <= end) {
-            element.className = 'result-red';
-            element.textContent = `Corriendo · quedan ${formatRemaining(end - now)}`;
-        } else {
-            element.className = 'result-green';
-            element.textContent = `Finalizó el ${formatDate(element.dataset.endTime)}`;
-        }
-    }
-
-    function updateCountdowns() {
-        document.querySelectorAll('[data-course-countdown]').forEach(updateCountdown);
-    }
-
-    function renderContest(course, contest) {
-        const card = node('div', 'w-full rounded-lg border bg-white shadow-sm');
-        const heading = node('div', 'flex flex-col items-center p-6');
-        heading.append(node('h3', 'text-2xl font-semibold leading-none tracking-tight text-center', contest.title || `Contest #${contest.assignmentId}`));
-        if (contest.description) heading.append(node('h5', 'py-2 text-center font-semibold leading-none tracking-tight', contest.description));
-        card.append(heading);
-
-        const info = node('div', 'flex items-center justify-center py-4');
-        const grid = node('div', 'grid grid-cols-2 gap-1');
-        const startLine = node('div', 'flex justify-left');
-        startLine.append(node('b', '', 'Hora de Inicio:'), document.createTextNode(formatDate(contest.opensAt)));
-        const endLine = node('div', 'flex justify-left');
-        endLine.append(node('b', '', 'Hora de Fin:'), document.createTextNode(formatDate(contest.dueAt)));
-        const statusWrap = node('div', 'col-span-2 flex justify-center');
-        const status = node('span', 'font-semibold');
-        status.dataset.courseCountdown = 'true';
-        status.dataset.startTime = contest.opensAt;
-        status.dataset.endTime = contest.dueAt;
-        updateCountdown(status);
-        statusWrap.append(status);
-        grid.append(startLine, endLine, statusWrap);
-        info.append(grid);
-        card.append(info);
-
-        const problems = (contest.problems || []).filter((problem) => problem.isVisible !== false);
-        const tableWrapper = node('div', 'p-1');
-        const scroll = node('div', 'relative w-full overflow-auto');
-        const table = node('table', 'w-full border-b');
-        const thead = node('thead', 'bg-gray-900 text-white');
-        const headerRow = node('tr', 'shadow-lg');
-        ['', 'Problema', 'Nombre', 'Resueltos', 'Intentos'].forEach((label) => headerRow.append(node('th', 'border-r p-1 text-lg font-bold', label)));
-        thead.append(headerRow);
-        const tbody = node('tbody', 'content-center');
-        const participationCells = new Map();
-        if (problems.length === 0) {
-            const emptyRow = node('tr');
-            const emptyCell = node('td', 'p-4 text-center text-gray-500', 'Los problemas de este contest todavía no están disponibles.');
-            emptyCell.colSpan = 5;
-            emptyRow.append(emptyCell);
-            tbody.append(emptyRow);
-        } else {
-            problems.forEach((problem, index) => {
-                const row = node('tr', `border-b transition-colors hover:bg-slate-50 ${index % 2 === 0 ? 'evenrow' : 'oddrow'}`);
-                row.append(node('td', 'p-1 text-center align-middle', problem.isSolvedByCurrentUser ? 'Y' : ''));
-                row.append(node('td', 'p-1 text-center align-middle', `${index + 1} ${String.fromCharCode(65 + index)}`));
-                const nameCell = node('td', 'p-1 text-center align-middle result-blue');
-                const action = node('a', '', problem.title || 'Problema');
-                action.href = `problem.php?id=${encodeURIComponent(problem.problemId)}&courseId=${encodeURIComponent(course.courseId)}&assignmentId=${encodeURIComponent(contest.assignmentId)}`;
-                nameCell.append(action);
-                const solvedCell = node('td', 'p-1 text-center align-middle', course.canManage ? '…' : (problem.isSolvedByCurrentUser ? '1' : '0'));
-                const attemptsCell = node('td', 'p-1 text-center align-middle', course.canManage ? '…' : String(Number(problem.attemptsByCurrentUser || 0)));
-                row.append(nameCell, solvedCell, attemptsCell);
-                tbody.append(row);
-                if (course.canManage) participationCells.set(Number(problem.problemId), { solvedCell, attemptsCell });
-            });
-        }
-        table.append(thead, tbody);
-        scroll.append(table);
-        tableWrapper.append(scroll);
-        card.append(tableWrapper);
-        if (course.canManage && participationCells.size > 0) {
-            loadContestParticipation(course.courseId, contest.assignmentId, participationCells);
-        }
-        return card;
-    }
-
-    async function fetchAllAssignmentSubmissions(courseId, assignmentId) {
-        const base = `${apiBase}/academic/sites/${Number(config.siteId) || 1}/courses/${Number(courseId)}/assignments/${Number(assignmentId)}/submissions`;
-        const pageSize = 100;
-        let page = 1;
-        let all = [];
-        for (let guard = 0; guard < 20; guard += 1) {
-            const data = await request(`${base}?page=${page}&pageSize=${pageSize}`);
-            const items = Array.isArray(data?.items) ? data.items : [];
-            all = all.concat(items);
-            if (items.length < pageSize || all.length >= Number(data?.total || 0)) break;
-            page += 1;
-        }
-        return all;
-    }
-
-    async function loadContestParticipation(courseId, assignmentId, participationCells) {
-        try {
-            const submissions = await fetchAllAssignmentSubmissions(courseId, assignmentId);
-            const attempted = new Map();
-            const solved = new Map();
-            submissions.forEach((item) => {
-                const problemId = Number(item.problemId);
-                const userId = item.userId;
-                if (!userId || !Number.isInteger(problemId)) return;
-                if (!attempted.has(problemId)) attempted.set(problemId, new Set());
-                attempted.get(problemId).add(userId);
-                if (item.statusKey === 'accepted') {
-                    if (!solved.has(problemId)) solved.set(problemId, new Set());
-                    solved.get(problemId).add(userId);
-                }
-            });
-            participationCells.forEach((cells, problemId) => {
-                cells.solvedCell.textContent = String(solved.get(problemId)?.size || 0);
-                cells.attemptsCell.textContent = String(attempted.get(problemId)?.size || 0);
-            });
-        } catch (_) {
-            participationCells.forEach((cells) => {
-                cells.solvedCell.textContent = '—';
-                cells.attemptsCell.textContent = '—';
-            });
-        }
     }
 
     function renderMaterial(material) {
@@ -242,7 +91,7 @@
         if (item.type === 'contest') {
             const contest = item.assignment || item;
             const link = node('a', 'flex flex-wrap items-center justify-between gap-3 rounded border bg-white p-4 hover:bg-slate-50');
-            link.href = `course.php?id=${encodeURIComponent(course.courseId)}&assignmentId=${encodeURIComponent(contest.assignmentId)}`;
+            link.href = `course-contest.php?id=${encodeURIComponent(course.courseId)}&assignmentId=${encodeURIComponent(contest.assignmentId)}`;
             const text = node('div', 'min-w-0 flex-1');
             text.append(
                 node('p', 'text-xs font-semibold uppercase text-slate-500', `${stepLabel} · Contest`),
@@ -338,37 +187,24 @@
             : contests.map((assignment, index) => ({ type: 'contest', assignment, position: (index + 1) * 10 }));
         const list = document.getElementById('contest-list');
         list.replaceChildren();
-        if (selectedAssignmentId > 0) {
-            const contest = contests.find((item) => Number(item.assignmentId) === selectedAssignmentId);
-            document.getElementById('contest-management').classList.add('hidden');
-            document.getElementById('course-path-header').classList.add('hidden');
-            if (contest) {
-                const back = node('a', 'mb-4 inline-block text-sm font-semibold text-blue-700 hover:underline', '← Volver al contenido del curso');
-                back.href = `course.php?id=${encodeURIComponent(course.courseId)}`;
-                list.append(back, renderContest(course, contest));
-            }
-            document.getElementById('contests-empty').classList.toggle('hidden', Boolean(contest));
-            list.classList.toggle('hidden', !contest);
-        } else {
-            document.getElementById('contests-empty').classList.toggle('hidden', content.length !== 0);
-            list.classList.toggle('hidden', content.length === 0);
-            content.sort((left, right) => Number(left.position || 0) - Number(right.position || 0));
-            const managerStatCells = new Map();
-            content.forEach((item, index) => list.append(renderPathStep(course, item, index, managerStatCells)));
-            if (course.canManage === true && content.length > 1) {
-                enableContentReordering(list, course);
-            }
-            if (course.canManage === true && managerStatCells.size > 0) {
-                loadContentManagerStats(managerStatCells);
-            }
-            const description = document.querySelector('#course-path-header .oj-page-description');
-            if (description) {
-                description.textContent = course.canManage === true && content.length > 1
-                    ? 'Arrastra los elementos con ⠿ para cambiar el orden en el que los ve el estudiante.'
-                    : 'Avanza por los materiales y contests en el orden preparado por tu docente.';
-            }
+        document.getElementById('contests-empty').classList.toggle('hidden', content.length !== 0);
+        list.classList.toggle('hidden', content.length === 0);
+        content.sort((left, right) => Number(left.position || 0) - Number(right.position || 0));
+        const managerStatCells = new Map();
+        content.forEach((item, index) => list.append(renderPathStep(course, item, index, managerStatCells)));
+        if (course.canManage === true && content.length > 1) {
+            enableContentReordering(list, course);
         }
-        const canManageHere = course.canManage === true && selectedAssignmentId === 0;
+        if (course.canManage === true && managerStatCells.size > 0) {
+            loadContentManagerStats(managerStatCells);
+        }
+        const description = document.querySelector('#course-path-header .oj-page-description');
+        if (description) {
+            description.textContent = course.canManage === true && content.length > 1
+                ? 'Arrastra los elementos con ⠿ para cambiar el orden en el que los ve el estudiante.'
+                : 'Avanza por los materiales y contests en el orden preparado por tu docente.';
+        }
+        const canManageHere = course.canManage === true;
         document.getElementById('course-tabs').classList.toggle('hidden', !canManageHere);
         if (canManageHere) {
             activateTab(new URLSearchParams(window.location.search).get('tab') || 'content');
@@ -441,9 +277,9 @@
             values.forEach((member) => {
                 const row = node('tr');
                 row.append(
-                    node('td', 'font-mono text-xs text-slate-500', member.userId),
+                    node('td', 'font-semibold text-slate-900', member.userId),
                     node('td', 'font-semibold text-slate-900', member.nick || member.userId),
-                    node('td', '', memberRoleLabels[member.role] || member.role)
+                    node('td', 'font-semibold text-blue-600', memberRoleLabels[member.role] || member.role)
                 );
                 const actionCell = node('td');
                 if (!member.isOwner && member.role !== 'docente') {
@@ -961,6 +797,4 @@
             box.classList.remove('hidden');
         })
         .finally(() => document.getElementById('course-loading').classList.add('hidden'));
-
-    window.setInterval(updateCountdowns, 1000);
 }());

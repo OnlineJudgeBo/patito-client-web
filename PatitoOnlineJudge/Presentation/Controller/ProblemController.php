@@ -79,7 +79,15 @@ class ProblemController
             //}
         }
         if (!is_array($problem)) {
-            throw new \RuntimeException("No se encontró el problema solicitado.");
+            if ($this->courseId > 0 && $this->assignmentId > 0) {
+                $error = "No se encontró este problema en la tarea del curso. Puede que ya no esté disponible, no esté publicado todavía, o que no tengas acceso a este curso.";
+            } elseif ((int) $this->cid > 0) {
+                $error = "No se encontró este problema en el concurso.";
+            } else {
+                $error = "No se encontró el problema solicitado. Es posible que esté siendo usado en un concurso activo; en ese caso solo se puede resolver desde el concurso.";
+            }
+            require_once $current_theme . "/genericError.php";
+            return;
         }
 
         $problem = $this->inlineDisplayMath($problem);

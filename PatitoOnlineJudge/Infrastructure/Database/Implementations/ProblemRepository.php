@@ -147,9 +147,9 @@ class ProblemRepository implements IProblemRepository
                 WHERE NOW() BETWEEN contest.start_time AND contest.end_time
                 AND contest_site.contest_id = contest.contest_id
                 AND contest_site.site_id = :site_id1
-            ) c 
+            ) c
             INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
-            OR problem.problem_id IN (1000)
+            WHERE contest_problem.problem_id NOT IN (1000)
         )
         
         AND problems_site.problem_id = problem.problem_id
@@ -198,10 +198,9 @@ class ProblemRepository implements IProblemRepository
                             WHERE NOW() BETWEEN contest.start_time AND contest.end_time
                             AND contest_site.contest_id = contest.contest_id
                             AND contest_site.site_id = :site_id3
-                        ) c 
+                        ) c
                         INNER JOIN contest_problem ON c.contest_id = contest_problem.contest_id
-                        AND problem.problem_id IN (1000)
-                        ORDER BY problem.accepted DESC
+                        WHERE contest_problem.problem_id NOT IN (1000)
                     )
                     AND problems_site.problem_id = problem.problem_id
                     AND problems_site.site_id = :site_id4

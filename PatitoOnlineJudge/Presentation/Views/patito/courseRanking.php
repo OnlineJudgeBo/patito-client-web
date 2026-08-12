@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
-  <link href="https://fonts.googleapis.com/css?family=Capriola" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./assets/base.css">
   <?php echo file_get_contents(__DIR__ . '/partials/utils-header.php'); ?>
@@ -23,7 +22,7 @@
       </div>
       <div id="ranking-empty" class="oj-empty-state hidden"><strong>Aún no hay participantes clasificados</strong>La tabla se actualizará cuando existan envíos en el curso.</div>
       <div id="ranking-table-wrapper" class="relative m-1 overflow-x-auto rounded-lg shadow-lg">
-        <table class="oj-table oj-table-icpc text-sm">
+        <table class="oj-table oj-table-icpc">
           <thead>
             <tr>
               <th>#</th>

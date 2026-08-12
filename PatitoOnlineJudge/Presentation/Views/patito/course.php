@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
-  <link href="https://fonts.googleapis.com/css?family=Capriola" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
@@ -68,7 +67,6 @@
               <input id="contest-end" type="datetime-local" required class="w-full rounded border border-slate-300 px-3 py-2 focus:border-green-600 focus:outline-none">
             </div>
           </div>
-          <p class="text-xs text-slate-500">Las fechas se interpretan en la zona horaria de Bolivia.</p>
           </div>
           <div class="mt-6 space-y-5 lg:mt-0 lg:pl-6">
             <div><h2 class="font-semibold text-slate-900">Agregar problemas</h2><p class="mt-1 text-sm text-slate-500">Busca por ID o título, o pega varios IDs manualmente.</p></div>
@@ -80,7 +78,7 @@
             <div class="flex items-center gap-3"><div class="h-px flex-1 bg-slate-200"></div><span class="text-xs font-semibold uppercase text-slate-400">o agrega IDs</span><div class="h-px flex-1 bg-slate-200"></div></div>
             <div>
               <label for="contest-problems" class="mb-1 block text-sm font-semibold text-slate-700">IDs de problemas <span class="text-red-600">*</span></label>
-              <textarea id="contest-problems" required rows="7" class="w-full resize-y rounded-lg border border-slate-300 px-3 py-2.5 font-mono text-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="1001&#10;1003&#10;1006"></textarea>
+              <textarea id="contest-problems" required rows="7" class="w-full resize-y rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="1001&#10;1003&#10;1006"></textarea>
               <p class="mt-1 text-xs text-slate-500">Uno por línea o separados por comas. Se pueden reutilizar problemas de otros contests.</p>
             </div>
             <div id="selected-problems-wrapper" class="hidden"><p id="selected-problems-count" class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Problemas seleccionados</p><div id="selected-problems" class="space-y-2"></div></div>
@@ -94,24 +92,19 @@
       </div>
       <div id="tab-panel-content">
         <header id="course-path-header" class="oj-page-header">
-          <div>
-            <h1 class="oj-page-title">Contenido del curso</h1>
-            <p class="oj-page-description">Avanza por los materiales y contests en el orden preparado por tu docente.</p>
-          </div>
         </header>
         <div id="contests-empty" class="hidden oj-card oj-empty-state">Este curso todavía no tiene contenido publicado.</div>
         <div id="contest-list" class="space-y-2"></div>
       </div>
 
       <div id="tab-panel-students" class="hidden">
-        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
+        <section class="rounded-2xl border bg-white p-5">
           <h2 class="font-semibold text-slate-900">Agregar estudiante</h2>
           <div id="add-member-message" class="mt-3 hidden rounded border p-3 text-sm" role="status" aria-live="polite"></div>
           <form id="add-member-form" class="mt-3 flex flex-wrap items-end gap-3">
             <div class="relative min-w-0 flex-1">
               <label for="member-search" class="mb-1 block text-sm font-semibold text-slate-700">Usuario <span class="text-red-600">*</span></label>
               <input id="member-search" type="search" autocomplete="off" required placeholder="Nombre, apellido, usuario o correo" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100">
-              <p class="mt-1 text-xs text-slate-500">Si escribes un usuario o correo exacto se agrega directo. Si no, elige uno de la lista.</p>
               <div id="member-search-results" class="absolute z-10 mt-1 hidden max-h-56 w-full overflow-y-auto rounded-lg border bg-white shadow-xl"></div>
             </div>
             <div>
@@ -133,7 +126,7 @@
           <div id="members-loading" class="oj-empty-state">Cargando estudiantes...</div>
           <div id="members-empty" class="hidden oj-empty-state">Todavía no hay miembros en este curso.</div>
           <div id="members-wrapper" class="hidden overflow-x-auto">
-            <table class="oj-table text-sm">
+            <table class="oj-table">
               <thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th></th></tr></thead>
               <tbody id="members-list"></tbody>
             </table>
@@ -143,7 +136,6 @@
 
       <div id="tab-panel-report" class="hidden">
         <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div><h2 class="text-lg font-semibold text-slate-900">Reporte del curso</h2><p class="mt-1 text-sm text-slate-600">Resueltos, intentos y aceptados por estudiante, desglosados por contest.</p></div>
           <div class="flex items-center gap-4">
             <button id="refresh-report" type="button" class="text-sm font-semibold text-blue-600 hover:underline">Actualizar</button>
             <button id="download-report-csv" type="button" class="rounded border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Descargar CSV</button>
@@ -152,7 +144,7 @@
         <div id="report-loading" class="oj-card oj-empty-state">Cargando reporte...</div>
         <div id="report-empty" class="hidden oj-card oj-empty-state">Todavía no hay estudiantes inscritos en este curso.</div>
         <div id="report-wrapper" class="hidden oj-card overflow-x-auto">
-          <table class="oj-table text-sm">
+          <table class="oj-table">
             <thead id="report-head"></thead>
             <tbody id="report-body"></tbody>
           </table>
@@ -167,7 +159,6 @@
       'apiUrl' => $apiUrl,
       'siteId' => $siteId,
       'courseId' => $courseId,
-      'assignmentId' => $assignmentId,
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
   </script>
   <script src="./assets/course.js"></script>

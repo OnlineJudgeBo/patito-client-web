@@ -186,8 +186,8 @@
     function applyCoursesFraming(manages) {
         document.getElementById('courses-page-title').textContent = manages ? 'Cursos' : 'Mis cursos';
         document.getElementById('courses-page-description').textContent = manages
-            ? 'Administra los cursos académicos y consulta aquellos en los que estás inscrito.'
-            : 'Consulta los contests y problemas asignados por tus docentes.';
+            ? 'Administra los cursos'
+            : 'Consulta los contests asignados por tus docentes.';
         document.getElementById('courses-section-title').textContent = manages ? 'Cursos que administras' : 'Cursos inscritos';
         document.getElementById('courses-empty-title').textContent = manages ? 'No administras ningún curso' : 'No estás inscrito en ningún curso';
         document.getElementById('courses-empty-description').textContent = manages ? 'Crea un curso para comenzar.' : 'Usa el código de invitación para unirte.';

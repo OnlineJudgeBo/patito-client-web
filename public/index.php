@@ -145,6 +145,11 @@ function executeRouter()
         require __DIR__ . '/Routing/courseSubmissions.php';
     });
 
+    $router->get($prefix . '/course-contest.php', function () use ($authMiddleware) {
+        $authMiddleware->handle();
+        require __DIR__ . '/Routing/course-contest.php';
+    });
+
     $router->get($prefix . '/ranklist.php', function () {
         require  __DIR__ . '/Routing/ranklist.php';
     });

@@ -38,6 +38,22 @@ class AcademicCourseController
         require $currentTheme . '/course.php';
     }
 
+    public function renderContest(int $courseId, int $assignmentId): void
+    {
+        if ($courseId <= 0 || $assignmentId <= 0) {
+            http_response_code(400);
+            echo 'Contest inválido.';
+            return;
+        }
+
+        $currentTheme = Utils::get_current_theme();
+        $title = 'Contest del curso';
+        $apiUrl = rtrim((string) ($_SERVER['APP_DOMAIN_API'] ?? $_ENV['APP_DOMAIN_API'] ?? '/api'), '/');
+        $siteId = (int) ($_SERVER['SITE_ID'] ?? $_ENV['SITE_ID'] ?? 1);
+
+        require $currentTheme . '/course-contest.php';
+    }
+
     public function renderRanking(int $courseId): void
     {
         if ($courseId <= 0) {
