@@ -75,6 +75,13 @@
         document.getElementById('course-detail-name').textContent = course.name || `Curso #${course.courseId}`;
         document.getElementById('course-detail-description').textContent = course.description || 'Sin descripción.';
         document.getElementById('course-detail-role').textContent = course.memberRole === 'estudiante' ? 'Estudiante' : (course.memberRole || 'Miembro');
+        const inviteBlock = document.getElementById('course-detail-invite');
+        if (inviteBlock) {
+            const showInvite = Boolean(config.canManageAdmin) && Boolean(course.inviteCode);
+            inviteBlock.classList.toggle('hidden', !showInvite);
+            inviteBlock.classList.toggle('flex', showInvite);
+            if (showInvite) document.getElementById('course-detail-invite-code').textContent = course.inviteCode;
+        }
         assignmentsList.replaceChildren();
 
         const assignments = Array.isArray(course.assignments) ? course.assignments : [];
@@ -251,6 +258,17 @@
         url.searchParams.delete('course');
         history.replaceState(null, '', url);
         document.getElementById('courses-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    document.getElementById('course-detail-copy-link')?.addEventListener('click', async function () {
+        const code = document.getElementById('course-detail-invite-code').textContent.trim();
+        if (!code) return;
+        const inviteUrl = `${window.location.origin}${window.location.pathname}?invite=${encodeURIComponent(code)}`;
+        try {
+            await navigator.clipboard.writeText(inviteUrl);
+            showMessage('Link de invitación copiado al portapapeles.', 'success');
+        } catch (_) {
+            showMessage(inviteUrl, 'error');
+        }
     });
     document.getElementById('join-course-form').addEventListener('submit', function (event) {
         event.preventDefault();
