@@ -23,14 +23,30 @@ async function manuallyJudgeSolution(button) {
     button.disabled = true;
 
     try {
-        const response = await fetch(`${select.dataset.apiBase}/Judge/solution/${solutionId}/verdict`, {
+        const verdictUrl = `${select.dataset.apiBase}/Judge/solution/${solutionId}/verdict`;
+        const body = JSON.stringify({ resultCode: Number(select.value) });
+        let response = await fetch(verdictUrl, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ resultCode: Number(select.value) })
+            body
         });
+
+        if (response.status === 401 && window.PatitoAuth) {
+            const freshToken = await window.PatitoAuth.refreshAccessToken();
+            if (freshToken) {
+                response = await fetch(verdictUrl, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${freshToken}`
+                    },
+                    body
+                });
+            }
+        }
 
         if (!response.ok) {
             const error = await response.json().catch(() => null);

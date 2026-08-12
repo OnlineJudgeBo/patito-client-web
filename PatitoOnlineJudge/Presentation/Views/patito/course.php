@@ -23,6 +23,9 @@
           <h1 id="course-name" class="oj-page-title"></h1>
           <p id="course-description" class="oj-page-description"></p>
         </div>
+        <?php if ($canManageAdmin): ?>
+          <a href="<?php echo htmlspecialchars($adminUrl, ENT_QUOTES, 'UTF-8'); ?>/academic/courses/<?php echo (int) $courseId; ?>" target="_blank" rel="noopener noreferrer" class="rounded border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Administrar</a>
+        <?php endif; ?>
       </header>
       <?php if ($canManageAdmin): ?>
         <div id="course-invite" class="hidden mb-5 flex-wrap items-center gap-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
@@ -174,6 +177,7 @@
       'canManageAdmin' => $canManageAdmin,
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
   </script>
+  <script src="./assets/auth-refresh.js"></script>
   <script src="./assets/course.js"></script>
 </body>
 </html>

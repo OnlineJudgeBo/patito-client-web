@@ -35,6 +35,7 @@ class AcademicCourseController
         $currentTheme = Utils::get_current_theme();
         $title = 'Contenido del curso';
         $apiUrl = rtrim((string) ($_SERVER['APP_DOMAIN_API'] ?? $_ENV['APP_DOMAIN_API'] ?? '/api'), '/');
+        $adminUrl = rtrim((string) ($_SERVER['APP_DOMAIN_ADMIN'] ?? $_ENV['APP_DOMAIN_ADMIN'] ?? '/admin'), '/');
         $siteId = (int) ($_SERVER['SITE_ID'] ?? $_ENV['SITE_ID'] ?? 1);
         $assignmentId = max(0, (int) ($_GET['assignmentId'] ?? 0));
         $canManageAdmin =
