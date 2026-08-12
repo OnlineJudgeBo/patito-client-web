@@ -18,4 +18,8 @@ class JwtService implements IJwtService
     public function generateTokens($userId, $userRoles) {
         return $this->jwtAuth->generateTokens($userId, $userRoles);
     }
+
+    public function verifyToken(string $token): array {
+        return $this->jwtAuth->verifyToken($token);
+    }
 }
