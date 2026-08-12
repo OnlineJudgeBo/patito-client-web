@@ -111,14 +111,35 @@
             const meta = node('div', 'shrink-0 text-right text-sm text-slate-600');
             const total = Number(contest.problemCount || 0);
             if (course.canManage) {
-                const editButton = node('button', 'block text-sm font-semibold text-blue-600 hover:underline', 'Editar');
+                const actions = node('div', 'flex items-center justify-end gap-3');
+                const editButton = node('button', 'text-sm font-semibold text-blue-600 hover:underline', 'Editar');
                 editButton.type = 'button';
                 editButton.addEventListener('click', (event) => {
                     event.preventDefault();
                     event.stopPropagation();
                     openContestEditor(contest, item);
                 });
-                meta.append(editButton);
+                const deleteButton = node('button', 'text-sm font-semibold text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-60', 'Eliminar');
+                deleteButton.type = 'button';
+                deleteButton.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const title = contest.title || 'Contest';
+                    if (!window.confirm(`¿Eliminar el contest "${title}" del curso? Los datos del contest se conservarán.`)) return;
+                    deleteButton.disabled = true;
+                    deleteButton.textContent = 'Eliminando...';
+                    try {
+                        // The API performs a soft delete so submissions and contest data are preserved.
+                        await request(`${endpoint}/assignments/${Number(contest.assignmentId)}`, { method: 'DELETE' });
+                        render(await request(endpoint));
+                    } catch (error) {
+                        window.alert(error.message);
+                        deleteButton.disabled = false;
+                        deleteButton.textContent = 'Eliminar';
+                    }
+                });
+                actions.append(editButton, deleteButton);
+                meta.append(actions);
                 const stats = node('div', 'flex flex-col items-end gap-0.5');
                 const attemptedLine = node('p', 'text-xs font-semibold text-slate-700', '…');
                 const solvedLine = node('p', 'text-xs text-slate-600', '…');
@@ -148,6 +169,7 @@
             );
             summary.append(text);
             if (course.canManage) {
+                const actions = node('div', 'flex shrink-0 items-center gap-3');
                 const editButton = node('button', 'shrink-0 text-sm font-semibold text-blue-600 hover:underline', 'Editar');
                 editButton.type = 'button';
                 editButton.addEventListener('click', (event) => {
@@ -155,7 +177,25 @@
                     event.stopPropagation();
                     openMaterialEditor(item);
                 });
-                summary.append(editButton);
+                const deleteButton = node('button', 'shrink-0 text-sm font-semibold text-red-600 hover:underline', 'Eliminar');
+                deleteButton.type = 'button';
+                deleteButton.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (!window.confirm(`¿Eliminar el material "${item.title || 'Material'}"? Esta acción no se puede deshacer.`)) return;
+                    deleteButton.disabled = true;
+                    deleteButton.textContent = 'Eliminando...';
+                    try {
+                        await request(`${endpoint}/materials/${Number(item.itemId)}`, { method: 'DELETE' });
+                        render(await request(endpoint));
+                    } catch (error) {
+                        window.alert(error.message);
+                        deleteButton.disabled = false;
+                        deleteButton.textContent = 'Eliminar';
+                    }
+                });
+                actions.append(editButton, deleteButton);
+                summary.append(actions);
             }
             summary.append(node('span', 'shrink-0 text-sm font-semibold text-blue-600 group-open:hidden', 'Ver'));
             const detail = renderMaterial(item);
