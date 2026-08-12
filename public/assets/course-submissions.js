@@ -6,7 +6,7 @@
 
     function token() {
         const item = document.cookie.split('; ').find((value) => value.startsWith('accessToken='));
-        return item ? decodeURIComponent(item.slice(12)) : (localStorage.getItem('accessToken') || '');
+        return item ? decodeURIComponent(item.slice(12)) : '';
     }
     async function get(url) {
         let response = await fetch(url, { headers: { Accept: 'application/json', Authorization: `Bearer ${token()}` } });
