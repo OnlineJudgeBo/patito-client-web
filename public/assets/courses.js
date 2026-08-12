@@ -21,9 +21,8 @@
         return item ? decodeURIComponent(item.slice(name.length + 1)) : '';
     }
 
-    async function request(path, options) {
-        const token = cookie('accessToken') || localStorage.getItem('accessToken') || '';
-        const response = await fetch(path, {
+    async function fetchWithToken(path, options, token) {
+        return fetch(path, {
             ...options,
             headers: {
                 Accept: 'application/json',
@@ -32,6 +31,17 @@
                 ...(options && options.headers ? options.headers : {})
             }
         });
+    }
+
+    async function request(path, options) {
+        const token = cookie('accessToken') || localStorage.getItem('accessToken') || '';
+        let response = await fetchWithToken(path, options, token);
+        if (response.status === 401 && window.PatitoAuth) {
+            const freshToken = await window.PatitoAuth.refreshAccessToken();
+            if (freshToken) {
+                response = await fetchWithToken(path, options, freshToken);
+            }
+        }
 
         if (!response.ok) {
             let detail = '';

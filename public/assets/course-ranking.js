@@ -14,9 +14,16 @@
         if (text !== undefined) result.textContent = text;
         return result;
     }
+    function fetchWithToken(url, token) {
+        return fetch(url, { headers: { Accept: 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+    }
     async function request(url) {
         const token = cookie('accessToken') || localStorage.getItem('accessToken') || '';
-        const response = await fetch(url, { headers: { Accept: 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
+        let response = await fetchWithToken(url, token);
+        if (response.status === 401 && window.PatitoAuth) {
+            const freshToken = await window.PatitoAuth.refreshAccessToken();
+            if (freshToken) response = await fetchWithToken(url, freshToken);
+        }
         if (!response.ok) throw new Error(response.status === 403 ? 'No tienes acceso a este ranking.' : 'No se pudo cargar el ranking.');
         return response.json();
     }

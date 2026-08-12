@@ -20,9 +20,8 @@
         return result;
     }
 
-    async function request(url, options) {
-        const token = cookie('accessToken') || localStorage.getItem('accessToken') || '';
-        const response = await fetch(url || endpoint, {
+    async function fetchWithToken(url, options, token) {
+        return fetch(url || endpoint, {
             ...(options || {}),
             headers: {
                 Accept: 'application/json',
@@ -30,6 +29,17 @@
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             }
         });
+    }
+
+    async function request(url, options) {
+        const token = cookie('accessToken') || localStorage.getItem('accessToken') || '';
+        let response = await fetchWithToken(url, options, token);
+        if (response.status === 401 && window.PatitoAuth) {
+            const freshToken = await window.PatitoAuth.refreshAccessToken();
+            if (freshToken) {
+                response = await fetchWithToken(url, options, freshToken);
+            }
+        }
         if (!response.ok) {
             let detail = '';
             try {
@@ -101,6 +111,14 @@
             const meta = node('div', 'shrink-0 text-right text-sm text-slate-600');
             const total = Number(contest.problemCount || 0);
             if (course.canManage) {
+                const editButton = node('button', 'block text-sm font-semibold text-blue-600 hover:underline', 'Editar');
+                editButton.type = 'button';
+                editButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    openContestEditor(contest, item);
+                });
+                meta.append(editButton);
                 const stats = node('div', 'flex flex-col items-end gap-0.5');
                 const attemptedLine = node('p', 'text-xs font-semibold text-slate-700', '…');
                 const solvedLine = node('p', 'text-xs text-slate-600', '…');
@@ -662,12 +680,40 @@
     });
     problemsInput.addEventListener('input', renderSelectedProblems);
 
-    function toggleContestForm(show) {
+    let editingAssignmentId = null;
+    function toggleContestForm(show, contest) {
         const modal = document.getElementById('contest-form-modal');
         modal.classList.toggle('hidden', !show);
         modal.classList.toggle('flex', show);
         document.body.classList.toggle('overflow-hidden', show);
-        if (show) document.getElementById('contest-title').focus();
+        if (!show) {
+            editingAssignmentId = null;
+            return;
+        }
+        editingAssignmentId = contest ? Number(contest.assignmentId) : null;
+        document.getElementById('contest-form-title').textContent = contest ? 'Editar contest del curso' : 'Crear contest del curso';
+        contestForm.querySelector('button[type="submit"]').textContent = contest ? 'Guardar cambios' : 'Crear contest';
+        selectedProblemLabels.clear();
+        if (contest) {
+            document.getElementById('contest-title').value = contest.title || '';
+            document.getElementById('contest-description').value = contest.description || '';
+            document.getElementById('contest-start').value = localDateTimeValue(new Date(contest.opensAt));
+            document.getElementById('contest-end').value = localDateTimeValue(new Date(contest.dueAt));
+            (contest.problems || []).forEach((problem) => {
+                selectedProblemLabels.set(Number(problem.problemId), `${problem.problemId} - ${problem.title || 'Problema'}`);
+            });
+            problemsInput.value = (contest.problems || []).map((problem) => problem.problemId).join('\n');
+        } else {
+            contestForm.reset();
+            problemsInput.value = '';
+            document.getElementById('contest-start').value = localDateTimeValue(defaultStart);
+            document.getElementById('contest-end').value = localDateTimeValue(defaultEnd);
+        }
+        renderSelectedProblems();
+        document.getElementById('contest-title').focus();
+    }
+    function openContestEditor(contest) {
+        toggleContestForm(true, contest);
     }
 
     function localDateTimeValue(date) {
@@ -790,6 +836,7 @@
             contestMessage.className = 'rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800';
             return;
         }
+        const isEditingContest = Boolean(editingAssignmentId);
         button.disabled = true;
         const originalButtonText = button.textContent;
         button.textContent = 'Validando problemas...';
@@ -806,19 +853,21 @@
             const invalidIds = validation.filter(Boolean);
             if (invalidIds.length) throw new Error(`No se encontraron los problemas: ${invalidIds.join(', ')}.`);
             renderSelectedProblems();
-            button.textContent = 'Creando contest...';
-            await request(`${endpoint}/assignments`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    title: document.getElementById('contest-title').value.trim(),
-                    description: document.getElementById('contest-description').value.trim() || null,
-                    opensAt: apiDateTimeValue(document.getElementById('contest-start').value),
-                    dueAt: apiDateTimeValue(document.getElementById('contest-end').value),
-                    lateDueAt: null,
-                    isActive: true,
-                    problemIds
-                })
-            });
+            button.textContent = isEditingContest ? 'Guardando cambios...' : 'Creando contest...';
+            const payload = {
+                title: document.getElementById('contest-title').value.trim(),
+                description: document.getElementById('contest-description').value.trim() || null,
+                opensAt: apiDateTimeValue(document.getElementById('contest-start').value),
+                dueAt: apiDateTimeValue(document.getElementById('contest-end').value),
+                lateDueAt: null,
+                isActive: true,
+                problemIds
+            };
+            if (isEditingContest) {
+                await request(`${endpoint}/assignments/${editingAssignmentId}`, { method: 'PUT', body: JSON.stringify(payload) });
+            } else {
+                await request(`${endpoint}/assignments`, { method: 'POST', body: JSON.stringify(payload) });
+            }
             contestForm.reset();
             selectedProblemLabels.clear();
             renderSelectedProblems();

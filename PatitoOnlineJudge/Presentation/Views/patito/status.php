@@ -16,6 +16,7 @@
     <script src="https://cdn.datatables.net/searchpanes/2.3.0/js/searchPanes.dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.css">
     <script src="https://cdn.datatables.net/select/2.0.0/js/dataTables.select.js"></script>
+    <script src="./assets/auth-refresh.js" defer></script>
     <script src="./assets/manual-judge.js" defer></script>
     <script src="https://cdn.datatables.net/select/2.0.0/js/select.dataTables.js"></script>
     <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
