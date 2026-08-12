@@ -95,6 +95,12 @@
         </div>
         <span id="course-detail-role" class="rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700"></span>
       </div>
+      <?php if ($canManageAdmin): ?>
+        <div id="course-detail-invite" class="hidden flex-wrap items-center gap-4 border-b bg-slate-50 px-6 py-4 text-sm">
+          <div><span class="font-semibold text-slate-700">Código: </span><span id="course-detail-invite-code" class="font-mono"></span></div>
+          <div><span class="font-semibold text-slate-700">Invitación: </span><button id="course-detail-copy-link" type="button" class="font-semibold text-blue-700 hover:underline">Copiar link público</button></div>
+        </div>
+      <?php endif; ?>
       <div id="course-detail-loading" class="oj-empty-state">Cargando contenido del curso...</div>
       <div id="course-assignments-empty" class="hidden oj-empty-state">Este curso todavía no tiene tareas publicadas.</div>
       <div id="course-assignments" class="hidden space-y-4 p-6"></div>
@@ -108,6 +114,7 @@
       'siteId' => $siteId,
       'adminUrl' => $adminUrl,
       'canCreate' => $canCreateCourses,
+      'canManageAdmin' => $canManageAdmin,
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
   </script>
   <script src="./assets/courses.js"></script>

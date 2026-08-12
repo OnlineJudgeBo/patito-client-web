@@ -17,6 +17,9 @@ class AcademicCourseController
             (isset($_SESSION['Administrador']) && $_SESSION['Administrador'] === 'Administrador') ||
             (isset($_SESSION['Docente']) && $_SESSION['Docente'] === 'Docente') ||
             (isset($_SESSION['Auxiliar']) && $_SESSION['Auxiliar'] === 'Auxiliar');
+        $canManageAdmin =
+            (isset($_SESSION['Administrador']) && $_SESSION['Administrador'] === 'Administrador') ||
+            (isset($_SESSION['Docente']) && $_SESSION['Docente'] === 'Docente');
 
         require $currentTheme . '/courses.php';
     }
@@ -34,6 +37,9 @@ class AcademicCourseController
         $apiUrl = rtrim((string) ($_SERVER['APP_DOMAIN_API'] ?? $_ENV['APP_DOMAIN_API'] ?? '/api'), '/');
         $siteId = (int) ($_SERVER['SITE_ID'] ?? $_ENV['SITE_ID'] ?? 1);
         $assignmentId = max(0, (int) ($_GET['assignmentId'] ?? 0));
+        $canManageAdmin =
+            (isset($_SESSION['Administrador']) && $_SESSION['Administrador'] === 'Administrador') ||
+            (isset($_SESSION['Docente']) && $_SESSION['Docente'] === 'Docente');
 
         require $currentTheme . '/course.php';
     }

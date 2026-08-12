@@ -18,6 +18,18 @@
     <div id="course-error" class="hidden rounded-lg border border-red-200 bg-red-50 p-4 text-red-800" role="alert"></div>
 
     <section id="course-content" class="hidden">
+      <header id="course-header" class="oj-page-header">
+        <div>
+          <h1 id="course-name" class="oj-page-title"></h1>
+          <p id="course-description" class="oj-page-description"></p>
+        </div>
+      </header>
+      <?php if ($canManageAdmin): ?>
+        <div id="course-invite" class="hidden mb-5 flex-wrap items-center gap-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
+          <div><span class="font-semibold text-slate-700">Código: </span><span id="course-invite-code" class="font-mono"></span></div>
+          <div><span class="font-semibold text-slate-700">Invitación: </span><button id="course-copy-link" type="button" class="font-semibold text-blue-700 hover:underline">Copiar link público</button></div>
+        </div>
+      <?php endif; ?>
       <nav id="course-tabs" class="mb-5 hidden gap-1 border-b border-slate-200" role="tablist">
         <button type="button" data-tab="content" class="course-tab border-b-2 border-green-700 px-4 py-2 text-sm font-semibold text-slate-900" role="tab" aria-selected="true">Contenido</button>
         <button type="button" data-tab="students" class="course-tab border-b-2 border-transparent px-4 py-2 text-sm font-semibold text-slate-500 hover:text-slate-800" role="tab" aria-selected="false">Estudiantes</button>
@@ -159,6 +171,7 @@
       'apiUrl' => $apiUrl,
       'siteId' => $siteId,
       'courseId' => $courseId,
+      'canManageAdmin' => $canManageAdmin,
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
   </script>
   <script src="./assets/course.js"></script>

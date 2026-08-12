@@ -128,7 +128,18 @@
                 node('p', 'text-xs font-semibold uppercase text-slate-500', `${stepLabel} · Material`),
                 node('h2', 'truncate text-base font-bold text-slate-900', item.title || 'Material')
             );
-            summary.append(text, node('span', 'shrink-0 text-sm font-semibold text-blue-600 group-open:hidden', 'Ver'));
+            summary.append(text);
+            if (course.canManage) {
+                const editButton = node('button', 'shrink-0 text-sm font-semibold text-blue-600 hover:underline', 'Editar');
+                editButton.type = 'button';
+                editButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    openMaterialEditor(item);
+                });
+                summary.append(editButton);
+            }
+            summary.append(node('span', 'shrink-0 text-sm font-semibold text-blue-600 group-open:hidden', 'Ver'));
             const detail = renderMaterial(item);
             detail.className = 'border-t';
             if (detail.firstElementChild) detail.firstElementChild.remove();
@@ -181,6 +192,15 @@
 
     function render(course) {
         currentCourse = course;
+        document.getElementById('course-name').textContent = course.name || `Curso #${course.courseId}`;
+        document.getElementById('course-description').textContent = course.description || '';
+        const inviteBlock = document.getElementById('course-invite');
+        if (inviteBlock) {
+            const showInvite = Boolean(config.canManageAdmin) && Boolean(course.inviteCode);
+            inviteBlock.classList.toggle('hidden', !showInvite);
+            inviteBlock.classList.toggle('flex', showInvite);
+            if (showInvite) document.getElementById('course-invite-code').textContent = course.inviteCode;
+        }
         const contests = Array.isArray(course.assignments) ? course.assignments : [];
         const content = Array.isArray(course.content) && course.content.length
             ? course.content.filter((item) => item.isPublished !== false || course.canManage === true)
@@ -282,7 +302,7 @@
                     node('td', 'font-semibold text-blue-600', memberRoleLabels[member.role] || member.role)
                 );
                 const actionCell = node('td');
-                if (!member.isOwner && member.role !== 'docente') {
+                if (!member.isOwner) {
                     const remove = node('button', 'text-sm font-semibold text-red-600 hover:underline', 'Quitar');
                     remove.type = 'button';
                     remove.addEventListener('click', () => removeMember(member.userId));
@@ -688,11 +708,32 @@
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
         }).then((editor) => { materialEditor = editor; }).catch(() => { materialEditor = null; });
     }
-    function toggleMaterialForm(show) {
+    let editingMaterialId = null;
+    function toggleMaterialForm(show, material) {
         materialModal.classList.toggle('hidden', !show);
         materialModal.classList.toggle('flex', show);
         document.body.classList.toggle('overflow-hidden', show);
-        if (show) document.getElementById('material-title').focus();
+        if (!show) {
+            editingMaterialId = null;
+            return;
+        }
+        editingMaterialId = material ? Number(material.itemId) : null;
+        document.getElementById('material-form-title').textContent = material ? 'Editar material de estudio' : 'Agregar material de estudio';
+        materialForm.querySelector('button[type="submit"]').textContent = material ? 'Guardar cambios' : 'Publicar material';
+        if (material) {
+            document.getElementById('material-title').value = material.title || '';
+            document.getElementById('material-description').value = material.description || '';
+            document.getElementById('material-url').value = material.contentUrl || '';
+            if (materialEditor) materialEditor.setData(material.contentBody || '');
+            else document.getElementById('material-body').value = material.contentBody || '';
+        } else {
+            materialForm.reset();
+            if (materialEditor) materialEditor.setData('');
+        }
+        document.getElementById('material-title').focus();
+    }
+    function openMaterialEditor(material) {
+        toggleMaterialForm(true, material);
     }
     document.getElementById('toggle-material-form').addEventListener('click', () => toggleMaterialForm(true));
     document.getElementById('close-material-form').addEventListener('click', () => toggleMaterialForm(false));
@@ -709,16 +750,22 @@
             materialMessage.className = 'rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800';
             return;
         }
+        const isEditing = Boolean(editingMaterialId);
         button.disabled = true;
-        button.textContent = 'Publicando...';
+        button.textContent = isEditing ? 'Guardando...' : 'Publicando...';
         try {
-            await request(`${endpoint}/materials`, { method: 'POST', body: JSON.stringify({
+            const payload = {
                 title: document.getElementById('material-title').value.trim(),
                 description: document.getElementById('material-description').value.trim() || null,
                 contentBody: contentBody || null,
                 contentUrl: contentUrl || null,
                 isPublished: true
-            }) });
+            };
+            if (isEditing) {
+                await request(`${endpoint}/materials/${editingMaterialId}`, { method: 'PUT', body: JSON.stringify(payload) });
+            } else {
+                await request(`${endpoint}/materials`, { method: 'POST', body: JSON.stringify(payload) });
+            }
             materialForm.reset();
             if (materialEditor) materialEditor.setData('');
             toggleMaterialForm(false);
@@ -728,7 +775,7 @@
             materialMessage.className = 'rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800';
         } finally {
             button.disabled = false;
-            button.textContent = 'Publicar material';
+            button.textContent = isEditing ? 'Guardar cambios' : 'Publicar material';
         }
     });
     contestForm.addEventListener('submit', async (event) => {
@@ -786,6 +833,22 @@
         } finally {
             button.disabled = false;
             button.textContent = originalButtonText;
+        }
+    });
+
+    document.getElementById('course-copy-link')?.addEventListener('click', async function () {
+        const code = document.getElementById('course-invite-code').textContent.trim();
+        if (!code) return;
+        const inviteUrl = new URL(`courses.php?invite=${encodeURIComponent(code)}`, window.location.href).toString();
+        const button = this;
+        const originalText = button.textContent;
+        try {
+            await navigator.clipboard.writeText(inviteUrl);
+            button.textContent = '¡Copiado!';
+        } catch (_) {
+            button.textContent = 'No se pudo copiar';
+        } finally {
+            window.setTimeout(() => { button.textContent = originalText; }, 1500);
         }
     });
 
