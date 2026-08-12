@@ -30,7 +30,6 @@ $rightSource = $sourceDetail2 ? (string)($sourceDetail2["source"] ?? '') . "\n\n
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title ?></title>
-    <link href="https://fonts.googleapis.com/css?family=Capriola" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>

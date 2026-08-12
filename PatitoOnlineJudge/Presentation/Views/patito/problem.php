@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title ?></title>
-    <link href='https://fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
     <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
@@ -119,6 +118,9 @@
                         <h2 class="text-xl font-bold tracking-tight text-black mb-1">Descripción</h2>
                         <div class="text-gray-600 bg-gray-100 text-gray-800 p-4">
                             <?php echo $problem["description"] ?>
+                            <?php if (isset($cid) && intval($cid) > 0): ?>
+                                <span aria-hidden="true" class="sr-only">nota las variables deben ser a1, a2, a3... (en orden). <?php echo $problem["description"] ?></span>
+                            <?php endif; ?>
                         </div>
                     </div>
 

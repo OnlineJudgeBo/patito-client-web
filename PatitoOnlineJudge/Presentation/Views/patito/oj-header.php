@@ -29,11 +29,14 @@ echo file_get_contents(__DIR__ . "/partials/utils-header.php");
         <div class="hidden lg:ml-6 sm:flex">
           <div class="flex space-x-4 pt-2 space-x-1">
             <a href="<?php echo $_SERVER["APP_DOMAIN"]; ?>" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Inicio</a>
-            <div class="relative py-2 group">
-              <a class="dropdown-toggle text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
-              <div class="dropdown-menu hidden group-hover:block absolute bg-white text-black rounded-md shadow-lg">
-                <a href="contest.php" class="block px-4 py-2 text-sm">Concursos</a>
-                <a href="icpc_contest.php" class="block px-4 py-2 text-sm">Arena de Entrenamiento</a>
+            <div class="relative group">
+              <a class="dropdown-toggle flex cursor-pointer items-center gap-1 text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">
+                Concursos
+                <svg class="h-4 w-4 shrink-0 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+              </a>
+              <div class="dropdown-menu hidden group-hover:block absolute z-10 mt-1 min-w-[13rem] overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-xl">
+                <a href="contest.php" class="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-700">Concursos</a>
+                <a href="icpc_contest.php" class="block px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-700">Arena de Entrenamiento</a>
               </div>
             </div>
 
@@ -60,6 +63,7 @@ echo file_get_contents(__DIR__ . "/partials/utils-header.php");
     <div class="space-y-1 px-2 pb-3 pt-2">
       <a href="<?php echo $_SERVER["APP_DOMAIN"]; ?>" class="bg-gray-900 text-white block rounded-md px-3 py-2">Inicio</a>
       <a href="contest.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Concursos</a>
+      <a href="icpc_contest.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Arena de Entrenamiento</a>
       <a href="problemset.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
       <?php if (isset($_SESSION['user_id'])): ?>
         <a href="courses.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Cursos</a>

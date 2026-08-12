@@ -115,9 +115,9 @@
 .oj-card {
     overflow: hidden;
     border: 1px solid #e2e8f0;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     background: #fff;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
 }
 
 .oj-table {
@@ -145,7 +145,7 @@
 
 .oj-table td {
     padding: 6px 0.75rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     vertical-align: middle;
 }
 
@@ -166,6 +166,65 @@
     border-bottom: 0;
 }
 
+#contest-table thead {
+    color: #fff;
+    background: #111827;
+}
+
+#contest-table th {
+    padding: 0.55rem 1rem;
+    border-right: 1px solid #d1d5db;
+    border-bottom: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: none;
+}
+
+#contest-table th:last-child {
+    border-right: 0;
+}
+
+#contest-table th:nth-child(2),
+#contest-table td:nth-child(2) {
+    text-align: left;
+}
+
+#contest-table .oj-table-link,
+#contest-table .oj-table-link b,
+#contest-table .oj-table-link strong {
+    font-weight: 400;
+}
+
+#contest-table .oj-stat {
+    padding: 0;
+    color: #334155;
+    background: transparent;
+    font-weight: 600;
+}
+
+#contest-table .oj-badge {
+    min-width: 6.2rem;
+    justify-content: center;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid;
+    border-radius: 0.35rem;
+    font-weight: 500;
+}
+
+#contest-table .oj-badge-public {
+    color: #047857;
+    border-color: #a7f3d0;
+    background: #ecfdf5;
+}
+
+#contest-table .oj-badge-private {
+    color: #9f1239;
+    border-color: #fecdd3;
+    background: #fff1f2;
+}
+
 .oj-table-link {
     color: #1d4ed8;
     font-weight: 700;
@@ -184,7 +243,7 @@
     padding: 0.3rem 0.65rem;
     border-radius: 999px;
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1;
     white-space: nowrap;
 }
@@ -200,16 +259,15 @@
 }
 
 .oj-empty-state {
-    padding: 3.5rem 1.5rem !important;
+    padding: 2.25rem 1.5rem !important;
     color: #64748b;
     text-align: center;
 }
 
 .oj-empty-state strong {
     display: block;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.3rem;
     color: #0f172a;
-    font-size: 1rem;
 }
 
 .oj-rank-position {
@@ -221,7 +279,7 @@
     border-radius: 999px;
     background: #e2e8f0;
     color: #334155;
-    font-weight: 800;
+    font-weight: 700;
 }
 
 .oj-rank-position[data-position="1"] {
@@ -247,7 +305,6 @@
     border-radius: 0.6rem;
     background: #dbeafe;
     color: #1e40af;
-    font-weight: 800;
 }
 
 .oj-legend {

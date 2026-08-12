@@ -16,7 +16,7 @@
           <a href="courses.php" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Cursos</a>
           <a href="course.php?id=<?php echo (int) $courseId; ?>" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Contenido</a>
           <?php if (!empty($assignmentId)): ?>
-          <a href="course.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
+          <a href="course-contest.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
           <a href="course-submissions.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Status</a>
           <a href="course-ranking.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
           <?php endif; ?>
@@ -32,7 +32,7 @@
       <a href="courses.php" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Cursos</a>
       <a href="course.php?id=<?php echo (int) $courseId; ?>" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Contenido</a>
       <?php if (!empty($assignmentId)): ?>
-      <a href="course.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
+      <a href="course-contest.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Problemas</a>
       <a href="course-submissions.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Status</a>
       <a href="course-ranking.php?id=<?php echo (int) $courseId; ?>&assignmentId=<?php echo (int) $assignmentId; ?>" class="block text-sm md:text-xl text-white hover:text-yellow-400 rounded-md px-3 py-2">Ranking</a>
       <?php endif; ?>

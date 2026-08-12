@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
-  <link href="https://fonts.googleapis.com/css?family=Capriola" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./assets/base.css">
   <?php echo file_get_contents(__DIR__ . '/partials/utils-header.php'); ?>
@@ -18,7 +17,7 @@
         <h1 id="courses-page-title" class="oj-page-title"><?php echo $canCreateCourses ? 'Cursos' : 'Mis cursos'; ?></h1>
         <p id="courses-page-description" class="oj-page-description"><?php echo $canCreateCourses ? 'Administra los cursos académicos y consulta aquellos en los que estás inscrito.' : 'Consulta los contests y problemas asignados por tus docentes.'; ?></p>
       </div>
-      <section class="oj-card w-full max-w-xl p-4">
+      <section class="w-full max-w-xl rounded-lg border border-slate-200 bg-slate-50 p-4">
         <h2 class="font-semibold text-slate-900">Unirme a un curso</h2>
         <div class="mt-2"><?php require __DIR__ . '/partials/course-join-form.php'; ?></div>
       </section>
@@ -31,13 +30,13 @@
         <h2 id="courses-section-title" class="text-lg font-semibold text-slate-900"><?php echo $canCreateCourses ? 'Cursos que administras' : 'Cursos inscritos'; ?></h2>
         <div class="flex items-center gap-4">
           <button id="refresh-courses" type="button" class="text-sm font-semibold text-blue-600 hover:underline">Actualizar</button>
-          <?php if ($canCreateCourses): ?><button id="open-course-form" type="button" class="rounded bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-600">+ Nuevo curso</button><?php endif; ?>
+          <?php if ($canCreateCourses): ?><button id="open-course-form" type="button" class="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">+ Nuevo curso</button><?php endif; ?>
         </div>
       </div>
       <div id="courses-loading" class="oj-empty-state">Cargando cursos...</div>
       <div id="courses-empty" class="hidden oj-empty-state"><strong id="courses-empty-title"><?php echo $canCreateCourses ? 'No administras ningún curso' : 'No estás inscrito en ningún curso'; ?></strong><span id="courses-empty-description"><?php echo $canCreateCourses ? 'Crea un curso para comenzar.' : 'Usa el código de invitación para unirte.'; ?></span></div>
       <div id="courses-list-wrapper" class="hidden overflow-x-auto">
-        <table class="oj-table text-sm">
+        <table class="oj-table">
           <thead>
             <tr>
               <th>Curso</th>
@@ -55,7 +54,7 @@
       <div id="enrolled-courses-loading" class="oj-empty-state">Cargando cursos...</div>
       <div id="enrolled-courses-empty" class="hidden oj-empty-state">No estás inscrito en otros cursos.</div>
       <div id="enrolled-courses-wrapper" class="hidden overflow-x-auto">
-        <table class="oj-table text-sm">
+        <table class="oj-table">
           <thead><tr><th>Curso</th><th>Responsable</th><th class="text-center">Contests</th></tr></thead>
           <tbody id="enrolled-courses-list"></tbody>
         </table>
@@ -72,16 +71,16 @@
           <div class="space-y-4 p-6">
           <div>
             <label for="course-name" class="mb-1 block text-sm font-semibold text-slate-700">Nombre <span class="text-red-600">*</span></label>
-            <input id="course-name" name="name" maxlength="160" required placeholder="Nombre del curso" class="w-full rounded-lg border px-3 py-2 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-100">
+            <input id="course-name" name="name" maxlength="160" required placeholder="Nombre del curso" class="w-full rounded-lg border px-3 py-2 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100">
           </div>
           <div>
             <label for="course-description" class="mb-1 block text-sm font-semibold text-slate-700">Descripción</label>
-            <textarea id="course-description" name="description" maxlength="1000" rows="3" placeholder="Una breve descripción (opcional)" class="w-full resize-y rounded-lg border px-3 py-2 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-100"></textarea>
+            <textarea id="course-description" name="description" maxlength="1000" rows="3" placeholder="Una breve descripción (opcional)" class="w-full resize-y rounded-lg border px-3 py-2 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
           </div>
           </div>
           <div class="flex justify-end gap-2 border-t bg-slate-50 px-6 py-4">
             <button id="cancel-course-form" type="button" class="rounded border border-slate-300 px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-white">Cancelar</button>
-            <button type="submit" class="rounded bg-green-700 px-5 py-2 text-sm font-semibold text-white hover:bg-green-600 disabled:opacity-60">Crear curso</button>
+            <button type="submit" class="rounded bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60">Crear curso</button>
           </div>
         </form>
       </div>
@@ -94,7 +93,7 @@
           <h2 id="course-detail-name" class="text-2xl font-bold text-slate-900"></h2>
           <p id="course-detail-description" class="mt-2 max-w-3xl text-gray-600"></p>
         </div>
-        <span id="course-detail-role" class="rounded-full bg-green-50 px-3 py-1 text-sm font-semibold text-green-800"></span>
+        <span id="course-detail-role" class="rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700"></span>
       </div>
       <div id="course-detail-loading" class="oj-empty-state">Cargando contenido del curso...</div>
       <div id="course-assignments-empty" class="hidden oj-empty-state">Este curso todavía no tiene tareas publicadas.</div>
