@@ -8,12 +8,18 @@ class JwtAuth
         $jwtTimeLife = isset($_SERVER["JWT_TIME_LIFE"]) ? (int) $_SERVER["JWT_TIME_LIFE"] : 1;
         $jwtTimeLife = $jwtTimeLife > 0 ? $jwtTimeLife : 1;
 
+        $roles = array_values(array_filter(
+            array_column($userRoles, 'role_name'),
+            static fn ($role) => is_string($role) && trim($role) !== ''
+        ));
+        $rolesClaim = $roles === [] ? 'Invitado' : implode(',', $roles);
+
         $expirationTime = $actualTime + (60 * 60 * $jwtTimeLife); //1h default
         $expirationTimeRefresh = $actualTime + (60 * 60 * 24 * 30);
         
         $payloadAccessToken = [
             "sub"     => $userId,
-            "roles"   => implode(",", array_column($userRoles, 'role_name')),
+            "roles"   => $rolesClaim,
             "iat"     => $actualTime,
             "exp"     => $expirationTime,
             "iss"     => $_SERVER["JWT_ISS"],
@@ -26,7 +32,7 @@ class JwtAuth
 
         $payloadRefreshToken = [
             "sub"     => $userId,
-            "roles"   => implode(",", array_column($userRoles, 'role_name')),
+            "roles"   => $rolesClaim,
             "iat"     => $actualTime,
             "exp"     => $expirationTimeRefresh,
             "iss"     => $_SERVER["JWT_ISS"],
