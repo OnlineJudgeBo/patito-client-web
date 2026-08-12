@@ -35,9 +35,8 @@
         return `${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
     }
 
-    async function request(url, options) {
-        const token = cookie('accessToken') || localStorage.getItem('accessToken') || '';
-        const response = await fetch(url || endpoint, {
+    async function fetchWithToken(url, options, token) {
+        return fetch(url || endpoint, {
             ...(options || {}),
             headers: {
                 Accept: 'application/json',
@@ -45,6 +44,17 @@
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             }
         });
+    }
+
+    async function request(url, options) {
+        const token = cookie('accessToken') || localStorage.getItem('accessToken') || '';
+        let response = await fetchWithToken(url, options, token);
+        if (response.status === 401 && window.PatitoAuth) {
+            const freshToken = await window.PatitoAuth.refreshAccessToken();
+            if (freshToken) {
+                response = await fetchWithToken(url, options, freshToken);
+            }
+        }
         if (!response.ok) {
             let detail = '';
             try {

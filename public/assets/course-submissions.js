@@ -9,7 +9,11 @@
         return item ? decodeURIComponent(item.slice(12)) : (localStorage.getItem('accessToken') || '');
     }
     async function get(url) {
-        const response = await fetch(url, { headers: { Accept: 'application/json', Authorization: `Bearer ${token()}` } });
+        let response = await fetch(url, { headers: { Accept: 'application/json', Authorization: `Bearer ${token()}` } });
+        if (response.status === 401 && window.PatitoAuth) {
+            const freshToken = await window.PatitoAuth.refreshAccessToken();
+            if (freshToken) response = await fetch(url, { headers: { Accept: 'application/json', Authorization: `Bearer ${freshToken}` } });
+        }
         if (!response.ok) throw new Error(response.status === 403 ? 'No tienes acceso a los envíos de este curso.' : 'No se pudieron cargar los envíos.');
         return response.json();
     }

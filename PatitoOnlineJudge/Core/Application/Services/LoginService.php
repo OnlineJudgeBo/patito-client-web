@@ -48,6 +48,33 @@ class LoginService implements ILoginService
         throw new \Exception("Username o Password incorrectos");
     }
 
+    public function refreshTokens($refreshToken)
+    {
+        if (empty($refreshToken)) {
+            throw new \Exception("Falta el refresh token.");
+        }
+
+        try {
+            $payload = $this->jwtService->verifyToken($refreshToken);
+        } catch (\Exception $e) {
+            throw new \Exception("Tu sesión venció. Inicia sesión nuevamente.");
+        }
+
+        $userId = $payload['sub'] ?? '';
+        $user = $this->loginRepository->getUser($userId, $this->site_id);
+        if (empty($user)) {
+            throw new \Exception("Tu sesión venció. Inicia sesión nuevamente.");
+        }
+
+        $userRoles = $this->loginRepository->getAdminPrivilege($userId, $this->site_id);
+        $tokens = $this->jwtService->generateTokens($userId, $userRoles);
+        $isSecureRequest = $this->isSecureRequest();
+        setcookie('accessToken', $tokens["accessToken"], 0, '/', '', $isSecureRequest, false);
+        setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', $isSecureRequest, false);
+
+        return $tokens;
+    }
+
     public function registerUser(UserDomainObject $user) {
         $authService = new AuthService();
         $this->userValidator->validate($user);

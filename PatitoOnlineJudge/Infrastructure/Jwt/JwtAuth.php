@@ -64,4 +64,42 @@ class JwtAuth
     {
         return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
     }
+
+    private function base64UrlDecode(string $value): string
+    {
+        $padded = str_pad($value, strlen($value) % 4 === 0 ? strlen($value) : strlen($value) + (4 - strlen($value) % 4), '=');
+        return base64_decode(strtr($padded, '-_', '+/'));
+    }
+
+    /**
+     * Verifies the token signature and expiration, and returns its decoded payload.
+     * @throws \Exception if the token is malformed, has an invalid signature, or is expired.
+     */
+    public function verifyToken(string $token): array
+    {
+        $segments = explode('.', $token);
+        if (count($segments) !== 3) {
+            throw new \Exception('Token inválido.');
+        }
+        [$headerSegment, $payloadSegment, $signatureSegment] = $segments;
+
+        $jwtSecret = $_SERVER["JWT_SECRET_KEY"];
+        $expectedSignature = $this->base64UrlEncode(
+            hash_hmac('sha256', $headerSegment . '.' . $payloadSegment, $jwtSecret, true)
+        );
+        if (!hash_equals($expectedSignature, $signatureSegment)) {
+            throw new \Exception('Firma de token inválida.');
+        }
+
+        $payload = json_decode($this->base64UrlDecode($payloadSegment), true);
+        if (!is_array($payload) || !isset($payload['sub'], $payload['exp'])) {
+            throw new \Exception('Token inválido.');
+        }
+
+        if (time() >= (int) $payload['exp']) {
+            throw new \Exception('El token expiró.');
+        }
+
+        return $payload;
+    }
 }

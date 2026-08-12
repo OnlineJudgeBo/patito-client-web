@@ -108,6 +108,10 @@ function executeRouter()
         require  __DIR__ . '/Routing/logout.php';
     });
 
+    $router->post($prefix . '/refresh-token.php', function () {
+        require  __DIR__ . '/Routing/refresh-token.php';
+    });
+
     $router->get('/oj/logout.php', function () {
         require  __DIR__ . '/Routing/logout.php';
     });
