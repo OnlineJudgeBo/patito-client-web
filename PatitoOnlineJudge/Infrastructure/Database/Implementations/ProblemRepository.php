@@ -31,6 +31,7 @@ class ProblemRepository implements IProblemRepository
               INNER JOIN contest_site cs
                   ON cs.contest_id = c.contest_id
               WHERE cp.problem_id = p.problem_id
+                AND cp.problem_id NOT IN (1000)
                 AND cs.site_id = ps.site_id
                 AND c.defunct = 'N'
                 AND c.end_time >= NOW()
