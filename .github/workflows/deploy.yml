@@ -4,137 +4,230 @@ permissions:
   contents: read
   packages: write
 
-"on":
+on:
   push:
     branches:
       - patito2-0
+
   pull_request:
     branches:
       - patito2-0
+
   workflow_dispatch:
     inputs:
       tags:
         description: '@contest'
         required: false
         default: ''
+
       env:
         description: 'application.properties'
         required: false
         default: 'dev'
+
       reset_db:
         description: 'Ejecuta scripts/reset-test-db.sh --yes antes de cada test'
         required: false
         type: boolean
         default: true
+
       run_selenium:
         description: 'Ejecutar pruebas Selenium antes de publicar la imagen'
         required: false
         type: boolean
         default: false
+
       keep_image_versions:
         description: 'Cantidad de versiones Docker a conservar en GHCR'
         required: false
         default: '6'
 
+concurrency:
+  group: patito-client-web-patito2-0
+  cancel-in-progress: false
+
 jobs:
   deploy-patito:
     name: Deploy local Docker Compose stack
     runs-on: self-hosted
-    if: github.ref == 'refs/heads/patito2-0'
+
+    if: >-
+      ${{
+        github.event_name != 'pull_request' &&
+        github.ref == 'refs/heads/patito2-0'
+      }}
+
+    timeout-minutes: 20
+
     steps:
-      - name: Pull latest code and restart stack
+      - name: Pull latest code
         run: |
           set -euo pipefail
+
           cd /home/github-runner/patito/patito-client-web
-          git pull --ff-only
-          cd ..
+
+          git fetch origin patito2-0
+          git checkout patito2-0
+          git reset --hard origin/patito2-0
+
+      - name: Rebuild local Docker Compose stack
+        run: |
+          set -euo pipefail
+
+          cd /home/github-runner/patito
+
           docker compose down
           docker compose up -d --build
+
+      - name: Show deployed services
+        run: |
+          cd /home/github-runner/patito
           docker compose ps
 
+      - name: Show logs when deployment fails
+        if: failure()
+        run: |
+          cd /home/github-runner/patito
+          docker compose ps
+          docker compose logs --tail=200
+
   run-automation-tests:
-    name: Trigger Selenium BDD tests (patito-automation-test)
+    name: Run Selenium BDD tests
     runs-on: self-hosted
+
     needs:
       - deploy-patito
-    if: ${{ success() && github.event_name != 'pull_request' && inputs.run_selenium == true }}
+
+    if: >-
+      ${{
+        success() &&
+        github.event_name != 'pull_request' &&
+        (
+          (
+            github.event_name == 'push' &&
+            !contains(github.event.head_commit.message, '[skip e2e]')
+          ) ||
+          (
+            github.event_name == 'workflow_dispatch' &&
+            inputs.run_selenium == true
+          )
+        )
+      }}
+
+    timeout-minutes: 180
+
     steps:
-      - name: Trigger and wait for BDD tests in patito-automation-test
+      - name: Trigger and wait for BDD tests
         env:
           GH_TOKEN: ${{ secrets.PATITO_AUTOMATION_TOKEN }}
+
+          WORKFLOW_FILE: selenium-tests.yml
+          AUTOMATION_REPO: OnlineJudgeBo/patito-automation-test
+
+          ENV_NAME: >-
+            ${{ github.event_name == 'workflow_dispatch' && inputs.env || 'dev' }}
+
+          TAGS: >-
+            ${{ github.event_name == 'workflow_dispatch' && inputs.tags || '' }}
+
+          RESET_DB: >-
+            ${{ github.event_name == 'workflow_dispatch' && inputs.reset_db || true }}
+
         run: |
           set -euo pipefail
 
-          WORKFLOW_FILE="selenium-tests.yml"
-          REPO="OnlineJudgeBo/patito-automation-test"
-          ENV_NAME="${{ github.event.inputs.env || 'dev' }}"
-          TAGS="${{ github.event.inputs.tags || '' }}"
-          RESET_DB="${{ inputs.reset_db }}"
+          echo "Capturando ejecuciones existentes..."
 
-          echo "Capturando runs existentes antes de disparar..."
-          BEFORE_IDS=$(gh run list \
-            --repo "$REPO" \
-            --workflow "$WORKFLOW_FILE" \
-            --limit 10 \
-            --json databaseId \
-            --jq '.[].databaseId')
+          BEFORE_IDS="$(
+            gh run list \
+              --repo "$AUTOMATION_REPO" \
+              --workflow "$WORKFLOW_FILE" \
+              --limit 30 \
+              --json databaseId \
+              --jq '.[].databaseId'
+          )"
 
-          echo "Disparando $WORKFLOW_FILE..."
+          echo "Ejecutando $WORKFLOW_FILE..."
+
           gh workflow run "$WORKFLOW_FILE" \
-            --repo "$REPO" \
+            --repo "$AUTOMATION_REPO" \
             --ref main \
             -f env="$ENV_NAME" \
             -f tags="$TAGS" \
             -f reset_db="$RESET_DB"
 
-          echo "Buscando el nuevo run_id..."
-          RUN_ID=""
-          for i in $(seq 1 15); do
-            sleep 3
-            CURRENT_IDS=$(gh run list \
-              --repo "$REPO" \
-              --workflow "$WORKFLOW_FILE" \
-              --limit 10 \
-              --json databaseId \
-              --jq '.[].databaseId')
+          echo "Buscando la nueva ejecución..."
 
-            # El primer ID en CURRENT_IDS que no estaba en BEFORE_IDS es el nuevo run
+          RUN_ID=""
+
+          for attempt in $(seq 1 30); do
+            sleep 10
+
+            CURRENT_IDS="$(
+              gh run list \
+                --repo "$AUTOMATION_REPO" \
+                --workflow "$WORKFLOW_FILE" \
+                --limit 30 \
+                --json databaseId \
+                --jq '.[].databaseId'
+            )"
+
             for id in $CURRENT_IDS; do
-              if ! echo "$BEFORE_IDS" | grep -qx "$id"; then
+              if ! grep -qx "$id" <<< "$BEFORE_IDS"; then
                 RUN_ID="$id"
                 break 2
               fi
             done
-            echo "Intento $i: aún no aparece un run nuevo, reintentando..."
+
+            echo "Intento $attempt: la ejecución todavía no aparece."
           done
 
           if [ -z "$RUN_ID" ]; then
-            echo "::error::No se detectó ningún run nuevo tras disparar $WORKFLOW_FILE"
+            echo "::error::No se pudo identificar la nueva ejecución de Selenium."
             exit 1
           fi
 
-          echo "Run ID encontrado: $RUN_ID"
-          echo "Ver en: https://github.com/$REPO/actions/runs/$RUN_ID"
+          echo "Ejecución encontrada: $RUN_ID"
+          echo "https://github.com/$AUTOMATION_REPO/actions/runs/$RUN_ID"
 
           gh run watch "$RUN_ID" \
-            --repo "$REPO" \
+            --repo "$AUTOMATION_REPO" \
             --exit-status
-  
+
   publish-image:
-    name: Publish Docker image after tests
+    name: Publish approved Docker image
     runs-on: self-hosted
+
     needs:
       - deploy-patito
       - run-automation-tests
+
     if: >-
       ${{
         always() &&
         github.event_name != 'pull_request' &&
         needs.deploy-patito.result == 'success' &&
-        (needs.run-automation-tests.result == 'success' || needs.run-automation-tests.result == 'skipped')
+        (
+          needs.run-automation-tests.result == 'success' ||
+          (
+            needs.run-automation-tests.result == 'skipped' &&
+            (
+              (
+                github.event_name == 'push' &&
+                contains(github.event.head_commit.message, '[skip e2e]')
+              ) ||
+              (
+                github.event_name == 'workflow_dispatch' &&
+                inputs.run_selenium == false
+              )
+            )
+          )
+        )
       }}
+
     env:
       IMAGE_NAME: ghcr.io/onlinejudgebo/patito-client-web
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -156,16 +249,26 @@ jobs:
           file: docker/docker/php/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAME }}:patito2-0
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   cleanup-images:
     name: Cleanup old Docker images
     runs-on: self-hosted
-    needs: publish-image
-    if: ${{ success() && github.event_name != 'pull_request' }}
+
+    needs:
+      - publish-image
+
+    if: >-
+      ${{
+        success() &&
+        github.event_name != 'pull_request'
+      }}
+
     continue-on-error: true
+
     steps:
       - name: Keep only recent GHCR image versions
         uses: actions/delete-package-versions@v5
@@ -173,5 +276,4 @@ jobs:
           owner: OnlineJudgeBo
           package-name: patito-client-web
           package-type: container
-          min-versions-to-keep: ${{ github.event.inputs.keep_image_versions || '3' }}
-          ignore-versions: '^(${{ github.sha }}|${{ github.ref_name }})$'
+          min-versions-to-keep: ${{ github.event_name == 'workflow_dispatch' && inputs.keep_image_versions || '6' }}
