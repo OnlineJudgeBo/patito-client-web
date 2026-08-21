@@ -47,6 +47,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  publish-image:
+    name: Publish approved Docker image
+    runs-on: self-hosted
+
     env:
       IMAGE_NAME: ghcr.io/onlinejudgebo/patito-client-web
 
