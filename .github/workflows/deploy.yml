@@ -26,6 +26,11 @@ permissions:
         required: false
         type: boolean
         default: true
+      run_selenium:
+        description: 'Ejecutar pruebas Selenium antes de publicar la imagen'
+        required: false
+        type: boolean
+        default: false
       keep_image_versions:
         description: 'Cantidad de versiones Docker a conservar en GHCR'
         required: false
@@ -52,7 +57,7 @@ jobs:
     runs-on: self-hosted
     needs:
       - deploy-patito
-    if: ${{ success() && github.event_name != 'pull_request' }}
+    if: ${{ success() && github.event_name != 'pull_request' && inputs.run_selenium == true }}
     steps:
       - name: Trigger and wait for BDD tests in patito-automation-test
         env:
@@ -64,7 +69,7 @@ jobs:
           REPO="OnlineJudgeBo/patito-automation-test"
           ENV_NAME="${{ github.event.inputs.env || 'dev' }}"
           TAGS="${{ github.event.inputs.tags || '' }}"
-          RESET_DB="${{ github.event.inputs.reset_db || 'true' }}"
+          RESET_DB="${{ inputs.reset_db }}"
 
           echo "Capturando runs existentes antes de disparar..."
           BEFORE_IDS=$(gh run list \
@@ -118,8 +123,16 @@ jobs:
   publish-image:
     name: Publish Docker image after tests
     runs-on: self-hosted
-    needs: run-automation-tests
-    if: ${{ success() && github.event_name != 'pull_request' }}
+    needs:
+      - deploy-patito
+      - run-automation-tests
+    if: >-
+      ${{
+        always() &&
+        github.event_name != 'pull_request' &&
+        needs.deploy-patito.result == 'success' &&
+        (needs.run-automation-tests.result == 'success' || needs.run-automation-tests.result == 'skipped')
+      }}
     env:
       IMAGE_NAME: ghcr.io/onlinejudgebo/patito-client-web
     steps:
