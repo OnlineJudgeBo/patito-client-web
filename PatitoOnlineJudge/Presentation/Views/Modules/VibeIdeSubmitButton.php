@@ -14,6 +14,10 @@ if ($vibeContestId > 0) {
 } else {
     $query['problemId'] = $vibeProblemId;
     $query['id'] = $vibeProblemId;
+    if (isset($courseId, $assignmentId)) {
+        $query['courseId'] = intval($courseId);
+        $query['assignmentId'] = intval($assignmentId);
+    }
 }
 
 if (isset($language_id) && intval($language_id) >= 0) {
