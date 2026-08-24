@@ -75,47 +75,51 @@ class SolutionRepository implements ISolutionRepository
         INNER JOIN  problem ON problem.problem_id = solution.problem_id
         LEFT JOIN similar_code ON solution.solution_id = similar_code.solution_id
         WHERE solution.problem_id > 0
-        AND site_id = $site_id";
+        AND site_id = :site_id";
+        $bindings = [':site_id' => $site_id];
 
         if (isset($params['contest_id'])) {
-            $contest_id = intval($params['contest_id']);
-            $sql .= " AND `contest_id` = " . intval($contest_id);
+            $sql .= " AND `contest_id` = :contest_id";
+            $bindings[':contest_id'] = intval($params['contest_id']);
         } else {
             $sql .= " AND COALESCE(contest_id, 0) = 0";
         }
 
         if (isset($params['problem_id'])) {
-            $problem_id = intval($params['problem_id']);
-            $sql .= " AND problem.problem_id = " . intval($problem_id);
+            $sql .= " AND problem.problem_id = :problem_id";
+            $bindings[':problem_id'] = intval($params['problem_id']);
         }
 
         if (isset($params['user_id'])) {
-            $user_id = $params['user_id'];
-            $sql .= " AND `user_id` = '$user_id' ";
+            $sql .= " AND `user_id` = :user_id";
+            $bindings[':user_id'] = $params['user_id'];
         }
 
         if (isset($params['language'])) {
             $language = intval($params['language']);
             if ($language >= 0 && $language < count($language_ext)) {
-                $sql .= " AND `language` = '$language' ";
+                $sql .= " AND `language` = :language";
+                $bindings[':language'] = $language;
             }
         }
 
         if (isset($params['jresult'])) {
             $result = intval($params['jresult']);
             if ($result >= 0 && $result <= 12) {
-                $sql .= " AND `result` = '$result' ";
+                $sql .= " AND `result` = :jresult";
+                $bindings[':jresult'] = $result;
             }
         }
 
         if (isset($params['contest_id'])) {
             $sql .= " ORDER BY solution.in_date DESC";
         } elseif ($limit != -1) {
-            $sql .= " ORDER BY solution.in_date DESC LIMIT " . $limit;
+            $sql .= " ORDER BY solution.in_date DESC LIMIT " . intval($limit);
         } else {
             $sql .= " ORDER BY solution.in_date DESC LIMIT 200";
         }
-        $stmt = $this->pdo->query($sql);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($bindings);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -135,13 +139,14 @@ class SolutionRepository implements ISolutionRepository
         INNER JOIN 
             problem ON problem.problem_id = solution.problem_id
         WHERE 
-            solution.problem_id > 0 
+            solution.problem_id > 0
             AND (solution.contest_id IS NULL OR solution.contest_id = 0)
-            AND solution.user_id = '$user_id' 
+            AND solution.user_id = :user_id
             AND solution.result = '4'
-            AND solution.site_id = $site_id
+            AND solution.site_id = :site_id
         ORDER BY solution.in_date ASC LIMIT 10000000";
-        $stmt = $this->pdo->query($sql);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':user_id' => $user_id, ':site_id' => $site_id]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -161,13 +166,14 @@ class SolutionRepository implements ISolutionRepository
         INNER JOIN 
             problem ON problem.problem_id = solution.problem_id
         WHERE 
-            solution.problem_id > 0 
+            solution.problem_id > 0
             AND (solution.contest_id IS NULL OR solution.contest_id = 0)
-            AND solution.user_id = '$user_id' 
+            AND solution.user_id = :user_id
             AND solution.result != 4
-            AND solution.site_id = $site_id
+            AND solution.site_id = :site_id
         ORDER BY solution.in_date ASC LIMIT 10000000";
-        $stmt = $this->pdo->query($sql);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':user_id' => $user_id, ':site_id' => $site_id]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

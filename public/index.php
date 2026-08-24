@@ -22,8 +22,8 @@ $dotenv->load();
 $environment = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'production';
 redirect();
 if ($environment !== 'development') {
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
     error_reporting(E_ALL);
     try {
         executeRouter();
@@ -31,9 +31,8 @@ if ($environment !== 'development') {
         handleException($e);
     }
 } else {
-    ini_set("display_errors", 0);
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
     executeRouter();
 }
