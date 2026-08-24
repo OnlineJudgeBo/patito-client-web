@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . "/Modules/Utils.php"; ?>
 <!DOCTYPE html>
 <html lang="es" class="h-full">
 <head>
@@ -7,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
-  <link rel="stylesheet" href="./assets/base.css">
+  <link rel="stylesheet" href="<?php echo assetVersion('./assets/base.css'); ?>">
   <?php echo file_get_contents(__DIR__ . '/partials/utils-header.php'); ?>
 </head>
 <body class="flex h-full flex-col">
@@ -177,7 +178,7 @@
       'canManageAdmin' => $canManageAdmin,
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
   </script>
-  <script src="./assets/auth-refresh.js"></script>
-  <script src="./assets/course.js"></script>
+  <script src="<?php echo assetVersion('./assets/auth-refresh.js'); ?>"></script>
+  <script src="<?php echo assetVersion('./assets/course.js'); ?>"></script>
 </body>
 </html>
