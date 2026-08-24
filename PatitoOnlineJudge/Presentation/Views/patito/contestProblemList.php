@@ -29,7 +29,7 @@
                         echo $contestDetail["contest_id"] . " " . closetags($contestDetail["title"]);
                         ?>
                     </h3>
-                    <h5 class="font-semibold leading-none tracking-tight py-2">
+                    <h5 class="oj-rich-content font-semibold leading-none tracking-tight py-2">
                         <?php
                         echo closetags($contestDetail["description"]);
                         ?>
