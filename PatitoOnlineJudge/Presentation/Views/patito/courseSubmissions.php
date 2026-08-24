@@ -23,7 +23,7 @@
       <div id="submissions-table" class="hidden overflow-x-auto">
         <table class="oj-table">
           <thead>
-            <tr><th>ID</th><th>Usuario</th><th>Problema</th><th>Resultado</th><th>Lenguaje</th><th>Fecha</th></tr>
+            <tr><th>ID</th><th>Usuario</th><th>Problema</th><th>Resultado</th><th>Lenguaje</th><th>Fecha</th><th>Acciones</th></tr>
           </thead>
           <tbody id="submissions-body"></tbody>
         </table>
@@ -37,9 +37,12 @@
       'siteId' => $siteId,
       'courseId' => $courseId,
       'assignmentId' => $assignmentId,
+      'userId' => $userId,
+      'canGrade' => $canGrade,
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
   </script>
   <script src="./assets/auth-refresh.js"></script>
+  <script src="./assets/manual-judge.js" defer></script>
   <script src="./assets/course-submissions.js"></script>
 </body>
 </html>
