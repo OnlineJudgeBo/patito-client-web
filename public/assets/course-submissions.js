@@ -4,6 +4,12 @@
     const courseBase = `${String(config.apiUrl || '/api').replace(/\/+$/, '')}/academic/sites/${Number(config.siteId) || 1}/courses/${Number(config.courseId)}`;
     const assignmentId = Number(config.assignmentId) || 0;
 
+    const RESULT_COLORS = {
+        0: 'gray', 1: 'gray', 2: 'orange', 3: 'orange', 4: 'green',
+        5: 'red', 6: 'red', 7: 'red', 8: 'red', 9: 'red', 10: 'red', 11: 'red', 12: 'red',
+        13: 'gray', 14: 'black'
+    };
+
     function token() {
         const item = document.cookie.split('; ').find((value) => value.startsWith('accessToken='));
         return item ? decodeURIComponent(item.slice(12)) : (localStorage.getItem('accessToken') || '');
@@ -17,16 +23,19 @@
         if (!response.ok) throw new Error(response.status === 403 ? 'No tienes acceso a los envíos de este curso.' : 'No se pudieron cargar los envíos.');
         return response.json();
     }
-    function cell(text, className) {
-        const result = document.createElement('td');
-        if (className) result.className = className;
-        result.textContent = text;
-        return result;
+
+    function resultBadge(item) {
+        const badge = document.createElement('div');
+        const color = RESULT_COLORS[Number(item.resultCode)] ?? 'gray';
+        badge.className = `status-result result-${color}`;
+        badge.textContent = item.statusLabel;
+        return badge;
     }
 
     function actionsCell(item) {
-        const result = document.createElement('td');
+        const result = document.createElement('span');
         result.className = 'flex items-center gap-2';
+        result.addEventListener('click', (event) => event.stopPropagation());
         const isOwner = config.userId != null && String(config.userId) === String(item.userId);
         const canGrade = config.canGrade === true;
 
@@ -105,6 +114,7 @@
             button.disabled = false;
         }
     }
+
     async function load() {
         if (assignmentId > 0) {
             const base = `${courseBase}/assignments/${assignmentId}`;
@@ -126,21 +136,49 @@
 
     load().then(({ title, items }) => {
         document.getElementById('assignment-title').textContent = `Envíos · ${title}`;
-        const body = document.getElementById('submissions-body');
-        document.getElementById('submissions-empty').classList.toggle('hidden', items.length !== 0);
-        document.getElementById('submissions-table').classList.toggle('hidden', items.length === 0);
-        items.forEach((item, index) => {
-            const row = document.createElement('tr');
-            row.className = index % 2 === 0 ? 'evenrow' : 'oddrow';
-            row.append(
-                cell(`#${item.solutionId}`), cell(item.nick || item.userId), cell(item.problemTitle),
-                cell(item.statusLabel, item.statusKey === 'accepted' ? 'result-green' : 'result-red'),
-                cell(item.languageName), cell(new Date(item.createdAtUtc).toLocaleString('es-BO')),
-                actionsCell(item)
-            );
-            body.append(row);
-        });
         document.getElementById('submissions-content').classList.remove('hidden');
+
+        const table = new DataTable('#status-table', {
+            data: items,
+            order: [],
+            pageLength: 100,
+            dom: 'Prtip',
+            searchPanes: { cascadePanes: true, viewTotal: true },
+            select: true,
+            columns: [
+                { title: 'ID', data: 'solutionId', render: (value) => `#${value}`, searchPanes: { show: false } },
+                { title: 'Usuario', data: null, render: (item) => item.nick || item.userId, searchPanes: { show: true } },
+                { title: 'Problema', data: 'problemTitle', searchPanes: { show: true } },
+                {
+                    title: 'Resultado', data: null, searchPanes: { show: true },
+                    render: (item) => item.statusLabel,
+                    createdCell: (cell, _cellData, item) => cell.replaceChildren(resultBadge(item))
+                },
+                { title: 'Lenguaje', data: 'languageName', searchPanes: { show: true } },
+                {
+                    title: 'Fecha', data: 'createdAtUtc', searchPanes: { show: false },
+                    render: (value, type) => (type === 'display' ? new Date(value).toLocaleString('es-BO') : value)
+                },
+                {
+                    title: 'Acciones', data: null, orderable: false, searchPanes: { show: false },
+                    render: () => '', createdCell: (cell, _cellData, item) => cell.appendChild(actionsCell(item))
+                }
+            ],
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json',
+                emptyTable: 'No hay envíos para mostrar',
+                searchPanes: {
+                    count: '{total}',
+                    countFiltered: '{shown} ({total})',
+                    emptyPanes: 'No hay paneles de búsqueda',
+                    clearMessage: 'Limpiar todo',
+                    collapse: { 0: 'Paneles de búsqueda', _: 'Paneles de búsqueda (%d)' },
+                    title: { _: 'Filtros Activos - %d', 0: '', 1: '' }
+                }
+            }
+        });
+
+        table.on('init.dt', () => applyDtFilterStyling());
     }).catch((error) => {
         const box = document.getElementById('submissions-error');
         box.textContent = error.message;
