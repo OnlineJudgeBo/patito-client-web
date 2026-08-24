@@ -61,10 +61,16 @@
     }
 
     function resultBadge(item) {
-        const badge = document.createElement('div');
         const color = RESULT_COLORS[Number(item.resultCode)] ?? 'gray';
+        const resultCode = Number(item.resultCode);
+        const showError = resultCode > 4 && canViewSource(item);
+        const badge = document.createElement(showError ? 'a' : 'div');
         badge.className = `status-result result-${color}`;
         badge.textContent = item.statusLabel;
+        if (showError) {
+            badge.href = `showError.php?sid=${item.solutionId}`;
+            badge.target = '_blank';
+        }
         return badge;
     }
 
