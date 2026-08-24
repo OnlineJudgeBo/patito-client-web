@@ -24,31 +24,29 @@
         return response.json();
     }
 
-    function resultBadge(item) {
-        const badge = document.createElement('div');
-        const color = RESULT_COLORS[Number(item.resultCode)] ?? 'gray';
-        badge.className = `status-result result-${color}`;
-        badge.textContent = item.statusLabel;
-        return badge;
+    function canViewSource(item) {
+        const isOwner = config.userId != null && String(config.userId) === String(item.userId);
+        return isOwner || config.canGrade === true;
     }
 
-    function actionsCell(item) {
-        const result = document.createElement('span');
-        result.className = 'flex items-center gap-2';
-        result.addEventListener('click', (event) => event.stopPropagation());
-        const isOwner = config.userId != null && String(config.userId) === String(item.userId);
-        const canGrade = config.canGrade === true;
-
-        if (isOwner || canGrade) {
-            const viewLink = document.createElement('a');
-            viewLink.href = `showsource.php?id=${item.solutionId}`;
-            viewLink.target = '_blank';
-            viewLink.className = 'text-blue-500 hover:text-blue-700';
-            viewLink.textContent = 'Ver código';
-            result.append(viewLink);
+    function languageCell(item) {
+        if (!canViewSource(item)) {
+            return document.createTextNode(item.languageName);
         }
+        const link = document.createElement('a');
+        link.href = `showsource.php?id=${item.solutionId}`;
+        link.target = '_blank';
+        link.className = 'text-blue-500 hover:text-blue-700';
+        link.textContent = item.languageName;
+        return link;
+    }
 
-        if (canGrade) {
+    function resultCell(item) {
+        const result = document.createElement('span');
+        result.className = 'flex items-center gap-4';
+        result.addEventListener('click', (event) => event.stopPropagation());
+
+        if (config.canGrade === true) {
             const rejudgeButton = document.createElement('button');
             rejudgeButton.type = 'button';
             rejudgeButton.className = 'border-b hover:bg-muted/50';
@@ -58,7 +56,16 @@
             result.append(buildManualJudgeControls(item.solutionId, item.resultCode));
         }
 
+        result.append(resultBadge(item));
         return result;
+    }
+
+    function resultBadge(item) {
+        const badge = document.createElement('div');
+        const color = RESULT_COLORS[Number(item.resultCode)] ?? 'gray';
+        badge.className = `status-result result-${color}`;
+        badge.textContent = item.statusLabel;
+        return badge;
     }
 
     function buildManualJudgeControls(solutionId, currentResult) {
@@ -150,18 +157,18 @@
                 { title: 'Usuario', data: null, render: (item) => item.nick || item.userId, searchPanes: { show: true } },
                 { title: 'Problema', data: 'problemTitle', searchPanes: { show: true } },
                 {
+                    title: 'Lenguaje', data: null, searchPanes: { show: true },
+                    render: (item) => item.languageName,
+                    createdCell: (cell, _cellData, item) => cell.replaceChildren(languageCell(item))
+                },
+                {
                     title: 'Resultado', data: null, searchPanes: { show: true },
                     render: (item) => item.statusLabel,
-                    createdCell: (cell, _cellData, item) => cell.replaceChildren(resultBadge(item))
+                    createdCell: (cell, _cellData, item) => cell.replaceChildren(resultCell(item))
                 },
-                { title: 'Lenguaje', data: 'languageName', searchPanes: { show: true } },
                 {
                     title: 'Fecha', data: 'createdAtUtc', searchPanes: { show: false },
                     render: (value, type) => (type === 'display' ? new Date(value).toLocaleString('es-BO') : value)
-                },
-                {
-                    title: 'Acciones', data: null, orderable: false, searchPanes: { show: false },
-                    render: () => '', createdCell: (cell, _cellData, item) => cell.appendChild(actionsCell(item))
                 }
             ],
             language: {
