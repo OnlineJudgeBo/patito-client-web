@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . "/Modules/Utils.php"; ?>
 <!DOCTYPE html>
 <html lang="es" class="h-full">
 
@@ -6,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./assets/base.css">
+    <link rel="stylesheet" href="<?php echo assetVersion('./assets/base.css'); ?>">
     <?php echo file_get_contents(__DIR__."/partials/utils-header.php"); ?>
 </head>
 

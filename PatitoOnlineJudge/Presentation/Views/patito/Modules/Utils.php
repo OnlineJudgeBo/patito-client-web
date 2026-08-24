@@ -1,4 +1,11 @@
 <?php
+function assetVersion($relativePath)
+{
+    $file = ($_SERVER['DOCUMENT_ROOT'] ?? '') . '/' . ltrim($relativePath, './');
+    $version = @filemtime($file);
+    return $relativePath . '?v=' . ($version ?: time());
+}
+
 function closetags($html)
 {
     preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);

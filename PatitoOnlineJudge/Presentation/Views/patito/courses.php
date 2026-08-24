@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . "/Modules/Utils.php"; ?>
 <!DOCTYPE html>
 <html lang="es" class="h-full">
 <head>
@@ -5,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./assets/base.css">
+  <link rel="stylesheet" href="<?php echo assetVersion('./assets/base.css'); ?>">
   <?php echo file_get_contents(__DIR__ . '/partials/utils-header.php'); ?>
 </head>
 <body class="flex h-full flex-col">
@@ -117,7 +118,7 @@
       'canManageAdmin' => $canManageAdmin,
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
   </script>
-  <script src="./assets/auth-refresh.js"></script>
-  <script src="./assets/courses.js"></script>
+  <script src="<?php echo assetVersion('./assets/auth-refresh.js'); ?>"></script>
+  <script src="<?php echo assetVersion('./assets/courses.js'); ?>"></script>
 </body>
 </html>

@@ -166,6 +166,59 @@
     border-bottom: 0;
 }
 
+.oj-table thead {
+    color: #334155;
+    background: #f8fafc;
+}
+
+.oj-table th {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #cbd5e1;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-transform: none;
+}
+
+.oj-table .status-result {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+.oj-table .status-result.result-green {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.oj-table .status-result.result-red {
+    color: #991b1b;
+    background: #fff7ed;
+    border-color: #fed7aa;
+}
+
+.oj-table .status-result.result-black {
+    color: #ffffff;
+    background: #000000;
+    border-color: #000000;
+}
+
+.oj-table .status-result.result-blue,
+.oj-table .status-result.result-orange,
+.oj-table .status-result.result-gray {
+    color: #475569;
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
 #contest-table thead {
     color: #fff;
     background: #111827;

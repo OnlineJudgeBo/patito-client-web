@@ -1,4 +1,5 @@
 <?php require_once __DIR__ . "/../Modules/ManualJudgeControls.php"; ?>
+<?php require_once __DIR__ . "/Modules/Utils.php"; ?>
 <!DOCTYPE html>
 <html lang="es" class="h-full">
 
@@ -7,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./assets/base.css">
+    <link rel="stylesheet" href="<?php echo assetVersion('./assets/base.css'); ?>">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.tailwindcss.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
@@ -16,8 +17,9 @@
     <script src="https://cdn.datatables.net/searchpanes/2.3.0/js/searchPanes.dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.css">
     <script src="https://cdn.datatables.net/select/2.0.0/js/dataTables.select.js"></script>
-    <script src="./assets/auth-refresh.js" defer></script>
-    <script src="./assets/manual-judge.js" defer></script>
+    <script src="<?php echo assetVersion('./assets/auth-refresh.js'); ?>" defer></script>
+    <script src="<?php echo assetVersion('./assets/manual-judge.js'); ?>" defer></script>
+    <script src="<?php echo assetVersion('./assets/datatable-filters.js'); ?>"></script>
     <script src="https://cdn.datatables.net/select/2.0.0/js/select.dataTables.js"></script>
     <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
     <style>
@@ -84,59 +86,6 @@
         .dtsp-searchPane a {
             pointer-events: none;
             color: inherit;
-        }
-
-        #status-table thead {
-            color: #334155;
-            background: #f8fafc;
-        }
-
-        #status-table th {
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid #cbd5e1;
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-            text-transform: none;
-        }
-
-        #status-table .status-result {
-            display: inline-flex;
-            align-items: center;
-            min-height: 1.75rem;
-            padding: 0.3rem 0.65rem;
-            border: 1px solid transparent;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            line-height: 1.15;
-            white-space: nowrap;
-        }
-
-        #status-table .status-result.result-green {
-            color: #166534;
-            background: #f0fdf4;
-            border-color: #bbf7d0;
-        }
-
-        #status-table .status-result.result-red {
-            color: #991b1b;
-            background: #fff7ed;
-            border-color: #fed7aa;
-        }
-
-        #status-table .status-result.result-black {
-            color: #ffffff;
-            background: #000000;
-            border-color: #000000;
-        }
-
-        #status-table .status-result.result-blue,
-        #status-table .status-result.result-orange,
-        #status-table .status-result.result-gray {
-            color: #475569;
-            background: #f8fafc;
-            border-color: #e2e8f0;
         }
 
         #status-table .status-metric {
@@ -445,25 +394,7 @@
         var container = document.querySelector(".dtsp-titleRow");
         container.appendChild(newButton);
 
-        $('.dtsp-collapseAll').click();
-        $('.dtsp-paneButton.dtsp-nameButton.dtsp-disabledButton').removeClass('dtsp-paneButton dtsp-nameButton dtsp-disabledButton');
-        $('.dtsp-paneButton.dtsp-countButton').removeClass('dtsp-paneButton dtsp-countButton');
-        $('.dtsp-collapseAll').text('Ocultar Filtros');
-        $('.dtsp-showAll').text('Mostrar Filtros');
-        $('.dtsp-titleRow').addClass('flex flex-row items-center');
-        $('.dtsp-titleRow > button').addClass('text-black py-2 px-4 mr-2 mb-2 transition ease-in-out duration-150 shadow-md').each(function() {
-            if ($(this).is('.dtsp-disabledButton, :disabled')) {
-                $(this).addClass('bg-gray-300 border-gray-400 text-gray-500 cursor-not-allowed');
-            } else {
-                $(this).addClass('bg-blue-200 hover:bg-blue-300 focus:bg-blue-300 border-blue-300 hover:shadow-lg focus:shadow-lg');
-
-                $(this).on('focus', function() {
-                    $(this).addClass('ring ring-blue-300 ring-offset-2 ring-opacity-50');
-                }).on('blur', function() {
-                    $(this).removeClass('ring ring-blue-300 ring-offset-2 ring-opacity-50');
-                });
-            }
-        });
+        applyDtFilterStyling();
     })
 
     function performSearch() {
