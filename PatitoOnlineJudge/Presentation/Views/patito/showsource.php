@@ -54,7 +54,7 @@
 <body class="flex flex-col h-full">
 
     <?php require_once "oj-header.php" ?>
-    <?php require __DIR__ . "/Modules/Utils.php"; ?>
+    <?php require_once __DIR__ . "/Modules/Utils.php"; ?>
     <?php
     include(__DIR__ . "/../../../../Legacy/Include/const.inc.php");
     $language = "";
