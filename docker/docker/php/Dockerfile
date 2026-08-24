@@ -9,6 +9,12 @@ RUN apt-get update \
     && docker-php-ext-install pdo_mysql mysqli zip gd \
     && rm -rf /var/lib/apt/lists/* /etc/nginx/sites-enabled/default
 
+# php-fpm clears the process environment for each worker by default, so
+# docker-compose `environment:` values (DB_HOST, DB_PASS, JWT_SECRET_KEY, ...)
+# never reach the app - it silently falls back to AppConfig's hardcoded
+# placeholder DB credentials instead.
+RUN printf '[www]\nclear_env = no\n' > /usr/local/etc/php-fpm.d/docker-env.conf
+
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY docker/docker/php/nginx.conf /etc/nginx/conf.d/default.conf
 COPY docker/docker/php/entrypoint.sh /usr/local/bin/patito-entrypoint
