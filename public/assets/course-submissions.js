@@ -23,6 +23,88 @@
         result.textContent = text;
         return result;
     }
+
+    function actionsCell(item) {
+        const result = document.createElement('td');
+        result.className = 'flex items-center gap-2';
+        const isOwner = config.userId != null && String(config.userId) === String(item.userId);
+        const canGrade = config.canGrade === true;
+
+        if (isOwner || canGrade) {
+            const viewLink = document.createElement('a');
+            viewLink.href = `showsource.php?id=${item.solutionId}`;
+            viewLink.target = '_blank';
+            viewLink.className = 'text-blue-500 hover:text-blue-700';
+            viewLink.textContent = 'Ver código';
+            result.append(viewLink);
+        }
+
+        if (canGrade) {
+            const rejudgeButton = document.createElement('button');
+            rejudgeButton.type = 'button';
+            rejudgeButton.className = 'border-b hover:bg-muted/50';
+            rejudgeButton.textContent = 'Rejudge';
+            rejudgeButton.onclick = () => rejudgeSolution(item.solutionId, rejudgeButton);
+            result.append(rejudgeButton);
+            result.append(buildManualJudgeControls(item.solutionId, item.resultCode));
+        }
+
+        return result;
+    }
+
+    function buildManualJudgeControls(solutionId, currentResult) {
+        const verdicts = {
+            4: 'Accepted', 5: 'Presentation Error', 6: 'Wrong Answer', 7: 'Time Limit Exceed',
+            8: 'Memory Limit Exceed', 9: 'Output Limit Exceed', 10: 'Runtime Error',
+            11: 'Compile Error', 14: 'IA Detected'
+        };
+        const span = document.createElement('span');
+        span.className = 'manual-judge-controls inline-flex items-center gap-1';
+        span.dataset.solutionId = String(solutionId);
+
+        const select = document.createElement('select');
+        select.dataset.apiBase = config.apiUrl || '/api';
+        select.setAttribute('aria-label', 'Nuevo veredicto');
+        select.className = 'manual-verdict-select rounded border border-slate-300 bg-white px-2 py-1 text-xs';
+        Object.entries(verdicts).forEach(([resultCode, label]) => {
+            const option = document.createElement('option');
+            option.value = resultCode;
+            option.textContent = label;
+            option.selected = Number(resultCode) === Number(currentResult);
+            select.append(option);
+        });
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'rounded border border-slate-400 px-2 py-1 text-xs hover:bg-slate-100 disabled:opacity-50';
+        button.textContent = 'Cambiar';
+        button.onclick = () => manuallyJudgeSolution(button);
+
+        span.append(select, button);
+        return span;
+    }
+
+    async function rejudgeSolution(solutionId, button) {
+        button.disabled = true;
+        try {
+            let response = await fetch(`${config.apiUrl}/Judge/rejudge/solution/${solutionId}`, {
+                headers: { Authorization: `Bearer ${token()}` }
+            });
+            if (response.status === 401 && window.PatitoAuth) {
+                const freshToken = await window.PatitoAuth.refreshAccessToken();
+                if (freshToken) {
+                    response = await fetch(`${config.apiUrl}/Judge/rejudge/solution/${solutionId}`, {
+                        headers: { Authorization: `Bearer ${freshToken}` }
+                    });
+                }
+            }
+            if (!response.ok) throw new Error('No se pudo reenviar a juzgar.');
+            window.location.reload();
+        } catch (error) {
+            window.alert(error.message);
+            button.disabled = false;
+        }
+    }
     async function load() {
         if (assignmentId > 0) {
             const base = `${courseBase}/assignments/${assignmentId}`;
@@ -53,7 +135,8 @@
             row.append(
                 cell(`#${item.solutionId}`), cell(item.nick || item.userId), cell(item.problemTitle),
                 cell(item.statusLabel, item.statusKey === 'accepted' ? 'result-green' : 'result-red'),
-                cell(item.languageName), cell(new Date(item.createdAtUtc).toLocaleString('es-BO'))
+                cell(item.languageName), cell(new Date(item.createdAtUtc).toLocaleString('es-BO')),
+                actionsCell(item)
             );
             body.append(row);
         });

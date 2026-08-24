@@ -90,6 +90,11 @@ class AcademicCourseController
         $title = 'Envíos del contest';
         $apiUrl = rtrim((string) ($_SERVER['APP_DOMAIN_API'] ?? $_ENV['APP_DOMAIN_API'] ?? '/api'), '/');
         $siteId = (int) ($_SERVER['SITE_ID'] ?? $_ENV['SITE_ID'] ?? 1);
+        $userId = $_SESSION['user_id'] ?? null;
+        $canGrade =
+            (isset($_SESSION['Administrador']) && $_SESSION['Administrador'] === 'Administrador') ||
+            (isset($_SESSION['Docente']) && $_SESSION['Docente'] === 'Docente') ||
+            (isset($_SESSION['Auxiliar']) && $_SESSION['Auxiliar'] === 'Auxiliar');
         require $currentTheme . '/courseSubmissions.php';
     }
 }
