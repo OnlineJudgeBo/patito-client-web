@@ -36,4 +36,8 @@ interface ILoginRepository
     public function updateUserProfile($user_id, UserDomainObject $userData, $site_id);
 
     public function isEmailAvailableForChange($email, $user_id, $site_id);
+
+    public function isUserIdTaken($user_id, $except_user_id);
+
+    public function renameUser($old_user_id, $new_user_id, $site_id);
 }

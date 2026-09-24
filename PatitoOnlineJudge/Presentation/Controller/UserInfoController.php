@@ -2,6 +2,7 @@
 
 namespace PatitoOnlineJudge\Presentation\Controller;
 
+use PatitoOnlineJudge\Core\Application\Exceptions\ApplicationException;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IUserInfoService;
 use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
@@ -39,8 +40,14 @@ class UserInfoController
         $user->lastname = $data["lastname"];
         $user->userId   = $this->userId;
         $user->password = $data["password"];
+        $user->newUserId = $data["user_id"] ?? '';
 
-        $this->loginService->updateUserProfile($this->userId, $user);
+        try {
+            $this->loginService->updateUserProfile($this->userId, $user);
+        } catch (ApplicationException $e) {
+            $this->error = $e->getMessage();
+            return;
+        }
         header('Location: ./userInfo.php');
         exit;
     }
@@ -55,6 +62,7 @@ class UserInfoController
         $userDisplayName = $userDisplayName !== '' ? $userDisplayName : (string)$this->userId;
         $_SESSION['user_display_name'] = $userDisplayName;
         $title = $this->title;
+        $error = $this->error;
         require_once $current_theme . "/userInfo.php";
     }
 }

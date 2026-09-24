@@ -33,7 +33,19 @@ class UserValidator
         $this->validateName($userData->lastname, "Apellido del usuario");
         $this->validateUsernameNotEmpty($userData->lastname, "Apellido del usuario");
 
-        $this->validateEmailUniqueToChange($userData->userId, $userData->email);
+        $this->validateEmailUniqueToChange($userData->email, $userData->userId);
+    }
+
+    public function validateNewUserId($newUserId, $currentUserId)
+    {
+        // Same rule as the admin API (UserService / PublicService.Register).
+        if (!preg_match('/^[A-Za-z0-9_]{3,20}$/', (string)$newUserId)) {
+            throw new ApplicationException("El nombre de usuario debe tener de 3 a 20 caracteres: letras, números o guion bajo.");
+        }
+
+        if ($this->userRepository->isUserIdTaken($newUserId, $currentUserId)) {
+            throw new ApplicationException("El nombre de usuario {$newUserId} ya está en uso.");
+        }
     }
 
     protected function validateUsername($username, $field = "nombre de usuario")
