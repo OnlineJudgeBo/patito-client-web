@@ -40,7 +40,9 @@ CREATE TABLE `contest` (
   `langmask` int(11) NOT NULL DEFAULT 0 COMMENT 'bits for LANG to mask',
   `obi` tinyint(1) NOT NULL DEFAULT 0,
   `track` varchar(32) DEFAULT NULL,
-  `level` varchar(32) DEFAULT NULL
+  `level` varchar(32) DEFAULT NULL,
+  `is_exam` tinyint(1) NOT NULL DEFAULT 0,
+  `exam_lab_ips` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
@@ -549,7 +551,8 @@ ALTER TABLE `custom_input_case`
 --
 ALTER TABLE `loginlog`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `site_id` (`site_id`);
+  ADD KEY `site_id` (`site_id`),
+  ADD KEY `idx_loginlog_user_time` (`user_id`, `time`);
 
 --
 -- Indices de la tabla `news`
