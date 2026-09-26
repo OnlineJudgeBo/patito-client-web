@@ -107,6 +107,10 @@
     }
 
     async function rejudgeSolution(solutionId, button) {
+        if (config.canGrade !== true) {
+            window.alert('No tienes permiso para reenviar a juzgar.');
+            return;
+        }
         button.disabled = true;
         try {
             let response = await fetch(`${config.apiUrl}/Judge/rejudge/solution/${solutionId}`, {
