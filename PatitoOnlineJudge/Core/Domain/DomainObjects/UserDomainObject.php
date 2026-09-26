@@ -5,6 +5,7 @@ namespace PatitoOnlineJudge\Core\Domain\DomainObjects;
 class UserDomainObject
 {
     public $userId;
+    public $newUserId;
     public $email;
     public $ip;
     public $accessTime;

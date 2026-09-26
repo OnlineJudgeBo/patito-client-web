@@ -34,6 +34,21 @@
                     <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
                         <h2 class="text-xl font-bold mb-6">Editar datos de cuenta</h2>
                         <form method="POST">
+                            <?php if (!empty($error)): ?>
+                                <div class="mb-4 rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+                            <?php endif; ?>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="user_id">Nombre de usuario</label>
+                                <input
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    value="<?php echo htmlspecialchars((string)($_POST['user_id'] ?? $_SESSION['user_id'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
+                                    id="user_id"
+                                    name="user_id"
+                                    type="text"
+                                    pattern="[A-Za-z0-9_]{3,20}"
+                                    title="3 a 20 caracteres: letras, números o guion bajo">
+                                <p class="text-xs text-gray-500 mt-1">Tus envíos, concursos y cursos se mantienen al cambiarlo. Desde ahora inicia sesión con el nuevo nombre.</p>
+                            </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Nombre</label>
                                 <input

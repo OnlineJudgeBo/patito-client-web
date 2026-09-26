@@ -157,6 +157,22 @@ class LoginService implements ILoginService
             $this->userRecoveryPassword($userEmail["email"]);
         }
         $this->userValidator->validateProfileToUpdate($user, $this->site_id);
+
+        $newUserId = trim((string)($user->newUserId ?? ''));
+        if ($newUserId !== '' && $newUserId !== $userId) {
+            $this->userValidator->validateNewUserId($newUserId, $userId);
+            $this->loginRepository->renameUser($userId, $newUserId, $this->site_id);
+            $userId = $newUserId;
+            $user->userId = $newUserId;
+            $this->startUserSession($this->loginRepository->getUser($userId, $this->site_id));
+            // Old tokens carry the old id as "sub"; reissue them so the admin UI / IDE keep working.
+            $tokens = $this->jwtService->generateTokens($userId, $this->loginRepository->getAdminPrivilege($userId, $this->site_id));
+            $isSecureRequest = $this->isSecureRequest();
+            setcookie('accessToken', $tokens["accessToken"], 0, '/', '', $isSecureRequest, false);
+            setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', $isSecureRequest, false);
+            setcookie('user_id', $userId, 0, '/', '', $isSecureRequest, false);
+        }
+
         $this->loginRepository->updateUserProfile($userId, $user, $this->site_id);
         $_SESSION['user_display_name'] = $this->getUserDisplayName([
             'user_id' => $userId,

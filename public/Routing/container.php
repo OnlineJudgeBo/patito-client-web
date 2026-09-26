@@ -125,4 +125,10 @@ $builder->addDefinitions([
 
 $container = $builder->build();
 
+// A user renamed by an admin keeps the old id in their PHP session; drop it so they log in again
+// instead of submitting under a user_id that no longer exists.
+if (!empty($_SESSION['user_id']) && empty($container->get(ILoginRepository::class)->getUser($_SESSION['user_id'], $_SERVER['SITE_ID']))) {
+    $_SESSION = [];
+}
+
 return $container;
