@@ -104,7 +104,7 @@ class ContestRankExcelController
                         $element = $sec2str($row->p_ac_sec[$j]);
                     }
                     if ($obi == 1) {
-                        if ($row->pass_rate[$j] > 0) {
+                        if (($row->pass_rate[$j] ?? 0) > 0) {
                             $element = $element . " " . (float)$row->pass_rate[$j];
                         } else {
                             if (
