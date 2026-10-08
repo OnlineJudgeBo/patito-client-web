@@ -35,8 +35,8 @@ class ContestRankController
 
         $start_time = strtotime($contest["start_time"]);
         $end_time = strtotime($contest["end_time"]);
-        $obi = 0;
-        $contestRank = $this->contestRankService->getContestRankListById($this->cid, $start_time, $end_time);
+        $obi = (int)($contest["obi"] ?? 0);
+        $contestRank = $this->contestRankService->getContestRankListById($this->cid, $start_time, $end_time, $obi);
         $first_blood = $this->contestRankService->getFirstBlood($this->cid);
         $sec2str = function ($sec) {
             return sprintf("%02d:%02d:%02d", $sec / 3600, $sec % 3600 / 60, $sec % 60);

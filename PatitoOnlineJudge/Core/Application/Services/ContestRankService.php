@@ -22,10 +22,9 @@ class ContestRankService implements IContestRankService
         return $this->contestRankRepository->getFirstBlood($cid, $this->site_id);
     }
 
-    public function getContestRankListById($cid, $start_time, $end_time)
+    public function getContestRankListById($cid, $start_time, $end_time, $obi = 0)
     {
         $rows = $this->contestRankRepository->getContestSolutions($cid, $this->site_id );
-        $obi = 0;
         $user_cnt = 0;
         $user_name = '';
         $U = array();
@@ -43,22 +42,13 @@ class ContestRankService implements IContestRankService
 
                 $user_name = $n_user;
             }
-            if (time() < $end_time && $lock < strtotime($row['in_date'])) {
-                if ($obi == 1) {
-                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 0, 0, 1, $row['is_virtual']);
-                } else {
-                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 0, 0, 0, $row['is_virtual']);
-                }
+            $sec = strtotime($row['in_date']) - $start_time;
+            $frozen = time() < $end_time && $lock < strtotime($row['in_date']);
+            if ($obi == 1) {
+                // A frozen submission counts as sent but shows no score yet.
+                $U[$user_cnt]->AddPoints($row['num'], $sec, $frozen ? 0 : $row['pass_rate'], $row['is_virtual']);
             } else {
-                if ($obi == 1) {
-                    if ($row['pass_rate'] > 0.0) {
-                        $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, 4, $row['pass_rate'], 1, 0, $row['is_virtual']);
-                    } else {
-                        $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, intval($row['result']), 0, 1, $row['is_virtual']);
-                    }
-                } else {
-                    $U[$user_cnt]->Add($row['num'], strtotime($row['in_date']) - $start_time, intval($row['result']), 0, 0, $row['is_virtual']);
-                }
+                $U[$user_cnt]->Add($row['num'], $sec, $frozen ? 0 : intval($row['result']), 0, 0, $row['is_virtual']);
             }
         }
         

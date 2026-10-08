@@ -36,8 +36,8 @@ class ContestRankExcelController
         $contest = $this->contestService->getContestById($this->cid);
         $start_time = strtotime($contest["start_time"]);
         $end_time = strtotime($contest["end_time"]);
-        $obi = 0;
-        $contestRank = $this->contestRankService->getContestRankListById($this->cid, $start_time, $end_time);
+        $obi = (int)($contest["obi"] ?? 0);
+        $contestRank = $this->contestRankService->getContestRankListById($this->cid, $start_time, $end_time, $obi);
 
         $sec2str = function ($sec) {
             return sprintf("%02d:%02d:%02d", $sec / 3600, $sec % 3600 / 60, $sec % 60);
@@ -90,7 +90,7 @@ class ContestRankExcelController
             array_push($data, $row->nick);
             array_push($data, $row->lastname);
             array_push($data, $row->user_id);
-            array_push($data, $row->solved);
+            array_push($data, $obi == 1 ? $row->points : $row->solved);
             //array_push($data, $sec2str($row->time));
 
 
@@ -105,7 +105,7 @@ class ContestRankExcelController
                     }
                     if ($obi == 1) {
                         if ($row->pass_rate[$j] > 0) {
-                            $element = $element . " " . " (" . intval($row->pass_rate[$j]) . "%)";
+                            $element = $element . " " . (float)$row->pass_rate[$j];
                         } else {
                             if (
                                 isset($row->p_wa_num[$j]) &&
