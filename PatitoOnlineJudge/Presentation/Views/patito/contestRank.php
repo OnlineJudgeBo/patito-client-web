@@ -62,7 +62,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">NOMBRE</th>
                                         <th scope="col">USUARIO</th>
-                                        <th scope="col">RESUELTOS</th>
+                                        <th scope="col"><?php echo $obi == 1 ? "PUNTOS" : "RESUELTOS" ?></th>
                                         <!-- <th scope="col">PENALIDAD</th> -->
                                         <?php
                                         foreach ($problems as $key => $value) {
@@ -86,7 +86,7 @@
                                             <td><span class="oj-rank-position" data-position="<?php echo ($index + 1) ?>"><?php echo ($index + 1) ?></span></td>
                                             <td class="px-2"><?php echo htmlspecialchars($row->nick) ?></td>
                                             <td class="px-2"><?php echo htmlspecialchars($row->user_id) ?></td>
-                                            <td class="px-2"><span class="oj-stat"><?php echo $row->solved ?></span></td>
+                                            <td class="px-2"><span class="oj-stat"><?php echo $obi == 1 ? (float)$row->points : $row->solved ?></span></td>
                                             <!--
                                             <td class="px-2"><?php echo $sec2str($row->time) ?></td>
                                             -->
@@ -132,8 +132,8 @@
                                                     echo $sec2str($row->p_ac_sec[$j]);
                                                 }
                                                 if ($obi == 1) {
-                                                    if ($row->pass_rate[$j] > 0) {
-                                                        echo " (" . intval($row->pass_rate[$j]) . "%)";
+                                                    if (($row->pass_rate[$j] ?? 0) > 0) {
+                                                        echo " <strong>" . (float)$row->pass_rate[$j] . "</strong>";
                                                     } else {
                                                         if (
                                                             isset($row->p_wa_num[$j]) &&

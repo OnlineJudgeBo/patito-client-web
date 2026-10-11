@@ -188,6 +188,9 @@
                                         echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
                                     } elseif ($value["result"] == 4) {
                                         echo  $judge_result[$value["result"]];
+                                    } elseif ($value["pass_rate"] > 0) {
+                                        // Scored by points: some tests passed.
+                                        echo "Parcial";
                                     } else {
                                         if (
                                             isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
@@ -199,6 +202,10 @@
                                         } else {
                                             echo $judge_result[$value["result"]];
                                         }
+                                    }
+                                    // Problems scored by points show the score next to the verdict.
+                                    if ($value["result"] > 3 && $value["pass_rate"] > 0) {
+                                        echo " · " . (float)round($value["pass_rate"] * 100, 2);
                                     }
                                     ?>
                                 </div>

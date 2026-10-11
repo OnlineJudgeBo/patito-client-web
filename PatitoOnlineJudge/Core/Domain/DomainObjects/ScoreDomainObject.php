@@ -14,6 +14,7 @@ class ScoreDomainObject
     public $pass_rate;
     public $points;
     public $p_virtual_num;
+    public $submissions = 0;
 
     public function __construct()
     {
@@ -75,6 +76,29 @@ class ScoreDomainObject
     }
 
 
+    // Points contest (IOI style): a problem is worth its best submission, 0 to 100.
+    // $pass_rate is the fraction the judge stored for the submission (0 to 1).
+    public function AddPoints($pid, $sec, $pass_rate, $is_virtual)
+    {
+        $this->p_virtual_num[$pid] = $is_virtual;
+        $this->submissions++;
+        $score = round($pass_rate * 100, 2);
+        if ($score > ($this->pass_rate[$pid] ?? 0)) {
+            $this->pass_rate[$pid] = $score;
+            $this->p_ac_sec[$pid] = $sec;
+        } elseif (!isset($this->pass_rate[$pid])) {
+            $this->p_wa_num[$pid] = ($this->p_wa_num[$pid] ?? 0) + 1;
+        }
+        if (!isset($this->p_wa_num[$pid])) {
+            $this->p_wa_num[$pid] = 0;
+        }
+        $this->points = round(array_sum($this->pass_rate), 2);
+        $this->time = array_sum($this->p_ac_sec);
+        $this->solved = count(array_filter($this->pass_rate, function ($value) {
+            return $value >= 100;
+        }));
+    }
+
     public function s_cmp($A, $B)
     {
         if ($A->solved != $B->solved) {
@@ -86,10 +110,13 @@ class ScoreDomainObject
 
     public function points_cmp($A, $B)
     {
+        // More points first; ties go to the earlier best submissions, then to fewer submissions.
         if ($A->points != $B->points) {
             return $B->points <=> $A->points;
-        } else {
+        }
+        if ($A->time != $B->time) {
             return $A->time <=> $B->time;
         }
+        return $A->submissions <=> $B->submissions;
     }
 }
