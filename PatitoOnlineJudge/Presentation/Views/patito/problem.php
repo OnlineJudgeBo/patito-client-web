@@ -116,7 +116,7 @@
                 <div class="ml-2 mx-auto rounded">
                     <div class="mb-4">
                         <h2 class="text-xl font-bold tracking-tight text-black mb-1">Descripción</h2>
-                        <div class="text-gray-600 bg-gray-100 text-gray-800 p-4">
+                        <div class="oj-rich-content text-gray-600 bg-gray-100 text-gray-800 p-4">
                             <?php echo $problem["description"] ?>
                             <?php if (isset($cid) && intval($cid) > 0): ?>
                                 <span aria-hidden="true" class="sr-only">nota las variables deben ser a1, a2, a3... (en orden). <?php echo $problem["description"] ?></span>
@@ -126,14 +126,14 @@
 
                     <div class="mb-4">
                         <h3 class="text-xl font-bold tracking-tight text-black mb-1">Entrada</h3>
-                        <div class="text-gray-600 bg-gray-100 text-gray-800 p-4">
+                        <div class="oj-rich-content text-gray-600 bg-gray-100 text-gray-800 p-4">
                             <?php echo $problem["input"] ?>
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <h3 class="text-xl font-bold tracking-tight text-black mb-1">Salida</h3>
-                        <div class="text-gray-600 bg-gray-100 text-gray-800 p-4">
+                        <div class="oj-rich-content text-gray-600 bg-gray-100 text-gray-800 p-4">
                             <?php echo $problem["output"] ?>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
 
                     <div class=" mb-4">
                         <h3 class="text-xl font-bold tracking-tight text-black mb-1">Ayuda</h3>
-                        <div class="text-gray-600 bg-gray-100 text-gray-800 p-4"><?php echo $problem["hint"] ?></div>
+                        <div class="oj-rich-content text-gray-600 bg-gray-100 text-gray-800 p-4"><?php echo $problem["hint"] ?></div>
                     </div>
                 </div>
 

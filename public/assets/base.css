@@ -377,6 +377,22 @@
 .oj-rich-content ol { margin: 0.65rem 0; padding-left: 1.5rem; list-style: decimal; }
 .oj-rich-content a { color: #1d4ed8; text-decoration: underline; }
 .oj-rich-content blockquote { margin: 0.8rem 0; border-left: 4px solid #94a3b8; padding-left: 1rem; color: #475569; }
+/* Imported statements carry a <br> between paragraphs from when these had no margin. */
+.oj-rich-content p + br { display: none; }
+/* What the editor of the panel writes for a resized or aligned image. */
+.oj-rich-content::after { content: ""; display: block; clear: both; }
+.oj-rich-content figure.image { display: table; clear: both; margin: 0.75rem auto; }
+.oj-rich-content figure.image img { display: block; margin: 0 auto; }
+.oj-rich-content figure.image figcaption { display: table-caption; caption-side: bottom; text-align: center; font-size: 0.85em; color: #475569; }
+.oj-rich-content img { display: inline-block; }
+.oj-rich-content .image_resized { max-width: 100%; }
+.oj-rich-content figure.image_resized img { width: 100%; }
+.oj-rich-content .image-style-align-left { float: left; margin: 0.25rem 1rem 0.5rem 0; }
+.oj-rich-content .image-style-align-right { float: right; margin: 0.25rem 0 0.5rem 1rem; }
+
+/* The title or the description of a contest may link to its original problem set. */
+.oj-contest-heading a { color: #1d4ed8; text-decoration: underline; }
+.oj-contest-heading a:hover { color: #1e3a8a; }
 
 .manual-verdict-select,
 table.dataTable > tbody > tr.selected .manual-verdict-select {
