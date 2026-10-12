@@ -70,7 +70,10 @@ class SolutionRepository implements ISolutionRepository
     {
         $language_ext = array("c", "cc", "pas", "java", "rb", "sh", "py", "php", "pl", "cs", "m", "bas", "", "", "", "py", "cc", "py", "go", "py");
 
-        $sql = "SELECT solution.*, similar_code.similar_s_id, similar_code.percentage
+        // has_detail: the judge left something to show for the submission (compile error, failed test).
+        $sql = "SELECT solution.*, similar_code.similar_s_id, similar_code.percentage, problem.spj,
+            (EXISTS (SELECT 1 FROM runtimeinfo r WHERE r.solution_id = solution.solution_id)
+                OR EXISTS (SELECT 1 FROM compileinfo c WHERE c.solution_id = solution.solution_id)) AS has_detail
         FROM solution
         INNER JOIN  problem ON problem.problem_id = solution.problem_id
         LEFT JOIN similar_code ON solution.solution_id = similar_code.solution_id

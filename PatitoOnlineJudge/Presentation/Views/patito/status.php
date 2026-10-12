@@ -198,27 +198,33 @@
                                         echo  "<div class='pending'>" . $judge_result[$value["result"]] . "</div>";
                                     } elseif ($value["result"] == 4) {
                                         echo  $judge_result[$value["result"]];
-                                    } elseif ($value["pass_rate"] > 0) {
-                                        // Scored by points: some tests passed.
-                                        echo "Parcial";
                                     } else {
-                                        if (
+                                        // Scored by points: some tests passed.
+                                        $label = $value["pass_rate"] > 0
+                                            ? "Parcial · " . (float)round($value["pass_rate"] * 100, 2)
+                                            : $judge_result[$value["result"]];
+                                        $isOwnerOrStaff =
                                             isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
                                             isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                                             isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
-                                            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar"
-                                        ) {
-                                            echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $judge_result[$value["result"]]);
+                                            isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar";
+                                        if ($isOwnerOrStaff && !empty($value["has_detail"])) {
+                                            echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $label);
                                         } else {
-                                            echo $judge_result[$value["result"]];
+                                            echo $label;
+                                        }
+                                        // A checker accepts several answers, so there is no expected output to compare with.
+                                        if ($isOwnerOrStaff && empty($value["has_detail"]) && in_array($value["spj"] ?? "", ["1", "Y"])) {
+                                            $noDetail = "<div class='text-xs font-normal text-gray-500'>Problema dinámico: detalle no disponible</div>";
                                         }
                                     }
                                     // Problems scored by points show the score next to the verdict.
-                                    if ($value["result"] > 3 && $value["pass_rate"] > 0) {
+                                    if ($value["result"] == 4 && $value["pass_rate"] > 0) {
                                         echo " · " . (float)round($value["pass_rate"] * 100, 2);
                                     }
                                     ?>
                                 </div>
+                                <?php echo $noDetail ?? ""; unset($noDetail); ?>
                             </td>
                             <td class="p-4">
                                 <div class="font-bold decoration-solid decoration-sky-500">
