@@ -40,21 +40,20 @@ class RegisterController
             $user->userId   = $nickname;
             $user->password = $password;
             $user->ip       = $_SERVER["REMOTE_ADDR"];
-            $user->institucionId = -1;
 
             $this->loginService->registerUser($user);
+            header('Content-Type: application/json; charset=utf-8');
+            http_response_code(201);
             echo json_encode("OK");
-            header('Content-Type: application/json; charset=utf-8');
-            header("HTTP/1.1 201 Created");
         } catch (ApplicationException $e) {
-            echo $e->getMessage();
             header('Content-Type: application/json; charset=utf-8');
-            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+            echo $e->getMessage();
         } catch (\Exception $e) {
             $this->notificationErrorService->notifyError($e);
-            echo "Error al registrar el usuario";
             header('Content-Type: application/json; charset=utf-8');
-            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+            echo "Error al registrar el usuario";
         } 
     }
 

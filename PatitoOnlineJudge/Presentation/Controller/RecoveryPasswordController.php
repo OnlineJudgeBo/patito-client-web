@@ -24,12 +24,11 @@ class RecoveryPasswordController
         try {
             $email    = $userPost["email"];
             $this->loginService->userRecoveryPassword($email);
-            header("Location: login.php");
         } catch (\Exception $e) {
-            echo json_encode($e->getMessage());
-            header('Content-Type: application/json; charset=utf-8');
-            header("HTTP/1.1 400 Bad Request");
+            // Same answer whether or not the email has an account, so accounts can't be enumerated.
+            error_log("Password recovery failed: " . $e->getMessage());
         }
+        header("Location: login.php");
     }
 
     public function render()
