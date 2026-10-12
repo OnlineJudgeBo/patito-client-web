@@ -46,8 +46,12 @@ class SolutionRepository implements ISolutionRepository
         return $this->view_last_runs;
     }
 
-    public function getErrorResult($solution_id)
+    // $includeTests false leaves out the failed test of a submission scored by points (IOI style):
+    // those tests stay hidden, only the compiler output is shown.
+    public function getErrorResult($solution_id, $includeTests = true)
     {
+        $hidden = $includeTests ? "" : " AND NOT EXISTS (SELECT 1 FROM solution s WHERE s.solution_id = runtimeinfo.solution_id AND s.pass_rate > 0)
+            AND NOT EXISTS (SELECT 1 FROM solution_subtask t WHERE t.solution_id = runtimeinfo.solution_id)";
         $qry = "SELECT error
         FROM (
             SELECT error, solution_id
@@ -56,7 +60,7 @@ class SolutionRepository implements ISolutionRepository
             UNION ALL
             SELECT error, solution_id
             FROM runtimeinfo
-            WHERE solution_id = :sid2
+            WHERE solution_id = :sid2" . $hidden . "
         ) AS combined_errors, solution
         WHERE solution.solution_id = combined_errors.solution_id
         AND solution.site_id = :site_id
@@ -73,7 +77,9 @@ class SolutionRepository implements ISolutionRepository
         // has_detail: the judge left something to show for the submission (compile error, failed test).
         $sql = "SELECT solution.*, similar_code.similar_s_id, similar_code.percentage, problem.spj,
             (EXISTS (SELECT 1 FROM runtimeinfo r WHERE r.solution_id = solution.solution_id)
-                OR EXISTS (SELECT 1 FROM compileinfo c WHERE c.solution_id = solution.solution_id)) AS has_detail
+                OR EXISTS (SELECT 1 FROM compileinfo c WHERE c.solution_id = solution.solution_id)) AS has_detail,
+            (solution.pass_rate > 0
+                OR EXISTS (SELECT 1 FROM solution_subtask t WHERE t.solution_id = solution.solution_id)) AS is_scored
         FROM solution
         INNER JOIN  problem ON problem.problem_id = solution.problem_id
         LEFT JOIN similar_code ON solution.solution_id = similar_code.solution_id

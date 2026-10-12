@@ -203,18 +203,22 @@
                                         $label = $value["pass_rate"] > 0
                                             ? "Parcial · " . (float)round($value["pass_rate"] * 100, 2)
                                             : $judge_result[$value["result"]];
-                                        $isOwnerOrStaff =
-                                            isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"] ||
+                                        $isOwner =
+                                            isset($_SESSION["user_id"])       && $_SESSION["user_id"] == $value["user_id"];
+                                        $isStaff =
                                             isset($_SESSION["Administrador"]) && $_SESSION["Administrador"] == "Administrador" ||
                                             isset($_SESSION["Docente"])       && $_SESSION["Docente"]       == "Docente"       ||
                                             isset($_SESSION["Auxiliar"])      && $_SESSION["Auxiliar"]      == "Auxiliar";
-                                        if ($isOwnerOrStaff && !empty($value["has_detail"])) {
+                                        // IOI style keeps its tests hidden: the participant only opens a compile error.
+                                        $isScored = !empty($value["is_scored"]);
+                                        $hidesTests = $isScored && !$isStaff && $value["result"] != 11;
+                                        if (($isOwner || $isStaff) && !empty($value["has_detail"]) && !$hidesTests) {
                                             echo sprintf("<a href='./showError.php?sid=%d' target='_blank' >%s</a>", $value["solution_id"], $label);
                                         } else {
                                             echo $label;
                                         }
                                         // Only for a wrong answer: a time limit or a runtime error has no answer to show in any problem.
-                                        if ($isOwnerOrStaff && empty($value["has_detail"]) && in_array((int)$value["result"], [5, 6]) && in_array($value["spj"] ?? "", ["1", "Y"])) {
+                                        if (!$isScored && ($isOwner || $isStaff) && empty($value["has_detail"]) && in_array((int)$value["result"], [5, 6]) && in_array($value["spj"] ?? "", ["1", "Y"])) {
                                             $noDetail = "<div class='text-xs font-normal text-gray-500'>Problema dinámico: detalle no disponible</div>";
                                         }
                                     }
@@ -225,6 +229,11 @@
                                     ?>
                                 </div>
                                 <?php echo $noDetail ?? ""; unset($noDetail); ?>
+                                <?php if ($value["result"] > 3 && !empty($value["is_scored"])) { ?>
+                                    <div class="text-xs font-normal text-gray-500" title="Problema estilo IOI/OBI: se califica por subtareas. «Parcial» significa que la solución resolvió algunas subtareas pero no todas. En este estilo no se muestra el caso que falló.">
+                                        &#9432; Estilo IOI<?php echo !empty($hidesTests) ? ": no se muestra el caso que falló" : ""; unset($hidesTests); ?>
+                                    </div>
+                                <?php } ?>
                             </td>
                             <td class="p-4">
                                 <div class="font-bold decoration-solid decoration-sky-500">
