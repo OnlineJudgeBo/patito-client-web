@@ -213,8 +213,8 @@
                                         } else {
                                             echo $label;
                                         }
-                                        // A checker accepts several answers, so there is no expected output to compare with.
-                                        if ($isOwnerOrStaff && empty($value["has_detail"]) && in_array($value["spj"] ?? "", ["1", "Y"])) {
+                                        // Only for a wrong answer: a time limit or a runtime error has no answer to show in any problem.
+                                        if ($isOwnerOrStaff && empty($value["has_detail"]) && in_array((int)$value["result"], [5, 6]) && in_array($value["spj"] ?? "", ["1", "Y"])) {
                                             $noDetail = "<div class='text-xs font-normal text-gray-500'>Problema dinámico: detalle no disponible</div>";
                                         }
                                     }
