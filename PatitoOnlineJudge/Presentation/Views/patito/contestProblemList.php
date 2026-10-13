@@ -24,12 +24,12 @@
         <div class="flex flex-col">
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full">
                 <div class="flex flex-col space-y-1.5 p-6 items-center">
-                    <h3 class="text-2xl font-semibold leading-none tracking-tight">
+                    <h3 class="oj-contest-heading text-2xl font-semibold leading-none tracking-tight">
                         <?php
                         echo $contestDetail["contest_id"] . " " . closetags($contestDetail["title"]);
                         ?>
                     </h3>
-                    <h5 class="font-semibold leading-none tracking-tight py-2">
+                    <h5 class="oj-contest-heading font-semibold leading-none tracking-tight py-2">
                         <?php
                         echo closetags($contestDetail["description"]);
                         ?>
