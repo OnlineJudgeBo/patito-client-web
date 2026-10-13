@@ -122,7 +122,21 @@
                                             ) {
                                                 $virtual = "*";
                                             }
-                                            echo "<td class=well style='padding:1px;background-color:#$backgroundColor'>$virtual";
+                                            $cellColor = "#$backgroundColor";
+                                            if ($obi == 1) {
+                                                // As CMS does: the greener the cell the more points, and full marks stand apart.
+                                                $score = $row->pass_rate[$j] ?? 0;
+                                                if ($score >= 100) {
+                                                    $cellColor = "hsl(142 70% 45%)";
+                                                } elseif ($score > 0) {
+                                                    $cellColor = "hsl(142 70% " . round(92 - $score * 0.14) . "%)";
+                                                } elseif (($row->p_wa_num[$j] ?? 0) > 0) {
+                                                    $cellColor = "hsl(0 90% 90%)";
+                                                } else {
+                                                    $cellColor = "transparent";
+                                                }
+                                            }
+                                            echo "<td class=well style='padding:1px;background-color:$cellColor'>$virtual";
                                             if (isset($row)) {
                                                 if (
                                                     $obi != 1 &&
@@ -159,7 +173,7 @@
                                         </tr>
                                 </tbody>
                             </table>
-                            <div class="oj-legend">(*) Denota la participación de los usuarios en modo práctica. El color azul identifica la primera solución aceptada.</div>
+                            <div class="oj-legend">(*) Denota la participación de los usuarios en modo práctica. <?php echo $obi == 1 ? "Verde fuerte: puntaje completo; verde claro: puntaje parcial; rojo: sin puntos." : "El color azul identifica la primera solución aceptada." ?></div>
                         </div>
                     </div>
                 </div>
