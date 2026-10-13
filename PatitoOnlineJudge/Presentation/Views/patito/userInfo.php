@@ -89,6 +89,7 @@
                                     id="password" 
                                     name="password" 
                                     type="password"
+                                    autocomplete="new-password"
                                     placeholder="********">
                             </div>
                             <div class="flex items-center justify-between">
