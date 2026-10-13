@@ -125,6 +125,7 @@
                                             echo "<td class=well style='padding:1px;background-color:#$backgroundColor'>$virtual";
                                             if (isset($row)) {
                                                 if (
+                                                    $obi != 1 &&
                                                     isset($row->p_ac_sec[$j]) 
                                                     //&&
                                                     //$row->p_ac_sec[$j] > 0
