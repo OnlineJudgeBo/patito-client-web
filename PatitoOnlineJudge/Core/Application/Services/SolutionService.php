@@ -25,8 +25,8 @@ class SolutionService implements ISolutionService
         return $this->solutionRepository->getLastRuns();
     }
 
-    public function getErrorResult($solutionId)
+    public function getErrorResult($solutionId, $includeTests = true)
     {
-        return $this->solutionRepository->getErrorResult($solutionId);
+        return $this->solutionRepository->getErrorResult($solutionId, $includeTests);
     }
 }

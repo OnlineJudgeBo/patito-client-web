@@ -27,7 +27,8 @@ class ResultAnswerController
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $solution_id = $this->solution_id;
-        $result = $this->solutionService->getErrorResult($solution_id);
+        $isStaff = isset($_SESSION["Administrador"]) || isset($_SESSION["Docente"]) || isset($_SESSION["Auxiliar"]);
+        $result = $this->solutionService->getErrorResult($solution_id, $isStaff);
         if (empty($result["error"])) {
             $result["error"] = "";
         }

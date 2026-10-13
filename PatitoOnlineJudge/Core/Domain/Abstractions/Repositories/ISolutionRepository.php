@@ -5,7 +5,7 @@ interface ISolutionRepository
 {
     public function getLastRuns();
 
-    public function getErrorResult($solution_id);
+    public function getErrorResult($solution_id, $includeTests = true);
 
     public function getStatusData($params, $limit, $site_id);
 
