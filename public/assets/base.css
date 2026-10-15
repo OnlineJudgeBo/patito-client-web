@@ -376,6 +376,8 @@
 .oj-rich-content ul { margin: 0.65rem 0; padding-left: 1.5rem; list-style: disc; }
 .oj-rich-content ol { margin: 0.65rem 0; padding-left: 1.5rem; list-style: decimal; }
 .oj-rich-content a { color: #1d4ed8; text-decoration: underline; }
+.oj-rich-content pre { margin: 0.65rem 0; padding: 0.75rem 1rem; overflow-x: auto; background: #f1f5f9; border-radius: 0.375rem; text-align: left; }
+.oj-rich-content code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
 .oj-rich-content blockquote { margin: 0.8rem 0; border-left: 4px solid #94a3b8; padding-left: 1rem; color: #475569; }
 /* Imported statements carry a <br> between paragraphs from when these had no margin. */
 .oj-rich-content p + br { display: none; }
