@@ -30,11 +30,11 @@
                         echo $contestDetail["contest_id"] . " " . closetags($contestDetail["title"]);
                         ?>
                     </h3>
-                    <h5 class="font-semibold leading-none tracking-tight py-2">
+                    <div class="oj-contest-heading oj-rich-content w-full max-w-4xl py-2">
                         <?php
                         echo closetags($contestDetail["description"]);
                         ?>
-                    </h5>
+                    </div>
                 </div>
 
                 <div class="flex items-center justify-center py-4">
