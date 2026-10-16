@@ -91,7 +91,8 @@ class SolutionRepository implements ISolutionRepository
             $sql .= " AND `contest_id` = :contest_id";
             $bindings[':contest_id'] = intval($params['contest_id']);
         } else {
-            $sql .= " AND COALESCE(contest_id, 0) = 0";
+            // Not COALESCE(contest_id, 0): wrapping the column hides it from the optimizer.
+            $sql .= " AND (contest_id IS NULL OR contest_id = 0)";
         }
 
         if (isset($params['problem_id'])) {
@@ -120,12 +121,14 @@ class SolutionRepository implements ISolutionRepository
             }
         }
 
+        // Newest first by the primary key, the order they were sent in: the latest rows are read
+        // straight from the index instead of sorting every submission of the site by in_date.
         if (isset($params['contest_id'])) {
-            $sql .= " ORDER BY solution.in_date DESC";
+            $sql .= " ORDER BY solution.solution_id DESC";
         } elseif ($limit != -1) {
-            $sql .= " ORDER BY solution.in_date DESC LIMIT " . intval($limit);
+            $sql .= " ORDER BY solution.solution_id DESC LIMIT " . intval($limit);
         } else {
-            $sql .= " ORDER BY solution.in_date DESC LIMIT 200";
+            $sql .= " ORDER BY solution.solution_id DESC LIMIT 200";
         }
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($bindings);
