@@ -18,8 +18,8 @@ class DatabaseConnector
         date_default_timezone_set("America/La_Paz");
         AppConfig::loadFromEnvironment();
 
-        $this->judgeDsn = "mysql:host=" . AppConfig::$DB_HOST . ";dbname=" . AppConfig::$DB_NAME . ";charset=utf8";
-        $this->scheduleDsn = "mysql:host=" . AppConfig::$DB_HOST . ";dbname=schedule_management;charset=utf8";
+        $this->judgeDsn = "mysql:host=" . AppConfig::$DB_HOST . ";dbname=" . AppConfig::$DB_NAME . ";charset=utf8mb4";
+        $this->scheduleDsn = "mysql:host=" . AppConfig::$DB_HOST . ";dbname=schedule_management;charset=utf8mb4";
         $this->username = AppConfig::$DB_USER;
         $this->password = AppConfig::$DB_PASS;
 
