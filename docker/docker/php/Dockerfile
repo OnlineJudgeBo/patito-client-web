@@ -11,6 +11,7 @@ RUN apt-get update \
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY docker/docker/php/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/docker/php/fpm-log.conf /usr/local/etc/php-fpm.d/zz-log.conf
 COPY docker/docker/php/entrypoint.sh /usr/local/bin/patito-entrypoint
 
 RUN chmod +x /usr/local/bin/patito-entrypoint
