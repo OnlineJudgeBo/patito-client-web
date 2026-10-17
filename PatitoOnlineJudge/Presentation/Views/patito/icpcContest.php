@@ -94,9 +94,9 @@ $year_anchor = fn($year) => "anio-" . str_replace(" ", "-", $year);
                         foreach ($contests as $contest) {
                             $contestId = intval($contest["contest_id"]);
                             $name = htmlspecialchars(trim(strip_tags($contest["title"])));
-                            $date = $contest["start_time"] ? date("d/m/Y", strtotime($contest["start_time"])) : "";
+                            $date = $contest["start_time"] ? date("d-m-Y", strtotime($contest["start_time"])) : "";
                             echo '<tr>';
-                            echo '<td class="whitespace-nowrap w-32">' . $date . '</td>';
+                            echo '<td class="whitespace-nowrap w-32"><span class="oj-stat">' . $date . '</span></td>';
                             echo '<td><a class="oj-table-link" href="contest.php?cid=' . $contestId . '&type=official_contest">' . $name . '</a></td>';
                             echo '</tr>';
                         }
