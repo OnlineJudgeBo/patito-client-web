@@ -80,26 +80,24 @@ $year_anchor = fn($year) => "anio-" . str_replace(" ", "-", $year);
                 <table id="contest-table" class="oj-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
                             <th>Fecha</th>
+                            <th>Nombre</th>
                         </tr>
                     </thead>
                     <?php
                     if (empty($contests_by_year)) {
-                        echo '<tbody><tr><td colspan="3" class="oj-empty-state"><strong>No hay concursos oficiales</strong></td></tr></tbody>';
+                        echo '<tbody><tr><td colspan="2" class="oj-empty-state"><strong>No hay concursos oficiales</strong></td></tr></tbody>';
                     }
                     foreach ($contests_by_year as $year => $contests) {
                         echo '<tbody>';
-                        echo '<tr class="year-row"><th colspan="3" id="' . $year_anchor($year) . '">' . $year . '</th></tr>';
+                        echo '<tr class="year-row"><th colspan="2" id="' . $year_anchor($year) . '">' . $year . '</th></tr>';
                         foreach ($contests as $contest) {
                             $contestId = intval($contest["contest_id"]);
                             $name = htmlspecialchars(trim(strip_tags($contest["title"])));
                             $date = $contest["start_time"] ? date("d/m/Y", strtotime($contest["start_time"])) : "";
                             echo '<tr>';
-                            echo '<td><span class="oj-stat">#' . $contestId . '</span></td>';
+                            echo '<td class="whitespace-nowrap w-32">' . $date . '</td>';
                             echo '<td><a class="oj-table-link" href="contest.php?cid=' . $contestId . '&type=official_contest">' . $name . '</a></td>';
-                            echo '<td class="whitespace-nowrap">' . $date . '</td>';
                             echo '</tr>';
                         }
                         echo '</tbody>';
