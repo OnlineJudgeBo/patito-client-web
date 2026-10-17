@@ -1,3 +1,12 @@
+<?php
+// Archive grouped by year; the list already comes ordered by start date, newest first.
+$contests_by_year = [];
+foreach ($contest_list as $contest) {
+    $year = $contest["start_time"] ? date("Y", strtotime($contest["start_time"])) : "Sin fecha";
+    $contests_by_year[$year][] = $contest;
+}
+$year_anchor = fn($year) => "anio-" . str_replace(" ", "-", $year);
+?>
 <!DOCTYPE html>
 <html lang="es" class="h-full">
 
@@ -8,59 +17,97 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
     <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>
+    <style>
+        .contest-filters {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .contest-filters label {
+            color: #475569;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .contest-filters select {
+            min-width: 7rem;
+            padding: 0.4rem 2rem 0.4rem 0.65rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.35rem;
+            color: #334155;
+            background: #fff;
+            font-size: 0.875rem;
+        }
+
+        .contest-list-card {
+            border-radius: 0.4rem;
+            box-shadow: none;
+        }
+
+        #contest-table tr.year-row th {
+            color: #0f172a;
+            background: #f1f5f9;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-align: left;
+            scroll-margin-top: 1rem;
+        }
+    </style>
 </head>
 
 <body class="flex flex-col h-full">
 
     <?php require_once "oj-header.php" ?>
-    <main class="container mx-auto p-4">
-        <div class="flex flex-col items-center">
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full">
-                <div class="flex flex-col space-y-1.5 p-6">
-                    <h2 class="text-4xl font-bold leading-tight text-center mb-4">
-                        Bienvenido a la sección de archivos de concursos.<br>
-                        Explora competencias pasadas de ICPC, OBI y OCE, y practica con los problemas.
-                    </h2>
-                </div>
-                <?php
-                // Archive grouped by year, newest first; the list already comes ordered by start date.
-                $contests_by_year = [];
-                foreach ($contest_list as $contest) {
-                    $year = $contest["start_time"] ? date("Y", strtotime($contest["start_time"])) : "Sin fecha";
-                    $contests_by_year[$year][] = $contest;
-                }
-                ?>
-                <nav class="flex flex-wrap justify-center gap-2 px-6 pb-4">
+    <main class="oj-page">
+        <header class="oj-page-header">
+            <div>
+                <h1 class="oj-page-title">Concursos oficiales</h1>
+                <p class="oj-page-description">Explora competencias pasadas de ICPC, OBI y OCE, y practica con los problemas.</p>
+            </div>
+            <form class="contest-filters" onsubmit="return false">
+                <label for="contest-year">Año</label>
+                <select id="contest-year" onchange="if (this.value) location.hash = this.value">
+                    <option value="">Todos</option>
                     <?php foreach ($contests_by_year as $year => $contests) { ?>
-                        <a href="#anio-<?php echo str_replace(" ", "-", $year) ?>" class="rounded-full border px-3 py-1 text-sm font-medium hover:bg-blue-50 hover:border-blue-400">
-                            <?php echo $year ?> <span class="text-gray-500">(<?php echo count($contests) ?>)</span>
-                        </a>
+                        <option value="<?php echo $year_anchor($year) ?>"><?php echo $year ?></option>
                     <?php } ?>
-                </nav>
-                <div class="px-6 pb-6">
-                    <?php foreach ($contests_by_year as $year => $contests) { ?>
-                        <section id="anio-<?php echo str_replace(" ", "-", $year) ?>" class="scroll-mt-4">
-                            <h3 class="sticky top-0 bg-white border-b-2 border-blue-500 py-2 mt-6 text-2xl font-bold"><?php echo $year ?></h3>
-                            <ul class="divide-y">
-                                <?php foreach ($contests as $contest) {
-                                    $url = "contest.php?cid=" . $contest["contest_id"] . "&type=official_contest";
-                                    $name = htmlspecialchars(trim(strip_tags($contest["title"])));
-                                    $date = $contest["start_time"] ? date("d/m/Y", strtotime($contest["start_time"])) : "";
-                                ?>
-                                    <li>
-                                        <a href="<?php echo $url ?>" class="flex items-baseline gap-4 px-2 py-3 hover:bg-blue-50">
-                                            <span class="w-24 shrink-0 text-sm text-gray-500 tabular-nums"><?php echo $date ?></span>
-                                            <span class="result-blue font-medium"><?php echo $name ?></span>
-                                        </a>
-                                    </li>
-                                <?php } ?>
-                            </ul>
-                        </section>
-                    <?php } ?>
-                </div>
+                </select>
+            </form>
+        </header>
+        <div class="oj-card contest-list-card">
+            <div class="relative w-full overflow-auto">
+                <table id="contest-table" class="oj-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    if (empty($contests_by_year)) {
+                        echo '<tbody><tr><td colspan="3" class="oj-empty-state"><strong>No hay concursos oficiales</strong></td></tr></tbody>';
+                    }
+                    foreach ($contests_by_year as $year => $contests) {
+                        echo '<tbody>';
+                        echo '<tr class="year-row"><th colspan="3" id="' . $year_anchor($year) . '">' . $year . '</th></tr>';
+                        foreach ($contests as $contest) {
+                            $contestId = intval($contest["contest_id"]);
+                            $name = htmlspecialchars(trim(strip_tags($contest["title"])));
+                            $date = $contest["start_time"] ? date("d/m/Y", strtotime($contest["start_time"])) : "";
+                            echo '<tr>';
+                            echo '<td><span class="oj-stat">#' . $contestId . '</span></td>';
+                            echo '<td><a class="oj-table-link" href="contest.php?cid=' . $contestId . '&type=official_contest">' . $name . '</a></td>';
+                            echo '<td class="whitespace-nowrap">' . $date . '</td>';
+                            echo '</tr>';
+                        }
+                        echo '</tbody>';
+                    }
+                    ?>
+                </table>
             </div>
         </div>
-
     </main>
 
     <?php require_once "oj-footer.php" ?>
