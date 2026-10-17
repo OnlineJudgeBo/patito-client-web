@@ -6,10 +6,12 @@ use PatitoOnlineJudge\Core\Application\Services\LogService;
 use PatitoOnlineJudge\Infrastructure\Database\Implementations\LogRepository;
 use PatitoOnlineJudge\Infrastructure\Logger\Logger;
 use PatitoOnlineJudge\Presentation\Middleware\AuthMiddleware;
+use PatitoOnlineJudge\Presentation\Middleware\BlockRulesMiddleware;
 
 require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
+(new BlockRulesMiddleware())->handle();
 session_start();
 $envPath = __DIR__ . "/..";
 if (file_exists($envPath . '/.env.local')) {
