@@ -2,9 +2,12 @@
 
 namespace PatitoOnlineJudge\Presentation\Middleware;
 
-// Rejects with an empty 403 the clients blocked in the admin panel. The rules come from the admin API
-// (BLOCK_RULES_URL, with BLOCK_RULES_TOKEN) and are cached in a file for CACHE_SECONDS; when the API
-// does not answer, the last rules keep applying. Same matching as the API's BlockRule.Blocks.
+use PatitoOnlineJudge\Config\DatabaseConnector;
+use PDO;
+
+// Rejects with an empty 403 the clients blocked in the admin panel. The rules are read from the
+// block_rule table (managed by the admin API) and cached in a file for CACHE_SECONDS, so a change
+// applies within that time. Same matching as the API's BlockRule.Blocks.
 class BlockRulesMiddleware
 {
     private const CACHE_SECONDS = 30;
@@ -57,28 +60,21 @@ class BlockRulesMiddleware
 
     private function rules(): array
     {
-        $url = getenv('BLOCK_RULES_URL') ?: '';
-        if ($url === '') {
-            return [];
-        }
-
         $cache = sys_get_temp_dir() . '/patito-block-rules.json';
-        $fresh = is_file($cache) && time() - filemtime($cache) < self::CACHE_SECONDS;
-        if (!$fresh) {
-            $body = @file_get_contents($url, false, stream_context_create(['http' => [
-                'timeout' => 1,
-                'header' => 'X-Block-Rules-Token: ' . (getenv('BLOCK_RULES_TOKEN') ?: ''),
-            ]]));
-            if ($body !== false && is_array(json_decode($body, true))) {
+        if (!is_file($cache) || time() - filemtime($cache) >= self::CACHE_SECONDS) {
+            try {
+                $rows = (new DatabaseConnector())->getConnection()
+                    ->query("SELECT type, value FROM block_rule")
+                    ->fetchAll(PDO::FETCH_ASSOC);
                 $tmp = $cache . '.' . getmypid();
-                file_put_contents($tmp, $body);
+                file_put_contents($tmp, json_encode($rows));
                 rename($tmp, $cache); // atomic, other workers never read half a file
-            } else {
-                touch($cache); // API down: keep the last rules (or none) and retry later, not on every request
+            } catch (\Throwable $e) {
+                touch($cache); // table missing or database down: keep the last rules (or none) and retry later
             }
         }
 
-        $rules = is_file($cache) ? json_decode((string) file_get_contents($cache), true) : null;
+        $rules = json_decode((string) @file_get_contents($cache), true);
         return is_array($rules) ? $rules : [];
     }
 }

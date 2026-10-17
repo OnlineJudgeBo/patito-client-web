@@ -11,7 +11,6 @@ use PatitoOnlineJudge\Presentation\Middleware\BlockRulesMiddleware;
 require __DIR__ . '/Routing/Router.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
-(new BlockRulesMiddleware())->handle();
 session_start();
 $envPath = __DIR__ . "/..";
 if (file_exists($envPath . '/.env.local')) {
@@ -20,6 +19,7 @@ if (file_exists($envPath . '/.env.local')) {
     $dotenv = Dotenv::createImmutable($envPath, '.env');
 }
 $dotenv->load();
+(new BlockRulesMiddleware())->handle();
 
 $environment = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'production';
 redirect();
