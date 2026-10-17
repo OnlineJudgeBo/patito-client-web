@@ -22,33 +22,41 @@
                         Explora competencias pasadas de ICPC, OBI y OCE, y practica con los problemas.
                     </h2>
                 </div>
-                <div class="p-1">
-                    <div class="relative w-full overflow-auto">
-                        <table class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted w-full">
-                            <thead class="">
-                                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <th class="p-4 font-semibold">Id</th>
-                                    <th class="p-4 font-semibold">Nombre</th>
-                                    <th class="p-4 font-semibold">Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach ($contest_list as $key => $value) {
-                                    $css = "evenrow";
-                                    if ($key % 2 == 0) {
-                                        $css = "oddrow";
-                                    }
-                                    echo '<tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ' . $css . '">';
-                                    echo '<td class="p-4 result-blue"><a href="contest.php?cid=' . $value["contest_id"] . '&type=official_contest">' . $value["contest_id"] . '</td>';
-                                    echo '<td class="p-4 result-blue"><a href="contest.php?cid=' . $value["contest_id"] . '&type=official_contest">' . $value["title"] . '</td>';
-                                    echo '<td class="p-4 result-blue"><a href="contest.php?cid=' . $value["contest_id"] . '&type=official_contest">' . $value["title"] . '</td>';
-                                    echo '</tr>';
-                                }
+                <?php
+                // Archive grouped by year, newest first; the list already comes ordered by start date.
+                $contests_by_year = [];
+                foreach ($contest_list as $contest) {
+                    $year = $contest["start_time"] ? date("Y", strtotime($contest["start_time"])) : "Sin fecha";
+                    $contests_by_year[$year][] = $contest;
+                }
+                ?>
+                <nav class="flex flex-wrap justify-center gap-2 px-6 pb-4">
+                    <?php foreach ($contests_by_year as $year => $contests) { ?>
+                        <a href="#anio-<?php echo str_replace(" ", "-", $year) ?>" class="rounded-full border px-3 py-1 text-sm font-medium hover:bg-blue-50 hover:border-blue-400">
+                            <?php echo $year ?> <span class="text-gray-500">(<?php echo count($contests) ?>)</span>
+                        </a>
+                    <?php } ?>
+                </nav>
+                <div class="px-6 pb-6">
+                    <?php foreach ($contests_by_year as $year => $contests) { ?>
+                        <section id="anio-<?php echo str_replace(" ", "-", $year) ?>" class="scroll-mt-4">
+                            <h3 class="sticky top-0 bg-white border-b-2 border-blue-500 py-2 mt-6 text-2xl font-bold"><?php echo $year ?></h3>
+                            <ul class="divide-y">
+                                <?php foreach ($contests as $contest) {
+                                    $url = "contest.php?cid=" . $contest["contest_id"] . "&type=official_contest";
+                                    $name = htmlspecialchars(trim(strip_tags($contest["title"])));
+                                    $date = $contest["start_time"] ? date("d/m/Y", strtotime($contest["start_time"])) : "";
                                 ?>
-                            </tbody>
-                        </table>
-                    </div>
+                                    <li>
+                                        <a href="<?php echo $url ?>" class="flex items-baseline gap-4 px-2 py-3 hover:bg-blue-50">
+                                            <span class="w-24 shrink-0 text-sm text-gray-500 tabular-nums"><?php echo $date ?></span>
+                                            <span class="result-blue font-medium"><?php echo $name ?></span>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </section>
+                    <?php } ?>
                 </div>
             </div>
         </div>
