@@ -20,6 +20,11 @@ $e = fn($text) => htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 <meta property="og:title" content="<?php echo $e($seoFullTitle) ?>">
 <meta property="og:site_name" content="<?php echo $e($seoSiteName) ?>">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="es_BO">
+<meta property="og:image" content="<?php echo $e(Utils::siteBaseUrl() . "/assets/og-image.png") ?>">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <?php if ($seoCanonical) { ?>
     <link rel="canonical" href="<?php echo $e($seoCanonical) ?>">
     <meta property="og:url" content="<?php echo $e($seoCanonical) ?>">
