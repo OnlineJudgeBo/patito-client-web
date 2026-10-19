@@ -62,7 +62,6 @@
                 <?php
                 }
                 ?>
-                <?php require __DIR__ . "/partials/contest-announcements.php"; ?>
                 <div class="p-1">
                     <div class="relative w-full overflow-auto">
 
@@ -128,6 +127,7 @@
                     </div>
                 </div>
             </div>
+        <?php require __DIR__ . "/partials/contest-announcements.php"; ?>
         <?php require __DIR__ . "/partials/contest-clarifications.php"; ?>
 
     </main>
