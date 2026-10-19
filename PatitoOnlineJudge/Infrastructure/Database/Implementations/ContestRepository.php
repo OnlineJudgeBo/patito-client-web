@@ -114,6 +114,22 @@ class ContestRepository implements IContestRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Running first (ending soonest), then upcoming (starting soonest).
+    public function getActiveContests($site_id, $limit)
+    {
+        $stmt = $this->pdo->prepare("SELECT contest.contest_id, contest.title, contest.start_time, contest.end_time, contest.private
+            FROM contest
+            INNER JOIN contest_site ON contest_site.contest_id = contest.contest_id
+            WHERE contest.defunct = 'N'
+            AND contest_site.site_id = :site_id
+            AND contest.end_time > :now
+            ORDER BY contest.start_time > :now2, IF(contest.start_time > :now3, contest.start_time, contest.end_time)
+            LIMIT " . intval($limit));
+        $now = date('Y-m-d H:i:s');
+        $stmt->execute([':site_id' => $site_id, ':now' => $now, ':now2' => $now, ':now3' => $now]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getContestYears($site_id)
     {
         $stmt = $this->pdo->prepare("SELECT DISTINCT YEAR(contest.start_time) AS contest_year

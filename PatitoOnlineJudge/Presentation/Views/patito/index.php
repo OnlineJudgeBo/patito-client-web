@@ -106,11 +106,25 @@
       <!-- Tarjeta de Concursos -->
       <div class="bg-white shadow-lg rounded-lg border p-6">
         <h3 class="text-xl font-bold mb-4">Concursos Activos</h3>
-        <?php
-        use PatitoOnlineJudgeModule\ContestList\ContestList;
-        $contestListModule = new ContestList();
-        $contestListModule->render();
+        <?php if (empty($active_contests)) { ?>
+          <p class="text-gray-500 text-center">No hay concursos activos</p>
+        <?php } ?>
+        <?php foreach ($active_contests as $contest) {
+          $running = strtotime($contest["start_time"]) <= time();
         ?>
+          <a href="contest.php?cid=<?php echo intval($contest["contest_id"]) ?>">
+            <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white mb-2 flex flex-col justify-center items-center">
+              <div class="pt-2 text-center mb-2">
+                <div class="font-bold text-xl"><?php echo htmlspecialchars(trim(strip_tags($contest["title"]))) ?></div>
+              </div>
+              <div class="pb-1 flex flex-col justify-center items-center">
+                <span class="inline-block rounded-full text-base font-semibold <?php echo $running ? "red-text" : "blue-text" ?>"><?php echo ($running ? "Corriendo " : "Inicio ") . $contest["start_time"] ?></span>
+                <span class="inline-block rounded-full text-base font-semibold green-text">Termina <?php echo $contest["end_time"] ?></span>
+                <span class="inline-block rounded-full text-base font-semibold <?php echo $contest["private"] == 0 ? "green-text" : "red-text" ?>"><?php echo $contest["private"] == 0 ? "Público" : "Privado" ?></span>
+              </div>
+            </div>
+          </a>
+        <?php } ?>
       </div>
 
       <!-- Tarjeta de Noticias -->
