@@ -21,6 +21,7 @@ class ContestRepository implements IContestRepository
         $stmt = $this->pdo->prepare("SELECT count(*) AS result
         FROM contest, contest_site
         WHERE contest.contest_id = :cid
+        AND contest.defunct <> 'Y'
         AND (
             (:start_time1 BETWEEN contest.start_time AND contest.end_time)
             OR
@@ -83,7 +84,7 @@ class ContestRepository implements IContestRepository
 
     public function getContestById($cid)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM contest WHERE contest_id = :cid");
+        $stmt = $this->pdo->prepare("SELECT * FROM contest WHERE contest_id = :cid AND defunct <> 'Y'"); // 'Y' = deleted from the admin
         $stmt->execute(['cid' => $cid]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
