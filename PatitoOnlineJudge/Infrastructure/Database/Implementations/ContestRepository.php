@@ -114,6 +114,47 @@ class ContestRepository implements IContestRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Announcements and answers sent to everyone, plus this user's own questions (same rule as the admin API).
+    public function getClarifications($cid, $site_id, $user_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT id, user_id, problem_num, question, answer, is_public, created_at, answered_at
+            FROM contest_clarification
+            WHERE contest_id = :cid AND site_id = :site_id AND (is_public = 1 OR user_id = :user_id)
+            ORDER BY created_at DESC, id DESC");
+        $stmt->execute([':cid' => $cid, ':site_id' => $site_id, ':user_id' => $user_id ?? '']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getLastClarificationQuestionAt($cid, $site_id, $user_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT MAX(created_at) FROM contest_clarification
+            WHERE contest_id = :cid AND site_id = :site_id AND user_id = :user_id");
+        $stmt->execute([':cid' => $cid, ':site_id' => $site_id, ':user_id' => $user_id]);
+        return $stmt->fetchColumn();
+    }
+
+    public function countPendingClarificationQuestions($cid, $site_id, $user_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM contest_clarification
+            WHERE contest_id = :cid AND site_id = :site_id AND user_id = :user_id AND answer IS NULL");
+        $stmt->execute([':cid' => $cid, ':site_id' => $site_id, ':user_id' => $user_id]);
+        return intval($stmt->fetchColumn());
+    }
+
+    public function addClarificationQuestion($cid, $site_id, $user_id, $num, $question)
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO contest_clarification (contest_id, site_id, user_id, problem_num, question, is_public, created_at)
+            VALUES (:cid, :site_id, :user_id, :num, :question, 0, :created_at)");
+        $stmt->execute([
+            ':cid' => $cid,
+            ':site_id' => $site_id,
+            ':user_id' => $user_id,
+            ':num' => $num,
+            ':question' => $question,
+            ':created_at' => date('Y-m-d H:i:s'),
+        ]);
+    }
+
     // Running first (ending soonest), then upcoming (starting soonest).
     public function getActiveContests($site_id, $limit)
     {
