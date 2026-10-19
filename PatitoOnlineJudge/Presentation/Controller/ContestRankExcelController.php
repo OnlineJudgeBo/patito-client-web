@@ -34,6 +34,11 @@ class ContestRankExcelController
         $title = $this->title;
         $problems = $this->contestService->getContestProblems($this->cid);
         $contest = $this->contestService->getContestById($this->cid);
+        if (!$contest) {
+            $error = "Concurso no encontrado.";
+            require_once $current_theme . "/error.php";
+            return;
+        }
         $start_time = strtotime($contest["start_time"]);
         $end_time = strtotime($contest["end_time"]);
         $obi = (int)($contest["obi"] ?? 0);

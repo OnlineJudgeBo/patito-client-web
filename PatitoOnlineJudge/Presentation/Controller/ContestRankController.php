@@ -30,6 +30,11 @@ class ContestRankController
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $contest = $this->contestService->getContestById($this->cid);
+        if (!$contest) {
+            $error = "Concurso no encontrado.";
+            require_once $current_theme . "/error.php";
+            return;
+        }
         $problems = $this->contestService->getContestProblems($this->cid);
         require __DIR__ . "/../../../Legacy/Include/const.inc.php";
 

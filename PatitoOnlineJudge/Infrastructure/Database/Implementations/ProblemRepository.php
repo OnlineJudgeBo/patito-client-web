@@ -83,7 +83,8 @@ class ProblemRepository implements IProblemRepository
                                         WHERE problem.problem_id = (
                                             SELECT problem_id FROM contest_problem
                                             WHERE contest_id = :cid
-                                            AND num = :pid)
+                                            AND num = :pid
+                                            AND contest_id NOT IN (SELECT contest_id FROM contest WHERE defunct = 'Y'))
                                         AND problems_site.problem_id = problem.problem_id
                                         AND problems_site.site_id = :site_id
                                         AND problems_site.is_active = 1");

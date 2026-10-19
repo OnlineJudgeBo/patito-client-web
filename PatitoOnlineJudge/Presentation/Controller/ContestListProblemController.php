@@ -56,6 +56,12 @@ class ContestListProblemController
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
         $contestDetail = $this->contestService->getContestById($this->cid);
+        if (!$contestDetail) {
+            $contestProblemList = array();
+            $error = "Concurso no encontrado.";
+            require_once $current_theme . "/error.php";
+            return;
+        }
 
         if (!$this->isAdministrator()) {
             if ($this->contestHasNotStarted($contestDetail)) {
