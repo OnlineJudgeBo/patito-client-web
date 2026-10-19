@@ -24,6 +24,11 @@ class ProblemService implements IProblemService
         $this->userId = $userId;
     }
 
+    public function getSitemapProblems()
+    {
+        return $this->problemRepository->getSitemapProblems($this->site_id);
+    }
+
     public function getProblemById($pid)
     {
         return $this->problemRepository->getProblemById($pid, $this->site_id);

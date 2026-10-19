@@ -274,6 +274,16 @@ function executeRouter()
         require  __DIR__ . '/Routing/icpc_contest.php';
     });
 
+    // For search engines. nginx also sends /robots.txt and /sitemap.xml (outside the prefix) here.
+    foreach (array_unique([$prefix, '']) as $base) {
+        $router->get($base . '/robots.txt', function () {
+            require  __DIR__ . '/Routing/robots.php';
+        });
+        $router->get($base . '/sitemap.xml', function () {
+            require  __DIR__ . '/Routing/sitemap.php';
+        });
+    }
+
     $router->dispatch();
 }
 

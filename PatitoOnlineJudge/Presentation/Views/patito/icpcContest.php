@@ -13,7 +13,12 @@ $year_anchor = fn($year) => "anio-" . str_replace(" ", "-", $year);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title ?></title>
+    <?php
+    $seoTitle = "Concursos oficiales";
+    $seoDescription = "Archivo de competencias pasadas de ICPC, OBI y OCE en Bolivia, organizadas por año, para practicar con los problemas originales.";
+    $seoPath = "icpc_contest.php";
+    require __DIR__ . "/partials/seo-meta.php";
+    ?>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
     <?php echo file_get_contents(__DIR__ . "/partials/utils-header.php"); ?>

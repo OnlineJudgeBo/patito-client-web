@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title ?></title>
+    <?php
+    $seoTitle = "Problemas de programación";
+    $seoDescription = "Problemas de programación competitiva en español con juez en línea: ICPC, OBI y concursos bolivianos. Envía tu solución en C, C++, Java o Python y recibe el veredicto al instante.";
+    $seoPath = "problemset.php";
+    require __DIR__ . "/partials/seo-meta.php";
+    ?>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/base.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
