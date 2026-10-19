@@ -5,7 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="7lqeypTs6VScmVRg6rQJA8_C-orO482PL_4vVbYjLc0" />
-  <title><?php echo $title ?></title>
+  <?php
+  $seoTitle = "Juez de programación de la Carrera de Informática - UMSA";
+  $seoDescription = "Juez virtual de programación competitiva de la Carrera de Informática de la UMSA: problemas en español, concursos, ranking y práctica para ICPC y OBI.";
+  $seoPath = "";
+  require __DIR__ . "/partials/seo-meta.php";
+  ?>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./assets/base.css">
   <script>

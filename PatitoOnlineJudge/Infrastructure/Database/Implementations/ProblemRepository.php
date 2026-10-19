@@ -43,6 +43,32 @@ class ProblemRepository implements IProblemRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Public problems for the sitemap: same rules as the problem list, and none from a contest
+    // that is running or still to come (they would leak before it starts).
+    public function getSitemapProblems($site_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT p.problem_id, p.in_date
+            FROM problem p
+            INNER JOIN problems_site ps ON ps.problem_id = p.problem_id
+            WHERE p.defunct = 'N'
+              AND ps.site_id = :site_id
+              AND ps.is_active = 1
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM contest_problem cp
+                  INNER JOIN contest c ON c.contest_id = cp.contest_id
+                  INNER JOIN contest_site cs ON cs.contest_id = c.contest_id
+                  WHERE cp.problem_id = p.problem_id
+                    AND cp.problem_id NOT IN (1000)
+                    AND cs.site_id = ps.site_id
+                    AND c.defunct = 'N'
+                    AND c.end_time >= NOW()
+              )
+            ORDER BY p.problem_id");
+        $stmt->execute([':site_id' => $site_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getProblemByAcademicAssignment($pid, $courseId, $assignmentId, $userId, $siteId)
     {
         $stmt = $this->pdo->prepare("SELECT p.*
