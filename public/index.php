@@ -97,6 +97,11 @@ function executeRouter()
         require  __DIR__ . '/Routing/contest.php';
     });
 
+    // Clarification questions are posted to the contest page.
+    $router->post($prefix . '/contest.php', function () {
+        require  __DIR__ . '/Routing/contest.php';
+    });
+
     $router->get($prefix . '/login.php', function () {
         require  __DIR__ . '/Routing/login.php';
     });

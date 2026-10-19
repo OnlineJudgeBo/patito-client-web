@@ -20,6 +20,10 @@ interface IContestService
 
     public function getActiveContests($limit = 5);
 
+    public function getClarifications($cid, $user_id);
+
+    public function askClarification($cid, $user_id, $num, $question);
+
     public function isContestByIdPublic($cid);
 
     public function getAcProblemsByIdContest($cid);

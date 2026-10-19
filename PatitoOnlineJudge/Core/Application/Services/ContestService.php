@@ -41,6 +41,44 @@ class ContestService implements IContestService
         return $this->contestRepository->getActiveContests($this->site_id, $limit);
     }
 
+    public function getClarifications($cid, $user_id)
+    {
+        return $this->contestRepository->getClarifications($cid, $this->site_id, $user_id);
+    }
+
+    // Same rules as the admin API: before or during the contest, never after; one question every 30 seconds,
+    // at most 5 unanswered per participant.
+    // Returns the error to show, or null when the question was saved.
+    public function askClarification($cid, $user_id, $num, $question)
+    {
+        $contest = $this->contestRepository->getContestById($cid);
+        if (!$contest) {
+            return "Concurso no encontrado.";
+        }
+        if (strtotime($contest["end_time"]) < time()) {
+            return "El concurso ya terminó; no se reciben más preguntas.";
+        }
+        $question = trim((string) $question);
+        if ($question === "" || mb_strlen($question) > 2000) {
+            return "La pregunta debe tener entre 1 y 2000 caracteres.";
+        }
+        if ($num !== null) {
+            $nums = array_map('intval', array_column($this->contestRepository->getProblemsByContestId($cid, $this->site_id), "pnum"));
+            if (!in_array($num, $nums, true)) {
+                return "El problema no pertenece al concurso.";
+            }
+        }
+        $last = $this->contestRepository->getLastClarificationQuestionAt($cid, $this->site_id, $user_id);
+        if ($last && time() - strtotime($last) < 30) {
+            return "Espera unos segundos antes de enviar otra pregunta.";
+        }
+        if ($this->contestRepository->countPendingClarificationQuestions($cid, $this->site_id, $user_id) >= 5) {
+            return "Tienes 5 preguntas sin responder; espera a que el juez las responda.";
+        }
+        $this->contestRepository->addClarificationQuestion($cid, $this->site_id, $user_id, $num, $question);
+        return null;
+    }
+
     public function getContestById($cid)
     {
         return $this->contestRepository->getContestById($cid);
