@@ -14,6 +14,8 @@ interface IContestRepository
 
     public function getAllContests($site_id, $year = null);
 
+    public function getActiveContests($site_id, $limit);
+
     public function getContestYears($site_id);
 
     public function getOfficialContests($site_id);

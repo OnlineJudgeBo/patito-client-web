@@ -36,6 +36,11 @@ class ContestService implements IContestService
         return $this->contestRepository->getProblemsByContestId($cid, $this->site_id);
     }
 
+    public function getActiveContests($limit = 5)
+    {
+        return $this->contestRepository->getActiveContests($this->site_id, $limit);
+    }
+
     public function getContestById($cid)
     {
         return $this->contestRepository->getContestById($cid);

@@ -18,6 +18,8 @@ interface IContestService
 
     public function getContestYears();
 
+    public function getActiveContests($limit = 5);
+
     public function isContestByIdPublic($cid);
 
     public function getAcProblemsByIdContest($cid);
