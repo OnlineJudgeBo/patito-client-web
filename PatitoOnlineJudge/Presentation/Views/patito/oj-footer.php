@@ -34,12 +34,12 @@
         Estrella
       </a>
 
-      <a href="https://github.com/OnlineJudgeBo/patito-client-web/issues/new" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:text-blue-400 transition-colors" title="Reportar un problema">
+      <a href="https://patito.fider.io/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:text-blue-400 transition-colors" title="Reporta errores o deja sugerencias">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round" />
           <path d="M12 8v5M12 16h.01" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        Reportar Errores
+        Errores y sugerencias
       </a>
     </div>
 
