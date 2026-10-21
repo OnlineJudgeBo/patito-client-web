@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.2.35-fpm
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_CACHE_DIR=/tmp/composer-cache
