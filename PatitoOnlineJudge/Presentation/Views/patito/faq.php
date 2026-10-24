@@ -35,16 +35,32 @@
             <div class="bg-white shadow-md rounded-lg p-6">
                 <ul class="divide-y divide-gray-200">
                     <li class="py-4 flex justify-between items-center">
-                        <span class="text-gray-600">Compilador de C++</span>
-                        <span class="font-medium text-green-500">G++ 6.3.0</span>
+                        <span class="text-gray-600">C</span>
+                        <span class="font-medium text-green-500">GCC 13.3 (C11)</span>
                     </li>
                     <li class="py-4 flex justify-between items-center">
-                        <span class="text-gray-600">Compilador de Java</span>
-                        <span class="font-medium text-green-500">JDK 1.8.0_201</span>
+                        <span class="text-gray-600">C++</span>
+                        <span class="font-medium text-green-500">G++ 13.3 (C++17; también C++11)</span>
                     </li>
                     <li class="py-4 flex justify-between items-center">
-                        <span class="text-gray-600">Compilador de Python</span>
-                        <span class="font-medium text-green-500">Python 3.12.0a1</span>
+                        <span class="text-gray-600">Java</span>
+                        <span class="font-medium text-green-500">OpenJDK 17</span>
+                    </li>
+                    <li class="py-4 flex justify-between items-center">
+                        <span class="text-gray-600">Python</span>
+                        <span class="font-medium text-green-500">Python 3.12</span>
+                    </li>
+                    <li class="py-4 flex justify-between items-center">
+                        <span class="text-gray-600">Go</span>
+                        <span class="font-medium text-green-500">Go 1.22</span>
+                    </li>
+                    <li class="py-4 flex justify-between items-center">
+                        <span class="text-gray-600">JavaScript</span>
+                        <span class="font-medium text-green-500">Node.js 22</span>
+                    </li>
+                    <li class="py-4 flex justify-between items-center">
+                        <span class="text-gray-600">PSeInt</span>
+                        <span class="font-medium text-green-500">PSeInt (se traduce a C++)</span>
                     </li>
                 </ul>
             </div>
