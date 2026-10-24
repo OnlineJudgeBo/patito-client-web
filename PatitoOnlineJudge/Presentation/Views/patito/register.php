@@ -24,6 +24,10 @@
             </div>
 
             <div class="max-w-lg mx-auto mt-10 bg-white p-8 border border-gray-200 rounded-lg shadow-lg">
+                <?php if (!empty($googleEnabled)) { ?>
+                    <?php require __DIR__ . "/partials/google-button.php"; ?>
+                    <div class="my-6 flex items-center gap-3 text-sm text-gray-500"><span class="h-px flex-1 bg-gray-300"></span>o con tu correo<span class="h-px flex-1 bg-gray-300"></span></div>
+                <?php } ?>
                 <form id="registrationForm" method="POST" action="registerpage.php">
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="name">

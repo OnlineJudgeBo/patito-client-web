@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Application\Exceptions\ApplicationException;
+use PatitoOnlineJudge\Core\Application\Services\GoogleOAuthService;
 use PatitoOnlineJudge\Core\Application\Services\NotificationErrorService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\INotificationErrorService;
@@ -61,6 +62,7 @@ class RegisterController
     {
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
+        $googleEnabled = (new GoogleOAuthService())->isEnabled();
         require_once $current_theme . "/register.php";
     }
 }

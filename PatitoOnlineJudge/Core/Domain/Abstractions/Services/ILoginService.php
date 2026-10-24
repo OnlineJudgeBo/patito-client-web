@@ -7,6 +7,8 @@ use PatitoOnlineJudge\Core\Domain\DomainObjects\UserDomainObject;
 interface ILoginService
 {
     public function authenticateUser($username, $password);
+    public function authenticateByEmail($email);
+    public function registerWithGoogle(UserDomainObject $user);
     public function refreshTokens($refreshToken);
     public function registerUser(UserDomainObject $user);
     public function userRecoveryPassword($email);

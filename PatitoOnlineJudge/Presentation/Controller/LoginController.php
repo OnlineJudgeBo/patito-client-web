@@ -3,6 +3,7 @@
 namespace PatitoOnlineJudge\Presentation\Controller;
 
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\ILoginService;
+use PatitoOnlineJudge\Core\Application\Services\GoogleOAuthService;
 use PatitoOnlineJudge\Presentation\Utils\Utils;
 
 class LoginController
@@ -49,6 +50,10 @@ class LoginController
         $current_theme = Utils::get_current_theme();
         $title = $this->title;
         extract(["error" => $this->error]);
+        // Set by the Google sign-in when it can't finish.
+        $googleError = $_SESSION["login_error"] ?? null;
+        unset($_SESSION["login_error"]);
+        $googleEnabled = (new GoogleOAuthService())->isEnabled();
         require_once $current_theme . "/login.php";
     }
 }

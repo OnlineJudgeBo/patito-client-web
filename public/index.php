@@ -110,6 +110,23 @@ function executeRouter()
         require  __DIR__ . '/Routing/login.php';
     });
 
+    // Sign in with Google.
+    $router->get($prefix . '/google-login.php', function () {
+        require  __DIR__ . '/Routing/google-login.php';
+    });
+
+    $router->get($prefix . '/google-callback.php', function () {
+        require  __DIR__ . '/Routing/google-login.php';
+    });
+
+    $router->get($prefix . '/google-register.php', function () {
+        require  __DIR__ . '/Routing/google-login.php';
+    });
+
+    $router->post($prefix . '/google-register.php', function () {
+        require  __DIR__ . '/Routing/google-login.php';
+    });
+
     $router->get($prefix . '/logout.php', function () {
         require  __DIR__ . '/Routing/logout.php';
     });

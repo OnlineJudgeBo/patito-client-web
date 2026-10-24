@@ -2,6 +2,7 @@
 
 namespace PatitoOnlineJudge\Core\Application\Services;
 
+use PatitoOnlineJudge\Core\Application\Exceptions\ApplicationException;
 use PatitoOnlineJudge\Core\Application\Validators\UserValidator;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Repositories\ILoginRepository;
 use PatitoOnlineJudge\Core\Domain\Abstractions\Services\IJwtService;
@@ -33,19 +34,54 @@ class LoginService implements ILoginService
         if (!empty($user)) {
             $authService = new AuthService();
             if ($authService->verifyPassword($password, $user["password"])) {
-                $this->loginRepository->updateUserLastLogin($user['user_id'], $user["accesstime"], $this->site_id);
-                $this->loginRepository->logLoginAttempt($user['user_id'], $this->site_id);
-                $this->startUserSession($user);
-                $userRoles = $this->loginRepository->getAdminPrivilege($user['user_id'], $this->site_id);
-                $tokens = $this->jwtService->generateTokens($user['user_id'], $userRoles);
-                $isSecureRequest = $this->isSecureRequest();
-                setcookie('accessToken', $tokens["accessToken"], 0, '/', '', $isSecureRequest, false);
-                setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', $isSecureRequest, false);
-                setcookie('user_id', $user['user_id'], 0, '/', '', $isSecureRequest, false);
+                $this->signIn($user);
                 return $user;
             }
         }
         throw new \Exception("Username o Password incorrectos");
+    }
+
+    // Google already checked the email, so the account that has it signs in. Returns false when no account has it.
+    public function authenticateByEmail($email)
+    {
+        $users = [];
+        foreach ($this->loginRepository->getUserByEmail($email, $this->site_id) as $profile) {
+            $user = $this->loginRepository->getUser($profile['user_id'], $this->site_id);
+            if (!empty($user)) {
+                $users[] = $user;
+            }
+        }
+        if (count($users) > 1) {
+            // Old accounts can share an email; we can't tell which one is theirs.
+            throw new ApplicationException("Hay varias cuentas con el correo {$email}. Entra con tu usuario y contraseña.");
+        }
+        if (empty($users)) {
+            return false;
+        }
+        $this->signIn($users[0]);
+        return $users[0];
+    }
+
+    // New account from a Google sign-in: it gets a random password and signs in with Google (or recovers a password later).
+    public function registerWithGoogle(UserDomainObject $user)
+    {
+        $user->password = bin2hex(random_bytes(16));
+        $this->registerUser($user);
+        $this->signIn($this->loginRepository->getUser($user->userId, $this->site_id));
+    }
+
+    private function signIn($user)
+    {
+        session_regenerate_id(true);
+        $this->loginRepository->updateUserLastLogin($user['user_id'], $user["accesstime"], $this->site_id);
+        $this->loginRepository->logLoginAttempt($user['user_id'], $this->site_id);
+        $this->startUserSession($user);
+        $userRoles = $this->loginRepository->getAdminPrivilege($user['user_id'], $this->site_id);
+        $tokens = $this->jwtService->generateTokens($user['user_id'], $userRoles);
+        $isSecureRequest = $this->isSecureRequest();
+        setcookie('accessToken', $tokens["accessToken"], 0, '/', '', $isSecureRequest, false);
+        setcookie('refreshToken', $tokens["refreshToken"], 0, '/', '', $isSecureRequest, false);
+        setcookie('user_id', $user['user_id'], 0, '/', '', $isSecureRequest, false);
     }
 
     public function refreshTokens($refreshToken)
