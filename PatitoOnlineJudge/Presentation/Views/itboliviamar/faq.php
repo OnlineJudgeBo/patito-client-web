@@ -17,7 +17,7 @@
     <?php require_once "oj-header.php" ?>
     <main class="container mx-auto p-4 grid grid-cols-0">
 
-        <section id="respuestas-del-juez" class="max-w-6xl mx-auto px-5 py-10">
+        <section id="faq" class="max-w-6xl mx-auto px-5 py-10">
             <h1 class="text-2xl font-bold text-center mb-5">Preguntas Frecuentes (FAQ)</h1>
             <p class="text-lg text-gray-700 text-center mb-10">
                 Bienvenido a la sección de Preguntas Frecuentes (FAQ) de nuestro Juez Online. Aquí encontrarás información detallada sobre los distintos estados de respuesta que podrás encontrarte al enviar tus soluciones de programación. Si tienes alguna duda sobre qué significa cada estado, este es el lugar indicado para aclararla.
@@ -30,7 +30,7 @@
         </section>
 
         <hr>
-        <section id="ejemplo-envio-solucion" class="max-w-6xl mx-auto px-5 py-10">
+        <section id="compiladores" class="max-w-6xl mx-auto px-5 py-10">
             <h2 class="text-2xl font-bold text-center mb-5">Versiones de Compiladores</h2>
             <div class="bg-white shadow-md rounded-lg p-6">
                 <ul class="divide-y divide-gray-200">
@@ -55,9 +55,9 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-white shadow-md rounded p-4">
-                    <h2 class="text-lg font-bold mb-2">Solución usando C</h2>
+                    <h2 class="text-lg font-bold mb-2">Solución usando C++</h2>
                     <pre class="bg-gray-100 p-3 overflow-auto">
-#include <iostream>
+#include &lt;iostream&gt;
 using namespace std;
 int main(){
   int a,b;
@@ -69,9 +69,9 @@ int main(){
                 </div>
 
                 <div class="bg-white shadow-md rounded p-4">
-                    <h2 class="text-lg font-bold mb-2">Solución usando C++</h2>
+                    <h2 class="text-lg font-bold mb-2">Solución usando C</h2>
                     <pre class="bg-gray-100 p-3 overflow-auto">
-#include <stdio.h>
+#include &lt;stdio.h&gt;
 int main(){
   int a,b;
   while(scanf("%d %d",&a, &b) != EOF)
@@ -101,14 +101,17 @@ public class Main{
                 <div class="bg-white shadow-md rounded p-4">
                     <h2 class="text-lg font-bold mb-2">Solución usando Python</h2>
                     <pre class="bg-gray-100 p-3 overflow-auto">
-print("Hola mundo!")
+import sys
+for line in sys.stdin:
+  a, b = map(int, line.split())
+  print(a + b)
             </pre>
                 </div>
             </div>
         </section>
         <hr>
 
-        <section class="max-w-6xl mx-auto px-5 py-10">
+        <section id="respuestas-del-juez" class="max-w-6xl mx-auto px-5 py-10">
             <h2 class="text-2xl font-bold text-center mb-5">El juez proporcionará las siguientes respuestas</h2>
             <article>
                 <div class="mb-8 p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
@@ -180,6 +183,7 @@ print("Hola mundo!")
                     <p class="text-gray-600">
                         "Memory Limit Exceeded" Este estado aparece cuando tu programa intenta usar más memoria de la que está permitida. Necesitas encontrar una manera de reducir el uso de memoria de tu solución.
                     </p>
+                </div>
             </article>
 
             <article>
@@ -188,6 +192,7 @@ print("Hola mundo!")
                     <p class="text-gray-600">
                         "Output Limit Exceeded" significa que tu programa ha intentado generar más salida de la esperada o permitida. Esto puede ocurrir en bucles infinitos o en la generación excesiva de datos.
                     </p>
+                </div>
             </article>
 
             <article>
@@ -196,6 +201,7 @@ print("Hola mundo!")
                     <p class="text-gray-600">
                         Un "Runtime Error" indica que tu programa ha fallado durante la ejecución debido a errores como divisiones por cero, acceso a memoria no válida, etc. Revisa tu código en busca de posibles errores de ejecución.
                     </p>
+                </div>
             </article>
 
             <article>
@@ -204,6 +210,7 @@ print("Hola mundo!")
                     <p class="text-gray-600">
                         Un "Compile Error" significa que tu código tiene errores que impiden su compilación. Esto puede deberse a sintaxis incorrecta, tipos de datos incompatibles, etc. Revisa tu código fuente para corregir estos errores.
                     </p>
+                </div>
             </article>
         </section>
 
