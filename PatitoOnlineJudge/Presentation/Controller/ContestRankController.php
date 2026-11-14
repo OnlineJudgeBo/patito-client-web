@@ -51,6 +51,11 @@ class ContestRankController
             $cid = $this->cid;
         }
 
+        if (isset($_GET["projector"])) {
+            require __DIR__ . "/../Views/Modules/ContestProjector.php";
+            return;
+        }
+
         require_once $current_theme . "/contestRank.php";
     }
 }
