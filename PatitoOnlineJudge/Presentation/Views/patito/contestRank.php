@@ -39,6 +39,7 @@
                 </div>
                 <div class="flex justify-center">
                     Hora del servidor: <div class="nowdate"> </div>
+                    <a href="./contestrank.php?cid=<?php echo (int)$cid ?>&projector=1" class="ml-4 text-blue-500 hover:underline">Proyectar</a>
                 </div>
                 <div class="p-1">
                     <div class="relative w-full overflow-auto">
