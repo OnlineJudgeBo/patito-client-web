@@ -23,7 +23,7 @@
                     <select id="language" name="language" onchange="setModelLanguage(this)" required>
                         <?php
                         //include(__DIR__ . "/../../../Legacy/Include/const.inc.php");
-                        $language_name    = array("C", "C++11", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++11", "Python3.12", "Go", "Python3.12", "Pseint");
+                        $language_name    = array("C", "C++11", "Pascal", "Java", "Ruby", "Bash", "Python2", "PHP", "Perl", "C#", "Obj-C", "FreeBasic", "Other Language", "", "", "Python3", "C++17", "Python3.12", "Go", "Python3.12", "Pseint", "JavaScript", "Kotlin");
                         foreach ($languagesAvailable as $key => $value) {
                             echo "<option value=".$value['language_id'] .">" . $language_name[$value['language_id']] . "</option>";
                         }
@@ -93,6 +93,10 @@
                 monaco.editor.setModelLanguage(model, 'cpp');
             } else if (currentValue == 3) {
                 monaco.editor.setModelLanguage(model, 'java');
+            } else if (currentValue == 9) {
+                monaco.editor.setModelLanguage(model, 'csharp');
+            } else if (currentValue == 22) {
+                monaco.editor.setModelLanguage(model, 'kotlin');
             } else if (currentValue == 17 || currentValue == 19) {
                 monaco.editor.setModelLanguage(model, 'python');
             }

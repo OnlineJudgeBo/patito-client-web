@@ -89,6 +89,10 @@
                 monaco.editor.setModelLanguage(model, 'c++');
             } else if (currentValue == 3) {
                 monaco.editor.setModelLanguage(model, 'java');
+            } else if (currentValue == 9) {
+                monaco.editor.setModelLanguage(model, 'csharp');
+            } else if (currentValue == 22) {
+                monaco.editor.setModelLanguage(model, 'kotlin');
             } else if (currentValue == 17 || currentValue == 19) {
                 monaco.editor.setModelLanguage(model, 'python');
             }
