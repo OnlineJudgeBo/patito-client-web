@@ -164,7 +164,11 @@ class ProblemRepository implements IProblemRepository
 
     public function getProblems($offset, $limit, $site_id)
     {
-        $sql = "SELECT problem.problem_id, problem.title, source, submit, accepted
+        $sql = "SELECT problem.problem_id, problem.title, source, submit, accepted,
+        (SELECT GROUP_CONCAT(classification.name ORDER BY classification.name SEPARATOR ', ')
+            FROM problem_classification
+            JOIN classification ON classification.classification_id = problem_classification.classification_id
+            WHERE problem_classification.problem_id = problem.problem_id) AS tags
         FROM problem, problems_site
         WHERE defunct = 'N'
             AND problem.problem_id NOT IN (
@@ -214,7 +218,11 @@ class ProblemRepository implements IProblemRepository
                             AND solution.result != 4
                             AND solution.user_id =:userid2
                             AND solution.site_id = :site_id2
-                    ) AS wa
+                    ) AS wa,
+                    (SELECT GROUP_CONCAT(classification.name ORDER BY classification.name SEPARATOR ', ')
+                        FROM problem_classification
+                        JOIN classification ON classification.classification_id = problem_classification.classification_id
+                        WHERE problem_classification.problem_id = problem.problem_id) AS tags
                 FROM
                     problem, problems_site
                 WHERE

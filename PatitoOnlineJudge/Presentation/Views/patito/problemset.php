@@ -34,6 +34,9 @@
     <?php require_once "oj-header.php" ?>
     <main class="container mx-auto p-4 mt-5">
         <div class="col-span-2">
+            <label class="inline-flex items-center gap-2 mb-2 text-sm">
+                <input type="checkbox" id="showTags"> Mostrar clasificación
+            </label>
 
             <table id="problemList" class="display" style="width:100%">
                 <thead>
@@ -41,6 +44,7 @@
                         <th></th>
                         <th>Id</th>
                         <th>Nombre</th>
+                        <th>Clasificación</th>
                         <th>Setter</th>
                         <th>Resueltos</th>
                         <th>Enviados</th>
@@ -58,7 +62,7 @@
                 }
             </style>
             <script>
-                new DataTable('#problemList', {
+                const problemTable = new DataTable('#problemList', {
                     "order": [],
                     dom: '<frtp><Brtp>',
                     ajax: "problemset.php?api=true&user_id=<?php echo $user_id ?>",
@@ -89,6 +93,13 @@
                             }
                         },
                         {
+                            // Hidden by default; still searched, so the search box finds problems by tag.
+                            data: 'tags',
+                            defaultContent: '',
+                            visible: false,
+                            render: $.fn.dataTable.render.text()
+                        },
+                        {
                             data: 'source'
                         },
                         {
@@ -110,6 +121,14 @@
                     responsive: true,
                     "pageLength": 100,
                     "pagingType": "full_numbers",
+                });
+
+                const showTags = document.getElementById('showTags');
+                try { showTags.checked = localStorage.getItem('problems.showTags') === '1'; } catch (e) {}
+                problemTable.column(3).visible(showTags.checked);
+                showTags.addEventListener('change', function() {
+                    problemTable.column(3).visible(this.checked);
+                    try { localStorage.setItem('problems.showTags', this.checked ? '1' : '0'); } catch (e) {}
                 });
             </script>
         </div>
